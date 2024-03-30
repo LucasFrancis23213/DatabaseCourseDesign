@@ -18,6 +18,6 @@
 
 **技术栈**
 1. 前端 vue 
-![VueSuggestion](Resource/VueSuggestion.jpg)
+![VueSuggestion](Resource/Images/VueSuggestion.jpg)
 2. 后端C#
     
