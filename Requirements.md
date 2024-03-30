@@ -7,7 +7,7 @@
     public bool IsValid;  
     public static void UserLogin(){}  
 }
-4. 添加适当的注释，对于实现核心功能的函数（自己把握就行）**必须**写注释（vs2022里输入 /// 似乎会自动生成辅助注释的东西）
+4. 添加适当的注释，对于实现核心功能的函数（自己把握就行）**必须**写注释
 5. 将代码合理分配到不同的文件夹里，合理布局
 6. 所有对代码的注释要么与代码在同一行，要么在代码上面一行
 
@@ -18,6 +18,6 @@
 
 **技术栈**
 1. 前端 vue 
-![VueSuggestion](ImageResource/VueSuggestion.jpg)
+![VueSuggestion](Resource/VueSuggestion.jpg)
 2. 后端C#
     
