@@ -73,7 +73,7 @@ namespace Templates
         }
 
         //查询操作
-        public virtual QueryResult QuerySQL(string TableName,string SelectColumn,string ConditionColumn,object Value)
+        public virtual QueryResult QueryOperation(string TableName,string SelectColumn,string ConditionColumn,object Value)
         {
             if (DatabaseConnector.IsConnected)
             {
@@ -114,7 +114,7 @@ namespace Templates
             }
         }
         //更新操作
-        public virtual bool UpdateSQL(string TableName,string UpdateColumn,object UpdateValue,string ConditionColumn,object ConditionValue)
+        public virtual bool UpdateOperation(string TableName,string UpdateColumn,object UpdateValue,string ConditionColumn,object ConditionValue)
         {
             if (DatabaseConnector.IsConnected)
             {
