@@ -610,9 +610,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\2023Spring\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\BasicSQLOPs.csproj",
-      "projectName": "BasicSQLOPs",
-      "projectPath": "D:\\2023Spring\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\BasicSQLOPs.csproj",
+      "projectUniqueName": "D:\\2023Spring\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
+      "projectName": "SQLOperation",
+      "projectPath": "D:\\2023Spring\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
       "packagesPath": "C:\\Users\\cjh15\\.nuget\\packages\\",
       "outputPath": "D:\\2023Spring\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\obj\\",
       "projectStyle": "PackageReference",

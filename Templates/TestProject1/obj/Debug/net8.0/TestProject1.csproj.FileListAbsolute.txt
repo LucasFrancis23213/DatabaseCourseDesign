@@ -1,7 +1,0 @@
-D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\TestProject1\bin\Debug\net8.0\CoverletSourceRootsMapping_TestProject1
-D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\TestProject1\obj\Debug\net8.0\TestProject1.csproj.AssemblyReference.cache
-D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\TestProject1\obj\Debug\net8.0\TestProject1.GeneratedMSBuildEditorConfig.editorconfig
-D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\TestProject1\obj\Debug\net8.0\TestProject1.AssemblyInfoInputs.cache
-D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\TestProject1\obj\Debug\net8.0\TestProject1.AssemblyInfo.cs
-D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\TestProject1\obj\Debug\net8.0\TestProject1.csproj.CoreCompileInputs.cache
-D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\TestProject1\obj\Debug\net8.0\TestProject1.sourcelink.json

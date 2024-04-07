@@ -1,6 +1,3 @@
-D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\BasicSQLOPs.deps.json
-D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\BasicSQLOPs.runtimeconfig.json
-D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\BasicSQLOPs.exe
 D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\appsettings.Development.json
 D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\appsettings.json
 D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\WebAppTest.exe
@@ -32,8 +29,6 @@ D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\WebAppTest\bin
 D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
-D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\BasicSQLOPs.dll
-D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\BasicSQLOPs.pdb
 D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\WebAppTest\obj\Debug\net8.0\WebAppTest.csproj.AssemblyReference.cache
 D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\WebAppTest\obj\Debug\net8.0\WebAppTest.GeneratedMSBuildEditorConfig.editorconfig
 D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\WebAppTest\obj\Debug\net8.0\WebAppTest.AssemblyInfoInputs.cache
@@ -57,3 +52,8 @@ D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\WebAppTest\obj
 D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\WebAppTest\obj\Debug\net8.0\WebAppTest.genruntimeconfig.cache
 D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\WebAppTest\obj\Debug\net8.0\ref\WebAppTest.dll
 D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\SqlSugar.dll
+D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\SQLOperation.deps.json
+D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\SQLOperation.runtimeconfig.json
+D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\SQLOperation.exe
+D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\SQLOperation.dll
+D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\SQLOperation.pdb
