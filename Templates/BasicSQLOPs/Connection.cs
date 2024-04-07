@@ -1,10 +1,7 @@
 ﻿using Oracle.ManagedDataAccess.Client;
-using System;
-using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+//using System.Data.OracleClient;
 
 namespace Templates
 {
@@ -13,8 +10,7 @@ namespace Templates
         private string Uid;//user id,即用户名
         private string Password;//密码
         private string DataSource;//连接哪个数据库
-        //数据库是否成功连接，默认为未连接
-        public bool IsConnected { get; private set; } = false;
+
         //检测数据库是否连接成功的实例化对象
         private OracleConnection OracleConnection;
 
@@ -24,29 +20,40 @@ namespace Templates
             this.Uid = Uid;
             this.Password = Password;
             this.DataSource = DataSource;
-            IsConnected = ConnectSQL();
+            ConnectSQL();
         }
         //连接到指定数据库
         private bool ConnectSQL()
         {
-            string ConnectString = $"User Id={Uid};Password={Password};Data Source={DataSource};";
+            string ConnectString = $"Data Source={DataSource}; User Id={Uid}; Password={Password};";
+            //if(OracleConnection.State != ConnectionState.Open)
+            //OracleConfiguration.WalletLocation = "D:\\OracleBase\\admin\\OralceMajorDatabase";
+            Console.WriteLine(ConnectString); 
             this.OracleConnection = new OracleConnection(ConnectString);
             try
             {
                 OracleConnection.Open();
                 Debug.WriteLine("数据库连接成功");
+                Console.WriteLine("数据库连接成功");
                 return true;
             }
-            catch (Exception ex)
+            catch (OracleException ex)
             {
-                Debug.WriteLine($"数据库连接失败，报错为{ex}");
+                //Debug.WriteLine($"数据库连接失败，报错为{ex}");
+                Console.WriteLine("Error: " + ex.Message);
+                Console.WriteLine("Error Code: " + ex.ErrorCode);
+                Console.WriteLine("Details: " + ex.StackTrace);
+                Console.WriteLine(ex.Message);
                 return false;
             }
         } 
-
+        public OracleConnection GetOracleConnection()
+        {
+            return OracleConnection;
+        }
         public void DisconnectSQL()
         {
-            if (IsConnected)
+            if (OracleConnection.State==ConnectionState.Open)
             {
                 OracleConnection.Close();
                 Debug.WriteLine("数据库已成功关闭");

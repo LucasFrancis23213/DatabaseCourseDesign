@@ -34,23 +34,24 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
-            "Oracle.EntityFrameworkCore": {
-              "target": "Package",
-              "version": "[8.21.121, )"
-            },
-            "Oracle.ManagedDataAccess": {
-              "target": "Package",
-              "version": "[21.13.0, )"
-            },
             "Oracle.ManagedDataAccess.Core": {
               "target": "Package",
               "version": "[3.21.130, )"
+            },
+            "SqlSugar": {
+              "target": "Package",
+              "version": "[5.1.4.148, )"
             }
           },
           "imports": [
@@ -69,7 +70,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.201/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
