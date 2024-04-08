@@ -42,6 +42,8 @@
     - UpdateOperation方法：
         - 传入参数：TableName(表名),UpdateName(待更新的列),UpdateValue(要更新的值),ConditionColumn(更新条件的列),ConditionValue(更新条件的值)
         - 功能：将TableName表满足ConditionColumn=ConditionValue的所有元组的UpdateName列的值更新为UpdateValue
+        - 返回值类型：bool
+        - 检查是否通过：
 - Connection类
     - 成员变量
         - Uid(string)：用户名称，临时存储变量
