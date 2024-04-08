@@ -9,14 +9,14 @@ namespace SQLOperation.UserManager
 {
     public class CreateUser
     {
-        private string ManagerName { get; set; } = "SYSTEM";
-        private string ManagerPassword { get; set; } = "Ss504754572";
-        private string ManagerDataSource { get; set; } = "localhost:1521/orclpdb";
-        private string UserName { get; set; }
-        private string UserPassword { get; set; }
-        private string TablesGranted { get; set; } = "cjh2251646.INSTRUCTOR";
-        private string UserDataSource { get; set; } = "localhost:1521/orclpdb";//pdb数据库名
-        private OracleConnection ManagerConnection { get; set; }
+        private string ManagerName { get; set; } = "SYSTEM";//管理员身份登录的名称
+        private string ManagerPassword { get; set; } = "Ss504754572";//管理员身份登录的密码
+        private string ManagerDataSource { get; set; } = "localhost:1521/orclpdb";//管理员身份登录的服务器名
+        private string UserName { get; set; }//要建立的用户名称
+        private string UserPassword { get; set; }//要建立的数据库的用户的密码
+        private string TablesGranted { get; set; } = "cjh2251646.INSTRUCTOR";//授予该用户在哪些表上有增、删、查、改的权限
+        private string UserDataSource { get; set; } = "localhost:1521/orclpdb";//用户要创建在哪个数据库服务器上
+        private OracleConnection ManagerConnection { get; set; }//以管理员身份登入的数据库连接实例
 
         private bool _CreateStatus { get; set; } = false;
         //创建账号的状态，成功创建为true,反之为false

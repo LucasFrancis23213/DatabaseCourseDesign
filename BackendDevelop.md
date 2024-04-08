@@ -13,19 +13,24 @@
     - 提供UserExists方法测试接口
 ### SQLManager文件夹
 - Assistance类
+    - 成员变量
+        - OracleConnection(OracleConnection类)：建立Oracle连接
     - CheckColumnExists方法
         - 传入参数：ColumnName(列名)，TableName(表名)
         - 功能：检查TableName表是否有ColumnName这列
         - 返回值类型：bool
         - 检查是否通过：(<u>**这部分由负责测试的同学补充**</u>)
 - BasicSQLOps类
+    - 成员变量
+        - <u>DatabaseController(Connection类)临时存储变量</u>(*拟更改*,4.7日)
+        - OracleConnection(OracleConnection类)临时存储变量
     - InsertOperation方法:
-        - 传入参数：TableName(表名),<u>ColumnName(要插入的列),Value(要插入的值)</u>(*拟更改*)
+        - 传入参数：TableName(表名),<u>ColumnName(要插入的列),Value(要插入的值)</u>(*拟更改*,4.7日)
         - 功能：向TableName表指定ColumnName列的值Value
         - 返回值类型：bool
         - 检查是否通过：
     - DeleteOperation方法：
-        - 传入参数：TableName(表名),<u>ConditionColumn(where子句中的列名),Value(列名的值)</u>(*拟更改*)
+        - 传入参数：TableName(表名),<u>ConditionColumn(where子句中的列名),Value(列名的值)</u>(*拟更改*,4.7日)
         - 功能：删除TableName表满足条件-ConditionColumn=Value的所有元组
         - 返回值：bool
         - 检查是否通过：
@@ -38,6 +43,11 @@
         - 传入参数：TableName(表名),UpdateName(待更新的列),UpdateValue(要更新的值),ConditionColumn(更新条件的列),ConditionValue(更新条件的值)
         - 功能：将TableName表满足ConditionColumn=ConditionValue的所有元组的UpdateName列的值更新为UpdateValue
 - Connection类
+    - 成员变量
+        - Uid(string)：用户名称，临时存储变量
+        - Password(string)：用户密码，临时存储变量
+        - DataSource(string)：数据来源(连接到哪个数据库),临时存储变量
+        - OracleConnection(OracleConnection类)：OracleConnection类的实例化对象，数据库连接的载体
     - ConnectSQL方法：
         - 传入参数：无
         - 功能：建立一个Oracle数据库链接
@@ -48,13 +58,27 @@
         - 功能：返回成功创建数据库连接的OracleConnection实例化对象
         - 返回值类型：OracleConnection
         - 检查是否通过：
-    - ~~DisconnectSQL方法：~~(*拟弃用*)
+    - ~~DisconnectSQL方法：~~(*拟弃用*,4.7日)
         - 传入参数：无
         - 功能：断开数据库连接
         - 返回值类型：void
         - 检查是否通过：
 ### UserManager文件夹
 - CreateUser类：
+    - 成员变量
+        - ManagerName(string)
+        - ManagerPassword(string)
+        - ManagerDataSource(string)
+        - UserName(string)
+        - UserPassword(string)
+        - UserDataSource(string)
+        - TableGranted(string)：授予该用户在哪些表上有增、删、查、改的权限
+        - ManagerConnection(OracleConnection类)
+        - _CreateStatus(bool)
+        - CreateStatus(bool)：创建用户情况，成功为true，失败为false
+        - _ReasonForCreationFailure(string)
+        - ReasonForCreationFailure(string)：如果用户创建失败，创建失败的原因
+        - ~~Connection(Connection类)~~(*拟弃用*,4.8日)
     - 构造函数：
         - 传入参数：UserInfo(包括用户名与密码)
         - 检查是否通过
@@ -86,24 +110,24 @@
     - Query方法：
         - 路由名称：
         - http方法：[HttpGet]
-        - 传入参数：<u>无</u>(*拟更改*)
+        - 传入参数：<u>无</u>(*拟更改*,4.7日)
         - 功能：网页端完成查询操作
         - 检查是否通过：
     - Insert方法：
         - 路由名称：
         - http方法：[HttpPost]
-        - 传入参数：<u>无</u>(*拟更改*)
+        - 传入参数：<u>无</u>(*拟更改*,4.7日)
         - 功能：网页端完成插入操作
         - 检查是否通过：
     - Delete方法：
         - 路由名称：
         - http方法：[HttpDelete]
-        - 传入参数：<u>无</u>(*拟更改*)
+        - 传入参数：<u>无</u>(*拟更改*,4.7日)
         - 功能：网页端完成数据库删除操作
         - 检查是否通过：
     - Update方法：
         - 路由名称：
         - http方法：[HttpPut]
-        - 传入参数：<u>无</u>(*拟更改*)
+        - 传入参数：<u>无</u>(*拟更改*,4.7日)
         - 功能：网页端完成更新
         - 检查是否通过：
