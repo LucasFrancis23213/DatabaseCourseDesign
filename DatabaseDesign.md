@@ -5,47 +5,47 @@
 ## I. 基础设施和通用表
 
 ### 1. 用户管理
-- 用户表 (Users)
-- 用户认证信息表 (AuthInfo)
-- 用户偏好设置表 (UserPreferences)
-- 用户积分表 (UserPoints)
-- 用户评价表 (UserRatings)
-- 用户活跃度表 (UserActivity)
-- 用户消息表 (UserMessages)
-- 用户关系表 (UserRelationships)
-- 用户订阅表 (UserSubscriptions)
+- 用户表 (Users) ✔️
+- 用户认证信息表 (AuthInfo) ✔️
+- 用户偏好设置表 (UserPreferences) ✔️
+- 用户积分表 (UserPoints) ✔️
+- 用户评价表 (UserRatings) ✔️
+- 用户活跃度表 (UserActivity) ✔️
+- 用户消息表 (UserMessages) ✔️
+- 用户关系表 (UserRelationships) ✔️
+- 用户订阅表 (UserSubscriptions) ✔️
 
 ### 2. 物品管理
-- 物品类别表 (ItemCategories)
-- 遗失物品表 (LostItems)
-- 找回物品表 (FoundItems)
-- 物品图片表 (ItemImages)
-- 物品标签表 (ItemTags)
-- 物品-标签关联表 (ItemTagLinks)
-- 物品评论表 (ItemComments)
-- 物品状态历史表 (ItemStatusHistory)
-- 物品认领流程表 (ItemClaimProcesses)
+- 物品类别表 (ItemCategories) ✔️
+- 遗失物品表 (LostItems) ✔️
+- 找回物品表 (FoundItems) ✔️
+- 物品图片表 (ItemImages) ✔️
+- 物品标签表 (ItemTags) ✔️
+- 物品-标签关联表 (ItemTagLinks) ✔️
+- 物品评论表 (ItemComments) ✔️
+- 物品状态历史表 (ItemStatusHistory) ✔️
+- 物品认领流程表 (ItemClaimProcesses) ✔️
 
 ### 3. 系统管理和日志
 - 事件日志表 (EventLogs)
-- 系统设置表 (SystemSettings)
-- 系统日志表 (SystemLogs)
-- 安全事件记录表 (SecurityEvents)
-- API访问日志表 (APIAccessLogs)
-- 定时任务表 (ScheduledTasks)
+- ~~系统设置表 (SystemSettings)~~(*拟弃用，不知道这个表有啥用*)
+- 系统日志表 (SystemLogs) ✔️
+- 安全事件记录表 (SecurityEvents) ✔️
+- API访问日志表 (APIAccessLogs) ✔️
+- 定时任务表 (ScheduledTasks) ✔️
 
 ## II. 特定角色功能扩展
 
 ### 1. 针对丢失物品的用户
-- 用户反馈表 (UserFeedback)
-- 赏金悬赏表 (RewardOffers)
-- 物品认领流程表 (ItemClaimProcesses)
+- ~~用户反馈表 (UserFeedback)~~(*拟弃用,与“用户评价表”重复*)
+- 赏金悬赏表 (RewardOffers) ✔️
+- 物品认领流程表 (ItemClaimProcesses) ✔️
 
 ### 2. 针对找回物品的用户
-- 匹配记录表 (MatchRecords)
-- 物品交换表 (ItemExchanges)
-- 物品归还协议表 (ItemReturnAgreements)
-- 物品认领流程表 (ItemClaimProcesses)
+- 匹配记录表 (MatchRecords) ✔️
+- 物品交换表 (ItemExchanges) ✔️
+- 物品归还协议表 (ItemReturnAgreements) ✔️
+- 物品认领流程表 (ItemClaimProcesses) ✔️
 
 ### 3. 针对网站工作人员
 - 通知记录表 (NotificationLogs)
@@ -56,11 +56,11 @@
 
 ## III. 交互增强功能
 
-- 社交媒体分享记录表 (SocialMediaShares)
-- 用户动态表 (UserFeeds)
-- 问答表 (QnA)
-- 关注列表表 (FollowLists)
-- 物品认领流程表 (ItemClaimProcesses)
+- 社交媒体分享记录表 (SocialMediaShares) ✔️
+- 用户动态表 (UserFeeds) ✔️
+- <u>问答表 (QnA)</u>(*拟更改*) ✔️
+- ~~关注列表表 (FollowLists)~~(*拟弃用，与"用户关系表"重复*)
+- 物品认领流程表 (ItemClaimProcesses) ✔️
 
 # 具体表设计
 
@@ -314,6 +314,16 @@
     - **推荐内容** (RecommendedContent): 推荐的内容详情。
     - **推荐时间** (RecommendationTime): 推荐发生的时间。
     - **用户反馈** (UserFeedback): 用户对推荐内容的反馈，如“有用”、“无用”。
+- 交易记录表 (TransactionLogs)
+    - **TransactionID** (交易ID): 主键，唯一标识每笔交易。
+    - **FromUserID** (发起方用户ID): 发起交易的用户ID，外键，关联到**Users**表。
+    - **ToUserID** (接收方用户ID): 接收交易的用户ID（如果适用），外键，关联到**Users**表。对于系统收费等情况，此字段可能为空或指向一个特定的系统账户。
+    - **ItemID** (物品ID): 交易相关的物品ID（如果适用），外键，关联到**LostItems**或**FoundItems**表。不是所有交易都与物品直接相关，因此，这个字段在某些记录中可能为空。
+    - **Amount** (金额): 交易金额。根据交易的性质，这可以是正数（如支付赏金、购买服务）或负数（如退款）。
+    - **TransactionType** (交易类型): 描述交易类型的字符串，如"赏金支付"、"服务购买"、"退款"等。
+    - **Status** (状态): 交易的当前状态，如"进行中"、"完成"、"失败"等。
+    - **TransactionDate** (交易日期): 记录交易发生的日期和时间。
+    - **Description** (描述): 关于交易的额外信息或备注，例如交易的具体目的或原因。
 
 ## III. 交互增强功能
 

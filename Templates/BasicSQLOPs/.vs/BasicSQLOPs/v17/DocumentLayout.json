@@ -7,18 +7,12 @@
       "RelativeMoniker": "D:0:0:{C38BBC15-C338-4273-9DEA-83F333F42DC1}|SQLOperation.csproj|solutionrelative:sqlmanager\\basicsqlops.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C38BBC15-C338-4273-9DEA-83F333F42DC1}|SQLOperation.csproj|d:\\2023spring\\databasecoursedesign\\databasecoursedesign\\templates\\basicsqlops\\usermanager\\createuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{C38BBC15-C338-4273-9DEA-83F333F42DC1}|SQLOperation.csproj|D:\\2023Spring\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\usermanager\\createuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C38BBC15-C338-4273-9DEA-83F333F42DC1}|SQLOperation.csproj|solutionrelative:usermanager\\createuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C38BBC15-C338-4273-9DEA-83F333F42DC1}|SQLOperation.csproj|D:\\2023Spring\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\sqlmanager\\assistance.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C38BBC15-C338-4273-9DEA-83F333F42DC1}|SQLOperation.csproj|solutionrelative:sqlmanager\\assistance.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E6B51281-D084-407E-9C8A-23C634543442}|..\\WebAppTest\\WebAppTest.csproj|d:\\2023spring\\databasecoursedesign\\databasecoursedesign\\templates\\webapptest\\controllers\\sqlopscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E6B51281-D084-407E-9C8A-23C634543442}|..\\WebAppTest\\WebAppTest.csproj|d:\\2023spring\\databasecoursedesign\\databasecoursedesign\\templates\\webapptest\\controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -42,7 +36,7 @@
               "RelativeDocumentMoniker": "SQLManager\\BasicSQLOps.cs",
               "ToolTip": "D:\\2023Spring\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLManager\\BasicSQLOps.cs",
               "RelativeToolTip": "SQLManager\\BasicSQLOps.cs",
-              "ViewState": "AQIAAFwAAAAAAAAAAAAowKkAAAAOAAAA",
+              "ViewState": "AQIAAMoAAAAAAAAAAAAAAMgAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-04-08T02:58:35.071Z",
               "EditorCaption": ""
@@ -57,8 +51,7 @@
               "RelativeToolTip": "UserManager\\CreateUser.cs",
               "ViewState": "AQIAABQAAAAAAAAAAAA1wA8AAABAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-08T02:14:06.799Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-08T02:14:06.799Z"
             },
             {
               "$type": "Document",
@@ -71,30 +64,6 @@
               "ViewState": "AQIAAAYAAAAAAAAAAAAAAAwAAAAxAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-04-08T02:03:57.992Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "SQLOpsController.cs",
-              "DocumentMoniker": "D:\\2023Spring\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\WebAppTest\\Controllers\\SQLOpsController.cs",
-              "RelativeDocumentMoniker": "..\\WebAppTest\\Controllers\\SQLOpsController.cs",
-              "ToolTip": "D:\\2023Spring\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\WebAppTest\\Controllers\\SQLOpsController.cs",
-              "RelativeToolTip": "..\\WebAppTest\\Controllers\\SQLOpsController.cs",
-              "ViewState": "AQIAACAAAAAAAAAAAAA7wEsAAAAJAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-07T15:47:15.852Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "LoginController.cs",
-              "DocumentMoniker": "D:\\2023Spring\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\WebAppTest\\Controllers\\LoginController.cs",
-              "RelativeDocumentMoniker": "..\\WebAppTest\\Controllers\\LoginController.cs",
-              "ToolTip": "D:\\2023Spring\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\WebAppTest\\Controllers\\LoginController.cs",
-              "RelativeToolTip": "..\\WebAppTest\\Controllers\\LoginController.cs",
-              "ViewState": "AQIAAAwAAAAAAAAAAAAUwAoAAAAgAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-07T15:43:43.992Z"
             }
           ]
         }
