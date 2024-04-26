@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "PmPzvZBULgQMIPIkwpzz92tde14/Tvy+ohoQnoNRe5b/HucROWuoPjp6MiCan7MxLAVsmnVpJgLzEEhqh54iOw==",
+  "dgSpecHash": "PtK287OvQRthDmaOUsvRVrHL5n1EU23jcDBMTqwxxTvnxxU0+BQwvtehbexbONVg1VzEuZlowft1aGt/2bflXw==",
   "success": true,
-  "projectFilePath": "D:\\2023Spring\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
+  "projectFilePath": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\cjh15\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "C:\\Users\\cjh15\\.nuget\\packages\\oracle.manageddataaccess.core\\3.21.130\\oracle.manageddataaccess.core.3.21.130.nupkg.sha512",
