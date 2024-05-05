@@ -1,0 +1,135 @@
+# 4.7日提交
+## BasicSQLOPs
+### InterfaceManager文件夹
+- IAssistance接口
+    - 提供CheckColumnExists方法(*C#里一般不讲函数,改讲方法*)测试接口
+- IBasicSQLOps
+    - 提供InsertOperation方法测试接口
+    - 提供DeleteOperation方法测试接口
+    - 提供QueryOperation方法测试接口
+    - 提供UpdateOperation方法测试接口
+- ICreateUser
+    - 提供UserCreation方法测试接口
+    - 提供UserExists方法测试接口
+### SQLManager文件夹
+- Assistance类
+    - 成员变量
+        - OracleConnection(OracleConnection类)：建立Oracle连接
+    - CheckColumnExists方法
+        - 传入参数：ColumnName(列名)，TableName(表名)
+        - 功能：检查TableName表是否有ColumnName这列
+        - 返回值类型：bool
+        - 检查是否通过：(<u>**这部分由负责测试的同学补充**</u>)
+- BasicSQLOps类
+    - 成员变量
+        - <u>DatabaseController(Connection类)临时存储变量</u>(*拟更改*,4.7日)
+        - OracleConnection(OracleConnection类)临时存储变量
+    - InsertOperation方法:
+        - 传入参数：TableName(表名),<u>ColumnName(要插入的列),Value(要插入的值)</u>(*拟更改*,4.7日)
+        - 功能：向TableName表指定ColumnName列的值Value
+        - 返回值类型：bool
+        - 检查是否通过：
+    - DeleteOperation方法：
+        - 传入参数：TableName(表名),<u>ConditionColumn(where子句中的列名),Value(列名的值)</u>(*拟更改*,4.7日)
+        - 功能：删除TableName表满足条件-ConditionColumn=Value的所有元组
+        - 返回值：bool
+        - 检查是否通过：
+    - QueryOperation方法：
+        - 传入参数：TableName(表名),ColumnName(查询条件的列),Value(查询条件所在列的值)
+        - 功能：将TableName表中满足ColumnName=Value的所有元组的所有属性以json形式返回
+        - 返回值类型：string
+        - 检查是否通过：
+    - UpdateOperation方法：
+        - 传入参数：TableName(表名),UpdateName(待更新的列),UpdateValue(要更新的值),ConditionColumn(更新条件的列),ConditionValue(更新条件的值)
+        - 功能：将TableName表满足ConditionColumn=ConditionValue的所有元组的UpdateName列的值更新为UpdateValue
+        - 返回值类型：bool
+        - 检查是否通过：
+- Connection类
+    - 成员变量
+        - Uid(string)：用户名称，临时存储变量
+        - Password(string)：用户密码，临时存储变量
+        - DataSource(string)：数据来源(连接到哪个数据库),临时存储变量
+        - OracleConnection(OracleConnection类)：OracleConnection类的实例化对象，数据库连接的载体
+    - ConnectSQL方法：
+        - 传入参数：无
+        - 功能：建立一个Oracle数据库链接
+        - 返回值类型：bool
+        - 检查是否通过：
+    - GetOracleConnection方法：
+        - 传入参数：无
+        - 功能：返回成功创建数据库连接的OracleConnection实例化对象
+        - 返回值类型：OracleConnection
+        - 检查是否通过：
+    - ~~DisconnectSQL方法：~~(*拟弃用*,4.7日)
+        - 传入参数：无
+        - 功能：断开数据库连接
+        - 返回值类型：void
+        - 检查是否通过：
+### UserManager文件夹
+- CreateUser类：
+    - 成员变量
+        - ManagerName(string)
+        - ManagerPassword(string)
+        - ManagerDataSource(string)
+        - UserName(string)
+        - UserPassword(string)
+        - UserDataSource(string)
+        - TableGranted(string)：授予该用户在哪些表上有增、删、查、改的权限
+        - ManagerConnection(OracleConnection类)
+        - _CreateStatus(bool)
+        - CreateStatus(bool)：创建用户情况，成功为true，失败为false
+        - _ReasonForCreationFailure(string)
+        - ReasonForCreationFailure(string)：如果用户创建失败，创建失败的原因
+        - ~~Connection(Connection类)~~(*拟弃用*,4.8日)
+    - 构造函数：
+        - 传入参数：UserInfo(包括用户名与密码)
+        - 检查是否通过
+    - UserCreation方法：
+        - 传入参数：无
+        - 功能：创建一个pdb数据库用户并授权一定功能
+        - 返回值类型：bool
+        - 检查是否通过：
+    - UserExists方法：
+        - 传入参数：无
+        - 功能：检查要创建的用户是否已在pdb存在
+        - 返回值类型：bool
+        - 检查是否通过：
+### Utilities 文件夹：
+- UserInfo类：
+    - 参数：UserName(用户名),Password(密码)
+    - 用途：传递数据库用户的数据结构
+
+## WebAppTest
+### Controller文件夹
+- LoginController类：
+    - CreateAccount方法：
+        - 路由名称：
+        - http方法：[HttpPost]
+        - 传入参数：UserInfo类
+        - 功能：新建数据库用户
+        - 检查是否通过：
+- SQLOpsController类：
+    - Query方法：
+        - 路由名称：
+        - http方法：[HttpGet]
+        - 传入参数：<u>无</u>(*拟更改*,4.7日)
+        - 功能：网页端完成查询操作
+        - 检查是否通过：
+    - Insert方法：
+        - 路由名称：
+        - http方法：[HttpPost]
+        - 传入参数：<u>无</u>(*拟更改*,4.7日)
+        - 功能：网页端完成插入操作
+        - 检查是否通过：
+    - Delete方法：
+        - 路由名称：
+        - http方法：[HttpDelete]
+        - 传入参数：<u>无</u>(*拟更改*,4.7日)
+        - 功能：网页端完成数据库删除操作
+        - 检查是否通过：
+    - Update方法：
+        - 路由名称：
+        - http方法：[HttpPut]
+        - 传入参数：<u>无</u>(*拟更改*,4.7日)
+        - 功能：网页端完成更新
+        - 检查是否通过：
