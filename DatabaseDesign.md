@@ -58,9 +58,22 @@
 
 - 社交媒体分享记录表 (SocialMediaShares) ✔️
 - 用户动态表 (UserFeeds) ✔️
-- <u>问答表 (QnA)</u>(*拟更改*) ✔️
+- 问题表(Questions)
+- 回答表(Answers)
 - ~~关注列表表 (FollowLists)~~(*拟弃用，与"用户关系表"重复*)
 - 物品认领流程表 (ItemClaimProcesses) ✔️
+
+### VIP系统
+- 广告信息表(Advertisements)  
+- 点击统计表(AdClickStatistics)  
+- VIP会员信息表(VIPMembers)  
+- VIP等级表(VIPLevels) (*拟弃用，但如果想扩展则保留，也就是做这个表，但只有一条信息*)
+- VIP购买订单表（VIPOrders）
+- VIP特权表（VIPPrivileges）(*功能拟弃用，但如果想扩展则保留*)
+
+### 审核系统
+- 审核状态码表(ReviewCodes)  
+- 物品审核状态关联表 (ItemReviewLinks)
 
 # 具体表设计
 
@@ -106,9 +119,10 @@
 - 用户活跃度表 (UserActivity)
     - **活跃度ID** (ActivityID): 唯一标识每条活跃度记录的主键。
     - **用户ID** (UserID): 用户的ID，外键，关联到Users表的UserID。
-    - **登录次数** (LoginCount): 用户登录平台的次数。
-    - **最后登录日期** (LastLoginDate): 用户最后一次登录的日期。
-    - **活跃分数** (ActivityScore): 基于用户活动计算的活跃度分数。
+    - **活跃行为** (ActionID):对于评论、发帖、点赞等行为种类的标识  
+	- **活跃分数** (ActivityScore): 基于用户活动计算的活跃度分数。  
+	- **整体活跃度** (Points): 当前整体活跃度。(**拟更改，4.25**)  
+	- **日期** (Date): 活跃度变更的日期。(**拟更改，4.25**)  
 
 - 用户消息表 (UserMessages)
     - **消息ID** (MessageID): 唯一标识每条消息的主键。
@@ -145,7 +159,8 @@
     - **遗失地点** (LostLocation): 物品遗失的地点。
     - **遗失日期** (LostDate): 物品遗失的日期。
     - **用户ID** (UserID): 报失者的ID，外键，关联到Users表的UserID。
-    - **状态** (Status): 物品的状态（如：正在寻找、已找到）。
+    - **遗失状态** (LostStatus): 物品的状态（如：正在寻找、已找到）。
+    - **审核状态** (ReviewStatus) 
 
 - 找回物品表 (FoundItems)
     - **物品ID** (ItemID): 唯一标识每个找回物品的主键。
@@ -156,12 +171,14 @@
     - **找回日期** (FoundDate): 物品找回的日期。
     - **用户ID** (UserID): 找回物品者的ID，外键，关联到Users表的UserID。
     - **匹配状态** (MatchStatus): 物品的匹配状态（如：待审核、匹配成功）。
+    - **审核状态** (ReviewStatus)
 
 - 物品图片表 (ItemImages)：提供物品图片相关信息
     - **图片ID** (ImageID): 唯一标识每个图片的主键。
     - **物品ID** (ItemID): 关联的遗失或找回物品的ID，外键，关联到LostItems或FoundItems表的ItemID。
     - **图片URL** (ImageUrl): 存储图片的URL地址。
     - **描述** (Description): 图片的简短描述或备注。
+    - **审核状态** (ReviewStatus)
 
 - 物品标签表 (ItemTags)：标签可以帮助用户通过不同的关键词快速分类和查找物品。
     - **标签ID** (TagID): 唯一标识每个标签的主键。
@@ -170,6 +187,7 @@
 - 物品-标签关联表 (ItemTagLinks)：用于建立物品和标签之间的多对多关系，使得物品可以被多个标签标记。
     - **物品ID** (ItemID): 物品的ID，外键，关联到LostItems或FoundItems表的ItemID。
     - **标签ID** (TagID): 标签的ID，外键，关联到ItemTags表的TagID。
+    - **审核状态**(ReviewStatus)  
 
 - 物品评论表 (ItemComments)：为物品提供评论功能，增加用户互动，帮助其他用户了解物品详情和找回历史。
     - **评论ID** (CommentID): 唯一标识每条评论的主键。
@@ -341,14 +359,21 @@
    - **内容** (Content): 动态的具体内容。
    - **发布日期** (PublishDate): 动态发布的日期。
 
-- **问答表 (QnA)**: 为用户提供提问和回答环节，针对遗失物品找回过程中的疑问。
-   - **问答ID** (QnAID): 唯一标识每个问答记录的主键。
-   - **提问用户ID** (AskerUserID): 提出问题的用户ID，外键，关联到Users表的UserID。
-   - **回答用户ID** (AnswerUserID): 回答问题的用户ID，可为空，外键，关联到Users表的UserID。
-   - **问题** (Question): 提出的问题。
-   - **回答** (Answer): 对问题的回答。
-   - **提问日期** (AskDate): 提问的日期。
-   - **回答日期** (AnswerDate): 回答的日期，可为空。
+- **Questions**（问题表）
+  - **问题ID** (QuestionID): 主键，唯一标识每个问题。
+  - **关联物品ID** (ItemID): 外键，连接到物品信息表的ItemID。
+  - **提问用户ID** (AskerUserID): 外键，关联到用户信息表的UserID。
+  - **提出问题内容** (Content): 记录提问的文本内容。
+  - **提问日期** (AskedDate): 记录提问的日期。
+  - **订阅用户ID** (SubscriberUserID): 外键，关联到用户信息表的UserID，标识订阅此问题的用户。
+
+- **Answers**（回答表）
+  - **回答ID** (AnswerID): 主键，唯一标识每个回答。
+  - **问题ID** (QuestionID): 外键，关联到问题表的QuestionID。
+  - **回答用户ID** (ResponderUserID): 外键，关联到用户信息表的UserID。
+  - **回答内容** (Content): 记录回答的文本信息。
+  - **回答日期** (AnswerDate): 记录回答的日期。
+
 
 - **关注列表表 (FollowLists)**: 允许用户关注其他用户，获取其更新和动态。
    - **关注ID** (FollowID): 唯一标识每条关注记录的主键。
@@ -361,4 +386,62 @@
     - **物品ID** (ItemID): 被认领的物品ID，外键，关联到LostItems或FoundItems表的ItemID。
     - **认领用户ID** (ClaimantUserID): 申请认领的用户ID，外键，关联到Users表的UserID。
     - **流程状态** (Status): 认领流程的当前状态，如“待审核”、“审核通过”、“审核拒绝”等。
- 
+
+### 广告设计
+- **Advertisements**（广告信息表）
+   - **广告ID** (AdID): 主键，唯一标识每条广告记录。
+   - **广告内容** (AdContent): 存储广告的内容。
+   - **广告链接** (AdURL): 链接到广告目标的URL。
+   - **广告类型** (AdType): 广告的类型。
+   - **广告开始日期** (AdStartDate): 广告投放的开始日期。
+   - **广告结束日期** (AdEndDate): 广告投放的结束日期。
+
+- **AdClickStatistics**（点击统计表）
+   - **点击记录ID** (ClickID): 主键，唯一标识每条点击记录。
+   - **被点击的广告ID** (AdID): 外键，关联到Advertisements表的AdID。
+   - **点击用户的ID** (UserID): 外键，关联到Users表的UserID。
+   - **点击时间** (ClickTime): 记录点击发生的时间。
+   - **点击用户的IP地址** (IPAddress): 记录发起点击的用户IP地址。
+
+### VIP会员信息表 (VIPMembers)
+- **VIPMembers**（VIP会员信息表）
+   - **VIP会员ID** (VIPMemberID): 主键，唯一标识每个VIP会员。
+   - **关联用户ID** (UserID): 外键，关联到Users表的UserID。
+   - **VIP会员开始日期** (VIPStartDate): 标记VIP会员资格的开始日期。
+   - **VIP会员结束日期** (VIPEndDate): 标记VIP会员资格的结束日期。
+   - **VIP会员等级** (VIPLevel): 表示会员的级别。
+   - **VIP会员状态** (Status): 当前VIP状态（如正常、过期、冻结等）。
+   - **创建时间** (CreatedAt): 记录VIP会员信息创建的时间。
+   - **更新时间** (UpdatedAt): 记录VIP会员信息最后一次更新的时间。
+
+- **VIPLevels**（VIP等级表）
+   - **等级ID** (LevelID): 主键，唯一标识每个等级。
+   - **等级名称** (LevelName): 等级的名称。
+   - **等级描述** (LevelDescription): 描述等级的详情。
+   - **所需积分** (RequiredPoints): 升级到此等级所需的积分。
+
+- **VIPPrivileges**（VIP特权表）
+   - **特权ID** (PrivilegeID): 主键，唯一标识每个特权。
+   - **特权名称** (PrivilegeName): 特权的名称。
+   - **特权描述** (PrivilegeDescription): 描述特权的详情。
+   - **所需等级ID** (RequiredLevelID): 外键，关联到VIPLevels表的LevelID，指定获取该特权所需的VIP等级。
+
+- **VIPOrders**（VIP购买订单表）
+   - **订单ID** (OrderID): 主键，唯一标识每个订单。
+   - **关联用户ID** (UserID): 外键，关联到Users表的UserID。
+   - **订单总金额** (TotalAmount): 订单的总金额。
+   - **折扣金额** (DiscountAmount): 订单的折扣金额。
+   - **积分返还量** (PointReturn): 购买此订单后返还的积分数量。
+   - **下单时间** (OrderTime): 记录订单的创建时间。
+
+### 审核系统
+- **审核状态码表(ReviewCodes)**
+    - **审核状态ID**(ReviewID):物品的审核状态的ID，便于快速确认物品状态 (00, 01, 99)  
+    - **审核状态**(ReviewInfo): 物品的审核状态值 (Pending, Approved, Rejected)  
+
+- **物品审核状态关联表 (ItemReviewLinks)**
+    - （主码）发布时间码：物品发布/提交修改时的时间码，便于标记同一个物品修改时的情况
+    - （主码）物品ID：略
+    - 图片ID：略
+    - 标签ID：略
+    - 审核状态ID：略
