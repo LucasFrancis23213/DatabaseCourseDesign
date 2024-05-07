@@ -50,7 +50,6 @@
 ### 3. 针对网站工作人员
 - 通知记录表 (NotificationLogs)
 - 用户行为日志表 (UserActivityLogs)
-- 数据分析报表 (DataAnalysisReports)
 - 推荐系统日志表 (RecommendationLogs)
 - 交易记录表 (TransactionLogs)
 
@@ -90,7 +89,7 @@
 - 用户认证信息表 (AuthInfo)
     - **认证ID** (AuthID): 唯一标识每个认证记录的主键。
     - **用户ID** (UserID): 关联的用户ID，外键，关联到Users表的UserID。
-    - **认证方式** (AuthMethod): 认证方式，如邮箱验证、手机验证等。
+    - ~~**认证方式** (AuthMethod): 认证方式，如邮箱验证、手机验证等。~~
     - **认证状态** (AuthStatus): 当前的认证状态，如已验证、待验证等。
     - **认证日期** (AuthDate): 认证完成的日期。
 
@@ -319,13 +318,6 @@
     - **用户ID** (UserID): 行为发起者的用户ID，外键，关联到Users表的UserID。
     - **行为类型** (ActivityType): 用户行为的类型，如“登录”、“发布物品”、“评论”等。
     - **发生时间** (Timestamp): 行为发生的具体时间。
-
-- 数据分析报表 (DataAnalysisReports)：定期生成各种数据分析报表，帮助管理员了解平台运营状况，指导决策。
-    - **报表ID** (ReportID): 唯一标识每个报表记录的主键。
-    - **用户ID** (UserID): 报表对应的用户。(拟更改，4.26日，添加用户ID)  
-    - **报表类型** (ReportType): 报表的类型，如“用户活跃度分析”、“物品找回率统计”等。
-    - **报表数据** (ReportData): 报表的具体数据内容，可能包含文字、数字或图表等。
-    - **生成日期** (GenerationDate): 报表生成的日期。
 
 - 推荐系统日志表 (RecommendationLogs)
     - **日志ID** (LogID): 唯一标识每条推荐日志记录的主键。

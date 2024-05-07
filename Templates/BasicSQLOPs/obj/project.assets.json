@@ -610,11 +610,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\2023Spring\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
+      "projectUniqueName": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
       "projectName": "SQLOperation",
-      "projectPath": "D:\\2023Spring\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
+      "projectPath": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
       "packagesPath": "C:\\Users\\cjh15\\.nuget\\packages\\",
-      "outputPath": "D:\\2023Spring\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\obj\\",
+      "outputPath": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\cjh15\\AppData\\Roaming\\NuGet\\NuGet.Config",
