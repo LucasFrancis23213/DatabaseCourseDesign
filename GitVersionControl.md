@@ -33,3 +33,6 @@ reference = map<string,string> -> reference实现的是**人能看得懂的**文
 ## `git status`
 该指令可以查询当前我的git状态  
 ![](./Resource/Images/GitVersionControl/GitStatus.png)  
+
+`git add`和`git commit`指令操作大家应该都会这里不细讲，重点讲**commit信息里写什么**  
+## git commit message  
