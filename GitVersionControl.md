@@ -34,5 +34,22 @@ reference = map<string,string> -> reference实现的是**人能看得懂的**文
 该指令可以查询当前我的git状态  
 ![](./Resource/Images/GitVersionControl/GitStatus.png)  
 
-`git add`和`git commit`指令操作大家应该都会这里不细讲，重点讲**commit信息里写什么**  
-## git commit message  
+`git add`和`git commit`指令操作大家应该都会，这里不细讲  
+## `git commit`  
+该指令会创建一次提交  
+![](./Resource/Images/GitVersionControl/GitCommit-1.png)  
+只使用`git commit`后会跳转到vim文本编辑器创建commit信息，如果用不习惯vim可以使用指令`git config --global core.editor "nano"`换成nano编辑器  
+如果使用`git cat-file -p `+commit的hash值，我们就能看到这个commit的**完整的提交信息**  
+![](./Resource/Images/GitVersionControl/GitCommit-2.png)  
+同理，也可以通过`git cat-file -p `+tree / parent的hash值 查看该commit的**tree是谁**以及这个commit的**历史提交**  
+![](./Resource/Images/GitVersionControl/GitCommit-3.png)  
+![](./Resource/Images/GitVersionControl/GitCommit-4.png)  
+
+## `git log`
+该指令可以查看提交的记录  
+`git log --all --graph --decorate`可以将log按时间先后呈现出来  
+![](./Resource/Images/GitVersionControl/GitLog.png)  
+输入wq退出(跟退出vim编辑器是一样的)  
+
+## `git checkout`  
+该指令可以让你退回到某个commit处  
