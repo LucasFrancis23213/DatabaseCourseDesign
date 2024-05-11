@@ -62,6 +62,8 @@ reference = map<string,string> -> reference实现的是**人能看得懂的**文
 ![](./Resource/Images/GitVersionControl/GitCheckout-5.png)  
 `git log`中的HEAD**指向当前工作目录的内容**，基于最近的提交。这意味着它反映了最近一次提交后的状态，或者是一个未来提交的基准点。所以当我以`git checkout <commit-hash>`方式切换到这个commit状态，**就算这个commit就是main分支的最新版**，基于这个commit提交的所有后续提交都是和main**分离的**(除非在退出分离头模式前创建一个新分支并将其检出);那么`git checkout <branch name>`这种方式就可以直接切换到main分支，**后续的commit**都可以在main分支下被追踪到  
 
+### **当然切换分支也可以使用`git switch <branch-name>`实际上使用这个指令切换分支更安全**
+
 ## `git diff`
 该指令可以查看两次提交中到底改变了什么内容  
 **缺省情况下**，`git diff`比较的是**当前工作区**和**HEAD指向的commit**的内容差异  
@@ -75,4 +77,9 @@ reference = map<string,string> -> reference实现的是**人能看得懂的**文
 ![](./Resource/Images/GitVersionControl/GitBranch-1.png)  
 `git branch <branch-name>`指令会基于当前HEAD所指的内容创建一个新的平行分支  
 ![](./Resource/Images/GitVersionControl/GitBranch-2.png)  
+![](./Resource/Images/GitVersionControl/GitBranch-3.png)  
+
+## `git merge`
+该指令可以视为`git branch`的反操作，`git branch`是创建分支的，`git merge`是合并分支的  
+
 
