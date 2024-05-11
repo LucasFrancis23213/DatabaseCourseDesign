@@ -5,11 +5,11 @@ typeof(blob) = array<byte> -> **一个文件是bit组成的数组**
 ### 文件夹(tree)
 typeof(tree) = map<string, tree | blob> -> 文件夹实际上是一个字典/哈希图；string代表文件名，tree|blob代表这个名下的文件/文件夹的内容
 ### **commit**
-typeof(commit) = struct{
-     parents = array<commit> # 代表该commit的历史记录,数组形式存储  
-     author,message等meta data
-     snapshot = tree
-}
+typeof(commit) = struct{  
+     parents = array<commit> # 代表该commit的历史记录,数组形式存储    
+     author,message等meta data  
+     snapshot = tree  
+}  
 
 ## git是如何处理这三种数据结构的
 ### git**平等对待上述的数据结构**
@@ -24,7 +24,7 @@ reference = map<string,string> -> reference实现的是**人能看得懂的**文
 
 # git指令
 ## `git help` 
-输入`git help ...`(...代表对哪个git指令进行提问)  
+输入`git help <git-command>`("<git-command>"代表对哪个git指令进行提问)  
 图片中对`checkout`指令进行提问  
 ![](./Resource/Images/GitVersionControl/GitHelp-1.png)  
 输入后会打开一个操作指南窗口  
@@ -39,9 +39,9 @@ reference = map<string,string> -> reference实现的是**人能看得懂的**文
 该指令会创建一次提交  
 ![](./Resource/Images/GitVersionControl/GitCommit-1.png)  
 只使用`git commit`后会跳转到vim文本编辑器创建commit信息，如果用不习惯vim可以使用指令`git config --global core.editor "nano"`换成nano编辑器  
-如果使用`git cat-file -p `+commit的hash值，我们就能看到这个commit的**完整的提交信息**  
+如果使用`git cat-file -p <commit-hash>`，我们就能看到这个commit的**完整的提交信息**  
 ![](./Resource/Images/GitVersionControl/GitCommit-2.png)  
-同理，也可以通过`git cat-file -p `+tree / parent的hash值 查看该commit的**tree是谁**以及这个commit的**历史提交**  
+同理，也可以通过`git cat-file -p <tree-hash>/<parent-hash>`查看该commit的**tree是谁**以及这个commit的**历史提交**  
 ![](./Resource/Images/GitVersionControl/GitCommit-3.png)  
 ![](./Resource/Images/GitVersionControl/GitCommit-4.png)  
 
@@ -53,3 +53,26 @@ reference = map<string,string> -> reference实现的是**人能看得懂的**文
 
 ## `git checkout`  
 该指令可以让你退回到某个commit处  
+退回到指定hash值的commit处  
+![](./Resource/Images/GitVersionControl/GitCheckout-1.png)  
+`git checkout`和`git log`是**相互独立的**  
+![](./Resource/Images/GitVersionControl/GitCheckout-2.png)  
+观察：`git checkout <commit-hash>` 和 `git checkout <branch name>` 的区别  
+![](./Resource/Images/GitVersionControl/GitCheckout-3.png)  
+![](./Resource/Images/GitVersionControl/GitCheckout-5.png)  
+`git log`中的HEAD**指向当前工作目录的内容**，基于最近的提交。这意味着它反映了最近一次提交后的状态，或者是一个未来提交的基准点。所以当我以`git checkout <commit-hash>`方式切换到这个commit状态，**就算这个commit就是main分支的最新版**，基于这个commit提交的所有后续提交都是和main**分离的**(除非在退出分离头模式前创建一个新分支并将其检出);那么`git checkout <branch name>`这种方式就可以直接切换到main分支，**后续的commit**都可以在main分支下被追踪到  
+
+## `git diff`
+该指令可以查看两次提交中到底改变了什么内容  
+**缺省情况下**，`git diff`比较的是**当前工作区**和**HEAD指向的commit**的内容差异  
+![](./Resource/Images/GitVersionControl/GitDiff.png)  
+如果要查看**某次commit提交后某个文件改了什么**，可以使用`git diff <commit-hash> <file-name>`，这就相当于把HEAD改为了某次提交  
+![](./Resource/Images/GitVersionControl/GitDiff-2.png)  
+`git diff`实际上可以接受两个参数，`git diff <commit-hash-1> <commit-hash-2> <file-name>`，这个指令代表从`<commit-hash-1>`到`<commit-hash-2>`之间`<file-name>`这个文件做了哪些改变  
+
+## `git branch`
+该指令会列出本地的所有分支  
+![](./Resource/Images/GitVersionControl/GitBranch-1.png)  
+`git branch <branch-name>`指令会基于当前HEAD所指的内容创建一个新的平行分支  
+![](./Resource/Images/GitVersionControl/GitBranch-2.png)  
+
