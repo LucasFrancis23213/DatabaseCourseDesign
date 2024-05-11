@@ -81,5 +81,25 @@ reference = map<string,string> -> reference实现的是**人能看得懂的**文
 
 ## `git merge`
 该指令可以视为`git branch`的反操作，`git branch`是创建分支的，`git merge`是合并分支的  
+在**切换分支/合并分支**前，如果没有将本分支**正在被追踪(tracked)文件添加到暂存区(staging area)**，会报错  
+![](./Resource/Images/GitVersionControl/GitMerge-1.png)  
+使用`git add <file-name>`将文件添加到**暂存区**  
+![](./Resource/Images/GitVersionControl/GitMerge-2.png)  
+现在合并就没问题了  
+![](./Resource/Images/GitVersionControl/GitMerge-3.png)  
+如果我所处的分支和我要合并的分支存在**父子关系**，那么合并流程就是**移动HEAD指针到合并的分支处**  
+merge前两分支的状态：  
+![](./Resource/Images/GitVersionControl/GitMerge-4.png)  
+merge后两分支的状态，**观察HEAD的变化：**  
+![](./Resource/Images/GitVersionControl/GitMerge-5.png)  
+**如果存在合并冲突(merge conflicts)，VSCODE/VISUAL STUDIO会有“合并冲突管理器”的东西专门用于合并冲突**  
 
+## `git remote`
+该指令可以添加、查看、删除远程仓库
+`git remote add <human-readable-name> <repository-url>`指令可以为当前本地git仓库添加远程仓库,*远程url也可以是本机的地址*  
+`git remote -v`指令可以查看当前仓库的远程信息  
+![](./Resource/Images/GitVersionControl/GitRemote-1.png)  
 
+## `git push`
+该指令可以将本地代码推送到远程仓库
+`git push <remote-repo-name> <local-branch>:<remote-branch>`
