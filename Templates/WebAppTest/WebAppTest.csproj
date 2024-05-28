@@ -16,4 +16,11 @@
     <ProjectReference Include="..\BasicSQLOPs\SQLOperation.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="APILayer\BasicFeatureAPI\" />
+    <Folder Include="APILayer\CommunityFeatureAPI\" />
+    <Folder Include="APILayer\ManagementFeatureAPI\" />
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
 </Project>

@@ -1,18 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\2023Spring\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\",
+  "WorkspaceRootPath": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C38BBC15-C338-4273-9DEA-83F333F42DC1}|SQLOperation.csproj|d:\\2023spring\\databasecoursedesign\\databasecoursedesign\\templates\\basicsqlops\\sqlmanager\\basicsqlops.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C38BBC15-C338-4273-9DEA-83F333F42DC1}|SQLOperation.csproj|solutionrelative:sqlmanager\\basicsqlops.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C38BBC15-C338-4273-9DEA-83F333F42DC1}|SQLOperation.csproj|D:\\2023Spring\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\usermanager\\createuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C38BBC15-C338-4273-9DEA-83F333F42DC1}|SQLOperation.csproj|solutionrelative:usermanager\\createuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C38BBC15-C338-4273-9DEA-83F333F42DC1}|SQLOperation.csproj|D:\\2023Spring\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\sqlmanager\\assistance.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C38BBC15-C338-4273-9DEA-83F333F42DC1}|SQLOperation.csproj|solutionrelative:sqlmanager\\assistance.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E6B51281-D084-407E-9C8A-23C634543442}|..\\WebAppTest\\APIOperation.csproj|d:\\2023spring\\databasecoursedesign\\templates\\webapptest\\apitemplate\\apicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,48 +13,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "BasicSQLOps.cs",
-              "DocumentMoniker": "D:\\2023Spring\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLManager\\BasicSQLOps.cs",
-              "RelativeDocumentMoniker": "SQLManager\\BasicSQLOps.cs",
-              "ToolTip": "D:\\2023Spring\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLManager\\BasicSQLOps.cs",
-              "RelativeToolTip": "SQLManager\\BasicSQLOps.cs",
-              "ViewState": "AQIAAB8AAAAAAAAAAAAUwMgAAAABAAAA",
+              "Title": "ApiController.cs",
+              "DocumentMoniker": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\WebAppTest\\APITemplate\\ApiController.cs",
+              "RelativeDocumentMoniker": "..\\WebAppTest\\APITemplate\\ApiController.cs",
+              "ToolTip": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\WebAppTest\\APITemplate\\ApiController.cs",
+              "RelativeToolTip": "..\\WebAppTest\\APITemplate\\ApiController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAADwvwYAAAAUAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-08T02:58:35.071Z",
+              "WhenOpened": "2024-05-28T14:39:05.674Z",
               "EditorCaption": ""
             },
             {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "CreateUser.cs",
-              "DocumentMoniker": "D:\\2023Spring\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\UserManager\\CreateUser.cs",
-              "RelativeDocumentMoniker": "UserManager\\CreateUser.cs",
-              "ToolTip": "D:\\2023Spring\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\UserManager\\CreateUser.cs",
-              "RelativeToolTip": "UserManager\\CreateUser.cs",
-              "ViewState": "AQIAABQAAAAAAAAAAAA1wA8AAABAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-08T02:14:06.799Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Assistance.cs",
-              "DocumentMoniker": "D:\\2023Spring\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLManager\\Assistance.cs",
-              "RelativeDocumentMoniker": "SQLManager\\Assistance.cs",
-              "ToolTip": "D:\\2023Spring\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLManager\\Assistance.cs",
-              "RelativeToolTip": "SQLManager\\Assistance.cs",
-              "ViewState": "AQIAAAYAAAAAAAAAAAAAAAwAAAAxAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-08T02:03:57.992Z"
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
             }
           ]
         }
