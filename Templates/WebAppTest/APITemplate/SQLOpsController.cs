@@ -6,7 +6,8 @@ using SQLOperation.PublicAccess.Templates.SQLManager;
 
 namespace WebAppTest.APITemplate
 {
-    //[Route("api/[controller]")]//这是restful风格
+    //[Route("api/[controller]")]
+    //这是restful风格
 
     //这种就是直接在路由上就展示业务实现（展示函数名）
     [Route("api/[controller]/[action]")]
