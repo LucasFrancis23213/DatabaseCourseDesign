@@ -3,14 +3,14 @@
   "WorkspaceRootPath": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E6B51281-D084-407E-9C8A-23C634543442}|..\\WebAppTest\\WebAppTest.csproj|d:\\2023spring\\databasecoursedesign\\templates\\webapptest\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E6B51281-D084-407E-9C8A-23C634543442}|..\\WebAppTest\\WebAppTest.csproj|d:\\2023spring\\databasecoursedesign\\templates\\webapptest\\apitemplate\\sqlopscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C38BBC15-C338-4273-9DEA-83F333F42DC1}|SQLOperation.csproj|d:\\2023spring\\databasecoursedesign\\templates\\basicsqlops\\publicaccess\\templates\\sqlmanager\\basicsqlops.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C38BBC15-C338-4273-9DEA-83F333F42DC1}|SQLOperation.csproj|solutionrelative:publicaccess\\templates\\sqlmanager\\basicsqlops.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E6B51281-D084-407E-9C8A-23C634543442}|..\\WebAppTest\\WebAppTest.csproj|d:\\2023spring\\databasecoursedesign\\templates\\webapptest\\apitemplate\\sqlopscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E6B51281-D084-407E-9C8A-23C634543442}|..\\WebAppTest\\WebAppTest.csproj|d:\\2023spring\\databasecoursedesign\\templates\\webapptest\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C38BBC15-C338-4273-9DEA-83F333F42DC1}|SQLOperation.csproj|d:\\2023spring\\databasecoursedesign\\templates\\basicsqlops\\publicaccess\\utilities\\datacollection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -24,7 +24,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -40,8 +40,7 @@
               "RelativeToolTip": "PublicAccess\\Utilities\\DataCollection.cs",
               "ViewState": "AQIAACQBAAAAAAAAAAAowC4BAAAiAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-09T14:17:48.802Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-09T14:17:48.802Z"
             },
             {
               "$type": "Document",
@@ -51,33 +50,33 @@
               "RelativeDocumentMoniker": "PublicAccess\\Templates\\SQLManager\\BasicSQLOps.cs",
               "ToolTip": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\PublicAccess\\Templates\\SQLManager\\BasicSQLOps.cs",
               "RelativeToolTip": "PublicAccess\\Templates\\SQLManager\\BasicSQLOps.cs",
-              "ViewState": "AQIAACkAAAAAAAAAAAAAADIAAAAVAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAADIAAAAVAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-09T13:32:46.865Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\WebAppTest\\Program.cs",
               "RelativeDocumentMoniker": "..\\WebAppTest\\Program.cs",
               "ToolTip": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\WebAppTest\\Program.cs",
               "RelativeToolTip": "..\\WebAppTest\\Program.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAhAAAA",
+              "ViewState": "AQIAAAwAAAAAAAAAAAAAAAwAAAAkAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-09T13:39:28.278Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "SQLOpsController.cs",
               "DocumentMoniker": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\WebAppTest\\APITemplate\\SQLOpsController.cs",
               "RelativeDocumentMoniker": "..\\WebAppTest\\APITemplate\\SQLOpsController.cs",
               "ToolTip": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\WebAppTest\\APITemplate\\SQLOpsController.cs",
               "RelativeToolTip": "..\\WebAppTest\\APITemplate\\SQLOpsController.cs",
-              "ViewState": "AQIAAEQAAAAAAAAAAAAAAEgAAADqAAAA",
+              "ViewState": "AQIAADcAAAAAAAAAAAAAwCkAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-09T12:22:02.096Z",
               "EditorCaption": ""
