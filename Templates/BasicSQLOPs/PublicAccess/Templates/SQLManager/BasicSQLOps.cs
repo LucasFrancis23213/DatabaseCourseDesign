@@ -5,6 +5,7 @@ using System.Data;
 using System.Security.Cryptography;
 using System.Text.Json;
 using SQLOperation.PublicAccess.Templates.TemplateInterfaceManager;
+using System.Reflection.Metadata;
 
 namespace SQLOperation.PublicAccess.Templates.SQLManager
 {
@@ -30,17 +31,44 @@ namespace SQLOperation.PublicAccess.Templates.SQLManager
         //模板函数：插入操作
         //TableName:string类型，插入的数据所在表的名字
         //ColumnName:string类型，插入的列的名字
-        public virtual bool InsertOperation(string TableName, string ColumnName, object Value)
+        public virtual bool InsertOperation(string TableName, List<string> ColumnName, List<object> Value)
         {
             if (OracleConnection.State == ConnectionState.Open)
             {
-                string InsertSQL = $"INSERT INTO {TableName}({ColumnName}) VALUES (:Value)";
+                //string InsertSQL = $"INSERT INTO {TableName.ToUpper()}({ColumnName.ToUpper()}) VALUES (:Value)";
+                if(ColumnName.Count != Value.Count)
+                {
+                    Debug.WriteLine("列名和值的数量不匹配");
+                    return false;
+                }
+
+                string Columns = string.Join(",", ColumnName.Select(c => c.ToUpper()));
+                string parameter = string.Join(",", ColumnName.Select((c, index) => $":Value{index}"));
+                string InsertSQL = $"INSERT INTO {TableName.ToUpper()} ({Columns}) VALUES ({parameter})";
                 using (OracleCommand cmd = new OracleCommand(InsertSQL, OracleConnection))
                 {
                     try
                     {
                         //这种语句不支持表名/列名
-                        cmd.Parameters.Add(new OracleParameter(":Value", Value ?? DBNull.Value));
+                        //cmd.Parameters.Add(new OracleParameter(":Value", Value ?? DBNull.Value));
+                        for (int i = 0; i < Value.Count; i++)
+                        {
+                            object value = Value[i] ?? DBNull.Value;
+                            Type type = value.GetType();
+                            Debug.WriteLine(type);
+                            if (value is DateTime dateTimeValue)
+                            {
+                                // 将 DateTime 转换为 Oracle 兼容的字符串格式
+                                string oracleDate = dateTimeValue.ToString("yyyy/M/d HH:mm:ss");
+                                Debug.WriteLine(oracleDate);
+                                Debug.WriteLine(DateTime.Now);
+                                cmd.Parameters.Add(new OracleParameter($":Value{i}", OracleDbType.Date)).Value = dateTimeValue;
+                                //cmd.Parameters.Add(new OracleParameter($":Value{i}", OracleDbType.Date)).Value = DateTime.Now;
+                            }
+                            else
+                                cmd.Parameters.Add(new OracleParameter($":Value{i}", Value[i]));
+
+                        }
                         int AffectedNum = cmd.ExecuteNonQuery();
                         Debug.WriteLine($"第{AffectedNum}行被插入");
                         return true;
@@ -63,7 +91,7 @@ namespace SQLOperation.PublicAccess.Templates.SQLManager
         {
             if (OracleConnection.State == ConnectionState.Open)
             {
-                string DeleteSQL = $"DELETE FROM {TableName} WHERE {ConditionColumn}=:Value";
+                string DeleteSQL = $"DELETE FROM {TableName.ToUpper()} WHERE {ConditionColumn.ToUpper()}=:Value";
                 using (OracleCommand cmd = new OracleCommand(DeleteSQL, OracleConnection))
                 {
                     try
@@ -120,7 +148,7 @@ namespace SQLOperation.PublicAccess.Templates.SQLManager
                         //将列表里的列名转换为符合sql标准的语句
                         string ColumnsToBeSelected = string.Join(',', ColumnName);
                         //query:符合用户输入条件的查询sql语句
-                        string query = $"SELECT {ColumnsToBeSelected} FROM {TableName.ToUpper()} WHERE {ConditionColumn} = :Value";
+                        string query = $"SELECT {ColumnsToBeSelected.ToUpper()} FROM {TableName.ToUpper()} WHERE {ConditionColumn.ToUpper()} = :Value";
                         using (OracleCommand cmd = new OracleCommand(query, OracleConnection))
                         {
                             cmd.Parameters.Add(":Value", Value ?? DBNull.Value);
@@ -171,7 +199,7 @@ namespace SQLOperation.PublicAccess.Templates.SQLManager
         {
             if (OracleConnection.State == ConnectionState.Open)
             {
-                string update = $"UPDATE {TableName} SET {UpdateColumn}= :UpdateValue WHERE {ConditionColumn}=:ConditionValue";
+                string update = $"UPDATE {TableName.ToUpper()} SET {UpdateColumn.ToUpper()}= :UpdateValue WHERE {ConditionColumn.ToUpper()}=:ConditionValue";
                 try
                 {
                     using (OracleCommand cmd = new OracleCommand(update, OracleConnection))

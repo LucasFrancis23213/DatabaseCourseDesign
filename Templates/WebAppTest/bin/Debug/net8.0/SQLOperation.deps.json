@@ -8,8 +8,7 @@
     ".NETCoreApp,Version=v8.0": {
       "SQLOperation/1.0.0": {
         "dependencies": {
-          "Oracle.ManagedDataAccess.Core": "3.21.130",
-          "SqlSugar": "5.1.4.148"
+          "Oracle.ManagedDataAccess.Core": "3.21.130"
         },
         "runtime": {
           "SQLOperation.dll": {}
@@ -41,14 +40,6 @@
           "lib/netstandard2.1/Oracle.ManagedDataAccess.dll": {
             "assemblyVersion": "3.1.21.1",
             "fileVersion": "3.1.21.1"
-          }
-        }
-      },
-      "SqlSugar/5.1.4.148": {
-        "runtime": {
-          "lib/SqlSugar.dll": {
-            "assemblyVersion": "5.1.4.148",
-            "fileVersion": "5.1.4.148"
           }
         }
       },
@@ -225,13 +216,6 @@
       "sha512": "sha512-bXNwPyAaDivO84HEYiegK7r/LleSEfA0nc70bE88wkqd1E0Q1+r/SUbJ51xOK2vk6iHbTSMuhnC79BU8svPBjQ==",
       "path": "oracle.manageddataaccess.core/3.21.130",
       "hashPath": "oracle.manageddataaccess.core.3.21.130.nupkg.sha512"
-    },
-    "SqlSugar/5.1.4.148": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-wAywV3APwoNhDD1/XkjPYRiXF7myYAiaceuE5bfSNZFPxHx2qhqSj8fsYbjNZ+ngxc/+xTmR68mtVzLSk13+kA==",
-      "path": "sqlsugar/5.1.4.148",
-      "hashPath": "sqlsugar.5.1.4.148.nupkg.sha512"
     },
     "System.Configuration.ConfigurationManager/6.0.0": {
       "type": "package",

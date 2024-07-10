@@ -23,7 +23,14 @@ namespace WebAppTest.APITemplate
         private Connection conn;
         private OracleConnection OracleConnection;
         private BasicSQLOps SQLOps;
-        public SQLOpsController(string Uid = "cjh2251646", string Password = "123456", string DataSource = "localhost:1521/orclpdb")
+        //public SQLOpsController(string Uid = "cjh2251646", string Password = "123456", string DataSource = "localhost:1521/orclpdb")
+        //{
+        //    conn = new Connection(Uid, Password, DataSource);
+        //    OracleConnection = conn.GetOracleConnection();
+        //    SQLOps = new BasicSQLOps(conn);
+        //}
+
+        public SQLOpsController(string Uid = "ADMIN", string Password = "123456", string DataSource = "121.36.200.128:1521/ORCL")
         {
             conn = new Connection(Uid, Password, DataSource);
             OracleConnection = conn.GetOracleConnection();
@@ -38,7 +45,8 @@ namespace WebAppTest.APITemplate
             try
             {
                 string result = string.Empty;
-                result = SQLOps.QueryOperation("instructor", "salary", 40000);
+                //result = SQLOps.QueryOperation("instructor", "salary", 40000);
+                result = SQLOps.QueryOperation("auth_info", "user_id", 400);
                 return result;
             }
             catch (Exception ex)
@@ -61,7 +69,8 @@ namespace WebAppTest.APITemplate
                 OracleConnection.Open();
             try
             {
-                bool InsertStatus = SQLOps.InsertOperation("TestTable", "ID", "2150988");
+                //bool InsertStatus = SQLOps.InsertOperation("TestTable", "ID", "2150988");
+                bool InsertStatus = SQLOps.InsertOperation("auth_info", new List<string> { "user_id", "auth_status", "auth_date", "status" }, new List<object> { 400, "not bad", new DateTime(2024, 7, 10, 12, 58, 30), "not approved" });
                 return InsertStatus;
             }
             catch (Exception ex)
@@ -84,7 +93,8 @@ namespace WebAppTest.APITemplate
             try
             {
                 bool DeleteStatus = false;
-                DeleteStatus = SQLOps.DeleteOperation("TestTable", "ID", "2150988");
+                //DeleteStatus = SQLOps.DeleteOperation("TestTable", "ID", "2150988");
+                DeleteStatus = SQLOps.DeleteOperation("auth_info", "user_id", 400);
                 return true;
             }
             catch (Exception ex)
@@ -105,7 +115,8 @@ namespace WebAppTest.APITemplate
                 OracleConnection.Open();
             try
             {
-                bool UpdateStatus = SQLOps.UpdateOperation("TestTable", "Name", "hkj", "ID", "2150987");
+                //bool UpdateStatus = SQLOps.UpdateOperation("TestTable", "Name", "hkj", "ID", "2150987");
+                bool UpdateStatus = SQLOps.UpdateOperation("auth_info", "auth_status", "ok", "user_id", 400);
                 return UpdateStatus;
             }
             catch (Exception ex)

@@ -43,7 +43,6 @@ D:\2023Spring\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\SQLOpe
 D:\2023Spring\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\SQLOperation.pdb
 D:\2023Spring\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
 D:\2023Spring\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\Oracle.ManagedDataAccess.dll
-D:\2023Spring\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\SqlSugar.dll
 D:\2023Spring\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
 D:\2023Spring\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\System.Diagnostics.PerformanceCounter.dll
 D:\2023Spring\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\System.DirectoryServices.dll
