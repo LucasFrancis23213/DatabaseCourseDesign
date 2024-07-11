@@ -3,6 +3,8 @@ using Oracle.ManagedDataAccess.Client;
 using System.Data;
 using System.Diagnostics;
 using SQLOperation.PublicAccess.Templates.SQLManager;
+using Newtonsoft.Json.Linq;
+using SQLOperation.PublicAccess.Utilities;
 
 namespace WebAppTest.APITemplate
 {
@@ -62,15 +64,33 @@ namespace WebAppTest.APITemplate
         }
 
         [HttpPost]
-        public bool Insert()
+        public bool Insert([FromBody] dynamic auth_info)
         {
 
             if (OracleConnection.State != ConnectionState.Open)
                 OracleConnection.Open();
             try
             {
-                //bool InsertStatus = SQLOps.InsertOperation("TestTable", "ID", "2150988");
-                bool InsertStatus = SQLOps.InsertOperation("auth_info", new List<string> { "user_id", "auth_status", "auth_date", "status" }, new List<object> { 400, "not bad", new DateTime(2024, 7, 10, 12, 58, 30), "not approved" });
+                // 将前端传入的json数据解析为数据类的流程
+                string JsonString = auth_info.ToString();
+                Debug.WriteLine("received json is " + JsonString);
+                JObject JO = JObject.Parse(JsonString);
+
+                Auth_Info AuthInfo = new Auth_Info();
+                try
+                {
+                    AuthInfo = JO.ToObject<Auth_Info>();
+                }
+                catch(Exception ex)
+                {
+                    Debug.WriteLine($"Json Deserialization Error: {ex.Message}");
+                    return false;
+                }
+                // 剩下的部分应该出现在业务逻辑层中，这里只是为了方便测试所以写在APi层了
+                List<string> ColumnNames = new List<string>() {"User_id","auth_status","auth_date","status"};
+                List<Object> Values = new List<Object>() {AuthInfo.User_ID,AuthInfo.Auth_Status,AuthInfo.Auth_Date,AuthInfo.Status };
+                //bool InsertStatus = SQLOps.InsertOperation("auth_info", new List<string> { "user_id", "auth_status", "auth_date", "status" }, new List<object> { 400, "not bad", new DateTime(2024, 7, 10, 12, 58, 30), "not approved" });
+                bool InsertStatus = SQLOps.InsertOperation("auth_info", ColumnNames, Values);
                 return InsertStatus;
             }
             catch (Exception ex)
