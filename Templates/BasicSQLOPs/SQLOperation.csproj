@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.130" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="BusinessLogicLayer\BasicFeatureBLL\" />
+    <Folder Include="BusinessLogicLayer\CommunityFeatureBLL\" />
+    <Folder Include="BusinessLogicLayer\ManagementFeatureBLL\" />
+    <Folder Include="DataAccessLayer\BasicFeatureDAL\" />
+    <Folder Include="DataAccessLayer\CommunityFeatureDAL\" />
+    <Folder Include="DataAccessLayer\ManagementFeatureDAL\" />
+    <Folder Include="PublicAccess\InterfaceManager\BasicFeatureInterface\" />
+    <Folder Include="PublicAccess\InterfaceManager\CommunityFeatureInterface\" />
+    <Folder Include="PublicAccess\InterfaceManager\ManagementFeatureInterface\" />
+    <Folder Include="PublicAccess\Utilities\BasicFeatureUtil\" />
+    <Folder Include="PublicAccess\Utilities\CommunityFeatureUtil\" />
+    <Folder Include="PublicAccess\Utilities\ManagementFeatureUtil\" />
+    <Folder Include="ServiceLayer\BasicFeatureSL\" />
+    <Folder Include="ServiceLayer\CommunityFeatureSL\" />
+    <Folder Include="ServiceLayer\ManagementFeatureSL\" />
+  </ItemGroup>
+
+</Project>
