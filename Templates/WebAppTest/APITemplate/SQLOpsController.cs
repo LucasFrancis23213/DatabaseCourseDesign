@@ -46,10 +46,10 @@ namespace WebAppTest.APITemplate
                 OracleConnection.Open();
             try
             {
-                string result = string.Empty;
+                Tuple<bool, string> result;
                 //result = SQLOps.QueryOperation("instructor", "salary", 40000);
                 result = SQLOps.QueryOperation("auth_info", "user_id", 400);
-                return result;
+                return result.Item2;
             }
             catch (Exception ex)
             {
@@ -90,8 +90,8 @@ namespace WebAppTest.APITemplate
                 List<string> ColumnNames = new List<string>() {"User_id","auth_status","auth_date","status"};
                 List<Object> Values = new List<Object>() {AuthInfo.User_ID,AuthInfo.Auth_Status,AuthInfo.Auth_Date,AuthInfo.Status };
                 //bool InsertStatus = SQLOps.InsertOperation("auth_info", new List<string> { "user_id", "auth_status", "auth_date", "status" }, new List<object> { 400, "not bad", new DateTime(2024, 7, 10, 12, 58, 30), "not approved" });
-                bool InsertStatus = SQLOps.InsertOperation("auth_info", ColumnNames, Values);
-                return InsertStatus;
+                Tuple<bool, string> InsertStatus = SQLOps.InsertOperation("auth_info", ColumnNames, Values);
+                return InsertStatus.Item1;
             }
             catch (Exception ex)
             {
@@ -112,10 +112,10 @@ namespace WebAppTest.APITemplate
                 OracleConnection.Open();
             try
             {
-                bool DeleteStatus = false;
+                Tuple<bool, string> DeleteStatus;
                 //DeleteStatus = SQLOps.DeleteOperation("TestTable", "ID", "2150988");
                 DeleteStatus = SQLOps.DeleteOperation("auth_info", "user_id", 400);
-                return true;
+                return DeleteStatus.Item1;
             }
             catch (Exception ex)
             {
@@ -136,8 +136,8 @@ namespace WebAppTest.APITemplate
             try
             {
                 //bool UpdateStatus = SQLOps.UpdateOperation("TestTable", "Name", "hkj", "ID", "2150987");
-                bool UpdateStatus = SQLOps.UpdateOperation("auth_info", "auth_status", "ok", "user_id", 400);
-                return UpdateStatus;
+                Tuple<bool,string> UpdateStatus = SQLOps.UpdateOperation("auth_info", "auth_status", "ok", "user_id", 400);
+                return UpdateStatus.Item1;
             }
             catch (Exception ex)
             {

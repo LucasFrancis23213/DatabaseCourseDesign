@@ -31,15 +31,16 @@ namespace SQLOperation.PublicAccess.Templates.SQLManager
         //模板函数：插入操作
         //TableName:string类型，插入的数据所在表的名字
         //ColumnName:string类型，插入的列的名字
-        public virtual bool InsertOperation(string TableName, List<string> ColumnName, List<object> Value)
+        public virtual Tuple<bool,string> InsertOperation(string TableName, List<string> ColumnName, List<object> Value)
         {
             if (OracleConnection.State == ConnectionState.Open)
             {
                 //string InsertSQL = $"INSERT INTO {TableName.ToUpper()}({ColumnName.ToUpper()}) VALUES (:Value)";
                 if(ColumnName.Count != Value.Count)
                 {
-                    Debug.WriteLine("列名和值的数量不匹配");
-                    return false;
+                    string ErrorReason = "列名和值的数量不匹配";
+                    Debug.WriteLine(ErrorReason);
+                    return new Tuple<bool, string>(false, ErrorReason);
                 }
 
                 string Columns = string.Join(",", ColumnName.Select(c => c.ToUpper()));
@@ -71,24 +72,27 @@ namespace SQLOperation.PublicAccess.Templates.SQLManager
                         }
                         int AffectedNum = cmd.ExecuteNonQuery();
                         Debug.WriteLine($"第{AffectedNum}行被插入");
-                        return true;
+                        return new Tuple<bool, string>(true, string.Empty);
                     }
                     catch (Exception ex)
                     {
+                        string ErrorReason = ex.Message;
                         Debug.WriteLine($"插入报错：{ex}");
-                        return false;
+                        return new Tuple<bool, string>(false, ErrorReason);
                     }
                 }
             }
             else
             {
-                Debug.WriteLine("插入操作，数据库未连接");
-                return false;
+                string ErrorReason = "数据库未连接";
+                Debug.WriteLine("插入操作，",ErrorReason);
+                return new Tuple<bool, string>(false, ErrorReason);
             }
         }
         //删除操作
-        public virtual bool DeleteOperation(string TableName, string ConditionColumn, object Value)
+        public virtual new Tuple<bool, string> DeleteOperation(string TableName, string ConditionColumn, object Value)
         {
+            string ErrorReason = string.Empty;
             if (OracleConnection.State == ConnectionState.Open)
             {
                 string DeleteSQL = $"DELETE FROM {TableName.ToUpper()} WHERE {ConditionColumn.ToUpper()}=:Value";
@@ -100,19 +104,21 @@ namespace SQLOperation.PublicAccess.Templates.SQLManager
                         cmd.Parameters.Add(new OracleParameter("Value", Value ?? DBNull.Value));
                         int AffectedRow = cmd.ExecuteNonQuery();
                         Debug.WriteLine($"共{AffectedRow}行被删除");
-                        return true;
+                        return new Tuple<bool, string>(true,ErrorReason);
                     }
                     catch (Exception ex)
                     {
-                        Debug.Write($"删除失败,报错为：{ex}");
-                        return false;
+                        ErrorReason = ex.Message;
+                        Debug.Write($"删除失败,报错为：{ErrorReason}");
+                        return new Tuple<bool, string>(false, ErrorReason);
                     }
                 }
             }
             else
             {
-                Debug.WriteLine("删除操作，数据库未连接");
-                return false;
+                ErrorReason = "数据库未连接";
+                Debug.WriteLine("删除操作，", ErrorReason);
+                return new Tuple<bool, string>(false, ErrorReason);
             }
         }
 
@@ -120,8 +126,9 @@ namespace SQLOperation.PublicAccess.Templates.SQLManager
         //TableName:表名，即想查询的数据在哪个表
         //SelectColumn:列名，即想查询数据库中的哪一列
         //ConditionColumn和Value:共同组成where部分的条件判断
-        public virtual string QueryOperation(string TableName, string ConditionColumn, object Value)
+        public virtual Tuple <bool,string> QueryOperation(string TableName, string ConditionColumn, object Value)
         {
+            bool IsQuerySuccess = true;
             if (OracleConnection.State == ConnectionState.Open)
             {
                 //RowList:存储查询到的所有结果
@@ -166,39 +173,48 @@ namespace SQLOperation.PublicAccess.Templates.SQLManager
                             }
                         }
                         if (RowList.Count == 0)
-                            return $"{TableName}表没有符合要求的元素";
+                        {
+                            IsQuerySuccess = false;
+                            return new Tuple<bool, string>(IsQuerySuccess, $"{TableName}表没有符合要求的元素");
+                        }
                         else
                         {
                             //加上这个能让输出美观一些
                             var option = new JsonSerializerOptions { WriteIndented = true };
                             string JsonFormatResult = JsonSerializer.Serialize(RowList, option);
-                            return JsonFormatResult;
+                            return new Tuple<bool, string>(IsQuerySuccess,JsonFormatResult);
                         }
                     }
                     else
                     {
-                        Debug.WriteLine("当前表没有任何列");
-                        return null;
+                        IsQuerySuccess = false;
+                        string ErrorReason = "当前表没有任何列";
+                        Debug.WriteLine(ErrorReason);
+                        return new Tuple<bool, string>(IsQuerySuccess,ErrorReason);
                     }
                 }
 
                 catch (Exception ex)
                 {
+                    IsQuerySuccess = false;
                     Debug.WriteLine(ex.Message);
-                    return ex.Message;
+                    return new Tuple<bool, string>(IsQuerySuccess, ex.Message);
                 }
             }
             else
             {
+                IsQuerySuccess = false;
+                string ErrorReason = "数据库未连接";
                 Debug.WriteLine("查询操作，数据库未连接");
-                return null;
+                return new Tuple<bool, string>(IsQuerySuccess,ErrorReason);
             }
         }
         //更新操作
-        public virtual bool UpdateOperation(string TableName, string UpdateColumn, object UpdateValue, string ConditionColumn, object ConditionValue)
+        public virtual Tuple<bool,string> UpdateOperation(string TableName, string UpdateColumn, object UpdateValue, string ConditionColumn, object ConditionValue)
         {
             if (OracleConnection.State == ConnectionState.Open)
             {
+                string ErrorReason = string.Empty;
                 string update = $"UPDATE {TableName.ToUpper()} SET {UpdateColumn.ToUpper()}= :UpdateValue WHERE {ConditionColumn.ToUpper()}=:ConditionValue";
                 try
                 {
@@ -208,19 +224,20 @@ namespace SQLOperation.PublicAccess.Templates.SQLManager
                         cmd.Parameters.Add(new OracleParameter(":ConditionValue", ConditionValue ?? DBNull.Value));
                         int AffectedRow = cmd.ExecuteNonQuery();
                         Debug.WriteLine($"更新了{AffectedRow}行");
-                        return true;
+                        return new Tuple<bool, string>(true, $"更新了{AffectedRow}行");
                     }
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine($"更新操作，报错为：{ex}");
-                    return false;
+                    ErrorReason = $"更新操作，报错为：{ex.Message}";
+                    Debug.WriteLine(ErrorReason);
+                    return new Tuple<bool, string>(false, ErrorReason);
                 }
             }
             else
             {
                 Debug.WriteLine("更新操作，数据库未连接");
-                return false;
+                return new Tuple<bool, string>(false, "数据库未连接");
             }
         }
 

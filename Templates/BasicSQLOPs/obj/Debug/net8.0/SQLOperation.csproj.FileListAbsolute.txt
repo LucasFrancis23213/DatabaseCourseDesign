@@ -73,3 +73,4 @@ D:\2023Spring\DatabaseCourseDesign\Templates\BasicSQLOPs\obj\Debug\net8.0\refint
 D:\2023Spring\DatabaseCourseDesign\Templates\BasicSQLOPs\obj\Debug\net8.0\SQLOperation.pdb
 D:\2023Spring\DatabaseCourseDesign\Templates\BasicSQLOPs\obj\Debug\net8.0\SQLOperation.genruntimeconfig.cache
 D:\2023Spring\DatabaseCourseDesign\Templates\BasicSQLOPs\obj\Debug\net8.0\ref\SQLOperation.dll
+D:\2023Spring\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\Newtonsoft.Json.dll
