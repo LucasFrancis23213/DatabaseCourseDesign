@@ -61,6 +61,25 @@ const routes: RouteRecordRaw[] = [
     },
     component: () => import('@/pages/Exp404.vue'),
   },
+  // CommunityFeature test
+  {
+    path: '/QandAList',
+    name: 'QList',
+    props: true,
+    meta:{
+
+    },
+    component: () => import('@/pages/CommunityFeature/Q&Alist.vue'),
+  },
+  {
+    path: '/AnsList',
+    name: 'AList',
+    props: true,
+    meta:{
+
+    },
+    component: () => import('@/pages/CommunityFeature/Anslist.vue'),
+  }
 ];
 
 export default routes;
