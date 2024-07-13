@@ -1,6 +1,4 @@
-
-//创建一个webApplicationBuilder实例，负责设置应用的配置、服务与请求管道
-var builder = WebApplication.CreateBuilder(args);
+锘縱ar builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
@@ -9,7 +7,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//构建实例化应用，可以理解为这个实例代表整个应用程序接收http请求
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -25,5 +22,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-//运行程序，并监听http请求
 app.Run();
