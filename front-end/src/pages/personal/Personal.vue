@@ -21,8 +21,8 @@
         <div class="info flex items-center">
           <img class="w-20 rounded-lg" src="@/assets/avatar/face-1.jpg" />
           <div class="flex flex-col justify-around ml-4">
-            <span class="text-title text-xl font-bold">Sarah Jacob</span>
-            <span class="text-subtext font-semibold">CEO / Co-Founder</span>
+            <span class="text-title text-xl font-bold">用户名</span>
+            <span class="text-subtext font-semibold">ID信息</span>
           </div>
         </div>
         <a-radio-group v-model:value="select">

@@ -38,6 +38,14 @@ const routes: RouteRecordRaw[] = [
         },
         component: () => import('@/pages/home'),
       },
+      {
+        path: '/signup',
+        name: '注册',
+        meta: {
+          view: 'blank',
+        },
+        component: () => import('@/pages/signUp'),
+      },
     ],
   },
   {
