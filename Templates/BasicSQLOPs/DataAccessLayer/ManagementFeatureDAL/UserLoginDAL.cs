@@ -15,7 +15,7 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
 
         public UserLoginDAL() 
         {
-            conn = new Connection(Uid, Password, DataSource);
+            conn = new Connection(Uid, Password, DataSource); 
             BasicSQLOps = new BasicSQLOps(conn);
             OracleConnection = conn.GetOracleConnection();
         }
@@ -30,7 +30,7 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
                 }
             
                 Tuple<bool, string> QueryResult = BasicSQLOps.QueryOperation("Users", "User_Name", UserName);
-                return QueryResult; 
+                return QueryResult;
             }
             catch (Exception ex)
             {

@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.130" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,7 +23,6 @@
     <Folder Include="PublicAccess\InterfaceManager\ManagementFeatureInterface\" />
     <Folder Include="PublicAccess\Utilities\BasicFeatureUtil\" />
     <Folder Include="PublicAccess\Utilities\CommunityFeatureUtil\" />
-    <Folder Include="PublicAccess\Utilities\ManagementFeatureUtil\" />
     <Folder Include="ServiceLayer\BasicFeatureSL\" />
     <Folder Include="ServiceLayer\CommunityFeatureSL\" />
     <Folder Include="ServiceLayer\ManagementFeatureSL\" />

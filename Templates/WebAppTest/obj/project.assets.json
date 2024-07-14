@@ -359,7 +359,8 @@
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
           "Newtonsoft.Json": "13.0.3",
-          "Oracle.ManagedDataAccess.Core": "3.21.130"
+          "Oracle.ManagedDataAccess.Core": "3.21.130",
+          "Swashbuckle.AspNetCore": "6.5.0"
         },
         "compile": {
           "bin/placeholder/SQLOperation.dll": {}

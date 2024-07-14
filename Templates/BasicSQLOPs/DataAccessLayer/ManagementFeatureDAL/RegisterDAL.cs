@@ -1,6 +1,7 @@
 ﻿using Oracle.ManagedDataAccess.Client;
 using System.Data;
 using SQLOperation.PublicAccess.Templates.SQLManager;
+using System.Diagnostics;
 
 namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
 {
@@ -8,6 +9,7 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
     {
         private Connection conn;
         private OracleConnection OracleConnection;
+        private BasicSQLOps BasicSQLOps;
         private static readonly string Uid = "ADMIN";
         private static readonly string Password = "123456";
         private static readonly string DataSource = "121.36.200.128:1521/ORCL";
@@ -16,13 +18,14 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
         {
             conn = new Connection(Uid, Password, DataSource);
             OracleConnection = conn.GetOracleConnection();
+            BasicSQLOps = new BasicSQLOps(conn);
         }
 
-        public Tuple<bool, string> InsertUser(string UserName, string Password, string Contact, string Status = "false")
+        public Tuple<bool, string> InsertUser(string UserName, string Password, string Contact)
         {
             try
             {
-                string query = "INSERT INTO Users (User_Name, Password, Contact, Status) VALUES (@UserName, @Password, @Contact, @Status)";
+                /*string query = "INSERT INTO Users (User_Name, Password, Contact, Status) VALUES (@UserName, @Password, @Contact, @Status)";
                 using OracleCommand command = new OracleCommand(query, OracleConnection);
 
                 command.Parameters.Add(new OracleParameter("UserName", UserName));
@@ -42,8 +45,15 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
                 }
                 else
                 {
+                    Debug.WriteLine("this is called\n");
                     return new Tuple<bool, string>(true, string.Empty);
-                }
+                }*/
+
+                List<string> ColumnNames = new List<string> { "User_Name", "Password_", "Contact"};
+                List<object> Values = new List<object> { UserName, Password, Contact };
+
+                Tuple<bool, string> QueryResult = BasicSQLOps.InsertOperation("Users", ColumnNames, Values);
+                return QueryResult;
             }
             catch (Exception ex)
             {

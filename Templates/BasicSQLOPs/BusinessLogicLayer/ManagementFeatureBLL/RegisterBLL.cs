@@ -23,7 +23,7 @@ namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
                 return new Tuple<bool, string>(false, "User details are incomplete");
             }
 
-            var result = RegisterDAL.InsertUser(user.User_Name, user.Password, user.Contact, user.Status);
+            var result = RegisterDAL.InsertUser(user.User_Name, user.Password, user.Contact);
 
             return result;
         }

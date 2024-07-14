@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using SQLOperation.BusinessLogicLayer.ManagementFeatureBLL;
 using SQLOperation.PublicAccess.Utilities;
+using System.Text.Json;
+using SQLOperation.PublicAccess.Utilities.ManagementFeatureUtil;
 
 namespace WebAppTest.APILayer.ManagementFeatureAPI
 {
@@ -15,17 +17,17 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
         }
 
         [HttpPost]
-        public IActionResult InsertUser([FromBody] dynamic user)
+        public IActionResult InsertUser([FromBody] RegisterUtil user)
         {
-            if (user == null || user.UserName == null || user.Password == null || user.Contact == null)
+            if (user == null || string.IsNullOrEmpty(user.User_Name) || string.IsNullOrEmpty(user.Password) || string.IsNullOrEmpty(user.Contact))
             {
                 return BadRequest("User data is incomplete");
             }
 
-            // Convert dynamic object to Users object
+            // Convert UserDto object to Users object
             var userObj = new Users
             {
-                User_Name = user.UserName,
+                User_Name = user.User_Name,
                 Password = user.Password,
                 Contact = user.Contact,
             };
@@ -41,5 +43,6 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
                 return BadRequest(result.Item2);
             }
         }
+
     }
 }
