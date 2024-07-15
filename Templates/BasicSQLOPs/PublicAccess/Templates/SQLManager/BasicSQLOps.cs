@@ -104,7 +104,7 @@ namespace SQLOperation.PublicAccess.Templates.SQLManager
                         cmd.Parameters.Add(new OracleParameter("Value", Value ?? DBNull.Value));
                         int AffectedRow = cmd.ExecuteNonQuery();
                         Debug.WriteLine($"共{AffectedRow}行被删除");
-                        return new Tuple<bool, string>(true,ErrorReason);
+                        return new Tuple<bool, string>(true,AffectedRow.ToString());
                     }
                     catch (Exception ex)
                     {

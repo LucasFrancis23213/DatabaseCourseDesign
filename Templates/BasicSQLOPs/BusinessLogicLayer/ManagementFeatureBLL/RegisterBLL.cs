@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SQLOperation.DataAccessLayer.ManagementFeatureDAL;
+﻿using SQLOperation.DataAccessLayer.ManagementFeatureDAL;
 using SQLOperation.PublicAccess.Utilities;
 
 namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
 {
     public class RegisterBLL
     {
-        private RegisterDAL RegisterDAL;
+        private UserOperatorDAL UserOperatorDAL;
         public RegisterBLL() 
         {
-            RegisterDAL = new RegisterDAL();
+            UserOperatorDAL = new UserOperatorDAL();
         }
 
         public Tuple<bool, string> InsertUser(Users user)
@@ -23,7 +18,7 @@ namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
                 return new Tuple<bool, string>(false, "User details are incomplete");
             }
 
-            var result = RegisterDAL.InsertUser(user.User_Name, user.Password, user.Contact);
+            var result = UserOperatorDAL.InsertUser(user.User_Name, user.Password, user.Contact);
 
             return result;
         }

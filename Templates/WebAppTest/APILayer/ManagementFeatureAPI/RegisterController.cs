@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SQLOperation.BusinessLogicLayer.ManagementFeatureBLL;
 using SQLOperation.PublicAccess.Utilities;
-using System.Text.Json;
 using SQLOperation.PublicAccess.Utilities.ManagementFeatureUtil;
 
 namespace WebAppTest.APILayer.ManagementFeatureAPI

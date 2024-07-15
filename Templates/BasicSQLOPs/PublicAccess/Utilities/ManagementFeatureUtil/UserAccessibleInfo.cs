@@ -9,7 +9,7 @@ using SQLOperation.PublicAccess.Utilities;
 
 namespace SQLOperation.PublicAccess.Utilities.ManagementFeatureUtil
 {
-    public class UserInfoAfterLogin
+    public class UserAccessibleInfo
     {
 
         public int UserID { get; set; }

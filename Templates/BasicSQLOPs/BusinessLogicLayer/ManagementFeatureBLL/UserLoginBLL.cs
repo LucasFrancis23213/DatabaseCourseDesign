@@ -6,30 +6,42 @@ namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
 {
     public class UserLoginBLL
     {
-        private readonly UserLoginDAL UserLoginDAL;
+        private UserOperatorDAL UserOperatorDAL;
         public UserLoginBLL()
         {
-            UserLoginDAL = new UserLoginDAL();
+            UserOperatorDAL = new UserOperatorDAL();
         }
 
-        public Tuple<bool, Users, string> GetUserInfoUtil(string UserName)
+        public Tuple<bool, string> CheckPassword(string UserName, string Password)
         {
-            Tuple<bool, string> QueryResult = UserLoginDAL.GetUserInfo(UserName);
+            Tuple<bool, string> QueryResult = UserOperatorDAL.GetUserInfo(UserName);
+            Users Info;
+
+            // get the target user's information
             if (QueryResult.Item1)
             { 
-                List<Users> users = JsonSerializer.Deserialize<List<Users>>(QueryResult.Item2);
+                var users = JsonSerializer.Deserialize<List<Users>>(QueryResult.Item2);
                 if (users != null && users.Count > 0)
                 {
-                    return new Tuple<bool, Users, string>(true, users[0], string.Empty);
+                    Info = users[0];
                 }
                 else
                 {
-                    return new Tuple<bool, Users, string>(false, new Users(), "转换错误");
+                    return new Tuple<bool, string>(false, "无法将Users类型转换为Json类型");
                 }
             }
             else
             {
-                return new Tuple<bool, Users, string>(false, new Users(), QueryResult.Item2);
+                return new Tuple<bool, string>(false, QueryResult.Item2);
+            }
+
+            if (Info.Password == Password)
+            {
+                return new Tuple<bool, string>(true, "用户名与密码匹配，登录成功");
+            }
+            else
+            {
+                return new Tuple<bool, string>(false, "用户名与密码不匹配");
             }
         }
     }
