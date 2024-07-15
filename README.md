@@ -6,6 +6,6 @@
   - ![问答列表样式效果1](images/问答列表样式效果1.png)
   - ![问答列表样式效果2](images/问答列表样式效果2.png)
 - 接口测试：
-  - 所有调用接口的操作，均写在src/pages/CommunityFeature/QandAList.vue的script部分中
+  - 所有调用接口的操作，均写在src/pages/CommunityFeature/QandAList.vue的script部分中,在src/pages/CommunityFeature/QandAtype.ts中写了用于测试的item_id、current_user两个变量，测试时，可能要修改
   - yarn dev命令后在本地打开网页后，先登录(admin,888888),然后直接将网址的/workplace修改为/QandAList,即跳转到页面
 - 待完成工作：将QandAList页面组件化，删除QandAList页面，将其拆分为多个组件置入component文件夹中，后续用于合成页面。
