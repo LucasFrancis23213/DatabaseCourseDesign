@@ -90,9 +90,13 @@
       emit('success', form);
     })
     .catch(error => {
-      message.error("注册失败，用户名已存在。");
+      if (error.response.status === 500) {
+        message.error("注册失败，用户名已存在。");
+      }else{
+        message.error(error.message);
+        console.error("Registration error:", error);
+      }
       emit('failure', error.response.data, form);
-      console.error("Registration error:", error);
     })
     .finally(() => {
       loading.value = false;
