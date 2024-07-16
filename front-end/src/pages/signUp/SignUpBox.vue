@@ -35,7 +35,6 @@
               class="login-input h-[40px]"
             />
           </a-form-item>
-          <form>
           <div class="terms">
             <label>
               <input type="checkbox" id="agree" name="agree" required>
@@ -47,56 +46,64 @@
           </div>
           <a-divider></a-divider>
           <a-button htmlType="submit" class="h-[40px] w-full" type="primary" :loading="loading"> 注册 </a-button>
-        </form>
         </a-form>
       </div>
     </ThemeProvider>
   </template>
   <script lang="ts" setup>
-    import { reactive, ref } from 'vue';
-    import { useRouter } from 'vue-router';
-    import { useAccountStore } from '@/store/ManagementFeature/account';
-    import { ThemeProvider } from 'stepin';
-    import { CloseCircleOutlined } from '@ant-design/icons-vue'; // 导入图标组件
-  
-    export interface SignUpFormProps {
-      username: string;
-      password: string;
-      contact: string;
-    }
-    const router = useRouter();
-    const loading = ref(false);
-  
-    const form = reactive({
-      username: undefined,
-      password: undefined,
-      contact: undefined,
+  import { reactive, ref } from 'vue';
+  import { useRouter } from 'vue-router';
+  import axios from 'axios';  // 引入 axios
+  import { ThemeProvider } from 'stepin';
+  import { CloseCircleOutlined } from '@ant-design/icons-vue';
+  import { message } from 'ant-design-vue';
+
+  interface SignUpFormProps {
+    username: string;
+    password: string;
+    contact: string;
+  }
+
+  const router = useRouter();
+  const loading = ref(false);
+
+  const form = reactive<SignUpFormProps>({
+    username: '',
+    password: '',
+    contact: ''
+  });
+
+  const emit = defineEmits<{
+    (e: 'success', fields: SignUpFormProps): void;
+    (e: 'failure', reason: string, fields: SignUpFormProps): void;
+  }>();
+
+  function signUp() {
+    loading.value = true;
+    axios.post('https://localhost:44343/api/Register', {
+      User_Name: form.username,
+      Password: form.password,
+      Contact: form.contact
+    })
+    .then(response => {
+      message.success("注册成功！即将跳转回登录界面...");
+      emit('success', form);
+    })
+    .catch(error => {
+      message.error("注册失败，用户名已存在。");
+      emit('failure', error.response.data, form);
+      console.error("Registration error:", error);
+    })
+    .finally(() => {
+      loading.value = false;
     });
-  
-    const emit = defineEmits<{
-      (e: 'success', fields: SignUpFormProps): void;
-      (e: 'failure', reason: string, fields: SignUpFormProps): void;
-    }>();
-  
-    const accountStore = useAccountStore();
-  
-    function signUp(params: SignUpFormProps) {
-      loading.value = true;
-      accountStore
-        .signUp(params.username, params.password, params.contact)
-        .then((res) => {
-          emit('success', params);
-        })
-        .catch((e) => {
-          emit('failure', e.message, params);
-        })
-        .finally(() => (loading.value = false));
-    }
-    // 定义关闭登录界面的方法
-    function closeLogin() {
-      router.push('/');
-    }
-  </script>
+  }
+
+  function closeLogin() {
+    router.push('/');
+  }
+</script>
+
   <style scoped lang="less">
     .login-box {
       position: relative; /* 确保可以绝对定位关闭按钮 */

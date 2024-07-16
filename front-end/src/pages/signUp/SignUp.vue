@@ -9,7 +9,7 @@
 
   const router = useRouter();
   function onSignUpSuccess() {
-    router.push('/home');
+    router.push('/login');
   }
 </script>
 <style scoped lang="less">

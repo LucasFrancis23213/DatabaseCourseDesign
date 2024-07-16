@@ -1,12 +1,3 @@
-<script lang="ts" setup>
-  import { ref } from 'vue';
-  import Conversation from './Conversation.vue';
-  import PlatformSetting from './PlatformSetting.vue';
-  import ProfileInfo from './ProfileInfo.vue';
-  import Projects from './Projects.vue';
-
-  const select = ref('overview');
-</script>
 <template>
   <div class="personal">
     <div class="banner w-full rounded-xl p-base items-baseline">
@@ -21,8 +12,8 @@
         <div class="info flex items-center">
           <img class="w-20 rounded-lg" src="@/assets/avatar/face-1.jpg" />
           <div class="flex flex-col justify-around ml-4">
-            <span class="text-title text-xl font-bold">Sarah Jacob</span>
-            <span class="text-subtext font-semibold">CEO / Co-Founder</span>
+            <span class="text-title text-xl font-bold">{{ userInfo.username }}</span>
+            <span class="text-subtext font-semibold">ID: {{ userInfo.userId }}</span>
           </div>
         </div>
         <a-radio-group v-model:value="select">
@@ -40,7 +31,53 @@
     <a-divider class="my-10" />
     <Projects class="mt-lg" />
   </div>
+  <a-button @click="deleteUser()">注销</a-button>
 </template>
+<script lang="ts" setup>
+import { ref,computed,onMounted } from 'vue';
+import { useAccountStore } from '@/store/account'; // 确保正确导入你的 store
+import Conversation from './Conversation.vue';
+import PlatformSetting from './PlatformSetting.vue';
+import ProfileInfo from './ProfileInfo.vue';
+import Projects from './Projects.vue';
+import { Modal } from 'ant-design-vue';
+import { useRouter } from 'vue-router';
+
+const select = ref('overview');
+const accountStore = useAccountStore();
+const router = useRouter();
+
+// 当组件挂载完成后，从 Pinia store 加载用户信息
+onMounted(async () => {
+  if (!!accountStore.account.userName) { 
+    await accountStore.profile();
+  }
+});
+
+// 访问 userInfo 数据
+const userInfo = computed(() => ({
+  username: accountStore.account.userName,
+  userId: accountStore.account.userId
+}));
+
+const deleteUser = () => {
+      Modal.confirm({
+        title: '确认注销账号',
+        content: `是否注销账号：${accountStore.account.userName}?`,
+        okText: '确认',
+        cancelText: '注销', 
+        onOk() {
+          accountStore.deleteUser();
+          router.push('/home');
+        },
+        onCancel() {
+          console.log('Cancel delete operation');
+        }
+      });
+    };
+</script>
+
+
 <style lang="less" scoped>
   .personal {
     .banner {
