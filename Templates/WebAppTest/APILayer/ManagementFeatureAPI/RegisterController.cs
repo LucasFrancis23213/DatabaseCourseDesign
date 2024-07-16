@@ -39,6 +39,9 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
             }
             else
             {
+                if (result.Item2.Contains("ORA-00001"))
+                    return StatusCode(500, result.Item2);
+
                 return BadRequest(result.Item2);
             }
         }
