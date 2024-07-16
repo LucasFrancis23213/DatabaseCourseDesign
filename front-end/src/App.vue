@@ -27,7 +27,6 @@
       </stepin-view>
     </ThemeProvider>
   </a-config-provider>
-  <login-modal :unless="['/login']" />
 </template>
 
 <script lang="ts" setup>
@@ -37,7 +36,6 @@
   import avatar from '@/assets/avatar.png';
   import { PageFooter, HeaderActions } from '@/components/layout';
   import Setting from './components/setting';
-  import { LoginModal } from '@/pages/login';
   import { configTheme, themeList } from '@/theme';
   import { ThemeProvider } from 'stepin';
   import { computed } from 'vue';
@@ -47,7 +45,7 @@
   // 获取个人信息
   profile().then((response) => {
     const { account } = response;
-    user.name = account.username;
+    user.name = account.userName;
     // user.avatar = account.avatar;
   });
 
@@ -63,14 +61,14 @@
     name: 'admin',
     avatar: avatar,
     menuList: [
-      { title: '个人中心', key: 'personal', icon: 'UserOutlined', onClick: () => router.push('/personal') },
+      { title: '个人中心', key: 'personal', icon: 'UserOutlined', onClick: () => router.push('./Personal') },
       { title: '设置', key: 'setting', icon: 'SettingOutlined', onClick: () => (showSetting.value = true) },
       { type: 'divider' },
       {
         title: '退出登录',
         key: 'logout',
         icon: 'LogoutOutlined',
-        onClick: () => logout().then(() => router.push('/login')),
+        onClick: () => logout().then(() => router.push('/home')),
       },
     ],
   });

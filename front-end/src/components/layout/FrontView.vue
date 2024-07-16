@@ -93,7 +93,7 @@
               to="/login"
               class="h-[46px] border-transparent hover:text-text hover:border-transparent text-lg text-text"
             >
-              <LogoutOutlined class="mr-xs" />
+              <LoginOutlined class="mr-xs" />
               Sign In
             </router-link>
              <!--此处删除了get started按钮-->

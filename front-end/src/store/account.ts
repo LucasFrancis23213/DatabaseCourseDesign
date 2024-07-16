@@ -1,9 +1,7 @@
 import { defineStore } from 'pinia';
 import http from './http';
-import { Response } from '@/types';
-import { useMenuStore } from './menu';
-import { useAuthStore } from '@/plugins';
 import { useLoadingStore } from './loading';
+import axios from 'axios';
 
 export interface Profile {
   account: Account;
@@ -11,38 +9,53 @@ export interface Profile {
   role: string;
 }
 export interface Account {
-  username: string;
-  avatar: string;
-  gender: number;
+  userName: string;
+  userId:string;
+  contact:string;
 }
-
 export type TokenResult = {
   token: string;
   expires: number;
 };
+
 export const useAccountStore = defineStore('account', {
-  state() {
-    return {
-      account: {} as Account,
-      permissions: [] as string[],
-      role: '',
-      logged: true,
-    };
-  },
+  state: () => ({
+    account: {
+      userName: '',
+      userId: '',
+      contact: '',
+    } as Account,
+    permissions: [],
+    role: '',
+    logged: true,
+  }),
   actions: {
-    async login(username: string, password: string) {
-      return http
-        .request<TokenResult, Response<TokenResult>>('/login', 'post_json', { username, password })
-        .then(async (response) => {
-          if (response.code === 0) {
-            this.logged = true;
-            http.setAuthorization(`Bearer ${response.data.token}`, new Date(response.data.expires));
-            await useMenuStore().getMenuList();
-            return response.data;
+    async login(username, password) {
+      this.username = username;
+      const queryParams = new URLSearchParams({ UserName: username, Password: password }).toString();
+      try {
+        const response = await axios.get(`https://localhost:44343/api/CheckPassword?${queryParams}`);
+        if (response.status === 200) {
+          this.logged = true;
+          this.account.userName = username;
+          http.setAuthorization(`Bearer ${response.data.token}`, new Date(response.data.expires));
+          return { success: true, message: "登录成功！" };
+        } 
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status === 401) {
+            return { success: false, message: "登录失败：密码错误" };
+          } else if (error.response.status === 404) {
+            return { success: false, message: "登录失败：用户名不存在，请先注册" };
           } else {
-            return Promise.reject(response);
+            return { success: false, message: `登录失败：${error.response.statusText}` };
           }
-        });
+        } else if (error.request) {
+          return { success: false, message: "登录失败：服务器无响应" };
+        } else {
+          return { success: false, message: `登录失败：${error.message}` };
+        }
+      }
     },
     async logout() {
       return new Promise<boolean>((resolve) => {
@@ -55,25 +68,42 @@ export const useAccountStore = defineStore('account', {
     async profile() {
       const { setAuthLoading } = useLoadingStore();
       setAuthLoading(true);
-      return http
-        .request<Account, Response<Profile>>('/account', 'get')
-        .then((response) => {
-          if (response.code === 0) {
-            const { setAuthorities } = useAuthStore();
-            const { account, permissions, role } = response.data;
-            this.account = account;
-            this.permissions = permissions;
-            this.role = role;
-            setAuthorities(permissions);
-            return response.data;
-          } else {
-            return Promise.reject(response);
-          }
-        })
-        .finally(() => setAuthLoading(false));
+      if(!this.account.userName){
+        return { account: this.account };
+      }
+      else{
+        try {
+          const response = await axios.get(`https://localhost:44343/api/GetUserInfo?UserName=${this.account.userName}`);
+          if (response.data) {
+            this.account.userName = response.data.userName;
+            this.account.userId = response.data.userID;
+            this.account.contact = response.data.contact;
+            return { success: true, message: "用户信息加载成功", account: this.account };
+          } 
+        } catch (error) {
+          console.error('Failed to fetch user info:', error);
+          return { account: this.account };
+        } finally {
+          setAuthLoading(false); // 确保加载状态在操作完成后被重置
+        }
+      }
     },
     setLogged(logged: boolean) {
       this.logged = logged;
     },
+  async deleteUser() {
+    if(!!this.account.userName){
+      try {
+        const response = await axios.get(`https://localhost:44343/api/DeleteUser?UserName=${this.account.userName}`);
+        this.account.userName = '';
+        this.account.userId = '';
+        this.account.contact = '';
+        await this.logout();
+      } catch (error) {
+        console.error('Failed to delete user:', error);
+      } 
+    }
   },
+},
+    persist: true,
 });

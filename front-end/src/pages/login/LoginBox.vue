@@ -16,7 +16,7 @@
             <a-input
               v-model:value="form.username"
               autocomplete="new-username"
-              placeholder="请输入用户名: admin"
+              placeholder="请输入用户名:"
               class="login-input h-[40px]"
             />
           </a-form-item>
@@ -24,7 +24,7 @@
             <a-input
               v-model:value="form.password"
               autocomplete="new-password"
-              placeholder="请输入登录密码: 888888"
+              placeholder="请输入登录密码:"
               class="login-input h-[40px]"
               type="password"
             />
@@ -50,7 +50,8 @@
     import { useAccountStore } from '@/store';
     import { ThemeProvider } from 'stepin';
     import { CloseCircleOutlined } from '@ant-design/icons-vue'; // 导入图标组件
-  
+    import { message } from 'ant-design-vue';
+
     export interface LoginFormProps {
       username: string;
       password: string;
@@ -70,17 +71,17 @@
   
     const accountStore = useAccountStore();
   
-    function login(params: LoginFormProps) {
+    async function login() {
       loading.value = true;
-      accountStore
-        .login(params.username, params.password)
-        .then((res) => {
-          emit('success', params);
-        })
-        .catch((e) => {
-          emit('failure', e.message, params);
-        })
-        .finally(() => (loading.value = false));
+      const result = await accountStore.login(form.username, form.password);
+      if (result.success) {
+        message.success(result.message);
+        emit('success', form);
+      } else {
+        message.error(result.message);
+        emit('failure', result.message, form);
+      }
+      loading.value = false;
     }
     // 定义关闭登录界面的方法
     function closeLogin() {
