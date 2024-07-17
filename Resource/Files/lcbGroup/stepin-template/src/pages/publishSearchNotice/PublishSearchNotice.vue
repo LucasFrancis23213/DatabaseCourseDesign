@@ -24,7 +24,8 @@
     formModel.value?.validateFields()
       .then(async ()=>{
         form.value.itemCategory = form.value.itemCategory[0]
-        await axios.post('api/addNewPublish', form.value)
+        const jsonFormData = JSON.stringify(form.value)
+        await axios.post('api/addNewPublish', jsonFormData)
         getPublishs()
         setTimeout(() => {
           message.success('提交成功！');
