@@ -77,22 +77,22 @@ Mock.mock('api/addNewPublish', 'post', function(options){
 })
 const arr2 = [
   {
-    itemCategory: '手表',
-    itemDescribe: '劳力士',
-    findPosition: '公园',
-    findTime: '2024-07-01 15:30:48',
-    itemTags:['贵重物品', '私人用品', '医疗用品', '66666666'],
-    itemImage: '/src/assets/avatar/face-2.jpg',
-    itemName: 'Li Zhi',
+    "itemCategory": '手表',
+    "itemDescribe": '劳力士',
+    "findPosition": '公园',
+    "findTime": '2024-07-01 15:30:48',
+    "itemTags":['贵重物品', '私人用品', '医疗用品', '66666666'],
+    "itemImage": '/src/assets/avatar/face-2.jpg',
+    "itemName": 'Li Zhi',
   },
   {
-    itemName: 'Li Zhi',
-    itemCategory: '手表',
-    itemDescribe: '劳力士',
-    findPosition: '公园',
-    findTime: '2024-07-01 15:30:48',
-    itemTags:['贵重物品'],
-    itemImage: '/src/assets/avatar/face-1.jpg',
+    "itemName": 'Li Zhi',
+    "itemCategory": '手表',
+    "itemDescribe": '劳力士',
+    "findPosition": '公园',
+    "findTime": '2024-07-01 15:30:48',
+    "itemTags":['贵重物品'],
+    "itemImage": '/src/assets/avatar/face-1.jpg',
   },
 ]
 Mock.mock('api/finds', 'get', () => arr2)
