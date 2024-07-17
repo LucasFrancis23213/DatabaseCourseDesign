@@ -21,7 +21,8 @@
     formModel.value?.validateFields()
       .then(async ()=>{
         form.value.itemCategory = form.value.itemCategory[0]
-        await axios.post('api/addNewFind', form.value)
+        const jsonFormData = JSON.stringify(form.value)
+        await axios.post('api/addNewFind', jsonFormData)
         getFinds()
         setTimeout(() => {
           message.success('提交成功！');
