@@ -161,11 +161,11 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
         }
 
         //外部接口函数
-        public Tuple<bool, string> PublishLostItem(List<Lost_Item> item1, List<Item_Images> item2, List<Reward_Offers> item3, bool reward_or_not，List<object> reviewLostQueue)
+        public Tuple<bool, string> PublishLostItem(List<Lost_Item> lostItems, List<Item_Images> itemImages, List<Reward_Offers> rewardOffers, bool reward_or_not)
         {
             int n = 0;
             try{
-                foreach (Lost_Item item in item1) {
+                foreach (Lost_Item item in lostItems) {
                 //先插入基础表单
                 var basicExcel = PublishLostItemBasic(item);
                 bool isSuccess1 = basicExcel.Item1; // 获取是否成功插入
@@ -173,7 +173,7 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                 if (isSuccess1)
                 {
                     //基础表单插入成功，插入对应图片
-                    var insertImage = InsertImage(item2[n]);
+                    var insertImage = InsertImage(itemImages[n]);
                     bool isSuccess2 = insertImage.Item1; // 获取是否成功插入
                     string errorReason2 = "图片插入数据库过程中"+insertImage.Item2; // 获取出错误原因
                     if (isSuccess2)
@@ -181,29 +181,17 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                         //图片插入成功，插入是否悬赏
                         if(!reward_or_not)
                         {
-                          // 创建返回的审核列表
-                          var newreviewList = new List<object> { item, item2[n], item3[n] };
-                          // 将审核列表转换为字符串格式
-                          string reviewListString = string.Join(", ", newreviewList.Select(i => i.ToString()));
-                          //加入到审核列表
-                          reviewLostQueue.Add(reviewListString);
                           n++;
                           continue; 
                         }
                         //有悬赏
                         else
                         {
-                            var reward = HaveReward(item3[n]);
+                            var reward = HaveReward(rewardOffers[n]);
                             bool isSuccess3 = reward.Item1; // 获取是否成功插入
                             string errorReason3 = "悬赏设置过程中"+reward.Item2; // 获取出错误原因
                             if (isSuccess3)
                             {
-                               // 创建返回的审核列表
-                               var newreviewList = new List<object> { item, item2[n], item3[n] };
-                               // 将审核列表转换为字符串格式
-                               string reviewListString = string.Join(", ", newreviewList.Select(i => i.ToString()));
-                               //加入到审核列表
-                                reviewLostQueue.Add(reviewListString);
                                 n++;
                                 continue;
                             }
@@ -230,11 +218,11 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
             }
         }
 
-        public Tuple<bool, string> PublishFoundItem(List<Found_Item> item1, List<Item_Images> item2, List<object> reviewFoundQueue)
+        public Tuple<bool, string> PublishFoundItem(List<Found_Item> foundItems, List<Item_Images> itemimages)
         {
             int n = 0;
             try
-            {foreach (Found_Item item in item1)
+            {foreach (Found_Item item in foundItems)
             {
                 //先插入基础表单
                 var basicExcel = PublistFoundItemBasic(item);
@@ -243,17 +231,11 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                 if (isSuccess1)
                 {
                     //基础表单插入成功，插入对应图片
-                    var insertImage = InsertImage(item2[n]);
+                    var insertImage = InsertImage(itemimages[n]);
                     bool isSuccess2 = insertImage.Item1; // 获取是否成功插入
                     string errorReason2 = "图片插入数据库过程中" + insertImage.Item2; // 获取出错误原因
                     if (isSuccess2)
                     {
-                        // 创建返回的审核列表
-                        var newreviewList = new List<object> { item, item2[n]};
-                        // 将审核列表转换为字符串格式
-                        string reviewListString = string.Join(", ", newreviewList.Select(i => i.ToString()));
-                        //加入到审核列表
-                        reviewFoundQueue.Add(reviewListString);
                         n++;
                         continue;
                     }
