@@ -5,6 +5,7 @@
   import { message } from 'ant-design-vue';
   import axios from 'axios';
   import { onMounted } from 'vue';
+  import dayjs from 'dayjs';
 
   type oneFind = {
     itemName?: string;
@@ -21,6 +22,7 @@
     formModel.value?.validateFields()
       .then(async ()=>{
         form.value.itemCategory = form.value.itemCategory[0]
+        form.value.findTime = dayjs(form.value.findTime).format("YYYY-MM-DD HH:mm:ss")
         const jsonFormData = JSON.stringify(form.value)
         await axios.post('api/addNewFind', jsonFormData)
         getFinds()
