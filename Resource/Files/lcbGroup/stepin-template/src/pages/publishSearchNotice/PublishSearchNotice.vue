@@ -1,10 +1,9 @@
 <script lang="ts" setup>
   import { getBase64 } from '@/utils/file';
-  import { ref } from 'vue';
-  import { FormInstance } from 'ant-design-vue';
-  import { message } from 'ant-design-vue';
+  import { ref, onMounted } from 'vue';
+  import { FormInstance, message } from 'ant-design-vue';
   import axios from 'axios';
-  import { onMounted } from 'vue';
+  import dayjs from 'dayjs'
 
   type onePublish = {
     itemName?: string;
@@ -24,6 +23,8 @@
     formModel.value?.validateFields()
       .then(async ()=>{
         form.value.itemCategory = form.value.itemCategory[0]
+        form.value.lostTime = dayjs(form.value.lostTime).format("YYYY-MM-DD HH:mm:ss")
+        form.value.deadlineTime = dayjs(form.value.deadlineTime).format("YYYY-MM-DD HH:mm:ss")
         const jsonFormData = JSON.stringify(form.value)
         await axios.post('api/addNewPublish', jsonFormData)
         getPublishs()
@@ -182,5 +183,7 @@
         </span>
       </template>
     </template>
+  </a-table>
+</template>
   </a-table>
 </template>
