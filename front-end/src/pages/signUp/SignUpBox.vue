@@ -80,7 +80,7 @@
 
   function signUp() {
     loading.value = true;
-    axios.post('https://localhost:44343/api/Register', {
+    axios.post('https://localhost:7116/api/Register', {
       User_Name: form.username,
       Password: form.password,
       Contact: form.contact

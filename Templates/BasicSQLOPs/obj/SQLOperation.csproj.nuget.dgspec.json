@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "D:\\desktop\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj": {}
+    "G:\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj": {}
   },
   "projects": {
-    "D:\\desktop\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj": {
+    "G:\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\desktop\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
+        "projectUniqueName": "G:\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
         "projectName": "SQLOperation",
-        "projectPath": "D:\\desktop\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
-        "packagesPath": "C:\\Users\\zyn\\.nuget\\packages\\",
-        "outputPath": "D:\\desktop\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\obj\\",
+        "projectPath": "G:\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
+        "packagesPath": "C:\\Users\\yxh\\.nuget\\packages\\",
+        "outputPath": "G:\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\zyn\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\yxh\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,7 +26,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -35,11 +38,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -75,7 +73,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

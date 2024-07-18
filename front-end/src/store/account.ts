@@ -34,7 +34,7 @@ export const useAccountStore = defineStore('account', {
       this.username = username;
       const queryParams = new URLSearchParams({ UserName: username, Password: password }).toString();
       try {
-        const response = await axios.get(`https://localhost:44343/api/CheckPassword?${queryParams}`);
+        const response = await axios.get(`https://localhost:7116/api/CheckPassword?${queryParams}`);
         if (response.status === 200) {
           this.logged = true;
           this.account.userName = username;
@@ -44,7 +44,7 @@ export const useAccountStore = defineStore('account', {
       } catch (error) {
         if (error.response) {
           if (error.response.status === 401) {
-            return { success: false, message: "登录失败：密码错误" };
+            return { success: false, message: "登录失败：密码错误" }; 
           } else if (error.response.status === 404) {
             return { success: false, message: "登录失败：用户名不存在，请先注册" };
           } else {
@@ -73,7 +73,7 @@ export const useAccountStore = defineStore('account', {
       }
       else{
         try {
-          const response = await axios.get(`https://localhost:44343/api/GetUserInfo?UserName=${this.account.userName}`);
+          const response = await axios.get(`https://localhost:7116/api/GetUserInfo?UserName=${this.account.userName}`);
           if (response.data) {
             this.account.userName = response.data.userName;
             this.account.userId = response.data.userID;
@@ -94,7 +94,7 @@ export const useAccountStore = defineStore('account', {
   async deleteUser() {
     if(!!this.account.userName){
       try {
-        const response = await axios.get(`https://localhost:44343/api/DeleteUser?UserName=${this.account.userName}`);
+        const response = await axios.get(`https://localhost:7116/api/DeleteUser?UserName=${this.account.userName}`);
         this.account.userName = '';
         this.account.userId = '';
         this.account.contact = '';
