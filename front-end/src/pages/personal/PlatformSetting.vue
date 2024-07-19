@@ -1,40 +1,53 @@
 <script lang="ts" setup>
-  import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 
-  const groups = reactive([
-    {
-      title: 'ACCOUNT',
-      children: [
-        { checked: false, label: 'Email me when someone follows me' },
-        { checked: true, label: 'Email me when someone answers me' },
-        { checked: true, label: 'Email me when someone mentions me' },
-      ],
-    },
-    {
-      title: 'APPLICATION',
-      children: [
-        { checked: true, label: 'New launches and projects' },
-        { checked: false, label: 'Monthly product updates' },
-        { checked: true, label: 'Subscribe to newsletter' },
-      ],
-    },
-  ]);
+const groups = reactive([
+  {
+    title: 'ACCOUNT',
+    children: [
+      { checked: false, label: 'Email me when someone follows me' },
+      { checked: true, label: 'Email me when someone answers me' },
+      { checked: true, label: 'Email me when someone mentions me' },
+    ],
+  },
+  {
+    title: 'APPLICATION',
+    children: [
+      { checked: true, label: 'New launches and projects' },
+      { checked: false, label: 'Monthly product updates' },
+      { checked: true, label: 'Subscribe to newsletter' },
+    ],
+  },
+]);
+
+// Reactive state for real name and ID card
+const realName = ref('');
+const idCard = ref('');
+
+const submitAuthentication = () => {
+  // Submit logic here
+  console.log('Real Name:', realName.value);
+  console.log('ID Card:', idCard.value);
+  alert('Submitted!');
+};
 </script>
+
 <template>
   <a-card
     :bordered="false"
-    title="Platform Settings"
+    title="PlatformSetting"
     class="shadow-lg platform-setting rounded-xl"
   >
-    <!--留白部分-->
-    <!--<div class="group" v-for="(group, i) in groups">
+  <!--
+    <div class="group" v-for="(group, index) in groups" :key="index">
       <div class="text-xs font-medium text-subtext mb-6">
         {{ group.title }}
       </div>
       <div class="group-list">
         <div
           class="group-list-item flex items-center"
-          v-for="item in group.children"
+          v-for="(item, idx) in group.children"
+          :key="idx"
         >
           <a-switch v-model:checked="item.checked" class="mr-2" />
           {{ item.label }}
@@ -44,28 +57,32 @@
     -->
   </a-card>
 </template>
+
 <style lang="less" scoped>
-  .platform-setting {
-    :deep(.ant-card-head) {
-      @apply border-none;
-      .ant-card-head-title {
-        @apply font-semibold;
-      }
+.platform-setting {
+  :deep(.ant-card-head) {
+    @apply border-none;
+    .ant-card-head-title {
+      @apply font-semibold;
     }
-    :deep(.ant-card-body) {
-      @apply pt-2;
+  }
+  :deep(.ant-card-body) {
+    @apply pt-2;
+  }
+  .group {
+    &:not(:first-child) {
+      @apply mt-6;
     }
-    .group {
-      &:not(:first-child) {
-        @apply mt-6;
-      }
-      &-list {
-        &-item {
-          &:not(:first-child) {
-            @apply mt-6;
-          }
+    &-list {
+      &-item {
+        &:not(:first-child) {
+          @apply mt-6;
         }
       }
     }
   }
+  .submit-button {
+    @apply mt-6;
+  }
+}
 </style>

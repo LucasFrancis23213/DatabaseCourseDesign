@@ -31,6 +31,7 @@ const chatList = reactive([
 ])
 </script>
 <template>
+  
   <a-card title="Conversations" class="conversations rounded-xl shadow-lg" :bordered="false">
     <!--
     <div class="chat flex items-center" v-for="chat in chatList">
@@ -45,6 +46,7 @@ const chatList = reactive([
     </div>
     -->
   </a-card>
+
 </template>
 <style lang="less" scoped>
 .conversations {
