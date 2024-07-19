@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "oElqECI+Jvs=",
+  "dgSpecHash": "JtmqOBqoaZk=",
   "success": true,
-  "projectFilePath": "D:\\desktop\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
+  "projectFilePath": "D:\\同济\\大二下\\数据库\\期末大项目\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\zyn\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
     "C:\\Users\\zyn\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",

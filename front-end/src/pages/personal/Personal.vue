@@ -55,6 +55,7 @@ import Conversation from './Conversation.vue';
 import PlatformSetting from './PlatformSetting.vue';
 import ProfileInfo from './ProfileInfo.vue';
 import Projects from './Projects.vue';
+import { Modal } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
 
 const select = ref('overview');
@@ -86,8 +87,19 @@ const submitAuthentication = () => {
 
 // 删除用户方法
 const deleteUser = () => {
-  accountStore.deleteUser();
-  router.push('/home');
+    Modal.confirm({
+      title: '确认注销账号',
+      content: `是否注销账号：${accountStore.account.userName}?`,
+      okText: '确认',
+      cancelText: '注销', 
+      onOk() {
+        accountStore.deleteUser();
+        router.push('/home');
+      },
+      onCancel() {
+        console.log('Cancel delete operation');
+      }
+    });
 };
 </script>
 

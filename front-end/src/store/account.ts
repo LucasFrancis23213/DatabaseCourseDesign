@@ -39,7 +39,7 @@ export const useAccountStore = defineStore('account', {
           this.logged = true;
           this.account.userName = username;
           http.setAuthorization(`Bearer ${response.data.token}`, new Date(response.data.expires));
-          return { success: true, message: "登录成功！" };
+          return { success: true, message: "登录成功！"};
         } 
       } catch (error) {
         if (error.response) {
@@ -62,6 +62,7 @@ export const useAccountStore = defineStore('account', {
         localStorage.removeItem('stepin-menu');
         http.removeAuthorization();
         this.logged = false;
+        this.account.userName='';
         resolve(true);
       });
     },

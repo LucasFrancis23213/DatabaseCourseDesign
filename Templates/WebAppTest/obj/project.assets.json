@@ -1079,11 +1079,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\desktop\\DatabaseCourseDesign\\Templates\\WebAppTest\\WebAppTest.csproj",
+      "projectUniqueName": "D:\\同济\\大二下\\数据库\\期末大项目\\DatabaseCourseDesign\\Templates\\WebAppTest\\WebAppTest.csproj",
       "projectName": "WebAppTest",
-      "projectPath": "D:\\desktop\\DatabaseCourseDesign\\Templates\\WebAppTest\\WebAppTest.csproj",
+      "projectPath": "D:\\同济\\大二下\\数据库\\期末大项目\\DatabaseCourseDesign\\Templates\\WebAppTest\\WebAppTest.csproj",
       "packagesPath": "C:\\Users\\zyn\\.nuget\\packages\\",
-      "outputPath": "D:\\desktop\\DatabaseCourseDesign\\Templates\\WebAppTest\\obj\\",
+      "outputPath": "D:\\同济\\大二下\\数据库\\期末大项目\\DatabaseCourseDesign\\Templates\\WebAppTest\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\zyn\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -1101,8 +1101,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\desktop\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj": {
-              "projectPath": "D:\\desktop\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj"
+            "D:\\同济\\大二下\\数据库\\期末大项目\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj": {
+              "projectPath": "D:\\同济\\大二下\\数据库\\期末大项目\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj"
             }
           }
         }
