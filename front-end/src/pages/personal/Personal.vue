@@ -91,13 +91,14 @@ const deleteUser = () => {
       title: '确认注销账号',
       content: `是否注销账号：${accountStore.account.userName}?`,
       okText: '确认',
-      cancelText: '注销', 
+      cancelText: '取消', 
       onOk() {
         accountStore.deleteUser();
         router.push('/home');
       },
       onCancel() {
         console.log('Cancel delete operation');
+        isModalVisible.value = false;
       }
     });
 };
