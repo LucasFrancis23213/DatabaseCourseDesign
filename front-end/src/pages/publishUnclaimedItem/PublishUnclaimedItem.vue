@@ -21,9 +21,21 @@
     loading.value = true;
     formModel.value?.validateFields()
       .then(async ()=>{
+        if (selectedFile.value) {
+          const formData = new FormData();
+          formData.append('file', selectedFile.value);
+          const res = await axios.post('https://localhost:44343/api/ItemPicUpload/upload?type=Found', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+          form.value.itemImage = res.data.url;
+        }
+        
         form.value.itemCategory = form.value.itemCategory[0]
         form.value.findTime = dayjs(form.value.findTime).format("YYYY-MM-DD HH:mm:ss")
         const jsonFormData = JSON.stringify(form.value)
+        console.log(jsonFormData)
         await axios.post('api/addNewFind', jsonFormData)
         getFinds()
         setTimeout(() => {
@@ -59,11 +71,19 @@
     itemTags : [],
     itemImage : '',
   });
-  async function extractImg(file: Blob, find: oneFind) {
-    await getBase64(file).then((res) => {
-      find.itemImage = res;
-    });
-  }
+  const selectedFile = ref<File | null>(null);
+  const handleFileChange = (file : File) => {
+    selectedFile.value = file;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      form.value.itemImage = e.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  };
+  async function extractImg(file: File) {
+    handleFileChange(file);
+  };
+
   const finds = ref([])
   const getFinds = async () => {
     const res = await axios.get('api/finds')
@@ -99,7 +119,7 @@
       </a-checkbox-group>
     </a-form-item>
       <a-form-item label="物品图片" name="itemImage" has-feedback :rules="[{ required: true, message: '请上传物品图片' }]">
-        <a-upload :show-upload-list="false" :beforeUpload="(file: File) => extractImg(file, form)">
+        <a-upload :show-upload-list="false" :beforeUpload="(file: File) => extractImg(file)">
           <img class="h-8 p-0.5 rounded border border-dashed border-border" v-if="form.itemImage" :src="form.itemImage" />
           <a-button v-else type="dashed">
             <template #icon>
