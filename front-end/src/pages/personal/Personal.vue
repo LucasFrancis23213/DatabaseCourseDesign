@@ -4,7 +4,8 @@
   import PlatformSetting from './PlatformSetting.vue';
   import ProfileInfo from './ProfileInfo.vue';
   import Projects from './Projects.vue';
-
+  import MySearch from './MySearch.vue';
+  import MyFind from './MyFind.vue';
   const select = ref('overview');
 </script>
 <template>
@@ -40,6 +41,10 @@
     <a-divider class="my-10" />
     <Projects class="mt-lg" />
   </div>
+  
+  <MySearch />
+  <MyFind />
+
 </template>
 <style lang="less" scoped>
   .personal {

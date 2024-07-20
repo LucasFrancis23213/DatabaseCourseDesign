@@ -84,6 +84,7 @@
         });
         getPublishs();
         setTimeout(() => {
+          location.reload();
           message.success('提交成功！');
           loading.value = false;
           open.value = false;
