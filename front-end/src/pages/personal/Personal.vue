@@ -15,7 +15,7 @@
           <span class="text-title text-xl font-bold">{{ userInfo.username }}</span>
           <span class="text-subtext font-semibold">ID: {{ userInfo.userId }}</span>
           <!-- 实名认证按钮 -->
-          <a-button @click="isModalVisible = true" type="primary" class="mt-2">实名认证</a-button>
+          <a-button @click="isAuthModalVisible = true" type="primary" class="mt-2">实名认证</a-button>
 </div>
 
         </div>
@@ -34,17 +34,30 @@
     <a-divider class="my-10" />
     <Projects class="mt-lg" />
   </div>
-  <a-button @click="deleteUser()">注销</a-button>
+  <a-button @click="isDeleteModalVisible = true">注销</a-button>
   <!-- 实名认证模态框 -->
   <a-modal
     title="实名认证"
-    v-model:visible="isModalVisible"
+    v-model:visible="isAuthModalVisible"
     @ok="submitAuthentication"
     okText="提交"
     cancelText="取消"
   >
     <a-input placeholder="请输入您的真实姓名" v-model="realName" class="mb-2" />
     <a-input placeholder="请输入您的身份证号码" v-model="idCard" />
+  </a-modal>
+  <!-- 注销模态框 -->
+  <a-modal
+    title="确认注销账号"
+    v-model:visible="isDeleteModalVisible"
+    okText="确认"
+    cancelText="取消"
+    @Ok="deleteUser()" 
+    @cancel="isDeleteModalVisible = false"
+  >
+  <template #default>
+    是否注销账号: {{ accountStore.account.userName }}?
+  </template>
   </a-modal>
 </template>
 
@@ -55,7 +68,6 @@ import Conversation from './Conversation.vue';
 import PlatformSetting from './PlatformSetting.vue';
 import ProfileInfo from './ProfileInfo.vue';
 import Projects from './Projects.vue';
-import { Modal } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
 
 const select = ref('overview');
@@ -63,7 +75,9 @@ const accountStore = useAccountStore();
 const router = useRouter();
 const realName = ref('');
 const idCard = ref('');
-const isModalVisible = ref(false); // 控制模态框显示
+const isAuthModalVisible = ref(false); // 控制实名认证模态框显示
+const isDeleteModalVisible = ref(false); // 控制注销模态框显示
+
 
 // 当组件挂载完成后，从 Pinia store 加载用户信息
 onMounted(async () => {
@@ -82,25 +96,13 @@ const userInfo = computed(() => ({
 const submitAuthentication = () => {
   console.log('Real Name:', realName.value);
   console.log('ID Card:', idCard.value);
-  isModalVisible.value = false; // 关闭模态框
+  isAuthModalVisible.value = false; // 关闭模态框
 };
 
 // 删除用户方法
 const deleteUser = () => {
-    Modal.confirm({
-      title: '确认注销账号',
-      content: `是否注销账号：${accountStore.account.userName}?`,
-      okText: '确认',
-      cancelText: '取消', 
-      onOk() {
-        accountStore.deleteUser();
-        router.push('/home');
-      },
-      onCancel() {
-        console.log('Cancel delete operation');
-        isModalVisible.value = false;
-      }
-    });
+  accountStore.deleteUser();
+  router.push('/home');
 };
 </script>
 
