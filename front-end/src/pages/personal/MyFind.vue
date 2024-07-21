@@ -25,7 +25,7 @@
   <a-table :columns="columns" :dataSource="finds" >
     <template #title>
       <div class="flex justify-between pr-4">
-        <h4>我发现的无主物品</h4>
+        <a-button type="primary"><h4>我发现的无主物品</h4> </a-button>
       </div>
     </template>
     <template #bodyCell="{ column, record }">

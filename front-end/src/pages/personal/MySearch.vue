@@ -49,7 +49,7 @@
   <a-table :columns="columns" :dataSource="publishs" >
     <template #title>
       <div class="flex justify-between pr-4">
-        <h4>我的寻物启事</h4>
+        <a-button type="primary"><h4>我发布的寻物启事</h4> </a-button>
       </div>
     </template>
     <template #bodyCell="{ column, record }">
@@ -83,7 +83,7 @@
         </span>
       </template>
       <template v-else-if="column.dataIndex === 'delete'">
-        <a-button type="primary" danger :loading="iconLoading" @click="deleteOneLine()">
+        <a-button type="primary" danger :loading="iconLoading" @click="deleteOneLine(record.itemId)">
             <DeleteOutlined />
             删除此条
         </a-button>

@@ -3,19 +3,18 @@
 
   const groups = reactive([
     {
-      title: 'ACCOUNT',
+      title: '账户通知',
       children: [
-        { checked: false, label: 'Email me when someone follows me' },
-        { checked: true, label: 'Email me when someone answers me' },
-        { checked: true, label: 'Email me when someone mentions me' },
+        { checked: false, label: '当有人关注我时发送邮件通知' },
+        { checked: true, label: '当有人认领我发布的物品时发送邮件通知' },
+        { checked: true, label: '当有人提到我时发送邮件通知' },
       ],
     },
     {
-      title: 'APPLICATION',
+      title: '应用',
       children: [
-        { checked: true, label: 'New launches and projects' },
-        { checked: false, label: 'Monthly product updates' },
-        { checked: true, label: 'Subscribe to newsletter' },
+        { checked: true, label: '有新的发布时发送通知' },
+        { checked: false, label: '更新时发送通知' },
       ],
     },
   ]);
@@ -23,7 +22,7 @@
 <template>
   <a-card
     :bordered="false"
-    title="Platform Settings"
+    title="平台设置"
     class="shadow-lg platform-setting rounded-xl"
   >
     <div class="group" v-for="(group, i) in groups">

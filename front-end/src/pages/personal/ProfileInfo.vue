@@ -10,19 +10,19 @@ import { reactive, ref } from 'vue';
 
 const profiles = reactive([
   {
-    label: 'Full Name',
+    label: '名称',
     content: 'Li Zhi',
   },
   {
-    label: 'Mobile',
+    label: '联系',
     content: '13678988900',
   },
   {
-    label: 'Email',
+    label: '邮箱',
     content: 'lizhi@firfox.com',
   },
   {
-    label: 'Location',
+    label: '地址',
     content: 'shenzheng.CN',
   },
 ]);
@@ -30,7 +30,7 @@ const profiles = reactive([
 const edit = ref(false)
 </script>
 <template>
-  <a-card title="Profile Information" class="profile-info rounded-xl shadow-lg" :bordered="false">
+  <a-card title="个人简介" class="profile-info rounded-xl shadow-lg" :bordered="false">
     <template #extra>
       <EditFilled @click="edit = true" class="text-subtext hover:text-primary cursor-pointer" />
     </template>
@@ -41,12 +41,11 @@ const edit = ref(false)
       </EditableCell>
     </div>
     <a-divider />
-    <div class="text-title font-medium">Oliver Liam</div>
     <a-descriptions class="profile-list mt-3 font-medium" :column="1">
       <a-descriptions-item :label="item.label" v-for="item in profiles">
         {{ item.content }}
       </a-descriptions-item>
-      <a-descriptions-item label="Contact">
+      <a-descriptions-item label="社交">
         <TwitterOutlined class="text-blue-400" />
         <FacebookOutlined class="text-blue-800" />
         <InstagramOutlined class="text-red-500" />
