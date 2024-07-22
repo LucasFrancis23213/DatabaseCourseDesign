@@ -11,12 +11,6 @@
   const loading = ref<boolean>(false)
   const newSignature = ref<string>("")
 
-  const changeAvatar = () => {
-
-  }
-  const changeName = () => {
-
-  }
   const changeSignature = () => {
     open.value = true
   }
@@ -56,11 +50,7 @@
             <span class="text-subtext font-semibold">{{ personalSignature.signature }}</span>
           </div>
         </div>
-        <a-button-group>
-          <a-button @click="changeSignature">修改个性签名</a-button>
-          <a-button @click="changeAvatar">修改头像</a-button>
-          <a-button @click="changeName">修改名称</a-button>
-        </a-button-group>
+        <a-button @click="changeSignature" type="primary">修改个性签名</a-button>
       </div>
     </div>
     <div class="mt-24 flex justify-evenly">

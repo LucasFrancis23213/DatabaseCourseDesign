@@ -14,3 +14,19 @@ export const usePersonalSignature = defineStore('personalSignature', {
         }
     }
 })
+
+
+export const usePersonalDescription = defineStore('personalDescription', {
+    state: () => {
+        return {
+            description : localStorage.getItem('personalDescription') || '这个人很懒，什么也没留下'
+        }
+    },
+
+    actions: {
+        updateDescription(newDescription: string){
+            this.description = newDescription
+            localStorage.setItem('personalDescription', newDescription)
+        }
+    }
+})
