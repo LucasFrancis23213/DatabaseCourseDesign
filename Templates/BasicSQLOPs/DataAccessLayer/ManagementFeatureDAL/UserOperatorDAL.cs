@@ -1,25 +1,7 @@
-﻿using Oracle.ManagedDataAccess.Client;
-using SQLOperation.PublicAccess.Templates.SQLManager;
-using System.Data;
-
-namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
+﻿namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
 {
-    public class UserOperatorDAL
+    public class UserOperatorDAL : BaseDAL
     {
-        private BasicSQLOps BasicSQLOps;
-        private Connection conn;
-        private OracleConnection OracleConnection;
-        private static readonly string Uid = "ADMIN";
-        private static readonly string Password = "123456";
-        private static readonly string DataSource = "121.36.200.128:1521/ORCL";
-
-        public UserOperatorDAL()
-        {
-            conn = new Connection(Uid, Password, DataSource);
-            BasicSQLOps = new BasicSQLOps(conn);
-            OracleConnection = conn.GetOracleConnection();
-        }
-
         /***********************************************************************
          * 获取用户信息
          * 输入参数: UserName - 用户名
@@ -53,53 +35,57 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
             return DoQuery(InsertUserGenerator(UserName, Password, Contact));
         }
 
-
-
-
-        // 以下为私有工具函数，Generator 中进行真正运行工具的定义，DoQuery 为所有操作的接口
-
-        private Tuple<bool, string> DoQuery(Func<Tuple<bool, string>> action)
+        /***********************************************************************
+        * 修改用户信息
+        * 输入参数: 
+        *     UserID - 用户ID
+        *     UserName - 用户名
+        *     Password - 用户密码
+        *     Contact - 用户联系方式
+        * 返回值: 包含操作是否成功和修改结果的元组
+        ***********************************************************************/
+        public Tuple<bool, string> UpdateUserInfo(int UserID, string UserName, string Password, string Contact)
         {
-            try
-            {
-                if (OracleConnection.State != ConnectionState.Open)
-                {
-                    OracleConnection.Open();
-                }
+            return DoQuery(UpdateUserInfoGenerator(UserID, UserName, Password, Contact));
+        }
 
-                return action();
-            }
-            catch (Exception ex)
+        private Func<Tuple<bool, string>> UpdateUserInfoGenerator(int UserID, string UserName, string Password, string Contact)
+        {
+            return () =>
             {
-                return new Tuple<bool, string>(false, ex.Message);
-            }
-            finally
-            {
-                if (OracleConnection.State == ConnectionState.Open)
+                List<string> UpdateColumn = ["User_Name", "Password_", "Contact"];
+                List<object> UpdateValue = [UserName, Password, Contact];
+
+                for (int i = 0; i < UpdateColumn.Count; i++)
                 {
-                    OracleConnection.Close();
+                    var (IsSucceeded, Message) = BasicSQLOps.UpdateOperation("Users", UpdateColumn[i], UpdateValue[i], "USER_ID", UserID);
+                    if (!IsSucceeded)
+                    {
+                        return new Tuple<bool, string>(IsSucceeded, Message);
+                    }
                 }
-            }
+                return new Tuple<bool, string>(true, string.Empty);
+            };
         }
 
         private Func<Tuple<bool, string>> GetUserInfoGenerator(string UserName)
         {
-            Func<Tuple<bool, string>> GetUserInfoHandler = delegate {
+            return () =>
+            {
                 Tuple<bool, string> QueryResult = BasicSQLOps.QueryOperation("Users", "User_Name", UserName);
                 return QueryResult;
             };
-
-            return GetUserInfoHandler;
         }
 
         private Func<Tuple<bool, string>> DeleteUserGenerator(string UserName)
         {
-            Func<Tuple<bool, string>> DeleteUserHandler = delegate {
+            return () =>
+            {
                 Tuple<bool, string> DeleteResult = BasicSQLOps.DeleteOperation("Users", "User_Name", UserName);
 
                 if (!DeleteResult.Item1)
-                { 
-                    return DeleteResult; 
+                {
+                    return DeleteResult;
                 }
                 else
                 {
@@ -112,23 +98,18 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
                     return new Tuple<bool, string>(true, "");
                 }
             };
-
-            return DeleteUserHandler;
         }
 
         private Func<Tuple<bool, string>> InsertUserGenerator(string UserName, string Password, string Contact)
         {
-
-            Func<Tuple<bool, string>> DeleteUserHandler = delegate {
-
+            return () =>
+            {
                 List<string> ColumnNames = ["User_Name", "Password_", "Contact"];
                 List<object> Values = [UserName, Password, Contact];
 
                 Tuple<bool, string> QueryResult = BasicSQLOps.InsertOperation("Users", ColumnNames, Values);
                 return QueryResult;
             };
-
-            return DeleteUserHandler;
         }
     }
 }
