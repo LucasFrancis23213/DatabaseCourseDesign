@@ -11,9 +11,6 @@
   const loading = ref<boolean>(false)
   const newSignature = ref<string>("")
 
-  const changeBackground = () => {
-
-  }
   const changeAvatar = () => {
 
   }
@@ -60,7 +57,6 @@
           </div>
         </div>
         <a-button-group>
-          <a-button @click="changeBackground">修改个人中心背景</a-button>
           <a-button @click="changeSignature">修改个性签名</a-button>
           <a-button @click="changeAvatar">修改头像</a-button>
           <a-button @click="changeName">修改名称</a-button>
