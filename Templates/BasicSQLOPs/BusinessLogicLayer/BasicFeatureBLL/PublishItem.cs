@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using Oracle.ManagedDataAccess.Client;
 
 //查找是否重名，ID自增自减？
 namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
@@ -15,6 +16,16 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
 
     public class PublishItem : IPublishItem
     {
+        private Connection conn;
+        private OracleConnection OracleConnection;
+        //private BasicSQLOps SQLOps;
+
+        public PublishItem(string Uid = "ADMIN", string Password = "123456", string DataSource = "121.36.200.128:1521/ORCL")
+        {
+            conn = new Connection(Uid, Password, DataSource);
+            OracleConnection = conn.GetOracleConnection();
+            //SQLOps = new BasicSQLOps(conn);
+        }
         //发布寻物启事基础表单
         private Tuple<bool, string> PublishLostItemBasic(Lost_Item item)
         {
@@ -28,7 +39,9 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
             "Lost_Date",
             "User_ID",
             "Lost_Status",
-            "Review_Status"
+            "Review_Status",
+            "Image_URL",
+            "Tag_ID"
             };
             var values = new List<object>
             {
@@ -40,41 +53,12 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                 item.Lost_Date,
                 item.User_ID,
                 item.Lost_Status,
-                item.Review_Status
-            };
-            BasicSQLOps basic = new BasicSQLOps();
-            var result = basic.InsertOperation("Lost_Item", lostNames, values);
-            bool isSuccess = result.Item1; // 获取是否成功插入
-            string errorReason = result.Item2; // 获取出错误原因
-            if (isSuccess)
-                return new Tuple<bool, string>(true, string.Empty);
-            //插入失败
-            else
-            {
-                return new Tuple<bool, string>(false, errorReason);
-            }
-        }
-        //插入物品图片
-        private Tuple<bool, string> InsertImage(Item_Images item)
-        {
-            var Names = new List<string>
-            {
-            "Image_ID",
-            "Image_URL",
-            "Item_ID",
-            "Description",
-            "Review_Status"
-            };
-            var values = new List<object>
-            {
-                item.Image_ID,
+                item.Review_Status,
                 item.Image_URL,
-                item.Item_ID,
-                item.Description,
-                item.Review_Status
+                item.Tag_ID
             };
-            BasicSQLOps basic = new BasicSQLOps();
-            var result = basic.InsertOperation("Item_Images", Names, values);
+            BasicSQLOps basic = new BasicSQLOps(conn);
+            var result = basic.InsertOperation("Lost_Items", lostNames, values);
             bool isSuccess = result.Item1; // 获取是否成功插入
             string errorReason = result.Item2; // 获取出错误原因
             if (isSuccess)
@@ -95,7 +79,7 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
             "Reward_Amount",
             "Status",
             "Release_Date",
-             "Deadline"
+            "Deadline"
             };
             var values = new List<object>
             {
@@ -106,7 +90,7 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                 item.Release_Date,
                 item.Deadline,
             };
-            BasicSQLOps basic = new BasicSQLOps();
+            BasicSQLOps basic = new BasicSQLOps(conn);
             var result = basic.InsertOperation("Reward_Offers", Names, values);
             bool isSuccess = result.Item1; // 获取是否成功插入
             string errorReason = result.Item2; // 获取出错误原因
@@ -146,7 +130,7 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                 item.Match_Status,
                 item.Review_Status
             };
-            BasicSQLOps basic = new BasicSQLOps();
+            BasicSQLOps basic = new BasicSQLOps(conn);
             var result = basic.InsertOperation("Found_Item", Names, values);
             bool isSuccess = result.Item1; // 获取是否成功插入
             string errorReason = result.Item2; // 获取出错误原因
@@ -161,35 +145,29 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
         }
 
         //外部接口函数
-        public Tuple<bool, string> PublishLostItem(List<Lost_Item> lostItems, List<Item_Images> itemImages, List<Reward_Offers> rewardOffers, bool reward_or_not)
+        public Tuple<bool, string> PublishLostItem(List<Lost_Item> lostItems, List<Reward_Offers> rewardOffers, bool reward_or_not)
         {
             int n = 0;
             try{
                 foreach (Lost_Item item in lostItems) {
                 //先插入基础表单
-                var basicExcel = PublishLostItemBasic(item);
-                bool isSuccess1 = basicExcel.Item1; // 获取是否成功插入
-                string errorReason1 = "表单写入数据库过程中" + basicExcel.Item2; // 获取出错误原因
-                if (isSuccess1)
-                {
-                    //基础表单插入成功，插入对应图片
-                    var insertImage = InsertImage(itemImages[n]);
-                    bool isSuccess2 = insertImage.Item1; // 获取是否成功插入
-                    string errorReason2 = "图片插入数据库过程中"+insertImage.Item2; // 获取出错误原因
-                    if (isSuccess2)
+                    var basicExcel = PublishLostItemBasic(item);
+                    bool isSuccess1 = basicExcel.Item1; // 获取是否成功插入
+                    string errorReason1 = "表单写入数据库过程中" + basicExcel.Item2; // 获取出错误原因
+                    if (isSuccess1)
                     {
                         //图片插入成功，插入是否悬赏
-                        if(!reward_or_not)
+                        if (!reward_or_not)
                         {
-                          n++;
-                          continue; 
+                            n++;
+                            continue;
                         }
                         //有悬赏
                         else
                         {
                             var reward = HaveReward(rewardOffers[n]);
                             bool isSuccess3 = reward.Item1; // 获取是否成功插入
-                            string errorReason3 = "悬赏设置过程中"+reward.Item2; // 获取出错误原因
+                            string errorReason3 = "悬赏设置过程中" + reward.Item2; // 获取出错误原因
                             if (isSuccess3)
                             {
                                 n++;
@@ -199,16 +177,13 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                             else
                             { return new Tuple<bool, string>(false, errorReason3); }
                         }
+
                     }
-                    //插入图片失败
-                    else
-                    { return new Tuple<bool, string>(false, errorReason2); }
-                    
-                }
-                //插入基础表单失败
-                else
-                { return new Tuple<bool, string>(false, errorReason1); }
-            }
+                    else //插入基础表单失败
+                    { 
+                        return new Tuple<bool, string>(false, errorReason1); 
+                    }
+                }//end of foreach
                 return new Tuple<bool, string>(true, string.Empty); 
             }
             catch (Exception ex)
@@ -218,35 +193,28 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
             }
         }
 
-        public Tuple<bool, string> PublishFoundItem(List<Found_Item> foundItems, List<Item_Images> itemimages)
+        public Tuple<bool, string> PublishFoundItem(List<Found_Item> foundItems)
         {
             int n = 0;
             try
-            {foreach (Found_Item item in foundItems)
             {
-                //先插入基础表单
-                var basicExcel = PublistFoundItemBasic(item);
-                bool isSuccess1 = basicExcel.Item1; // 获取是否成功插入
-                string errorReason1 = "表单写入数据库过程中" + basicExcel.Item2; // 获取出错误原因
-                if (isSuccess1)
+                foreach (Found_Item item in foundItems)
                 {
-                    //基础表单插入成功，插入对应图片
-                    var insertImage = InsertImage(itemimages[n]);
-                    bool isSuccess2 = insertImage.Item1; // 获取是否成功插入
-                    string errorReason2 = "图片插入数据库过程中" + insertImage.Item2; // 获取出错误原因
-                    if (isSuccess2)
+                    //先插入基础表单
+                    var basicExcel = PublistFoundItemBasic(item);
+                    bool isSuccess1 = basicExcel.Item1; // 获取是否成功插入
+                    string errorReason1 = "表单写入数据库过程中" + basicExcel.Item2; // 获取出错误原因
+                    if (isSuccess1)
                     {
                         n++;
                         continue;
                     }
-                    //插入图片失败
+                    //插入基础表单失败
                     else
-                    { return new Tuple<bool, string>(false, errorReason2); }
+                    { 
+                        return new Tuple<bool, string>(false, errorReason1); 
+                    }
                 }
-                //插入基础表单失败
-                else
-                { return new Tuple<bool, string>(false, errorReason1); }
-            }
                 return new Tuple<bool, string>(true, string.Empty);
             }
             catch (Exception ex)

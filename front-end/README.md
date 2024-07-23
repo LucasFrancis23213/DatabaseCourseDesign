@@ -66,6 +66,18 @@ yarn dev
 
 更新多信息请参考 [使用文档](http://stepui.gitee.io/stepin-template-docs/)
 
+## 参与贡献
 
+我们非常欢迎你的贡献，你可以通过以下方式和我们一起共建 :star2:：
 
+- 在你的公司或个人项目中使用 Stepin Template。
+- 通过 [Issue](https://github.com/stepui/stepin-template/issues/new) 报告:bug:或进行咨询。
+- 提交 [Pull Request](https://github.com/stepui/stepin-template/pulls) 改进 Stepin Template 的代码。
+- 加入社群，与小伙伴们一同交流心得。QQ 群：441231578
 
+## 打赏作者
+如果该项目对您有所帮助，可以请作者喝一杯咖啡。
+<p>
+  <img src="./docs/images/alipay.png" width="320px" style="display: inline-block; border-radius: 8px;" />
+  <img src="./docs/images/wechatpay.png" width="320px" style="display: inline-block; margin-left: 24px; border-radius: 8px;" />
+</p>

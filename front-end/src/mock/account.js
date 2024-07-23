@@ -1,5 +1,6 @@
 import Mock from 'mockjs';
 import CryptoJS from 'crypto-js';
+import dayjs from 'dayjs';
 
 function base64UrlEncode(source) {
   return CryptoJS.enc.Base64.stringify(source).replace(/=+$/, '').replace(/\+/g, '-').replace(/\//g, '_');
@@ -43,3 +44,59 @@ Mock.mock('api/account', 'get', ({}) => {
     },
   };
 });
+const arr = [
+  {
+    "Category_ID": '手表',
+    "Description": '劳力士',
+    "Lost_Location": '公园',
+    "Lost_Date": '2024-07-01 15:30:48',
+    "Tag_ID":['贵重物品', '私人用品', '医疗用品', '66666666'],
+    "Image_URL": '/src/assets/avatar/face-2.jpg',
+    "isRewarded": true,
+    "Reward_Amount": '80000',
+    "Deadline": '2024-07-01 15:30:48',
+    "Item_Name": 'Li Zhi',
+  },
+  {
+    "Item_Name": 'Li Zhi',
+    "Category_ID": '手表',
+    "Description": '劳力士',
+    "Lost_Location": '公园',
+    "Lost_Date": '2024-07-01 15:30:48',
+    "Tag_ID":['贵重物品'],
+    "Image_URL": '/src/assets/avatar/face-1.jpg',
+    "isRewarded": false,
+    "Reward_Amount": '0',
+    "Deadline": '无',
+  },
+]
+Mock.mock('api/publishs', 'get', () => arr)
+Mock.mock('api/addNewPublish', 'post', function(options){
+  const requestData = JSON.parse(options.body)
+  arr.push(requestData)
+})
+const arr2 = [
+  {
+    "Category_ID": '手表',
+    "Description": '劳力士',
+    "findPosition": '公园',
+    "findTime": '2024-07-01 15:30:48',
+    "Tag_ID":['贵重物品', '私人用品', '医疗用品', '66666666'],
+    "Image_URL": '/src/assets/avatar/face-2.jpg',
+    "Item_Name": 'Li Zhi',
+  },
+  {
+    "Item_Name": 'Li Zhi',
+    "Category_ID": '手表',
+    "Description": '劳力士',
+    "findPosition": '公园',
+    "findTime": '2024-07-01 15:30:48',
+    "Tag_ID":['贵重物品'],
+    "Image_URL": '/src/assets/avatar/face-1.jpg',
+  },
+]
+Mock.mock('api/finds', 'get', () => arr2)
+Mock.mock('api/addNewFind', 'post', function(options){
+  const requestData = JSON.parse(options.body)
+  arr2.push(requestData)
+})

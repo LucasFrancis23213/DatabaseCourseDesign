@@ -62,10 +62,14 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/pages/Exp404.vue'),
   },
   {
-    path:'/hjxItem',
-    name:'hjxItem',
-    props:true,
-    component:() =>import('@/pages/hjx')
+    path: '/PublishSearchNotice',
+    name: 'PublishSearchNotice',
+    component: () => import('@/pages/publishSearchNotice')
+  },
+  {
+    path: '/PublishUnclaimedItem',
+    name: 'PublishUnclaimedItem',
+    component: () => import('@/pages/publishUnclaimedItem')
   },
 ];
 

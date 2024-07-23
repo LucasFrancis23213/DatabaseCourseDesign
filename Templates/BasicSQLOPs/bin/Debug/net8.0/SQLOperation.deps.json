@@ -9,7 +9,8 @@
       "SQLOperation/1.0.0": {
         "dependencies": {
           "Newtonsoft.Json": "13.0.3",
-          "Oracle.ManagedDataAccess.Core": "3.21.130"
+          "Oracle.ManagedDataAccess.Core": "3.21.130",
+          "SSH.NET": "2024.1.0"
         },
         "runtime": {
           "SQLOperation.dll": {}
@@ -49,6 +50,14 @@
           "lib/netstandard2.1/Oracle.ManagedDataAccess.dll": {
             "assemblyVersion": "3.1.21.1",
             "fileVersion": "3.1.21.1"
+          }
+        }
+      },
+      "SSH.NET/2024.1.0": {
+        "runtime": {
+          "lib/net8.0/Renci.SshNet.dll": {
+            "assemblyVersion": "2024.1.0.0",
+            "fileVersion": "2024.1.0.0"
           }
         }
       },
@@ -232,6 +241,13 @@
       "sha512": "sha512-bXNwPyAaDivO84HEYiegK7r/LleSEfA0nc70bE88wkqd1E0Q1+r/SUbJ51xOK2vk6iHbTSMuhnC79BU8svPBjQ==",
       "path": "oracle.manageddataaccess.core/3.21.130",
       "hashPath": "oracle.manageddataaccess.core.3.21.130.nupkg.sha512"
+    },
+    "SSH.NET/2024.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-pyOea9czgC+OwMoetuWtMuwRebOyskKkqTZtODgyEZ5K6JwV+Hh/GFiyYubl93YnEvmvNZeuyWyUDsb3LvBDYA==",
+      "path": "ssh.net/2024.1.0",
+      "hashPath": "ssh.net.2024.1.0.nupkg.sha512"
     },
     "System.Configuration.ConfigurationManager/6.0.0": {
       "type": "package",

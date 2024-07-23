@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Query Data</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Query Data from Oracle Database</h1>
+    <button onclick="queryData()">Query Data</button>
+    <br><br>
+    <div id="result"></div>
+
+    <script>
+        function queryData() {
+            fetch('https://localhost:44343/api/SQLOps/Query', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const resultDiv = document.getElementById('result');
+                if (data.length > 0) {
+                    let table = '<table>';
+                    table += '<tr><th>User ID</th><th>Auth Status</th><th>Auth Date</th><th>Status</th></tr>';
+                    data.forEach(row => {
+                        table += `<tr>
+                                    <td>${row.USER_ID}</td>
+                                    <td>${row.AUTH_STATUS}</td>
+                                    <td>${row.AUTH_DATE}</td>
+                                    <td>${row.STATUS}</td>
+                                  </tr>`;
+                    });
+                    table += '</table>';
+                    resultDiv.innerHTML = table;
+                } else {
+                    resultDiv.innerHTML = 'No data found.';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error querying data.');
+            });
+        }
+    </script>
+</body>
+</html>
