@@ -59,9 +59,17 @@
                 for (int i = 0; i < UpdateColumn.Count; i++)
                 {
                     var (IsSucceeded, Message) = BasicSQLOps.UpdateOperation("Users", UpdateColumn[i], UpdateValue[i], "USER_ID", UserID);
+
+                    // 连接错误导致的失败
                     if (!IsSucceeded)
                     {
                         return new Tuple<bool, string>(IsSucceeded, Message);
+                    }
+
+                    // 传入数据错误导致的失败
+                    if (Message != "更新了1行")
+                    {
+                        return new Tuple<bool, string>(false, "未找到用户");
                     }
                 }
                 return new Tuple<bool, string>(true, string.Empty);
