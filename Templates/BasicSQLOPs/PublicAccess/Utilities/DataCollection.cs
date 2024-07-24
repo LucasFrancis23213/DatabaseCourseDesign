@@ -1,10 +1,14 @@
 ﻿// 该C#文件里存储的是数据库表转化的数据类
+<<<<<<< HEAD
 using System.Text.Json.Serialization;
 
+=======
+>>>>>>> origin/LuChengBin
 namespace SQLOperation.PublicAccess.Utilities
 {
     public class Lost_Item
     {
+<<<<<<< HEAD
         public int Item_ID;
         public string Item_Name;
         public string Category_ID;
@@ -14,16 +18,36 @@ namespace SQLOperation.PublicAccess.Utilities
         public int User_ID;
         public string Lost_Status;
         public int Review_Status;
+=======
+        public string Item_ID;
+        public string Item_Name;
+        public int Category_ID;
+        public string Description;
+        public string Lost_Location;
+        public DateTime Lost_Date;
+        public int User_ID;
+        public string Lost_Status;
+        public int Review_Status;
+        public string Image_URL;
+        public int Tag_ID;
+>>>>>>> origin/LuChengBin
     }
 
     public class Found_Item
     {
         public int Item_ID;
         public string Item_Name;
+<<<<<<< HEAD
         public string Category_ID;
         public string Description;
         public string Found_Location;
         public int Found_Date;
+=======
+        public int Category_ID;
+        public string Description;
+        public string Found_Location;
+        public DateTime Found_Date;
+>>>>>>> origin/LuChengBin
         public int User_ID;
         public string Match_Status;
         public int Review_Status;
@@ -32,8 +56,13 @@ namespace SQLOperation.PublicAccess.Utilities
     public class Reward_Offers
     {
         public int User_ID;
+<<<<<<< HEAD
         public int Item_ID;
         public string Reward_Amount;
+=======
+        public string Item_ID;
+        public int Reward_Amount;
+>>>>>>> origin/LuChengBin
         public string Status;
         public DateTime Release_Date;// 原来是int
         public DateTime Deadline;// 原来是int
@@ -66,14 +95,24 @@ namespace SQLOperation.PublicAccess.Utilities
         public int Review_Status;
     }
 
+<<<<<<< HEAD
     public class Item_Images
+=======
+    /*
+     * public class Item_Images
+>>>>>>> origin/LuChengBin
     {
         public int Image_ID;
         public string Image_URL;
         public int Item_ID;
         public string Description;
+<<<<<<< HEAD
         public int Review_Status;
     }
+=======
+    }
+    */
+>>>>>>> origin/LuChengBin
 
     public class Item_Claim_Processes
     {
@@ -214,6 +253,7 @@ namespace SQLOperation.PublicAccess.Utilities
 
     public class Users
     {
+<<<<<<< HEAD
         [JsonPropertyName("USER_ID")]
         public int User_ID { get; set; }
 
@@ -225,6 +265,13 @@ namespace SQLOperation.PublicAccess.Utilities
 
         [JsonPropertyName("CONTACT")]
         public string Contact { get; set; }
+=======
+        public int User_ID;
+        public string User_Name;
+        public string Password;
+        public string Contact;
+        public string Status;
+>>>>>>> origin/LuChengBin
     }
 
     public class User_Subscriptions

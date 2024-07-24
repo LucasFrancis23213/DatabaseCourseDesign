@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>WebAppTest</id>
+    <version>1.0.0</version>
+    <authors>WebAppTest</authors>
+    <description>Package Description</description>
+    <repository type="git" commit="779da339494edd3e67398d40680b82a57fe011f8" />
+    <dependencies>
+      <group targetFramework="net8.0">
+        <dependency id="SQLOperation" version="1.0.0" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="13.0.3" exclude="Build,Analyzers" />
+        <dependency id="Oracle.ManagedDataAccess.Core" version="3.21.130" exclude="Build,Analyzers" />
+        <dependency id="Swashbuckle.AspNetCore" version="6.5.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkReferences>
+      <group targetFramework="net8.0">
+        <frameworkReference name="Microsoft.AspNetCore.App" />
+      </group>
+    </frameworkReferences>
+    <contentFiles>
+      <files include="any/net8.0/appsettings.Development.json" buildAction="Content" />
+      <files include="any/net8.0/appsettings.json" buildAction="Content" />
+    </contentFiles>
+  </metadata>
+  <files>
+    <file src="D:\00DatabaseDesign\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\WebAppTest.runtimeconfig.json" target="lib\net8.0\WebAppTest.runtimeconfig.json" />
+    <file src="D:\00DatabaseDesign\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\WebAppTest.dll" target="lib\net8.0\WebAppTest.dll" />
+    <file src="D:\00DatabaseDesign\DatabaseCourseDesign\Templates\WebAppTest\appsettings.Development.json" target="content\appsettings.Development.json" />
+    <file src="D:\00DatabaseDesign\DatabaseCourseDesign\Templates\WebAppTest\appsettings.Development.json" target="contentFiles\any\net8.0\appsettings.Development.json" />
+    <file src="D:\00DatabaseDesign\DatabaseCourseDesign\Templates\WebAppTest\appsettings.json" target="content\appsettings.json" />
+    <file src="D:\00DatabaseDesign\DatabaseCourseDesign\Templates\WebAppTest\appsettings.json" target="contentFiles\any\net8.0\appsettings.json" />
+  </files>
+</package>

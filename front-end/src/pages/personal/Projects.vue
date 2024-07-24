@@ -54,7 +54,6 @@
       <div class="font-semibold text-lg">Projects</div>
       <div class="text-subtext text-sm">Architects design houses</div>
     </div>
-    <!--
     <div class="project-list flex items-stretch justify-between">
       <a-card class="project flex-1 rounded-xl shadow-lg" :bordered="false" v-for="item in projectList">
         <template #cover>
@@ -79,7 +78,6 @@
         Upload New Project
       </a-button>
     </div>
-    -->
   </div>
 </template>
 <style lang="less" scoped>

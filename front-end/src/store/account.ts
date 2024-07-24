@@ -2,6 +2,9 @@ import { defineStore } from 'pinia';
 import http from './http';
 import { useLoadingStore } from './loading';
 import axios from 'axios';
+import { Response } from '@/types';
+import { useMenuStore } from './menu';
+import { useAuthStore } from '@/plugins';
 
 export interface Profile {
   account: Account;

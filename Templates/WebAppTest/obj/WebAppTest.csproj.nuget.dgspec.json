@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< HEAD
     "D:\\同济\\大二下\\数据库\\期末大项目\\DatabaseCourseDesign\\Templates\\WebAppTest\\WebAppTest.csproj": {}
   },
   "projects": {
@@ -15,6 +16,22 @@
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\zyn\\AppData\\Roaming\\NuGet\\NuGet.Config",
+=======
+    "D:\\00DatabaseDesign\\DatabaseCourseDesign\\Templates\\WebAppTest\\WebAppTest.csproj": {}
+  },
+  "projects": {
+    "D:\\00DatabaseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\00DatabaseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
+        "projectName": "SQLOperation",
+        "projectPath": "D:\\00DatabaseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
+        "packagesPath": "C:\\Users\\IamNotLCB\\.nuget\\packages\\",
+        "outputPath": "D:\\00DatabaseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\IamNotLCB\\AppData\\Roaming\\NuGet\\NuGet.Config",
+>>>>>>> origin/LuChengBin
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -54,9 +71,15 @@
               "target": "Package",
               "version": "[3.21.130, )"
             },
+<<<<<<< HEAD
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.5.0, )"
+=======
+            "SSH.NET": {
+              "target": "Package",
+              "version": "[2024.1.0, )"
+>>>>>>> origin/LuChengBin
             }
           },
           "imports": [
@@ -79,6 +102,7 @@
         }
       }
     },
+<<<<<<< HEAD
     "D:\\同济\\大二下\\数据库\\期末大项目\\DatabaseCourseDesign\\Templates\\WebAppTest\\WebAppTest.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -90,6 +114,19 @@
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\zyn\\AppData\\Roaming\\NuGet\\NuGet.Config",
+=======
+    "D:\\00DatabaseDesign\\DatabaseCourseDesign\\Templates\\WebAppTest\\WebAppTest.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\00DatabaseDesign\\DatabaseCourseDesign\\Templates\\WebAppTest\\WebAppTest.csproj",
+        "projectName": "WebAppTest",
+        "projectPath": "D:\\00DatabaseDesign\\DatabaseCourseDesign\\Templates\\WebAppTest\\WebAppTest.csproj",
+        "packagesPath": "C:\\Users\\IamNotLCB\\.nuget\\packages\\",
+        "outputPath": "D:\\00DatabaseDesign\\DatabaseCourseDesign\\Templates\\WebAppTest\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\IamNotLCB\\AppData\\Roaming\\NuGet\\NuGet.Config",
+>>>>>>> origin/LuChengBin
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -104,8 +141,13 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
+<<<<<<< HEAD
               "D:\\同济\\大二下\\数据库\\期末大项目\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj": {
                 "projectPath": "D:\\同济\\大二下\\数据库\\期末大项目\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj"
+=======
+              "D:\\00DatabaseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj": {
+                "projectPath": "D:\\00DatabaseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj"
+>>>>>>> origin/LuChengBin
               }
             }
           }
@@ -133,6 +175,13 @@
               "target": "Package",
               "version": "[3.21.130, )"
             },
+<<<<<<< HEAD
+=======
+            "SSH.NET": {
+              "target": "Package",
+              "version": "[2024.1.0, )"
+            },
+>>>>>>> origin/LuChengBin
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.5.0, )"
