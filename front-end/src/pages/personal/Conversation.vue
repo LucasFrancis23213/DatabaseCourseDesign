@@ -32,7 +32,7 @@ const chatList = reactive([
 </script>
 <template>
   <a-card title="Conversations" class="conversations rounded-xl shadow-lg" :bordered="false">
-    <div class="chat flex items-center" v-for="chat in chatList">
+    <!-- <div class="chat flex items-center" v-for="chat in chatList">
       <img class="w-12 rounded-xl" :src="chat.avatar" />
       <div class="content ml-3 flex-1">
         <div class="name">{{ chat.name }}</div>
@@ -41,7 +41,7 @@ const chatList = reactive([
       <div class="action">
         <a-button class="text-sm font-semibold" type="link">REPLY</a-button>
       </div>
-    </div>
+    </div> -->
   </a-card>
 </template>
 <style lang="less" scoped>

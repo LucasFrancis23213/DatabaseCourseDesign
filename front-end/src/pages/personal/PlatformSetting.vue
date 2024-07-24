@@ -26,7 +26,8 @@
     title="Platform Settings"
     class="shadow-lg platform-setting rounded-xl"
   >
-    <div class="group" v-for="(group, i) in groups">
+    <!--留白部分-->
+    <!--<div class="group" v-for="(group, i) in groups">
       <div class="text-xs font-medium text-subtext mb-6">
         {{ group.title }}
       </div>
@@ -40,6 +41,7 @@
         </div>
       </div>
     </div>
+    -->
   </a-card>
 </template>
 <style lang="less" scoped>
