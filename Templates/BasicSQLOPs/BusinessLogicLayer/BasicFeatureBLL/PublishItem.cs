@@ -9,8 +9,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Oracle.ManagedDataAccess.Client;
+using System.Data;
+using System.Drawing;
 
-//查找是否重名，ID自增自减？
+
 namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
 {
 
@@ -223,7 +225,126 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                 return new Tuple<bool, string>(false, "发布失物招领发生异常: " + ex.Message);
             }
         }
-    }
-    
+        public Tuple<bool, string> DeleteItem(int type, Dictionary<string, object> index)
+        {
+            string TableName = "";
+            if (index == null)
+            {
+                string errorReason = "删除索引不能为空！";
+                return new Tuple<bool, string>(false, errorReason);
+            }
+            
+            else
+            {
+                if(type == 0)
+                {TableName = "Lost_Item";}
+                else if (type == 1)
+                {TableName = "Found_Item";}
+                else
+                {
+                    string errorReason = "不合法的type值，请输入0/1！";
+                    return new Tuple<bool, string>(false, errorReason); 
+                }
+                string ErrorReason = string.Empty;
+                if (OracleConnection.State == ConnectionState.Open)
+                {
+                    string ConditionString = string.Join(" AND ", index.Keys.Select(key => $"{key.ToUpper()} = :{key.ToUpper()}"));
+                    string DeleteSQL = $"DELETE FROM {TableName.ToUpper()} WHERE {ConditionString}";
 
+                    using (OracleCommand cmd = new OracleCommand(DeleteSQL, OracleConnection))
+                    {
+                        try
+                        {
+                            // 添加参数
+                            foreach (var condition in index)
+                            {
+                                cmd.Parameters.Add(new OracleParameter(condition.Key.ToUpper(), condition.Value ?? DBNull.Value));
+                            }
+                            int AffectedRow = cmd.ExecuteNonQuery();
+                            Debug.WriteLine($"共{AffectedRow}行被删除");
+                            if (AffectedRow == 0)
+                            {
+                                return new Tuple<bool, string>(false, "删除无效");
+                            }
+                            return new Tuple<bool, string>(true, ErrorReason);
+                        }
+                        catch (Exception ex)
+                        {
+                            ErrorReason = ex.Message;
+                            Debug.Write($"删除失败,报错为：{ErrorReason}");
+                            return new Tuple<bool, string>(false, ErrorReason);
+                        }
+                    }
+                }
+                else
+                {
+                    ErrorReason = "数据库未连接";
+                    Debug.WriteLine("删除操作，", ErrorReason);
+                    return new Tuple<bool, string>(false, ErrorReason);
+                }
+            }
+        }
+        public Tuple<bool, string> QueryItem(int type, Dictionary<string, object> index)
+        {
+            string TableName = "";
+            if (index == null)
+            {
+                string errorReason = "查询索引不能为空！";
+                return new Tuple<bool, string>(false, errorReason);
+            }
+            else
+            {
+                if (type == 0)
+                { TableName = "Lost_Item"; }
+                else if (type == 1)
+                { TableName = "Found_Item"; }
+                else
+                {
+                    string errorReason = "不合法的type值，请输入0/1！";
+                    return new Tuple<bool, string>(false, errorReason);
+                }
+                string ErrorReason = string.Empty;
+                if (OracleConnection.State == ConnectionState.Open)
+                {
+                    string ConditionString = string.Join(" AND ", index.Keys.Select(key => $"{key.ToUpper()} = :{key.ToUpper()}"));
+                    string DeleteSQL = $"SELECT * FROM {TableName.ToUpper()} WHERE {ConditionString}";
+
+                    using (OracleCommand cmd = new OracleCommand(DeleteSQL, OracleConnection))
+                    {
+                        try
+                        {
+                            // 添加参数
+                            foreach (var condition in index)
+                            {
+                                cmd.Parameters.Add(new OracleParameter(condition.Key.ToUpper(), condition.Value ?? DBNull.Value));
+                            }
+                            int AffectedRow = cmd.ExecuteNonQuery();
+                            Debug.WriteLine($"共{AffectedRow}行被查找");
+                            if (AffectedRow == 0)
+                            {
+                                return new Tuple<bool, string>(false, "没有查找到相应内容");
+                            }
+                            return new Tuple<bool, string>(true, ErrorReason);
+                        }
+                        catch (Exception ex)
+                        {
+                            ErrorReason = ex.Message;
+                            Debug.Write($"查找失败,报错为：{ErrorReason}");
+                            return new Tuple<bool, string>(false, ErrorReason);
+                        }
+                    }
+                }
+                else
+                {
+                    ErrorReason = "数据库未连接";
+                    Debug.WriteLine("查找操作，", ErrorReason);
+                    return new Tuple<bool, string>(false, ErrorReason);
+                }
+            }
+        }
+
+
+    }
+
+    
 }

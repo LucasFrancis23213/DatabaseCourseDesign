@@ -41,7 +41,7 @@ namespace SQLOperation.PublicAccess.Utilities
     public class Item_Status_History
     {
         public int History_ID;
-        public int Change_Date;
+        public DateTime Change_Date;
         public int Item_ID;
         public string Preview_Status;
         public string New_Status;
