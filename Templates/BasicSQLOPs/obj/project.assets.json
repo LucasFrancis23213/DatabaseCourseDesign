@@ -2,7 +2,6 @@
   "version": 3,
   "targets": {
     "net8.0": {
-<<<<<<< HEAD
       "Microsoft.Extensions.ApiDescription.Server/6.0.5": {
         "type": "package",
         "build": {
@@ -27,8 +26,6 @@
           }
         }
       },
-=======
->>>>>>> origin/LuChengBin
       "Microsoft.Win32.SystemEvents/6.0.0": {
         "type": "package",
         "compile": {
@@ -78,7 +75,6 @@
           "lib/netstandard2.1/Oracle.ManagedDataAccess.dll": {}
         }
       },
-<<<<<<< HEAD
       "Swashbuckle.AspNetCore/6.5.0": {
         "type": "package",
         "dependencies": {
@@ -142,21 +138,6 @@
           "Microsoft.AspNetCore.App"
         ]
       },
-=======
-      "SSH.NET/2024.1.0": {
-        "type": "package",
-        "compile": {
-          "lib/net8.0/Renci.SshNet.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Renci.SshNet.dll": {
-            "related": ".xml"
-          }
-        }
-      },
->>>>>>> origin/LuChengBin
       "System.Configuration.ConfigurationManager/6.0.0": {
         "type": "package",
         "dependencies": {
@@ -376,7 +357,6 @@
     }
   },
   "libraries": {
-<<<<<<< HEAD
     "Microsoft.Extensions.ApiDescription.Server/6.0.5": {
       "sha512": "Ckb5EDBUNJdFWyajfXzUIMRkhf52fHZOQuuZg/oiu8y7zDCVwD0iHhew6MnThjHmevanpxL3f5ci2TtHQEN6bw==",
       "type": "package",
@@ -625,8 +605,6 @@
         "microsoft.openapi.nuspec"
       ]
     },
-=======
->>>>>>> origin/LuChengBin
     "Microsoft.Win32.SystemEvents/6.0.0": {
       "sha512": "hqTM5628jSsQiv+HGpiq3WKBl2c8v1KZfby2J6Pr7pEPlK9waPdgEO6b8A/+/xn/yZ9ulv8HuqK71ONy2tg67A==",
       "type": "package",
@@ -703,7 +681,6 @@
         "readme.txt"
       ]
     },
-<<<<<<< HEAD
     "Swashbuckle.AspNetCore/6.5.0": {
       "sha512": "FK05XokgjgwlCI6wCT+D4/abtQkL1X1/B9Oas6uIwHFmYrIO9WUD5aLC9IzMs9GnHfUXOtXZ2S43gN1mhs5+aA==",
       "type": "package",
@@ -792,31 +769,6 @@
         "lib/netstandard2.0/Swashbuckle.AspNetCore.SwaggerUI.xml",
         "swashbuckle.aspnetcore.swaggerui.6.5.0.nupkg.sha512",
         "swashbuckle.aspnetcore.swaggerui.nuspec"
-=======
-    "SSH.NET/2024.1.0": {
-      "sha512": "pyOea9czgC+OwMoetuWtMuwRebOyskKkqTZtODgyEZ5K6JwV+Hh/GFiyYubl93YnEvmvNZeuyWyUDsb3LvBDYA==",
-      "type": "package",
-      "path": "ssh.net/2024.1.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "README.md",
-        "SS-NET-icon-h500.png",
-        "lib/net462/Renci.SshNet.dll",
-        "lib/net462/Renci.SshNet.xml",
-        "lib/net6.0/Renci.SshNet.dll",
-        "lib/net6.0/Renci.SshNet.xml",
-        "lib/net7.0/Renci.SshNet.dll",
-        "lib/net7.0/Renci.SshNet.xml",
-        "lib/net8.0/Renci.SshNet.dll",
-        "lib/net8.0/Renci.SshNet.xml",
-        "lib/netstandard2.0/Renci.SshNet.dll",
-        "lib/netstandard2.0/Renci.SshNet.xml",
-        "lib/netstandard2.1/Renci.SshNet.dll",
-        "lib/netstandard2.1/Renci.SshNet.xml",
-        "ssh.net.2024.1.0.nupkg.sha512",
-        "ssh.net.nuspec"
->>>>>>> origin/LuChengBin
       ]
     },
     "System.Configuration.ConfigurationManager/6.0.0": {
@@ -1097,42 +1049,23 @@
     "net8.0": [
       "Newtonsoft.Json >= 13.0.3",
       "Oracle.ManagedDataAccess.Core >= 3.21.130",
-<<<<<<< HEAD
       "Swashbuckle.AspNetCore >= 6.5.0"
     ]
   },
   "packageFolders": {
     "C:\\Users\\zyn\\.nuget\\packages\\": {}
-=======
-      "SSH.NET >= 2024.1.0"
-    ]
-  },
-  "packageFolders": {
-    "C:\\Users\\IamNotLCB\\.nuget\\packages\\": {}
->>>>>>> origin/LuChengBin
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-<<<<<<< HEAD
-      "projectUniqueName": "D:\\同济\\大二下\\数据库\\期末大项目\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
+      "projectUniqueName": "D:\\desktop\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
       "projectName": "SQLOperation",
-      "projectPath": "D:\\同济\\大二下\\数据库\\期末大项目\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
+      "projectPath": "D:\\desktop\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
       "packagesPath": "C:\\Users\\zyn\\.nuget\\packages\\",
-      "outputPath": "D:\\同济\\大二下\\数据库\\期末大项目\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\obj\\",
+      "outputPath": "D:\\desktop\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\zyn\\AppData\\Roaming\\NuGet\\NuGet.Config",
-=======
-      "projectUniqueName": "D:\\00DatabaseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
-      "projectName": "SQLOperation",
-      "projectPath": "D:\\00DatabaseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
-      "packagesPath": "C:\\Users\\IamNotLCB\\.nuget\\packages\\",
-      "outputPath": "D:\\00DatabaseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\obj\\",
-      "projectStyle": "PackageReference",
-      "configFilePaths": [
-        "C:\\Users\\IamNotLCB\\AppData\\Roaming\\NuGet\\NuGet.Config",
->>>>>>> origin/LuChengBin
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -1172,15 +1105,9 @@
             "target": "Package",
             "version": "[3.21.130, )"
           },
-<<<<<<< HEAD
           "Swashbuckle.AspNetCore": {
             "target": "Package",
             "version": "[6.5.0, )"
-=======
-          "SSH.NET": {
-            "target": "Package",
-            "version": "[2024.1.0, )"
->>>>>>> origin/LuChengBin
           }
         },
         "imports": [

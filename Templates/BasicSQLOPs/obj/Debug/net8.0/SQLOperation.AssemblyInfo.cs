@@ -14,11 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SQLOperation")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-<<<<<<< HEAD
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3bcb9350fae95c86ebdfad2217fe38256a61fa73")]
-=======
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5f92fe1ceda62f60a2e4ec100d95655978291b66")]
->>>>>>> origin/LuChengBin
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+779da339494edd3e67398d40680b82a57fe011f8")]
 [assembly: System.Reflection.AssemblyProductAttribute("SQLOperation")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SQLOperation")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

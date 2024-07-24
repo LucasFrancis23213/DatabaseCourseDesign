@@ -10,17 +10,12 @@
         "dependencies": {
           "Newtonsoft.Json": "13.0.3",
           "Oracle.ManagedDataAccess.Core": "3.21.130",
-<<<<<<< HEAD
           "Swashbuckle.AspNetCore": "6.5.0"
-=======
-          "SSH.NET": "2024.1.0"
->>>>>>> origin/LuChengBin
         },
         "runtime": {
           "SQLOperation.dll": {}
         }
       },
-<<<<<<< HEAD
       "Microsoft.Extensions.ApiDescription.Server/6.0.5": {},
       "Microsoft.OpenApi/1.2.3": {
         "runtime": {
@@ -30,8 +25,6 @@
           }
         }
       },
-=======
->>>>>>> origin/LuChengBin
       "Microsoft.Win32.SystemEvents/6.0.0": {
         "runtime": {
           "lib/net6.0/Microsoft.Win32.SystemEvents.dll": {
@@ -69,7 +62,6 @@
           }
         }
       },
-<<<<<<< HEAD
       "Swashbuckle.AspNetCore/6.5.0": {
         "dependencies": {
           "Microsoft.Extensions.ApiDescription.Server": "6.0.5",
@@ -105,13 +97,6 @@
           "lib/net7.0/Swashbuckle.AspNetCore.SwaggerUI.dll": {
             "assemblyVersion": "6.5.0.0",
             "fileVersion": "6.5.0.0"
-=======
-      "SSH.NET/2024.1.0": {
-        "runtime": {
-          "lib/net8.0/Renci.SshNet.dll": {
-            "assemblyVersion": "2024.1.0.0",
-            "fileVersion": "2024.1.0.0"
->>>>>>> origin/LuChengBin
           }
         }
       },
@@ -275,7 +260,6 @@
       "serviceable": false,
       "sha512": ""
     },
-<<<<<<< HEAD
     "Microsoft.Extensions.ApiDescription.Server/6.0.5": {
       "type": "package",
       "serviceable": true,
@@ -290,8 +274,6 @@
       "path": "microsoft.openapi/1.2.3",
       "hashPath": "microsoft.openapi.1.2.3.nupkg.sha512"
     },
-=======
->>>>>>> origin/LuChengBin
     "Microsoft.Win32.SystemEvents/6.0.0": {
       "type": "package",
       "serviceable": true,
@@ -313,7 +295,6 @@
       "path": "oracle.manageddataaccess.core/3.21.130",
       "hashPath": "oracle.manageddataaccess.core.3.21.130.nupkg.sha512"
     },
-<<<<<<< HEAD
     "Swashbuckle.AspNetCore/6.5.0": {
       "type": "package",
       "serviceable": true,
@@ -341,14 +322,6 @@
       "sha512": "sha512-OvbvxX+wL8skxTBttcBsVxdh73Fag4xwqEU2edh4JMn7Ws/xJHnY/JB1e9RoCb6XpDxUF3hD9A0Z1lEUx40Pfw==",
       "path": "swashbuckle.aspnetcore.swaggerui/6.5.0",
       "hashPath": "swashbuckle.aspnetcore.swaggerui.6.5.0.nupkg.sha512"
-=======
-    "SSH.NET/2024.1.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-pyOea9czgC+OwMoetuWtMuwRebOyskKkqTZtODgyEZ5K6JwV+Hh/GFiyYubl93YnEvmvNZeuyWyUDsb3LvBDYA==",
-      "path": "ssh.net/2024.1.0",
-      "hashPath": "ssh.net.2024.1.0.nupkg.sha512"
->>>>>>> origin/LuChengBin
     },
     "System.Configuration.ConfigurationManager/6.0.0": {
       "type": "package",

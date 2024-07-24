@@ -1,9 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\\u540C\u6D4E\\\u5927\u4E8C\u4E0B\\\u6570\u636E\u5E93\\\u671F\u672B\u5927\u9879\u76EE\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\",
+  "WorkspaceRootPath": "D:\\desktop\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\desktop\\DatabaseCourseDesign\\Templates\\WebAppTest\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E6B51281-D084-407E-9C8A-23C634543442}|..\\WebAppTest\\WebAppTest.csproj|d:\\desktop\\databasecoursedesign\\templates\\webapptest\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -28,9 +28,9 @@
               "DocumentIndex": 0,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\desktop\\DatabaseCourseDesign\\Templates\\WebAppTest\\Program.cs",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\desktop\\DatabaseCourseDesign\\Templates\\WebAppTest\\Program.cs",
+              "RelativeDocumentMoniker": "..\\WebAppTest\\Program.cs",
               "ToolTip": "D:\\desktop\\DatabaseCourseDesign\\Templates\\WebAppTest\\Program.cs",
-              "RelativeToolTip": "..\\..\\..\\..\\..\\..\\..\\desktop\\DatabaseCourseDesign\\Templates\\WebAppTest\\Program.cs",
+              "RelativeToolTip": "..\\WebAppTest\\Program.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAVAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-16T07:55:19.389Z",
