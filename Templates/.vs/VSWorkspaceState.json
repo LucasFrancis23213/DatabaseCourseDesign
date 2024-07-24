@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\BasicSQLOPs",
+    "\\BasicSQLOPs\\DataAccessLayer\\CommunityFeatureDAL",
+    "\\BasicSQLOPs\\DataAccessLayer\\ManagementFeatureDAL",
+    "\\BasicSQLOPs\\obj\\Debug",
+    "\\BasicSQLOPs\\obj\\Debug\\net8.0",
+    "\\BasicSQLOPs\\PublicAccess",
+    "\\BasicSQLOPs\\PublicAccess\\Templates",
+    "\\WebAppTest",
+    "\\WebAppTest\\APITemplate"
+  ],
+  "SelectedNode": "\\BasicSQLOPs\\BasicSQLOPs.sln",
+  "PreviewInSolutionExplorer": false
+}
