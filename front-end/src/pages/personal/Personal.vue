@@ -1,16 +1,24 @@
 <script lang="ts" setup>
-  import { ref } from 'vue';
+  import { onMounted, ref } from 'vue';
   import PlatformSetting from './PlatformSetting.vue';
   import ProfileInfo from './ProfileInfo.vue';
   import MySearch from './MySearch.vue';
   import MyFind from './MyFind.vue';
   import { usePersonalSignature } from '@/store/personal';
+  import { message } from 'ant-design-vue';
 
   const personalSignature = usePersonalSignature()
   const open = ref<boolean>(false)
   const loading = ref<boolean>(false)
   const newSignature = ref<string>("")
+  const name = ref<string>("")
 
+  const getName = () => {
+    name.value="小明"
+  }
+  onMounted(() => {
+    getName()
+  })
   const changeSignature = () => {
     open.value = true
   }
@@ -22,6 +30,10 @@
           loading.value = false;
           open.value = false;
         }, 1000);
+  }
+  const copyName = () => {
+    message.success("复制成功！")
+    navigator.clipboard.writeText(name.value)       
   }
 </script>
 <template>
@@ -46,7 +58,11 @@
         <div class="info flex items-center">
           <img class="w-20 rounded-lg" src="@/assets/avatar/face-1.jpg" />
           <div class="flex flex-col justify-around ml-4">
-            <span class="text-title text-xl font-bold">小明</span>
+            <span class="text-title text-xl font-bold">
+              {{ name }}
+              &ensp;
+              <a-button shape="circle" @click="copyName"><CopyFilled /></a-button>
+            </span>
             <span class="text-subtext font-semibold">{{ personalSignature.signature }}</span>
           </div>
         </div>
