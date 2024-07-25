@@ -1,9 +1,10 @@
 <script lang="ts" setup>
-import {onMounted, ref, watchEffect} from 'vue';
+import {onMounted, onUnmounted, ref, watchEffect} from 'vue';
 import ChatBubble from "@/components/CommunityFeature/chat/ChatBubble.vue";
 import MessageInput from "@/components/CommunityFeature/chat/MessageInput.vue";
 import axios from "axios";
 import {useRoute} from 'vue-router';
+import * as signalR from '@microsoft/signalr';
 
 
 const BaseURL = import.meta.env.VITE_API_URL;
@@ -132,11 +133,57 @@ async function retractMessage(message_id){
   messages.value = messages.value.filter(msg => msg.id !== message_id)
 }
 
+const connection = ref(null);
+
+const startConnection = async () =>{
+  connection.value = new signalR.HubConnectionBuilder()
+      .withUrl(`${BaseURL}/chathub`)
+      .build();
+  try{
+    await connection.value.start();
+    console.log("SignalR Connected. ");
+
+    connection.value.on('ReceiveMessage',async (message) => {
+      if (message.data.receiver_user_id === user_id) {
+        messages.value.push(message);
+        try {
+          const res = await axios.post(`${BaseURL}/api/messsages/receive`, {
+            message_id: message.message_id,
+            receiver_in_window: true,
+            sender_user_id: message.sender_user_id,
+          });
+
+          console.log(res);
+        } catch (e) {
+          console.error(e);
+        }
+
+      }
+
+    });
+
+
+  } catch (e){
+    console.error("SignalR Connection Error: ");
+    console.error(e);
+  }
+
+}
+
 
 onMounted(()=>{
   updateReadStatus();
   getMessages();
+  //startConnection();
 })
+
+onUnmounted(()=>{
+  if(connection.value){
+    connection.value.stop();
+  }
+})
+
+
 
 
 </script>
