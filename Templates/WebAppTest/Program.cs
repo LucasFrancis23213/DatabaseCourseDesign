@@ -11,6 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 // 添加connection服务
 builder.Services.AddSingleton<Connection>(new Connection("BAMBOO", "123456", "localhost:1521/ORCL"));
+
 builder.Services.AddSignalR();
 
 

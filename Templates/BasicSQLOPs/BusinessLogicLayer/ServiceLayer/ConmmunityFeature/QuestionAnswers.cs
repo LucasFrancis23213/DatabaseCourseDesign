@@ -105,6 +105,13 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
         {
             try
             {
+                var question = GetQuestionById(questionId);
+
+                // 先测试问题是否存在
+                if (question == null)
+                {
+                    throw new Exception("问题不存在");
+                }
                 // 定义 FROM 子句
                 string fromClause = "ANSWERS NATURAL JOIN USERS";
 

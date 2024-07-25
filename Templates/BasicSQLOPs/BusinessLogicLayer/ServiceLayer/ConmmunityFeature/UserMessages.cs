@@ -240,7 +240,8 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
                 };
 
                 // 调用更新方法
-                return UserMessagesBusiness.UpdateBusiness(new Dictionary<string, object> { { "read_status", "Y" } },condition);
+                int updateRows=UserMessagesBusiness.UpdateBusiness(new Dictionary<string, object> { { "read_status", "Y" } },condition);
+                return true;
             }
             catch (Exception ex)
             {
@@ -261,7 +262,8 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
                 };
 
                 // 调用更新方法，将消息的阅读状态更新为已读
-                return UserMessagesBusiness.UpdateBusiness(new Dictionary<string, object> { { "read_status", "Y" } },condition);
+                int updateRows=UserMessagesBusiness.UpdateBusiness(new Dictionary<string, object> { { "read_status", "Y" } },condition);
+                return true;
             }
             catch (Exception ex)
             {
@@ -324,9 +326,9 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
                     {"message_type","retract" },
                     {"read_status","Y" }
                 };
-
+                int updatedRow = UserMessagesBusiness.UpdateBusiness(updateColumns, condition);
                 // 如果成功撤回
-                if (UserMessagesBusiness.UpdateBusiness(updateColumns, condition))
+                if (updatedRow>0)
                 {
                     message.Message_Content = "撤回了一条消息";
                     message.Message_Type = "retract";

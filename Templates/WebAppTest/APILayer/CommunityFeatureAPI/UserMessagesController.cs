@@ -87,7 +87,6 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
                 // 查询会话内容
                 var conversationMessages = userMessages.FindAllMessagesBetweenUsers(conversation_id, current_user_id);
 
-                // 查询会话对象信息
                 var userInfo = userMessages.GetUserInfo(conversation_id);
 
                 // 构建响应数据
@@ -265,7 +264,7 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
         {
             try
             {
-                if (request == null || !request.ContainsKey("message_id") || !request.ContainsKey("receiver_in_window"))
+                if (request == null || !request.ContainsKey("message_id") || !request.ContainsKey("receiver_in_window")||!request.ContainsKey("sender_user_id"))
                 {
                     return BadRequest(new { status = "error", message = "无效的请求体或缺少message_id或receiver_in_window。" });
 
@@ -273,6 +272,7 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
 
                 int messageId = request["message_id"].GetInt32();
                 bool receiverInWindow = request["receiver_in_window"].GetBoolean();
+                int sender_user_id = request["sender_user_id"].GetInt32();
 
                 bool success = false;
                 if (receiverInWindow) {
@@ -280,11 +280,22 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
                     success = userMessages.UpdateMessageReadStatus(messageId);
                 }
                
+
                 if (!success)
                 {
                     return BadRequest(new { status = "error", message = $"更新消息ID为 {messageId} 的阅读状态失败。" });
 
                 }
+
+                var userInfo = userMessages.GetUserInfo(sender_user_id);
+
+                // 构建响应体
+                var response = new
+                {
+                    status = "success",
+                    sender_user_name = userInfo.User_Name,
+                    sender_user_avatar = ""
+                };
 
 
                 // 返回成功状态，不返回任何内容

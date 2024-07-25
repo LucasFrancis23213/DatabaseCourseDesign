@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Pqsi/1arpxs=",
+  "dgSpecHash": "Zvn7xznFoOE=",
   "success": true,
-  "projectFilePath": "F:\\数据库课程设计\\DatabaseCourseDesign-main\\Templates\\WebAppTest\\WebAppTest.csproj",
+  "projectFilePath": "F:\\数据库课程设计\\gitpush\\Templates\\WebAppTest\\WebAppTest.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Lenovo\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
     "C:\\Users\\Lenovo\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
@@ -22,5 +22,12 @@
     "C:\\Users\\Lenovo\\.nuget\\packages\\system.security.permissions\\6.0.0\\system.security.permissions.6.0.0.nupkg.sha512",
     "C:\\Users\\Lenovo\\.nuget\\packages\\system.windows.extensions\\6.0.0\\system.windows.extensions.6.0.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1900",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。"
+    }
+  ]
 }

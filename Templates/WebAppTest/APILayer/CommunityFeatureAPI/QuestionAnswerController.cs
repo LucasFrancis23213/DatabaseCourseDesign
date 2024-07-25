@@ -5,6 +5,7 @@ using SQLOperation.PublicAccess.Utilities;
 using System.Text.Json.Nodes;
 using System.Text.Json;
 using System.Transactions;
+using DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature;
 
 
 namespace DatabaseProject.APILayer.CommunityFeatureAPI {
@@ -15,11 +16,12 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
     {
         private  QuestionAnswers questionAnswers;
         private readonly Connection _connection;
-
+        private UserActivity userActivity;
 
         public QuestionAnswerController(Connection connection)
         {
             questionAnswers = new QuestionAnswers(connection);
+            userActivity= new UserActivity(connection);
         }
 
         //1 `/api/questions`
@@ -113,14 +115,6 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
                 // 调用 QuestionAnswers 类中的方法获取回答列表
                 int questionId = Convert.ToInt32(question_id);
 
-                var question=questionAnswers.GetQuestionById(questionId);
-
-                // 先测试问题是否存在
-                if (question == null)
-                {
-                    return StatusCode(500, $"内部服务器错误：问题不存在");
-                }
-
                 var answers = questionAnswers.GetAnswersByQuestionId(questionId);
                 
                 
@@ -179,7 +173,7 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
 
                 // 调用 QuestionAnswers 类中的方法提问
                 int questionId = questionAnswers.PostQuestion(content, itemId, userId, time);
-
+                userActivity.AddUserActivity(userId, "问答", time);
                 // 构建响应对象
                 var response = new
                 {
@@ -283,7 +277,7 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
                     return StatusCode(500, "发布答案时出错"); // 返回内部服务器错误
 
                 }
-
+                userActivity.AddUserActivity(userId, "问答", time);
                 // 构建成功响应对象
                 var response = new
                 {

@@ -18,9 +18,9 @@
         bool RemoveBusiness(Dictionary<string, object> condition);
 
         // 更新记录（待定）
-        bool UpdateBusiness(Dictionary<string, object> UpdateColumns, Dictionary<string, object> ConditionColumns);
+        int UpdateBusiness(Dictionary<string, object> UpdateColumns, Dictionary<string, object> ConditionColumns);
 
-        //
+       
        
     }
 

@@ -243,20 +243,32 @@ namespace DatabaseProject.BusinessLogicLayer.CommunityFeatureBLL
         }
 
         // 更新事务 待定 待定
-        public bool UpdateBusiness(Dictionary<string, object> UpdateColumns, Dictionary<string, object> ConditionColumns)
+        public int UpdateBusiness(Dictionary<string, object> UpdateColumns, Dictionary<string, object> ConditionColumns)
         {
+            // 调用 UpdateTable 方法获取更新结果
             Tuple<bool, string> success = mergedDAL.UpdateTable(tableName, UpdateColumns, ConditionColumns);
-            if (success.Item1 == true)
+
+            // 判断操作是否成功
+            if (success.Item1)
             {
-                return true;
+                // 尝试将字符串转换为整数
+                if (int.TryParse(success.Item2, out int affectedRows))
+                {
+                    return affectedRows; // 返回更新的行数
+                }
+                else
+                {
+                    throw new Exception("无法解析更新的行数。");
+                }
             }
             else
             {
-                throw new Exception(success.Item2);
+                throw new Exception(success.Item2); // 抛出更新操作中的错误信息
             }
         }
 
-        
+
+
         // 任意指定where语句
         public List<T> QueryTableWithWhereBusiness(string whereClause, OracleParameter[] parameters)
         {

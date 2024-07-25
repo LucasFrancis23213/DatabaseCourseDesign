@@ -26,15 +26,17 @@ namespace DatabaseProject.DataAccessLayer.CommunityFeatureDAL
         // 插入并返回指定列的值
         public Tuple<bool, string> InsertAndGetValue(string tableName, string returnValueColumn, List<string> columnNames, List<object> values)
         {
+
+            if (columnNames.Count != values.Count)
+            {
+                string errorReason = "列名和值的数量不匹配";
+                Debug.WriteLine("列名和值的数量不匹配");
+                return new Tuple<bool, string>(false, errorReason);
+            }
+
             if (oConn.State == ConnectionState.Open)
             {
-                if (columnNames.Count != values.Count)
-                {
-                    string errorReason = "列名和值的数量不匹配";
-                    Debug.WriteLine("列名和值的数量不匹配");
-                    return new Tuple<bool, string>(false, errorReason);
-                }
-
+               
                 try
                 {
                     // 将所有列名转换为大写
@@ -138,6 +140,68 @@ namespace DatabaseProject.DataAccessLayer.CommunityFeatureDAL
                 ErrorReason = "数据库未连接";
                 Debug.WriteLine("删除操作，", ErrorReason);
                 return new Tuple<bool, string>(false, ErrorReason);
+            }
+        }
+
+        //更新操作
+        public Tuple<bool, string> UpdateTable(string TableName, Dictionary<string, object> UpdateColumns, Dictionary<string, object> ConditionColumns)
+        {
+            if (oConn.State == ConnectionState.Open)
+            {
+                string ErrorReason = string.Empty;
+                string update = $"UPDATE {TableName.ToUpper()} SET ";
+
+                // 构建 SET 子句
+                List<string> updateClauses = new List<string>();
+                foreach (var kvp in UpdateColumns)
+                {
+                    updateClauses.Add($"{kvp.Key.ToUpper()} = :{kvp.Key}");
+                }
+                update += string.Join(", ", updateClauses);
+
+                // 构建 WHERE 子句
+                string whereClause = " WHERE ";
+                List<string> conditionClauses = new List<string>();
+                foreach (var kvp in ConditionColumns)
+                {
+                    conditionClauses.Add($"{kvp.Key.ToUpper()} = :{kvp.Key}");
+                }
+                whereClause += string.Join(" AND ", conditionClauses);
+                update += whereClause;
+
+                try
+                {
+                    using (OracleCommand cmd = new OracleCommand(update, oConn))
+                    {
+                        // 添加更新列的参数
+                        foreach (var kvp in UpdateColumns)
+                        {
+                            cmd.Parameters.Add(new OracleParameter($":{kvp.Key}", kvp.Value ?? DBNull.Value));
+                        }
+
+                        // 添加条件列的参数
+                        foreach (var kvp in ConditionColumns)
+                        {
+                            cmd.Parameters.Add(new OracleParameter($":{kvp.Key}", kvp.Value ?? DBNull.Value));
+                        }
+
+                        int AffectedRow = cmd.ExecuteNonQuery();
+                        Debug.WriteLine($"更新了{AffectedRow}行");
+
+                        return new Tuple<bool, string>(true, AffectedRow.ToString());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ErrorReason = $"更新操作，报错为：{ex.Message}";
+                    Debug.WriteLine(ErrorReason);
+                    return new Tuple<bool, string>(false, ErrorReason);
+                }
+            }
+            else
+            {
+                Debug.WriteLine("更新操作，数据库未连接");
+                return new Tuple<bool, string>(false, "数据库未连接");
             }
         }
 
@@ -247,7 +311,7 @@ namespace DatabaseProject.DataAccessLayer.CommunityFeatureDAL
                 return new Tuple<bool, string>(IsQuerySuccess, ErrorReason);
             }
         }
-        // 查询操作，限制返回的行数
+        
         // 通用查询操作，根据表名和自定义 WHERE 条件查询所有内容
         public Tuple<bool, string> QueryTableWithWhere(string TableName, string whereClause, OracleParameter[] parameters)
         {
@@ -349,7 +413,6 @@ namespace DatabaseProject.DataAccessLayer.CommunityFeatureDAL
                 return new Tuple<bool, string>(IsQuerySuccess, ErrorReason);
             }
         }
-
         // 多表查询
         // 查询操作，支持自定义 WHERE 和 FROM 子句，但 SELECT 子句固定为 *
         public Tuple<bool, string> QueryWithCustomFromAndWhere(string fromClause, string whereClause, OracleParameter[] parameters)
@@ -427,71 +490,6 @@ namespace DatabaseProject.DataAccessLayer.CommunityFeatureDAL
                 return new Tuple<bool, string>(IsQuerySuccess, ErrorReason);
             }
         }
-
-
-        //更新操作
-        public Tuple<bool, string> UpdateTable(string TableName, Dictionary<string, object> UpdateColumns, Dictionary<string, object> ConditionColumns)
-        {
-            if (oConn.State == ConnectionState.Open)
-            {
-                string ErrorReason = string.Empty;
-                string update = $"UPDATE {TableName.ToUpper()} SET ";
-
-                // 构建 SET 子句
-                List<string> updateClauses = new List<string>();
-                foreach (var kvp in UpdateColumns)
-                {
-                    updateClauses.Add($"{kvp.Key.ToUpper()} = :{kvp.Key}");
-                }
-                update += string.Join(", ", updateClauses);
-
-                // 构建 WHERE 子句
-                string whereClause = " WHERE ";
-                List<string> conditionClauses = new List<string>();
-                foreach (var kvp in ConditionColumns)
-                {
-                    conditionClauses.Add($"{kvp.Key.ToUpper()} = :{kvp.Key}");
-                }
-                whereClause += string.Join(" AND ", conditionClauses);
-                update += whereClause;
-
-                try
-                {
-                    using (OracleCommand cmd = new OracleCommand(update, oConn))
-                    {
-                        // 添加更新列的参数
-                        foreach (var kvp in UpdateColumns)
-                        {
-                            cmd.Parameters.Add(new OracleParameter($":{kvp.Key}", kvp.Value ?? DBNull.Value));
-                        }
-
-                        // 添加条件列的参数
-                        foreach (var kvp in ConditionColumns)
-                        {
-                            cmd.Parameters.Add(new OracleParameter($":{kvp.Key}", kvp.Value ?? DBNull.Value));
-                        }
-
-                        int AffectedRow = cmd.ExecuteNonQuery();
-                        Debug.WriteLine($"更新了{AffectedRow}行");
-                        
-                        return new Tuple<bool, string>(true, $"更新了{AffectedRow}行");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    ErrorReason = $"更新操作，报错为：{ex.Message}";
-                    Debug.WriteLine(ErrorReason);
-                    return new Tuple<bool, string>(false, ErrorReason);
-                }
-            }
-            else
-            {
-                Debug.WriteLine("更新操作，数据库未连接");
-                return new Tuple<bool, string>(false, "数据库未连接");
-            }
-        }
-
-
         // 复杂查询操作
         public Tuple<bool, string> QueryWithCustomSelect(string selectClause, string fromClause, string whereClause, OracleParameter[] parameters)
         {
@@ -568,6 +566,11 @@ namespace DatabaseProject.DataAccessLayer.CommunityFeatureDAL
                 return new Tuple<bool, string>(IsQuerySuccess, ErrorReason);
             }
         }
+
+        
+
+
+        
     }
 }
 
