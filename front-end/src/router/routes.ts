@@ -62,11 +62,26 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/pages/Exp404.vue'),
   },
   {
-    path:'/hjxItem',
-    name:'hjxItem',
+    path:'/chat/:conversation_id',
+    name:'聊天',
     props:true,
-    component:() =>import('@/pages/hjx')
+    meta: {
+      renderMenu: false,
+      cacheable: true,
+    },
+    component:() =>import('@/pages/CommunityFeature/chat')
   },
+  {
+    path:'/ConversationList',
+    name:'消息',
+    props:true,
+    meta: {
+      renderMenu: true,
+      cacheable: true,
+    },
+    component:() =>import('@/pages/CommunityFeature/ConversationList')
+  },
+
 ];
 
 export default routes;

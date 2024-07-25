@@ -2,6 +2,9 @@
 import { ref } from 'vue';
 import ChatBubble from './ChatBubble.vue';
 import MessageInput from './MessageInput.vue';
+import axios from "axios";
+
+const BaseURL = import.meta.env.VITE_API_URL;
 
 interface Message {
   id: number;
@@ -31,6 +34,15 @@ function handleSendMessage(messageContent: string) {
       messages.value.push(newMessage);
       isSending.value = false;
     }, 500);
+  }
+}
+
+async function getMessages(){
+  console.log("getMessages");
+  try{
+    const res = await axios.post(`${BaseURL}/api/conversations`,{
+      "conversation_id":conversation_id
+    })
   }
 }
 </script>
