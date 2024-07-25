@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-  import { getBase64 } from '@/utils/file';
   import { ref } from 'vue';
   import { FormInstance } from 'ant-design-vue';
   import { message } from 'ant-design-vue';
@@ -39,6 +38,7 @@
         await axios.post('api/addNewFind', jsonFormData)
         getFinds()
         setTimeout(() => {
+          location.reload();
           message.success('提交成功！');
           loading.value = false;
           open.value = false;

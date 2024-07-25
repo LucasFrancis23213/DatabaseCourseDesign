@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import EditableCell from '@/components/editable-cell';
 import {
   EditFilled,
   FacebookOutlined,
@@ -7,46 +6,71 @@ import {
   TwitterOutlined,
 } from '@ant-design/icons-vue';
 import { reactive, ref } from 'vue';
+import { usePersonalDescription } from '@/store/personal';
 
 const profiles = reactive([
   {
-    label: 'Full Name',
+    label: '名称',
     content: 'Li Zhi',
   },
   {
-    label: 'Mobile',
+    label: '联系',
     content: '13678988900',
   },
   {
-    label: 'Email',
+    label: '邮箱',
     content: 'lizhi@firfox.com',
   },
   {
-    label: 'Location',
+    label: '地址',
     content: 'shenzheng.CN',
   },
 ]);
 
-const edit = ref(false)
+const open = ref<boolean>(false)
+const loading = ref<boolean>(false)
+const personalDescription = usePersonalDescription()
+const newPersonalDescription = ref<string>("")
+const editPersonalDescription = () => {
+  open.value = true
+}
+const submitNewPersonalDescription = () => {
+  personalDescription.updateDescription(newPersonalDescription.value)
+    loading.value = true
+    setTimeout(() => {
+          location.reload();
+          loading.value = false;
+          open.value = false;
+        }, 1000);
+}
+
 </script>
 <template>
-  <a-card title="Profile Information" class="profile-info rounded-xl shadow-lg" :bordered="false">
+  <a-card title="个人简介" class="profile-info rounded-xl shadow-lg" :bordered="false">
+    <a-modal v-model:visible="open" title="更改个人简介" >
+      <template #footer></template>
+      <a-form :labelCol="{ span: 5 }" :wrapperCol="{ span: 16 }" >
+        <a-form-item label="新个人简介" name="newDescription" has-feedback >
+          <a-input v-model:value="newPersonalDescription" :maxlength="200" />
+        </a-form-item>
+        <a-form-item :wrapper-col="{ offset: 10, span: 16 }">
+          <a-button type="primary" html-type="submit" @click="submitNewPersonalDescription" :loading="loading">更新</a-button>
+        </a-form-item>
+      </a-form>
+    </a-modal>
+
     <template #extra>
-      <EditFilled @click="edit = true" class="text-subtext hover:text-primary cursor-pointer" />
+      <EditFilled @click="editPersonalDescription" class="text-subtext hover:text-primary cursor-pointer" />
     </template>
     <div class="description">
-      <EditableCell :options="{ rows: 4 }" v-model:edit="edit" type="textarea" value="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no.
-      If two equally difficult paths, choose the one more painful in the short
-      term (pain avoidance is creating an illusion of equality).">
-      </EditableCell>
+      {{ personalDescription.description }}
     </div>
     <a-divider />
-    <div class="text-title font-medium">Oliver Liam</div>
     <a-descriptions class="profile-list mt-3 font-medium" :column="1">
       <a-descriptions-item :label="item.label" v-for="item in profiles">
         {{ item.content }}
       </a-descriptions-item>
-      <a-descriptions-item label="Contact">
+      <a-descriptions-item label="社交">
         <TwitterOutlined class="text-blue-400" />
         <FacebookOutlined class="text-blue-800" />
         <InstagramOutlined class="text-red-500" />
