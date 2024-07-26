@@ -11,6 +11,7 @@ using Newtonsoft.Json.Linq;
 using Oracle.ManagedDataAccess.Client;
 using System.Data;
 using System.Drawing;
+using Newtonsoft.Json;
 
 
 namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
@@ -295,9 +296,9 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
             else
             {
                 if (type == 0)
-                { TableName = "Lost_Item"; }
+                { TableName = "Lost_Items"; }
                 else if (type == 1)
-                { TableName = "Found_Item"; }
+                { TableName = "Found_Items"; }
                 else
                 {
                     string errorReason = "不合法的type值，请输入0/1！";
@@ -311,21 +312,29 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
 
                     using (OracleCommand cmd = new OracleCommand(DeleteSQL, OracleConnection))
                     {
+                        foreach (var condition in index)
+                        {
+                            cmd.Parameters.Add(new OracleParameter(condition.Key.ToUpper(), condition.Value ?? DBNull.Value));
+                        }
+
                         try
                         {
-                            // 添加参数
-                            foreach (var condition in index)
+                            using (OracleDataReader reader = cmd.ExecuteReader())
                             {
-                                cmd.Parameters.Add(new OracleParameter(condition.Key.ToUpper(), condition.Value ?? DBNull.Value));
+                                var results = new List<Dictionary<string, object>>();
+                                while (reader.Read())
+                                {
+                                    var row = new Dictionary<string, object>();
+                                    for (int i = 0; i < reader.FieldCount; i++)
+                                    {
+                                        row[reader.GetName(i)] = reader.IsDBNull(i) ? null : reader.GetValue(i);
+                                    }
+                                    results.Add(row);
+                                }
+                                return new Tuple<bool, string>(true, JsonConvert.SerializeObject(results));
                             }
-                            int AffectedRow = cmd.ExecuteNonQuery();
-                            Debug.WriteLine($"共{AffectedRow}行被查找");
-                            if (AffectedRow == 0)
-                            {
-                                return new Tuple<bool, string>(false, "没有查找到相应内容");
-                            }
-                            return new Tuple<bool, string>(true, ErrorReason);
                         }
+
                         catch (Exception ex)
                         {
                             ErrorReason = ex.Message;

@@ -15,3 +15,7 @@ front-end/stepin-template.session.sql
 front-end/docs/.vitepress/cache
 front-end/target
 front-end/components.d.ts
+Templates/BasicSQLOPs/bin/
+Templates/BasicSQLOPs/obj/
+Templates/WebAppTest/bin/
+Templates/WebAppTest/obj/

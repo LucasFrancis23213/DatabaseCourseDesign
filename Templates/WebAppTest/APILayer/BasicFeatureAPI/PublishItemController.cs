@@ -76,8 +76,42 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"In PublishItem Function,报错为：{ex.Message}");
+                Debug.WriteLine($"In PublishLostItem Function,报错为：{ex.Message}");
                 return false;
+            }
+        }
+
+        [Route("api/QueryItem")]
+        [HttpGet]
+        public IActionResult QueryItem([FromQuery] int type)
+        {
+            // type==0表格Lost_Item
+            // type==1表格Found_Item
+            try
+            {
+                Dictionary<string, object> Conditions = new Dictionary<string, object>();
+
+                // 添加一条where条件
+                Conditions.Add("Review_Status", "0");
+
+                Tuple<bool, string> OperationStatus = PublishItemObject.QueryItem(type, Conditions);
+
+                if (OperationStatus.Item1)
+                {
+                    // OperationStatus.Item2 包含 JSON 格式的数据
+                    return Ok(OperationStatus.Item2);
+                }
+                else
+                {
+                    return BadRequest("查询失败");
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"In QueryLostItem Function,报错为：{ex.Message}");
+                return StatusCode(500, "服务器内部错误");
             }
         }
     }
