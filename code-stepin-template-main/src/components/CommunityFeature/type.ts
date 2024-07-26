@@ -14,22 +14,30 @@ export interface Question {
     showAnswers: boolean;
     showAnswerInput: boolean;
 }
-export const formatTime = (time: Date) => {
-    const date = new Date(time);
-    return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
-};
-
-
-//***************************************待完善修改begin****************************************************************************
-//假设的数据的定义
-//假设User定义
+export interface Comment {
+    id: number;
+    user: User;
+    content: string;
+    time: Date;
+}
+export interface Activity {
+    id: number;
+    type: string;
+    score: number;
+    time: Date;
+}
 interface User {
     id: number;
     name: string;
     avatar: string;
 }
-export const item_id = 123; // 你需要根据实际情况设置物品ID
-const current_user_id = 1; // 当前用户的ID
+
+
+//***************************************待完善修改begin****************************************************************************
+//假设的数据的定义
+//假设User定义
+
+
 export const current_user : User = {
     id: 1,
     name: 'lzh_current',
@@ -79,8 +87,22 @@ export const testdata_Q2: Question = {
     showAnswerInput: false
 }
 import { ref } from "vue";
+import { getBeijingTime } from "./mytime";
 export const testdata_QL = ref([testdata_Q1,testdata_Q2]);
 
+const testcomment1 : Comment = {
+    id: 1,
+    user: testdata_User1,
+    content: "this testdata comment1",
+    time: getBeijingTime()
+}
+const testcomment2: Comment = {
+    id: 2,
+    user: testdata_User2,
+    content: "this testdata comment2",
+    time: getBeijingTime()
+}
+export const testcommentList = ref([testcomment1,testcomment2])
 
 //***************************************待完善修改end****************************************************************************
 

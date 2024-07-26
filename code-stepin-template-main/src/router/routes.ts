@@ -63,6 +63,8 @@ const routes: RouteRecordRaw[] = [
   },
 ];
 //Community Feature -- QandAList -- 路由添加
-import QandAListroute from './CommunityFeature/QandAListroute';
-routes.push(QandAListroute);
+import testRoute from './CommunityFeature/test';
+testRoute.forEach(route => {
+  routes.push(route);
+});
 export default routes;
