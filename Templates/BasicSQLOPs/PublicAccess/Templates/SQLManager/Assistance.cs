@@ -1,7 +1,5 @@
 ﻿using Oracle.ManagedDataAccess.Client;
 using SQLOperation.PublicAccess.Templates.TemplateInterfaceManager;
-using SqlSugar.Extensions;
-using System.ComponentModel.Design;
 using System.Data;
 using System.Diagnostics;
 

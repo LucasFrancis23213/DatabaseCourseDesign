@@ -3,10 +3,13 @@ using Oracle.ManagedDataAccess.Client;
 using System.Data;
 using System.Diagnostics;
 using SQLOperation.PublicAccess.Templates.SQLManager;
+using Newtonsoft.Json.Linq;
+using SQLOperation.PublicAccess.Utilities;
 
 namespace WebAppTest.APITemplate
 {
-    //[Route("api/[controller]")]//这是restful风格
+    //[Route("api/[controller]")]
+    //这是restful风格
 
     //这种就是直接在路由上就展示业务实现（展示函数名）
     [Route("api/[controller]/[action]")]
@@ -22,7 +25,14 @@ namespace WebAppTest.APITemplate
         private Connection conn;
         private OracleConnection OracleConnection;
         private BasicSQLOps SQLOps;
-        public SQLOpsController(string Uid = "cjh2251646", string Password = "123456", string DataSource = "localhost:1521/orclpdb")
+        //public SQLOpsController(string Uid = "cjh2251646", string Password = "123456", string DataSource = "localhost:1521/orclpdb")
+        //{
+        //    conn = new Connection(Uid, Password, DataSource);
+        //    OracleConnection = conn.GetOracleConnection();
+        //    SQLOps = new BasicSQLOps(conn);
+        //}
+
+        public SQLOpsController(string Uid = "ADMIN", string Password = "123456", string DataSource = "121.36.200.128:1521/ORCL")
         {
             conn = new Connection(Uid, Password, DataSource);
             OracleConnection = conn.GetOracleConnection();
@@ -36,9 +46,10 @@ namespace WebAppTest.APITemplate
                 OracleConnection.Open();
             try
             {
-                string result = string.Empty;
-                result = SQLOps.QueryOperation("instructor", "salary", 40000);
-                return result;
+                Tuple<bool, string> result;
+                //result = SQLOps.QueryOperation("instructor", "salary", 40000);
+                result = SQLOps.QueryOperation("auth_info", "user_id", 400);
+                return result.Item2;
             }
             catch (Exception ex)
             {
@@ -53,15 +64,34 @@ namespace WebAppTest.APITemplate
         }
 
         [HttpPost]
-        public bool Insert()
+        public bool Insert([FromBody] dynamic auth_info)
         {
 
             if (OracleConnection.State != ConnectionState.Open)
                 OracleConnection.Open();
             try
             {
-                bool InsertStatus = SQLOps.InsertOperation("TestTable", "ID", "2150988");
-                return InsertStatus;
+                // 将前端传入的json数据解析为数据类的流程
+                string JsonString = auth_info.ToString();
+                Debug.WriteLine("received json is " + JsonString);
+                JObject JO = JObject.Parse(JsonString);
+
+                Auth_Info AuthInfo = new Auth_Info();
+                try
+                {
+                    AuthInfo = JO.ToObject<Auth_Info>();
+                }
+                catch(Exception ex)
+                {
+                    Debug.WriteLine($"Json Deserialization Error: {ex.Message}");
+                    return false;
+                }
+                // 剩下的部分应该出现在业务逻辑层中，这里只是为了方便测试所以写在APi层了
+                List<string> ColumnNames = new List<string>() {"User_id","auth_status","auth_date","status"};
+                List<Object> Values = new List<Object>() {AuthInfo.User_ID,AuthInfo.Auth_Status,AuthInfo.Auth_Date,AuthInfo.Status };
+                //bool InsertStatus = SQLOps.InsertOperation("auth_info", new List<string> { "user_id", "auth_status", "auth_date", "status" }, new List<object> { 400, "not bad", new DateTime(2024, 7, 10, 12, 58, 30), "not approved" });
+                Tuple<bool, string> InsertStatus = SQLOps.InsertOperation("auth_info", ColumnNames, Values);
+                return InsertStatus.Item1;
             }
             catch (Exception ex)
             {
@@ -82,9 +112,10 @@ namespace WebAppTest.APITemplate
                 OracleConnection.Open();
             try
             {
-                bool DeleteStatus = false;
-                DeleteStatus = SQLOps.DeleteOperation("TestTable", "ID", "2150988");
-                return true;
+                Tuple<bool, string> DeleteStatus;
+                //DeleteStatus = SQLOps.DeleteOperation("TestTable", "ID", "2150988");
+                DeleteStatus = SQLOps.DeleteOperation("auth_info", "user_id", 400);
+                return DeleteStatus.Item1;
             }
             catch (Exception ex)
             {
@@ -104,8 +135,9 @@ namespace WebAppTest.APITemplate
                 OracleConnection.Open();
             try
             {
-                bool UpdateStatus = SQLOps.UpdateOperation("TestTable", "Name", "hkj", "ID", "2150987");
-                return UpdateStatus;
+                //bool UpdateStatus = SQLOps.UpdateOperation("TestTable", "Name", "hkj", "ID", "2150987");
+                Tuple<bool,string> UpdateStatus = SQLOps.UpdateOperation("auth_info", "auth_status", "ok", "user_id", 400);
+                return UpdateStatus.Item1;
             }
             catch (Exception ex)
             {

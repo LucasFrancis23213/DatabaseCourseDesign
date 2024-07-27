@@ -48,6 +48,19 @@
           }
         }
       },
+      "Newtonsoft.Json/13.0.3": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/Newtonsoft.Json.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Newtonsoft.Json.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Oracle.ManagedDataAccess.Core/3.21.130": {
         "type": "package",
         "dependencies": {
@@ -60,15 +73,6 @@
         },
         "runtime": {
           "lib/netstandard2.1/Oracle.ManagedDataAccess.dll": {}
-        }
-      },
-      "SqlSugar/5.1.4.148": {
-        "type": "package",
-        "compile": {
-          "lib/SqlSugar.dll": {}
-        },
-        "runtime": {
-          "lib/SqlSugar.dll": {}
         }
       },
       "Swashbuckle.AspNetCore/6.5.0": {
@@ -354,8 +358,8 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
-          "Oracle.ManagedDataAccess.Core": "3.21.130",
-          "SqlSugar": "5.1.4.148"
+          "Newtonsoft.Json": "13.0.3",
+          "Oracle.ManagedDataAccess.Core": "3.21.130"
         },
         "compile": {
           "bin/placeholder/SQLOperation.dll": {}
@@ -644,6 +648,36 @@
         "useSharedDesignerContext.txt"
       ]
     },
+    "Newtonsoft.Json/13.0.3": {
+      "sha512": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ==",
+      "type": "package",
+      "path": "newtonsoft.json/13.0.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "README.md",
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/net6.0/Newtonsoft.Json.dll",
+        "lib/net6.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.0/Newtonsoft.Json.dll",
+        "lib/netstandard1.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.3/Newtonsoft.Json.dll",
+        "lib/netstandard1.3/Newtonsoft.Json.xml",
+        "lib/netstandard2.0/Newtonsoft.Json.dll",
+        "lib/netstandard2.0/Newtonsoft.Json.xml",
+        "newtonsoft.json.13.0.3.nupkg.sha512",
+        "newtonsoft.json.nuspec",
+        "packageIcon.png"
+      ]
+    },
     "Oracle.ManagedDataAccess.Core/3.21.130": {
       "sha512": "bXNwPyAaDivO84HEYiegK7r/LleSEfA0nc70bE88wkqd1E0Q1+r/SUbJ51xOK2vk6iHbTSMuhnC79BU8svPBjQ==",
       "type": "package",
@@ -659,18 +693,6 @@
         "oracle.manageddataaccess.core.3.21.130.nupkg.sha512",
         "oracle.manageddataaccess.core.nuspec",
         "readme.txt"
-      ]
-    },
-    "SqlSugar/5.1.4.148": {
-      "sha512": "wAywV3APwoNhDD1/XkjPYRiXF7myYAiaceuE5bfSNZFPxHx2qhqSj8fsYbjNZ+ngxc/+xTmR68mtVzLSk13+kA==",
-      "type": "package",
-      "path": "sqlsugar/5.1.4.148",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/SqlSugar.dll",
-        "sqlsugar.5.1.4.148.nupkg.sha512",
-        "sqlsugar.nuspec"
       ]
     },
     "Swashbuckle.AspNetCore/6.5.0": {
@@ -1044,9 +1066,9 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "Newtonsoft.Json >= 13.0.3",
       "Oracle.ManagedDataAccess.Core >= 3.21.130",
       "SQLOperation >= 1.0.0",
-      "SqlSugar >= 5.1.4.148",
       "Swashbuckle.AspNetCore >= 6.5.0"
     ]
   },
@@ -1076,6 +1098,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -1103,13 +1126,13 @@
       "net8.0": {
         "targetAlias": "net8.0",
         "dependencies": {
+          "Newtonsoft.Json": {
+            "target": "Package",
+            "version": "[13.0.3, )"
+          },
           "Oracle.ManagedDataAccess.Core": {
             "target": "Package",
             "version": "[3.21.130, )"
-          },
-          "SqlSugar": {
-            "target": "Package",
-            "version": "[5.1.4.148, )"
           },
           "Swashbuckle.AspNetCore": {
             "target": "Package",
@@ -1135,20 +1158,8 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1701",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "已使用“.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1”而不是项目目标框架“net8.0”还原包“SqlSugar 5.1.4.148”。此包可能与项目不完全兼容。",
-      "libraryId": "SqlSugar",
-      "targetGraphs": [
-        "net8.0"
-      ]
-    }
-  ]
+  }
 }

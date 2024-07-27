@@ -6,7 +6,16 @@ using System.Diagnostics;
 
 namespace WebAppTest.APITemplate
 {
+
+    //HttpGet --> get方法
+    // get方法代表向数据库查询(select)
+    // post方法代表向数据库插入(insert into)
+    // put方法代表向数据库更新数据(update)
+    // delete方法用于在数据库里删除数据(delete)
+
+    //接口规则
     [Route("api/[controller]")]
+    //不用管为啥，照着抄就行
     [ApiController]
     public class ApiController : ControllerBase
     {

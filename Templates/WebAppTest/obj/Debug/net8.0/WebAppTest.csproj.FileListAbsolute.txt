@@ -70,7 +70,6 @@ D:\2023Spring\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\WebAppT
 D:\2023Spring\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\Microsoft.OpenApi.dll
 D:\2023Spring\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
 D:\2023Spring\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\Oracle.ManagedDataAccess.dll
-D:\2023Spring\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\SqlSugar.dll
 D:\2023Spring\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
 D:\2023Spring\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\2023Spring\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -116,3 +115,4 @@ D:\2023Spring\DatabaseCourseDesign\Templates\WebAppTest\obj\Debug\net8.0\refint\
 D:\2023Spring\DatabaseCourseDesign\Templates\WebAppTest\obj\Debug\net8.0\WebAppTest.pdb
 D:\2023Spring\DatabaseCourseDesign\Templates\WebAppTest\obj\Debug\net8.0\WebAppTest.genruntimeconfig.cache
 D:\2023Spring\DatabaseCourseDesign\Templates\WebAppTest\obj\Debug\net8.0\ref\WebAppTest.dll
+D:\2023Spring\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\Newtonsoft.Json.dll
