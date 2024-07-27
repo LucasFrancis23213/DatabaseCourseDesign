@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { defineProps, computed ,ref, defineEmits, onMounted,onUnmounted} from 'vue'
+import {  computed ,ref, onMounted,onUnmounted} from 'vue'
 import { useTimeFormat } from './useTimeFormat';
 const props = defineProps({
   content: {//聊天内容字符串

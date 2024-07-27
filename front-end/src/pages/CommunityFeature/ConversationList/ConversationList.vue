@@ -30,7 +30,7 @@ const BaseURL = import.meta.env.VITE_API_URL;
 
 let conversations = ref([]);
 const router = useRouter();
-let current_user_id = ref("12345");
+let current_user_id = ref(12345);
 async function getConversations() {
   console.log("getConversations");
   try {
@@ -64,9 +64,11 @@ const formatTime = (timeString) => {
   }
 }
 
-console.log(current_user_id.value);
+console.log("cuid是的数据类型是"+typeof current_user_id.value);
+
 const navigateToConversation = (conversation_id,current_user_id) => {
-  console.log(conversation_id,current_user_id);
+  console.log( conversation_id,current_user_id);
+  console.log( typeof conversation_id,typeof current_user_id);
   router.push({
     name: "聊天",
     params: {

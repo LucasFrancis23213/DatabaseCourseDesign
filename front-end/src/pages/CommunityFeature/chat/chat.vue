@@ -11,8 +11,8 @@ const BaseURL = import.meta.env.VITE_API_URL;
 
 const route =useRoute();
 
-const conversation_id  = ref(route.params.conversation_id);
-const current_user_id = ref(route.query.current_user_id);
+const conversation_id  = ref(+route.params.conversation_id);
+const current_user_id = ref(+route.query.current_user_id);
 
 const other_avatar = ref();
 
@@ -21,6 +21,7 @@ const other_name = ref();
 const messages = ref([]);
 
 const isSending = ref(false);
+console.log("cuid是的数据类型是"+typeof current_user_id.value);
 
 async function getMessages(){
   console.log("getMessages");
