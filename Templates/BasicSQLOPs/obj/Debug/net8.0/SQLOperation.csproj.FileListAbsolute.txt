@@ -158,3 +158,11 @@ D:\同济\大二下\数据库\期末大项目\DatabaseCourseDesign\Templates\Bas
 D:\同济\大二下\数据库\期末大项目\DatabaseCourseDesign\Templates\BasicSQLOPs\obj\Debug\net8.0\SQLOperation.pdb
 D:\同济\大二下\数据库\期末大项目\DatabaseCourseDesign\Templates\BasicSQLOPs\obj\Debug\net8.0\SQLOperation.genruntimeconfig.cache
 D:\同济\大二下\数据库\期末大项目\DatabaseCourseDesign\Templates\BasicSQLOPs\obj\Debug\net8.0\ref\SQLOperation.dll
+D:\2023Spring\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\Microsoft.OpenApi.dll
+D:\2023Spring\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\Renci.SshNet.Async.dll
+D:\2023Spring\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\Renci.SshNet.dll
+D:\2023Spring\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\SshNet.Security.Cryptography.dll
+D:\2023Spring\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\2023Spring\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\2023Spring\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\2023Spring\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\System.Xml.XPath.XmlDocument.dll

@@ -60,8 +60,6 @@ D:\2023Spring\DatabaseCourseDesign\DatabaseCourseDesign\Templates\WebAppTest\bin
 D:\2023Spring\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\SQLOperation.deps.json
 D:\2023Spring\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\SQLOperation.runtimeconfig.json
 D:\2023Spring\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\SQLOperation.exe
-D:\2023Spring\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\appsettings.Development.json
-D:\2023Spring\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\appsettings.json
 D:\2023Spring\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\WebAppTest.exe
 D:\2023Spring\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\WebAppTest.deps.json
 D:\2023Spring\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\WebAppTest.runtimeconfig.json
@@ -234,3 +232,7 @@ D:\同济\大二下\数据库\期末大项目\DatabaseCourseDesign\Templates\Web
 D:\同济\大二下\数据库\期末大项目\DatabaseCourseDesign\Templates\WebAppTest\obj\Debug\net8.0\WebAppTest.pdb
 D:\同济\大二下\数据库\期末大项目\DatabaseCourseDesign\Templates\WebAppTest\obj\Debug\net8.0\WebAppTest.genruntimeconfig.cache
 D:\同济\大二下\数据库\期末大项目\DatabaseCourseDesign\Templates\WebAppTest\obj\Debug\net8.0\ref\WebAppTest.dll
+D:\2023Spring\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\Renci.SshNet.Async.dll
+D:\2023Spring\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\Renci.SshNet.dll
+D:\2023Spring\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\SshNet.Security.Cryptography.dll
+D:\2023Spring\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\System.Xml.XPath.XmlDocument.dll
