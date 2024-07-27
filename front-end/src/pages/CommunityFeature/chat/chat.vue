@@ -207,6 +207,7 @@ onUnmounted(()=>{
     <MessageInput
       :is-sending="isSending"
       @send-message="handleSendMessage"
+      class="message-input"
     />
   </div>
 </template>
@@ -221,8 +222,17 @@ onUnmounted(()=>{
 }
 
 .messages-list {
+
   flex-grow: 1;
   overflow-y: auto;
   margin-bottom: 20px;
+}
+
+.message-input{
+
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 </style>

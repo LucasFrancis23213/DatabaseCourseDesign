@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { defineProps, computed ,ref, defineEmits, onMounted,onUnmounted} from 'vue'
-
+import { useTimeFormat } from './useTimeFormat';
 const props = defineProps({
   content: {//聊天内容字符串
     type: String,
@@ -28,35 +28,8 @@ const props = defineProps({
   },
 
 });
-
 const emit = defineEmits(['retract']);
-
-function formatTime(timeString) {
-  /*消息发送时间格式化
-  * args:
-  *   timeString:时间戳
-  * */
-  const now = new Date();
-  const time = new Date(timeString);
-  const diff = now - time;
-  const minutes = Math.floor(diff / 60000);
-  const hours = Math.floor(diff / 3600000);
-  const days = Math.floor(diff / 86400000);
-
-  if (minutes < 60) {
-    return `${minutes}分钟前`;
-  } else if (hours < 24) {
-    return time.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-  } else if (days === 1) {
-    return '昨天';
-  } else if (days < 7) {
-    return `${days}天前`;
-  } else {
-    return '7天前';
-  }
-}
-
-
+const { formattedTime } = useTimeFormat(props.time);
 const showRetract = ref(false); // 是否显示撤回按钮
 const retractMessage = (()=>{
   emit('retract',props.id);
@@ -78,7 +51,7 @@ const toggleRetract = ()=>{
       <div v-if="showRetract && props.isSelf" class="retract-action">
         <button @click="retractMessage">撤回</button>
       </div>
-      <div class="time">{{ formatTime(time) }}</div>
+      <div class="time">{{ formattedTime }}</div>
     </div>
   </div>
 </template>
@@ -144,5 +117,27 @@ const toggleRetract = ()=>{
 .self .time {
   margin-left: 0;
   margin-right: 10px;
+}
+button {
+  display: inline-block;
+  padding: 5px 7px;
+  font-size: 10px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  color: #ffffff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:active {
+  background-color: #004085;
 }
 </style>

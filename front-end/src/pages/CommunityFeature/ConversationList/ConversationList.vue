@@ -36,9 +36,9 @@ async function getConversations() {
   try {
     //const res = await axios.get(`${BaseURL}/api/conversations`);
     const res = await axios.post(`${BaseURL}/api/conversations`,{user_id:user_id.value})
-    //console.log(res);
+    console.log(res);
     conversations.value = res.data.conversations;
-    console.log("conversations are " + conversations);
+    //console.log("conversations are " + conversations);
   } catch (err) {
     console.log(err);
   }
