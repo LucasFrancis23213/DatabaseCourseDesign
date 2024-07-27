@@ -3,25 +3,27 @@ namespace SQLOperation.PublicAccess.Utilities
 {
     public class Lost_Item
     {
-        public int Item_ID;
+        public string Item_ID;
         public string Item_Name;
-        public string Category_ID;
+        public int Category_ID;
         public string Description;
         public string Lost_Location;
-        public int Lost_Date;
+        public DateTime Lost_Date;
         public int User_ID;
         public string Lost_Status;
         public int Review_Status;
+        public string Image_URL;
+        public int Tag_ID;
     }
 
     public class Found_Item
     {
         public int Item_ID;
         public string Item_Name;
-        public string Category_ID;
+        public int Category_ID;
         public string Description;
         public string Found_Location;
-        public int Found_Date;
+        public DateTime Found_Date;
         public int User_ID;
         public string Match_Status;
         public int Review_Status;
@@ -30,8 +32,8 @@ namespace SQLOperation.PublicAccess.Utilities
     public class Reward_Offers
     {
         public int User_ID;
-        public int Item_ID;
-        public string Reward_Amount;
+        public string Item_ID;
+        public int Reward_Amount;
         public string Status;
         public DateTime Release_Date;// 原来是int
         public DateTime Deadline;// 原来是int
@@ -39,7 +41,7 @@ namespace SQLOperation.PublicAccess.Utilities
     public class Item_Status_History
     {
         public int History_ID;
-        public int Change_Date;
+        public DateTime Change_Date;
         public int Item_ID;
         public string Preview_Status;
         public string New_Status;
@@ -64,14 +66,15 @@ namespace SQLOperation.PublicAccess.Utilities
         public int Review_Status;
     }
 
-    public class Item_Images
+    /*
+     * public class Item_Images
     {
         public int Image_ID;
         public string Image_URL;
         public int Item_ID;
         public string Description;
-        public int Review_Status;
     }
+    */
 
     public class Item_Claim_Processes
     {
