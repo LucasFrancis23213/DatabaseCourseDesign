@@ -6,8 +6,7 @@ import axios from "axios";
 import {useRoute} from 'vue-router';
 import * as signalR from '@microsoft/signalr';
 
-
-const BaseURL = import.meta.env.VITE_API_URL;
+axios.defaults.baseURL= import.meta.env.VITE_API_URL;
 
 const route =useRoute();
 
@@ -26,7 +25,7 @@ console.log("cuid是的数据类型是"+typeof current_user_id.value);
 async function getMessages(){
   console.log("getMessages");
   try{
-    const res = await axios.post(`${BaseURL}/api/conversations/${conversation_id.value}`,{
+    const res = await axios.post(`/api/conversations/${conversation_id.value}`,{
       "conversation_id":conversation_id.value,
       "current_user_id":current_user_id.value,
     });
@@ -81,7 +80,7 @@ function displayMessage(message) {
 async function sendMessageToBackend(message) {
   // 实现发送消息到后台的逻辑
   try {
-    const res = await axios.post(`${BaseURL}/api/conversations/messages`, message);
+    const res = await axios.post(`/api/conversations/messages`, message);
     console.log(res);
     return res;
   }catch (e) {
@@ -113,7 +112,7 @@ function isSelf(sender_id){
 }
 async function updateReadStatus(){
   try{
-    const res = await axios.post(`${BaseURL}/api/conversations/${conversation_id.value}/update_read_status`,
+    const res = await axios.post(`/api/conversations/${conversation_id.value}/update_read_status`,
         {conversation_id:conversation_id.value,
         current_user_id:current_user_id.value,});
     console.log(res);
@@ -127,7 +126,7 @@ async function retractMessage(message_id){
   console.log(message_id);
   // 处理撤回逻辑
   try{
-    const res = await axios.post(`${BaseURL}/api/messages/${message_id}/retract`,{
+    const res = await axios.post(`/api/messages/${message_id}/retract`,{
       message_id:+message_id,
       current_user_id:+current_user_id.value,
       time:new Date().toISOString(),
@@ -146,7 +145,7 @@ const connection = ref(null);
 
 const startConnection = async () =>{
   connection.value = new signalR.HubConnectionBuilder()
-      .withUrl(`${BaseURL}/chathub`)
+      .withUrl(`/chathub`)
       .build();
   try{
     await connection.value.start();
@@ -156,7 +155,7 @@ const startConnection = async () =>{
       if (message.data.receiver_user_id === current_user_id) {
         messages.value.push(message);
         try {
-          const res = await axios.post(`${BaseURL}/api/messages/receive`, {
+          const res = await axios.post(`/api/messages/receive`, {
             message_id: message.message_id,
             receiver_in_window: true,
             sender_user_id: message.sender_user_id,

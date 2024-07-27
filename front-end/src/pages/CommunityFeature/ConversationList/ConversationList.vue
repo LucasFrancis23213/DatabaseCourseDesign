@@ -26,7 +26,7 @@
 import {onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
 import axios from 'axios';
-const BaseURL = import.meta.env.VITE_API_URL;
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
 let conversations = ref([]);
 const router = useRouter();
@@ -34,8 +34,7 @@ let current_user_id = ref(12345);
 async function getConversations() {
   console.log("getConversations");
   try {
-    //const res = await axios.get(`${BaseURL}/api/conversations`);
-    const res = await axios.post(`${BaseURL}/api/conversations`,{current_user_id:current_user_id.value})
+    const res = await axios.post(`/api/conversations`,{current_user_id:current_user_id.value})
     console.log(res);
     conversations.value = res.data.conversations;
     //console.log("conversations are " + conversations);
