@@ -61,27 +61,16 @@ const routes: RouteRecordRaw[] = [
     },
     component: () => import('@/pages/Exp404.vue'),
   },
-  {
-    path:'/chat/:conversation_id',
-    name:'聊天',
-    props:true,
-    meta: {
-      renderMenu: false,
-      cacheable: true,
-    },
-    component:() =>import('@/pages/CommunityFeature/chat')
-  },
-  {
-    path:'/ConversationList',
-    name:'消息',
-    props:true,
-    meta: {
-      renderMenu: true,
-      cacheable: true,
-    },
-    component:() =>import('@/pages/CommunityFeature/ConversationList')
-  },
 
 ];
-
+//Community Feature -- QandAList -- 路由添加
+import testRoute from './CommunityFeature/test';
+testRoute.forEach(route => {
+  routes.push(route);
+});
+//CommunityFeature -- Message路由添加
+import messageRoute from "@/router/CommunityFeature/Message";
+messageRoute.forEach(route =>{
+  routes.push(route);
+})
 export default routes;
