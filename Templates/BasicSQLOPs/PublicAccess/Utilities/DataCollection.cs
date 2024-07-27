@@ -1,29 +1,29 @@
 ﻿// 该C#文件里存储的是数据库表转化的数据类
+using System.Text.Json.Serialization;
+
 namespace SQLOperation.PublicAccess.Utilities
 {
     public class Lost_Item
     {
-        public string Item_ID;
+        public int Item_ID;
         public string Item_Name;
-        public int Category_ID;
+        public string Category_ID;
         public string Description;
         public string Lost_Location;
-        public DateTime Lost_Date;
+        public int Lost_Date;
         public int User_ID;
         public string Lost_Status;
         public int Review_Status;
-        public string Image_URL;
-        public int Tag_ID;
     }
 
     public class Found_Item
     {
         public int Item_ID;
         public string Item_Name;
-        public int Category_ID;
+        public string Category_ID;
         public string Description;
         public string Found_Location;
-        public DateTime Found_Date;
+        public int Found_Date;
         public int User_ID;
         public string Match_Status;
         public int Review_Status;
@@ -32,8 +32,8 @@ namespace SQLOperation.PublicAccess.Utilities
     public class Reward_Offers
     {
         public int User_ID;
-        public string Item_ID;
-        public int Reward_Amount;
+        public int Item_ID;
+        public string Reward_Amount;
         public string Status;
         public DateTime Release_Date;// 原来是int
         public DateTime Deadline;// 原来是int
@@ -41,7 +41,7 @@ namespace SQLOperation.PublicAccess.Utilities
     public class Item_Status_History
     {
         public int History_ID;
-        public DateTime Change_Date;
+        public int Change_Date;
         public int Item_ID;
         public string Preview_Status;
         public string New_Status;
@@ -66,15 +66,14 @@ namespace SQLOperation.PublicAccess.Utilities
         public int Review_Status;
     }
 
-    /*
-     * public class Item_Images
+    public class Item_Images
     {
         public int Image_ID;
         public string Image_URL;
         public int Item_ID;
         public string Description;
+        public int Review_Status;
     }
-    */
 
     public class Item_Claim_Processes
     {
@@ -215,11 +214,17 @@ namespace SQLOperation.PublicAccess.Utilities
 
     public class Users
     {
-        public int User_ID;
-        public string User_Name;
-        public string Password;
-        public string Contact;
-        public string Status;
+        [JsonPropertyName("USER_ID")]
+        public int User_ID { get; set; }
+
+        [JsonPropertyName("USER_NAME")]
+        public string User_Name { get; set; }
+
+        [JsonPropertyName("PASSWORD_")]
+        public string Password { get; set; }
+
+        [JsonPropertyName("CONTACT")]
+        public string Contact { get; set; }
     }
 
     public class User_Subscriptions

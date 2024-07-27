@@ -30,7 +30,7 @@ namespace SQLOperation.PublicAccess.Templates.SQLManager
         }
         //模板函数：插入操作
         //TableName:string类型，插入的数据所在表的名字
-        //ColumnName:string类型，插入的列的名字
+        //ColumnName:string类型，插入的列的名字 
         public virtual Tuple<bool,string> InsertOperation(string TableName, List<string> ColumnName, List<object> Value)
         {
             if (OracleConnection.State == ConnectionState.Open)
@@ -104,7 +104,7 @@ namespace SQLOperation.PublicAccess.Templates.SQLManager
                         cmd.Parameters.Add(new OracleParameter("Value", Value ?? DBNull.Value));
                         int AffectedRow = cmd.ExecuteNonQuery();
                         Debug.WriteLine($"共{AffectedRow}行被删除");
-                        return new Tuple<bool, string>(true,ErrorReason);
+                        return new Tuple<bool, string>(true,AffectedRow.ToString());
                     }
                     catch (Exception ex)
                     {
