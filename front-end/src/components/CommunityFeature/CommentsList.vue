@@ -30,8 +30,8 @@ import { Comment } from './type';
 import { getBeijingTime,formatTime } from './mytime';
 
 // 定义基本访问 URL
-//axios.defaults.baseURL = 'https://localhost:44343'; // 替换为你的后端 API 地址
-axios.defaults.baseURL = 'https://acb4d0ca-93ca-4857-bbf7-c389031ad298.mock.pstmn.io';
+axios.defaults.baseURL = import.meta.env.VITE_API_URL; // 替换为你的后端 API 地址
+
 // 定义从父组件传递的属性
 const props = defineProps({
   item_id: String,
@@ -86,7 +86,7 @@ const addComment = async () => {
 const deleteComment = async (comment_id: number) => {
   try {
     const response = await axios.delete(`/api/comments/delete`,{
-      params: {
+      data: {
         comment_id: comment_id,
         user_id: current_user.id
       }   
