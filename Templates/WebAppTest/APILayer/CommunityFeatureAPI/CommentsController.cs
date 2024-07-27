@@ -107,9 +107,13 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
                     comments = commentsList.Select(comment => new
                     {
                         comment_id = comment.Item2.Comment_ID,
-                        user_id = comment.Item2.User_ID,
-                        user_name = comment.Item1.User_Name,
-                        user_avatar ="",
+
+                        user = new
+                        {
+                            user_id = comment.Item2.User_ID,
+                            user_name = comment.Item1.User_Name,
+                            user_avatar = ""
+                        },
                         content = comment.Item2.Content,
                         datetime = comment.Item2.Datetime
                     }).ToList()

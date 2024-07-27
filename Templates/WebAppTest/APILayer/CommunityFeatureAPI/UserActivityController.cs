@@ -42,8 +42,8 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
                     status = "success",
                     activities = activities.Select(activity => new
                     {
-                        activity_id = activity.Activity_ID,
-                        activity_type = activity.Activity_Type,
+                        id = activity.Activity_ID,
+                        type = activity.Activity_Type,
                         score = activity.Score,
                         datetime = activity.DateTime
                     }).ToList()

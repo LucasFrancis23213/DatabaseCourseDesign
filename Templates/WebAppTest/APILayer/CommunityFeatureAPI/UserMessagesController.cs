@@ -292,14 +292,13 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
                 // 构建响应体
                 var response = new
                 {
-                    status = "success",
                     sender_user_name = userInfo.User_Name,
                     sender_user_avatar = ""
                 };
 
 
                 // 返回成功状态，不返回任何内容
-                return Ok();
+                return Ok(response);
             }
             catch (Exception ex)
             {
