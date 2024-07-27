@@ -12,7 +12,7 @@ const BaseURL = import.meta.env.VITE_API_URL;
 const route =useRoute();
 
 const conversation_id  = ref(route.params.conversation_id);
-const user_id = ref(route.query.user_id);
+const current_user_id = ref(route.query.current_user_id);
 
 const other_avatar = ref();
 
@@ -27,7 +27,7 @@ async function getMessages(){
   try{
     const res = await axios.post(`${BaseURL}/api/conversations/${conversation_id.value}`,{
       "conversation_id":conversation_id.value,
-      "current_user_id":user_id.value,
+      "current_user_id":current_user_id.value,
     });
     console.log(res);
     messages.value = res.data.messages;
@@ -50,8 +50,8 @@ async function handleSendMessage(message) {
     content: message,
     type:'text',
     time: new Date().toISOString(),
-    sender:user_id.value,
-    current_user_id: user_id.value, // 假设这是用户发送的消息
+    sender:current_user_id.value,
+    current_user_id: current_user_id.value, // 假设这是用户发送的消息
   };
   console.log(newMessage);
   // 在前端立即显示消息（回显）
@@ -106,13 +106,13 @@ function displayErrorMessage(errorMessage) {
 }
 
 function isSelf(sender_id){
-  return sender_id === user_id.value;
+  return sender_id === current_user_id.value;
 }
 async function updateReadStatus(){
   try{
     const res = await axios.post(`${BaseURL}/api/conversations/${conversation_id.value}/update_read_status`,
         {conversation_id:conversation_id.value,
-        current_user_id:user_id.value,});
+        current_user_id:current_user_id.value,});
     console.log(res);
   }catch(e){
     console.log(e);
@@ -144,10 +144,10 @@ const startConnection = async () =>{
     console.log("SignalR Connected. ");
 
     connection.value.on('ReceiveMessage',async (message) => {
-      if (message.data.receiver_user_id === user_id) {
+      if (message.data.receiver_user_id === current_user_id) {
         messages.value.push(message);
         try {
-          const res = await axios.post(`${BaseURL}/api/messsages/receive`, {
+          const res = await axios.post(`${BaseURL}/api/messages/receive`, {
             message_id: message.message_id,
             receiver_in_window: true,
             sender_user_id: message.sender_user_id,
@@ -216,7 +216,6 @@ onUnmounted(()=>{
 .chat-container {
   display: flex;
   flex-direction: column;
-  //height: 100vh;
   padding: 20px;
   box-sizing: border-box;
 }

@@ -4,7 +4,7 @@
     <div v-for="conversation in conversations"
          :key="conversation.id"
          class="conversation-item"
-         @click="navigateToConversation(conversation.id,user_id)"
+         @click="navigateToConversation(conversation.id,current_user_id)"
     >
       <img :src="conversation.avatar" :alt="conversation.name" class="avatar">
       <div class="conversation-details">
@@ -30,12 +30,12 @@ const BaseURL = import.meta.env.VITE_API_URL;
 
 let conversations = ref([]);
 const router = useRouter();
-let user_id = ref("12345");
+let current_user_id = ref("12345");
 async function getConversations() {
   console.log("getConversations");
   try {
     //const res = await axios.get(`${BaseURL}/api/conversations`);
-    const res = await axios.post(`${BaseURL}/api/conversations`,{user_id:user_id.value})
+    const res = await axios.post(`${BaseURL}/api/conversations`,{current_user_id:current_user_id.value})
     console.log(res);
     conversations.value = res.data.conversations;
     //console.log("conversations are " + conversations);
@@ -64,9 +64,9 @@ const formatTime = (timeString) => {
   }
 }
 
-console.log(user_id.value);
-const navigateToConversation = (conversation_id,user_id) => {
-  console.log(conversation_id,user_id);
+console.log(current_user_id.value);
+const navigateToConversation = (conversation_id,current_user_id) => {
+  console.log(conversation_id,current_user_id);
   router.push({
     name: "聊天",
     params: {
@@ -74,7 +74,7 @@ const navigateToConversation = (conversation_id,user_id) => {
 
     },
     // 如果你想传递额外的数据，可以使用 query 参数
-    query: { "user_id":user_id, }
+    query: { "current_user_id":current_user_id, }
   })
 }
 
