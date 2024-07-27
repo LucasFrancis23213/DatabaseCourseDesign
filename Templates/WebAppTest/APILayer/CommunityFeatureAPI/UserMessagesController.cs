@@ -29,9 +29,10 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
         {
             try
             {
-                int current_user_id = requestData["current_user_id"].GetInt32();
+                int currentUserId = requestData["current_user_id"].GetInt32();
+                
                 // 获取当前用户的所有会话
-                var conversations = userMessages.FindAllUserConversations(current_user_id);
+                var conversations = userMessages.FindAllUserConversations(currentUserId);
 
 
                 // 构建返回结果
@@ -43,7 +44,7 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
                     var userInfo = conversation.Users;
                    
                     // 根据会话中的 user1_id 和 user2_id 确定对方用户的 ID
-                    int otherUserId = current_user_id == userConversation.Sender_User_ID? userConversation.Receiver_User_ID : userConversation.Sender_User_ID;
+                    int otherUserId = currentUserId == userConversation.Sender_User_ID? userConversation.Receiver_User_ID : userConversation.Sender_User_ID;
 
                     // 构建会话对象
                     var conversationObject = new
@@ -198,6 +199,7 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
                         
                     };
                     // 向指定
+                    
                     if (ChatHub.onlineUsers.TryGetValue(success.Receiver_User_ID, out string connectionId))
                     {
                         // 使用 HubContext 发送消息

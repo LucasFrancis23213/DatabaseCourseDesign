@@ -41,7 +41,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
                 var itemId = request["item_id"].GetString();
                 var userId = request["user_id"].GetInt32();
                 var content = request["content"].GetString();
-                var time = request["time"].GetDateTime();
+                DateTime time = request["time"].GetDateTime();
 
                 int commentId = commentService.PostComment(itemId, userId, content, time);
                 userActivity.AddUserActivity(userId, "评论", time);
@@ -106,16 +106,16 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
                     status = "success",
                     comments = commentsList.Select(comment => new
                     {
-                        comment_id = comment.Item2.Comment_ID,
+                        id = comment.Item2.Comment_ID,
 
                         user = new
                         {
-                            user_id = comment.Item2.User_ID,
-                            user_name = comment.Item1.User_Name,
-                            user_avatar = ""
+                            id = comment.Item2.User_ID,
+                            name = comment.Item1.User_Name,
+                            avatar = ""
                         },
                         content = comment.Item2.Content,
-                        datetime = comment.Item2.Datetime
+                        time = comment.Item2.Datetime.ToLocalTime()
                     }).ToList()
                 };
 

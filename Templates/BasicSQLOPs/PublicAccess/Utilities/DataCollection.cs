@@ -51,7 +51,7 @@
     public class Questions
     {
         public int Question_ID { get; set; }
-        public int Item_ID { get; set; }
+        public string Item_ID { get; set; }
         public int User_ID { get; set; }
         public string Question_Content { get; set; }
         public DateTime Question_Time { get; set; }

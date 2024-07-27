@@ -28,12 +28,12 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
             try
             {
                 // 检查是否包含 user_id 参数
-                if (!request.ContainsKey("user_id"))
+                if (!request.ContainsKey("current_user_id"))
                 {
                     return BadRequest(new { status = "error", message = "缺少 user_id 参数" });
                 }
 
-                var userId = request["user_id"].GetInt32();
+                var userId = request["current_user_id"].GetInt32();
                 var activities = userActivityService.ViewRecentActivities(userId);
 
                 // 格式化响应
@@ -45,7 +45,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
                         id = activity.Activity_ID,
                         type = activity.Activity_Type,
                         score = activity.Score,
-                        datetime = activity.DateTime
+                        time = activity.DateTime
                     }).ToList()
                 };
 

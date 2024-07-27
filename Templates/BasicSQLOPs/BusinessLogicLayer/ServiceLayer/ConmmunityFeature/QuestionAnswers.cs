@@ -29,7 +29,7 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
         }
 
         // 根据物品id获取 users和questions
-        public List<Tuple<Users, Questions>> GetQuestionsByItemId(int itemId)
+        public List<Tuple<Users, Questions>> GetQuestionsByItemId(string itemId)
         {
             try
             {
@@ -148,7 +148,7 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
         }
 
         // 根据问题内容和相关物品id进行提问操作 返回问题id
-        public int PostQuestion(string questionContent, int itemId, int userId, DateTime time)
+        public int PostQuestion(string questionContent, string itemId, int userId, DateTime time)
         {
             try
             {

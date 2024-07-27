@@ -43,7 +43,7 @@ app.MapControllers();
 
 
 // 配置 SignalR 路由
-app.MapHub<ChatHub>("/chatHub");
+app.MapHub<ChatHub>("/chathub");
 app.UseCors("AllowSpecificOrigin"); // Use the CORS policy
 
 app.Run();

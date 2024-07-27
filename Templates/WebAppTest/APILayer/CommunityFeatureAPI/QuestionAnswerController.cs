@@ -39,7 +39,7 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
                 }
 
                 // 使用 GetInt32 方法直接获取整数类型的值
-                var itemId = requestData["item_id"].GetInt32();
+                var itemId = requestData["item_id"].GetString();
 
                 // 调用 QuestionAnswers 类中的方法获取问题列表
                 var questions = questionAnswers.GetQuestionsByItemId(itemId);
@@ -67,7 +67,7 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
                             avatar = "" // 用户头像URL
                         },
                         content = question.Item2.Question_Content, // 问题内容
-                        time = question.Item2.Question_Time, // 提出问题时间
+                        time = question.Item2.Question_Time.ToLocalTime(), // 提出问题时间
                         answers = answersList.Select(a => new
                         {
                             id = a.Item2.Answer_ID, // 回答ID
@@ -78,7 +78,7 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
                                 avatar = "" // 这里需要从用户信息中获取
                             },
                             content = a.Item2.Answer_Content, // 回答内容
-                            time = a.Item2.Answer_Date // 回答时间
+                            time = a.Item2.Answer_Date.ToLocalTime() // 回答时间
                         }).ToList()
                     };
                     // 添加到响应列表中
@@ -133,7 +133,7 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
                             avatar = "" // 这里需要从用户信息中获取
                         },
                         content = a.Item2.Answer_Content,
-                        time = a.Item2.Answer_Date
+                        time = a.Item2.Answer_Date.ToLocalTime()
                     }).ToList()
                 };
 
@@ -167,7 +167,7 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
 
                 // 获取 content, item_id 和 current_user_id 参数
                 string content = requestData["content"].GetString();
-                int itemId = requestData["item_id"].GetInt32();
+                string itemId = requestData["item_id"].GetString();
                 int userId = requestData["current_user_id"].GetInt32();
                 DateTime time = requestData["time"].GetDateTime();
 

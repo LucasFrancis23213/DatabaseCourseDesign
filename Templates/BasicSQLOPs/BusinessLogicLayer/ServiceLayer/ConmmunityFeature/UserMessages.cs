@@ -140,11 +140,11 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
 
                 }
 
-
-                // 将合并后的会话转换为列表并按最后一条消息时间由近到远排序返回
+                // 将合并后的会话转换为列表，并按 unread_count 从高到低排序，再按最后一条消息时间由近到远排序
                 return mergedConversations.Values
-                                          .OrderByDescending(conversation => conversation.Conversation.Last_Message_Time)
-                                          .ToList();
+                    .OrderByDescending(conversation => conversation.Conversation.Unread_Count)
+                    .ThenByDescending(conversation => conversation.Conversation.Last_Message_Time)
+                    .ToList();
             }
             catch (Exception ex)
             {
@@ -320,20 +320,17 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
                     throw new Exception("消息已超过5分钟无法撤回。");
                 }
 
-                Dictionary<string, object> updateColumns = new Dictionary<string, object>
+                Dictionary<string, object> deleteColumns = new Dictionary<string, object>
                 {
-                    {"message_content","撤回了一条信息" },
-                    {"message_type","retract" },
-                    {"read_status","Y" }
+                    {"message_id",messageId }
                 };
-                int updatedRow = UserMessagesBusiness.UpdateBusiness(updateColumns, condition);
+                bool deleteRow = UserMessagesBusiness.RemoveBusiness(deleteColumns);
                 // 如果成功撤回
-                if (updatedRow>0)
+                if (deleteRow)
                 {
                     message.Message_Content = "撤回了一条消息";
                     message.Message_Type = "retract";
                     message.Read_Status = "Y";
-                    
                     
                     return message;
                 }

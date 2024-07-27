@@ -53,7 +53,7 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
         {
             try
             {
-
+                
                 var activity = UserActivitiesBusiness.PackageData(0, userId, activityType, score, datetime);
 
                 return UserActivitiesBusiness.AddBusiness(UserActivityList, "ACTIVITY_ID", activity);
@@ -70,6 +70,7 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
         {
             try
             {
+                
                 Dictionary<string, object> updateColumns = new Dictionary<string, object>
                     {
                         { "ACTIVITY_TYPE", activityType },
