@@ -40,7 +40,7 @@ let activitiesList = ref<Activity[]>([]);
 let overallScore = ref<number>();
 
 // 定义基本访问 URL
-//axios.defaults.baseURL = 'https://aa062a3f-a7ef-4a07-be8b-011e24c08aa7.mock.pstmn.io'; // 替换为你的后端 API 地址
+axios.defaults.baseURL = import.meta.env.VITE_API_URL; // 替换为你的后端 API 地址
 
 
 const props = defineProps({
@@ -53,7 +53,7 @@ const toggleActicities = () => {
 
 const fetchOverallScore = async() => {
     try{
-        const response = await axios.post('https://7c2b6100-b376-4f68-81d3-7518ce517c93.mock.pstmn.io/api/overallactivity/overall', {current_user_id});
+        const response = await axios.post('/api/overallactivity/overall', {current_user_id});
         if(response.data.status === 'success') {
             overallScore.value = response.data.overall_score;
         }
@@ -64,7 +64,7 @@ const fetchOverallScore = async() => {
 
 const fetchActivities = async() => {
     try {
-        const response = await axios.post('https://aa062a3f-a7ef-4a07-be8b-011e24c08aa7.mock.pstmn.io/api/activity/recent', {current_user_id});
+        const response = await axios.post('/api/activity/recent', {current_user_id});
         if (response.data.status === 'success') {
             activitiesList.value = response.data.activities;
         }

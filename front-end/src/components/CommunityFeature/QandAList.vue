@@ -73,7 +73,7 @@ let newAnswerContent = ref('');             //文本框中输入的回答内容
 
 
 // 定义基本访问 URL
-axios.defaults.baseURL = 'https://localhost:44343'; // 替换为你的后端 API 地址
+axios.defaults.baseURL = import.meta.env.VITE_API_URL; // 替换为你的后端 API 地址
 
 //控制 查看回答 按钮的函数
 const toggleAnswers = (question: Question) => {
