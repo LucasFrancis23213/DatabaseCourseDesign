@@ -3,6 +3,16 @@
   "WorkspaceRootPath": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\BasicSQLOPs\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{C38BBC15-C338-4273-9DEA-83F333F42DC1}|SQLOperation.csproj|f:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\templates\\basicsqlops\\publicaccess\\templates\\sqlmanager\\connection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C38BBC15-C338-4273-9DEA-83F333F42DC1}|SQLOperation.csproj|solutionrelative:publicaccess\\templates\\sqlmanager\\connection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6B51281-D084-407E-9C8A-23C634543442}|..\\WebAppTest\\WebAppTest.csproj|f:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\templates\\webapptest\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6B51281-D084-407E-9C8A-23C634543442}|..\\WebAppTest\\WebAppTest.csproj|f:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\templates\\webapptest\\apilayer\\communityfeatureapi\\overallactivitycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{E6B51281-D084-407E-9C8A-23C634543442}|..\\WebAppTest\\WebAppTest.csproj|f:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\templates\\webapptest\\apilayer\\communityfeatureapi\\commentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -15,9 +25,6 @@
     },
     {
       "AbsoluteMoniker": "D:0:0:{E6B51281-D084-407E-9C8A-23C634543442}|..\\WebAppTest\\WebAppTest.csproj|f:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\templates\\webapptest\\apilayer\\communityfeatureapi\\questionanswercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E6B51281-D084-407E-9C8A-23C634543442}|..\\WebAppTest\\WebAppTest.csproj|f:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\templates\\webapptest\\apilayer\\communityfeatureapi\\overallactivitycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E6B51281-D084-407E-9C8A-23C634543442}|..\\WebAppTest\\WebAppTest.csproj|f:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\templates\\webapptest\\apilayer\\communityfeatureapi\\userpostscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
@@ -61,15 +68,8 @@
       "RelativeMoniker": "D:0:0:{C38BBC15-C338-4273-9DEA-83F333F42DC1}|SQLOperation.csproj|solutionrelative:businesslogiclayer\\communityfeaturebll\\communityfeaturebusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C38BBC15-C338-4273-9DEA-83F333F42DC1}|SQLOperation.csproj|f:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\templates\\basicsqlops\\publicaccess\\templates\\sqlmanager\\connection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C38BBC15-C338-4273-9DEA-83F333F42DC1}|SQLOperation.csproj|solutionrelative:publicaccess\\templates\\sqlmanager\\connection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{C38BBC15-C338-4273-9DEA-83F333F42DC1}|SQLOperation.csproj|f:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\templates\\basicsqlops\\publicaccess\\utilities\\communityfeatureutil\\communityfeaturedatacollection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C38BBC15-C338-4273-9DEA-83F333F42DC1}|SQLOperation.csproj|solutionrelative:publicaccess\\utilities\\communityfeatureutil\\communityfeaturedatacollection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E6B51281-D084-407E-9C8A-23C634543442}|..\\WebAppTest\\WebAppTest.csproj|f:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\templates\\webapptest\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C38BBC15-C338-4273-9DEA-83F333F42DC1}|SQLOperation.csproj|f:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\templates\\basicsqlops\\publicaccess\\templates\\sqlmanager\\basicsqlops.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -139,32 +139,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "SQLOperation",
-              "DocumentMoniker": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
-              "RelativeDocumentMoniker": "SQLOperation.csproj",
-              "ToolTip": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
-              "RelativeToolTip": "SQLOperation.csproj",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2024-07-25T10:37:46.006Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "Assistance.cs",
               "DocumentMoniker": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\BasicSQLOPs\\PublicAccess\\Templates\\SQLManager\\Assistance.cs",
               "RelativeDocumentMoniker": "PublicAccess\\Templates\\SQLManager\\Assistance.cs",
@@ -172,38 +147,37 @@
               "RelativeToolTip": "PublicAccess\\Templates\\SQLManager\\Assistance.cs",
               "ViewState": "AQIAAA0AAAAAAAAAAAAowAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-15T14:10:57.245Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-15T14:10:57.245Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "CommentsController.cs",
               "DocumentMoniker": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\WebAppTest\\APILayer\\CommunityFeatureAPI\\CommentsController.cs",
               "RelativeDocumentMoniker": "..\\WebAppTest\\APILayer\\CommunityFeatureAPI\\CommentsController.cs",
               "ToolTip": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\WebAppTest\\APILayer\\CommunityFeatureAPI\\CommentsController.cs",
               "RelativeToolTip": "..\\WebAppTest\\APILayer\\CommunityFeatureAPI\\CommentsController.cs",
-              "ViewState": "AQIAAAYAAAAAAAAAAAAAABgAAAAAAAAA",
+              "ViewState": "AQIAABkAAAAAAAAAAAAowBgAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-25T05:32:54.106Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 2,
               "Title": "OverallActivityController.cs",
               "DocumentMoniker": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\WebAppTest\\APILayer\\CommunityFeatureAPI\\OverallActivityController.cs",
               "RelativeDocumentMoniker": "..\\WebAppTest\\APILayer\\CommunityFeatureAPI\\OverallActivityController.cs",
               "ToolTip": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\WebAppTest\\APILayer\\CommunityFeatureAPI\\OverallActivityController.cs",
               "RelativeToolTip": "..\\WebAppTest\\APILayer\\CommunityFeatureAPI\\OverallActivityController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAuwEEAAAAQAAAA",
+              "ViewState": "AQIAAEIAAAAAAAAAAAAIwEEAAAAQAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-25T05:47:11.671Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "UserActivityController.cs",
               "DocumentMoniker": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\WebAppTest\\APILayer\\CommunityFeatureAPI\\UserActivityController.cs",
               "RelativeDocumentMoniker": "..\\WebAppTest\\APILayer\\CommunityFeatureAPI\\UserActivityController.cs",
@@ -211,12 +185,49 @@
               "RelativeToolTip": "..\\WebAppTest\\APILayer\\CommunityFeatureAPI\\UserActivityController.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAE4AAABAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-25T05:41:16.925Z",
+              "WhenOpened": "2024-07-25T05:41:16.925Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\WebAppTest\\Program.cs",
+              "RelativeDocumentMoniker": "..\\WebAppTest\\Program.cs",
+              "ToolTip": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\WebAppTest\\Program.cs",
+              "RelativeToolTip": "..\\WebAppTest\\Program.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAArAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-25T08:50:54.301Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
+              "Title": "Connection.cs",
+              "DocumentMoniker": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\BasicSQLOPs\\PublicAccess\\Templates\\SQLManager\\Connection.cs",
+              "RelativeDocumentMoniker": "PublicAccess\\Templates\\SQLManager\\Connection.cs",
+              "ToolTip": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\BasicSQLOPs\\PublicAccess\\Templates\\SQLManager\\Connection.cs",
+              "RelativeToolTip": "PublicAccess\\Templates\\SQLManager\\Connection.cs",
+              "ViewState": "AQIAAAsAAAAAAAAAAAAYwBEAAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-15T16:03:29.053Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "SQLOperation.csproj",
+              "DocumentMoniker": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
+              "RelativeDocumentMoniker": "SQLOperation.csproj",
+              "ToolTip": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
+              "RelativeToolTip": "SQLOperation.csproj",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-07-25T10:37:46.006Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "QuestionAnswerController.cs",
               "DocumentMoniker": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\WebAppTest\\APILayer\\CommunityFeatureAPI\\QuestionAnswerController.cs",
               "RelativeDocumentMoniker": "..\\WebAppTest\\APILayer\\CommunityFeatureAPI\\QuestionAnswerController.cs",
@@ -224,12 +235,11 @@
               "RelativeToolTip": "..\\WebAppTest\\APILayer\\CommunityFeatureAPI\\QuestionAnswerController.cs",
               "ViewState": "AQIAAMUAAAAAAAAAAAAiwPcAAABwAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-25T04:33:54.439Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-25T04:33:54.439Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "UserPostsController.cs",
               "DocumentMoniker": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\WebAppTest\\APILayer\\CommunityFeatureAPI\\UserPostsController.cs",
               "RelativeDocumentMoniker": "..\\WebAppTest\\APILayer\\CommunityFeatureAPI\\UserPostsController.cs",
@@ -237,12 +247,11 @@
               "RelativeToolTip": "..\\WebAppTest\\APILayer\\CommunityFeatureAPI\\UserPostsController.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-25T04:48:55.979Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-25T04:48:55.979Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 9,
               "Title": "UserActivity.cs",
               "DocumentMoniker": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\BasicSQLOPs\\BusinessLogicLayer\\ServiceLayer\\ConmmunityFeature\\UserActivity.cs",
               "RelativeDocumentMoniker": "BusinessLogicLayer\\ServiceLayer\\ConmmunityFeature\\UserActivity.cs",
@@ -255,7 +264,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 10,
               "Title": "Comments.cs",
               "DocumentMoniker": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\BasicSQLOPs\\BusinessLogicLayer\\ServiceLayer\\ConmmunityFeature\\Comments.cs",
               "RelativeDocumentMoniker": "BusinessLogicLayer\\ServiceLayer\\ConmmunityFeature\\Comments.cs",
@@ -263,12 +272,11 @@
               "RelativeToolTip": "BusinessLogicLayer\\ServiceLayer\\ConmmunityFeature\\Comments.cs",
               "ViewState": "AQIAAAkAAAAAAAAAAAAAAAsAAABLAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-25T04:50:19.16Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-25T04:50:19.16Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 11,
               "Title": "DataCollection.cs",
               "DocumentMoniker": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\BasicSQLOPs\\PublicAccess\\Utilities\\DataCollection.cs",
               "RelativeDocumentMoniker": "PublicAccess\\Utilities\\DataCollection.cs",
@@ -276,12 +284,11 @@
               "RelativeToolTip": "PublicAccess\\Utilities\\DataCollection.cs",
               "ViewState": "AQIAAEUAAAAAAAAAAAA1wFYAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-09T14:17:48.802Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-09T14:17:48.802Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 12,
               "Title": "UserMessagesController.cs",
               "DocumentMoniker": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\WebAppTest\\APILayer\\CommunityFeatureAPI\\UserMessagesController.cs",
               "RelativeDocumentMoniker": "..\\WebAppTest\\APILayer\\CommunityFeatureAPI\\UserMessagesController.cs",
@@ -289,12 +296,11 @@
               "RelativeToolTip": "..\\WebAppTest\\APILayer\\CommunityFeatureAPI\\UserMessagesController.cs",
               "ViewState": "AQIAABgBAAAAAAAAAAAowBUBAAAnAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-25T04:36:45.507Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-25T04:36:45.507Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 13,
               "Title": "UserMessages.cs",
               "DocumentMoniker": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\BasicSQLOPs\\BusinessLogicLayer\\ServiceLayer\\ConmmunityFeature\\UserMessages.cs",
               "RelativeDocumentMoniker": "BusinessLogicLayer\\ServiceLayer\\ConmmunityFeature\\UserMessages.cs",
@@ -302,12 +308,11 @@
               "RelativeToolTip": "BusinessLogicLayer\\ServiceLayer\\ConmmunityFeature\\UserMessages.cs",
               "ViewState": "AQIAALgAAAAAAAAAAAAuwB8AAABTAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-16T08:13:15.379Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-16T08:13:15.379Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 14,
               "Title": "QuestionAnswers.cs",
               "DocumentMoniker": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\BasicSQLOPs\\BusinessLogicLayer\\ServiceLayer\\ConmmunityFeature\\QuestionAnswers.cs",
               "RelativeDocumentMoniker": "BusinessLogicLayer\\ServiceLayer\\ConmmunityFeature\\QuestionAnswers.cs",
@@ -315,12 +320,11 @@
               "RelativeToolTip": "BusinessLogicLayer\\ServiceLayer\\ConmmunityFeature\\QuestionAnswers.cs",
               "ViewState": "AQIAAAQAAAAAAAAAAAAswDwAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-15T15:55:22.056Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-15T15:55:22.056Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 15,
               "Title": "UserPosts.cs",
               "DocumentMoniker": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\BasicSQLOPs\\BusinessLogicLayer\\ServiceLayer\\ConmmunityFeature\\UserPosts.cs",
               "RelativeDocumentMoniker": "BusinessLogicLayer\\ServiceLayer\\ConmmunityFeature\\UserPosts.cs",
@@ -328,12 +332,11 @@
               "RelativeToolTip": "BusinessLogicLayer\\ServiceLayer\\ConmmunityFeature\\UserPosts.cs",
               "ViewState": "AQIAAAYAAAAAAAAAAAAAAAYAAAA4AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-16T06:38:54.603Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-16T06:38:54.603Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 16,
               "Title": "MergedDAL.cs",
               "DocumentMoniker": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\BasicSQLOPs\\DataAccessLayer\\CommunityFeatureDAL\\MergedDAL.cs",
               "RelativeDocumentMoniker": "DataAccessLayer\\CommunityFeatureDAL\\MergedDAL.cs",
@@ -341,12 +344,11 @@
               "RelativeToolTip": "DataAccessLayer\\CommunityFeatureDAL\\MergedDAL.cs",
               "ViewState": "AQIAAOwBAAAAAAAAAAAowBEAAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-16T02:38:26.163Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-16T02:38:26.163Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 17,
               "Title": "CommunityFeatureBusiness.cs",
               "DocumentMoniker": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\BasicSQLOPs\\BusinessLogicLayer\\CommunityFeatureBLL\\CommunityFeatureBusiness.cs",
               "RelativeDocumentMoniker": "BusinessLogicLayer\\CommunityFeatureBLL\\CommunityFeatureBusiness.cs",
@@ -354,25 +356,11 @@
               "RelativeToolTip": "BusinessLogicLayer\\CommunityFeatureBLL\\CommunityFeatureBusiness.cs",
               "ViewState": "AQIAABABAAAAAAAAAAD4v04BAAAvAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-16T02:39:50.066Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-16T02:39:50.066Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "Connection.cs",
-              "DocumentMoniker": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\BasicSQLOPs\\PublicAccess\\Templates\\SQLManager\\Connection.cs",
-              "RelativeDocumentMoniker": "PublicAccess\\Templates\\SQLManager\\Connection.cs",
-              "ToolTip": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\BasicSQLOPs\\PublicAccess\\Templates\\SQLManager\\Connection.cs",
-              "RelativeToolTip": "PublicAccess\\Templates\\SQLManager\\Connection.cs",
-              "ViewState": "AQIAAAgAAAAAAAAAAAAYwBEAAAAIAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-15T16:03:29.053Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 18,
               "Title": "CommunityFeatureDataCollection.cs",
               "DocumentMoniker": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\BasicSQLOPs\\PublicAccess\\Utilities\\CommunityFeatureUtil\\CommunityFeatureDataCollection.cs",
               "RelativeDocumentMoniker": "PublicAccess\\Utilities\\CommunityFeatureUtil\\CommunityFeatureDataCollection.cs",
@@ -380,21 +368,7 @@
               "RelativeToolTip": "PublicAccess\\Utilities\\CommunityFeatureUtil\\CommunityFeatureDataCollection.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAuAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-18T08:33:53.802Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "Program.cs",
-              "DocumentMoniker": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\WebAppTest\\Program.cs",
-              "RelativeDocumentMoniker": "..\\WebAppTest\\Program.cs",
-              "ToolTip": "F:\\\u6570\u636E\u5E93\u8BFE\u7A0B\u8BBE\u8BA1\\gitpush\\Templates\\WebAppTest\\Program.cs",
-              "RelativeToolTip": "..\\WebAppTest\\Program.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAArAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-25T08:50:54.301Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-18T08:33:53.802Z"
             },
             {
               "$type": "Document",
@@ -419,8 +393,7 @@
               "RelativeToolTip": "..\\WebAppTest\\APITemplate\\LoginController.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABUAAAA8AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-25T05:51:58.774Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-25T05:51:58.774Z"
             },
             {
               "$type": "Document",
@@ -432,8 +405,7 @@
               "RelativeToolTip": "BusinessLogicLayer\\CommunityFeatureBLL\\ICommunityFeatureBusiness.cs",
               "ViewState": "AQIAAAMAAAAAAAAAAAAuwBQAAAAMAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-16T02:43:37.518Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-16T02:43:37.518Z"
             },
             {
               "$type": "Document",
@@ -445,8 +417,7 @@
               "RelativeToolTip": "..\\WebAppTest\\APITemplate\\ApiController.cs",
               "ViewState": "AQIAAA8AAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-25T05:51:53.767Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-25T05:51:53.767Z"
             },
             {
               "$type": "Document",
@@ -458,8 +429,7 @@
               "RelativeToolTip": "DataAccessLayer\\CommunityFeatureDAL\\IMergedDAL.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAuwAsAAAAcAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-16T02:42:38.234Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-16T02:42:38.234Z"
             },
             {
               "$type": "Document",
@@ -471,8 +441,7 @@
               "RelativeToolTip": "BusinessLogicLayer\\ServiceLayer\\ConmmunityFeature\\Add.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-25T04:33:32.171Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-25T04:33:32.171Z"
             },
             {
               "$type": "Document",
@@ -484,8 +453,7 @@
               "RelativeToolTip": "..\\..\\..\\DatabaseCourseDesign-main\\Templates\\WebAppTest\\APILayer\\CommunityFeatureAPI\\UserMessagesController.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAADkAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-15T14:09:31.794Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-15T14:09:31.794Z"
             },
             {
               "$type": "Document",
@@ -497,8 +465,7 @@
               "RelativeToolTip": "..\\..\\..\\DatabaseCourseDesign-main\\Templates\\WebAppTest\\Program.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAADEAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-15T14:08:28.506Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-15T14:08:28.506Z"
             },
             {
               "$type": "Document",
@@ -523,8 +490,7 @@
               "RelativeToolTip": "..\\..\\..\\DatabaseCourseDesign-main\\Templates\\WebAppTest\\APILayer\\CommunityFeatureAPI\\UserPostsController.cs",
               "ViewState": "AQIAAAkAAAAAAAAAAAAAADUBAABkAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-15T14:09:33.256Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-15T14:09:33.256Z"
             },
             {
               "$type": "Document",
@@ -536,8 +502,7 @@
               "RelativeToolTip": "..\\..\\..\\DatabaseCourseDesign-main\\Templates\\WebAppTest\\APILayer\\CommunityFeatureAPI\\ChatHub.cs",
               "ViewState": "AQIAABkAAAAAAAAAAAAowBcAAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-15T14:09:44.452Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-15T14:09:44.452Z"
             },
             {
               "$type": "Document",
@@ -549,8 +514,7 @@
               "RelativeToolTip": "..\\..\\..\\DatabaseCourseDesign-main\\Templates\\WebAppTest\\APITemplate\\ApiController.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAADQAAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-15T14:23:06.853Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-15T14:23:06.853Z"
             },
             {
               "$type": "Document",
@@ -562,8 +526,7 @@
               "RelativeToolTip": "..\\..\\..\\DatabaseCourseDesign-main\\Templates\\WebAppTest\\APITemplate\\LoginController.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-15T14:19:06.688Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-15T14:19:06.688Z"
             },
             {
               "$type": "Document",
@@ -575,8 +538,7 @@
               "RelativeToolTip": "..\\..\\..\\DatabaseCourseDesign-main\\Templates\\WebAppTest\\WebAppTest.http",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAADAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
-              "WhenOpened": "2024-07-15T14:11:18.13Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-15T14:11:18.13Z"
             },
             {
               "$type": "Document",
