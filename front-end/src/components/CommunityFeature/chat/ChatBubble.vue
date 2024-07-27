@@ -38,6 +38,23 @@ const retractMessage = (()=>{
 const toggleRetract = ()=>{
   showRetract.value=!showRetract.value;
 };
+const currentTime = ref(Date.now());//当前时间
+
+onMounted(() => {
+  const timer = setInterval(() => {
+    currentTime.value = Date.now();
+  }, 1000); // 每秒更新一次
+
+  onUnmounted(() => {
+    clearInterval(timer);
+  });
+});
+
+const isWithinFiveMinutes = computed(() => {
+  const messageTime = new Date(props.time).getTime();
+  const fiveMinutesInMs = 5 * 60 * 1000;
+  return currentTime.value - messageTime <= fiveMinutesInMs;
+});
 
 </script>
 
@@ -48,7 +65,7 @@ const toggleRetract = ()=>{
     </div>
     <div class="message-container" @mouseenter="toggleRetract" @mouseleave="toggleRetract">
       <div class="message"  >{{ content }}</div>
-      <div v-if="showRetract && props.isSelf" class="retract-action">
+      <div v-if="showRetract && props.isSelf && isWithinFiveMinutes" class="retract-action">
         <button @click="retractMessage">撤回</button>
       </div>
       <div class="time">{{ formattedTime }}</div>

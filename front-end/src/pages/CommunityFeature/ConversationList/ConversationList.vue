@@ -39,8 +39,9 @@ async function getConversations() {
     console.log(res);
     conversations.value = res.data.conversations;
     //console.log("conversations are " + conversations);
-  } catch (err) {
-    console.log(err);
+  } catch (e) {
+    console.log(e);
+    alert(`获取消息列表失败，错误信息为：${e}`);
   }
 }
 

@@ -36,8 +36,9 @@ async function getMessages(){
     other_avatar.value = res.data.avatar;
 
 
-  }catch (error){
-    console.log(error);
+  }catch (e){
+    console.log(e);
+    alert(`获取聊天历史记录失败，错误信息为：${e}`);
   }
 }
 async function handleSendMessage(message) {
@@ -85,6 +86,7 @@ async function sendMessageToBackend(message) {
     return res;
   }catch (e) {
     console.log(e);
+    alert(`发送消息失败，错误信息为：${e}`);
   }
 }
 
@@ -117,6 +119,7 @@ async function updateReadStatus(){
     console.log(res);
   }catch(e){
     console.log(e);
+    alert(`更新已读状态失败，错误信息为：${e}`);
   }
 }
 
@@ -124,10 +127,15 @@ async function retractMessage(message_id){
   console.log(message_id);
   // 处理撤回逻辑
   try{
-    const res = await axios.post(`${BaseURL}/api/messages/${message_id}/retract`);
+    const res = await axios.post(`${BaseURL}/api/messages/${message_id}/retract`,{
+      message_id:+message_id,
+      current_user_id:+current_user_id.value,
+      time:new Date().toISOString(),
+    });
     console.log(res);
   }catch (e){
     console.log(e);
+    alert(`撤回失败，错误信息为：${e}`);
   }
   console.log('撤回消息:', message_id)
   // 例如,从messages数组中移除该消息
@@ -157,6 +165,7 @@ const startConnection = async () =>{
           console.log(res);
         } catch (e) {
           console.error(e);
+          alert(e);
         }
 
       }
