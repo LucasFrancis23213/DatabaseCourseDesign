@@ -93,14 +93,15 @@
               to="/login"
               class="h-[46px] border-transparent hover:text-text hover:border-transparent text-lg text-text"
             >
-              <LogoutOutlined class="mr-xs" />
+              <LoginOutlined class="mr-xs" />
               Sign In
             </router-link>
-            <a-button
+             <!--此处删除了get started按钮-->
+            <!--<a-button
               class="ml-md px-lg border-text hover:border-text hover:bg-text border-2 h-[46px] hover:text-bg-container"
               size="large"
               >Get Started</a-button
-            >
+            >-->
           </div>
         </div>
         <div class="front-content px-xl">

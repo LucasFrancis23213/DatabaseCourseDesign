@@ -1,4 +1,6 @@
 ﻿// 该C#文件里存储的是数据库表转化的数据类
+using System.Text.Json.Serialization;
+
 namespace SQLOperation.PublicAccess.Utilities
 {
     public class Lost_Item
@@ -212,11 +214,17 @@ namespace SQLOperation.PublicAccess.Utilities
 
     public class Users
     {
-        public int User_ID;
-        public string User_Name;
-        public string Password;
-        public string Contact;
-        public string Status;
+        [JsonPropertyName("USER_ID")]
+        public int User_ID { get; set; }
+
+        [JsonPropertyName("USER_NAME")]
+        public string User_Name { get; set; }
+
+        [JsonPropertyName("PASSWORD_")]
+        public string Password { get; set; }
+
+        [JsonPropertyName("CONTACT")]
+        public string Contact { get; set; }
     }
 
     public class User_Subscriptions

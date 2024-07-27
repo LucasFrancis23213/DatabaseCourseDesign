@@ -5,8 +5,6 @@
   import axios from 'axios';
   import dayjs from 'dayjs'
 
-  const baseURL = 'https://localhost:44343/api/';
-
   type onePublish = {
     Item_ID?: string;
     Item_Name?: string;
@@ -61,7 +59,7 @@
         if (selectedFile.value) {
           const formData = new FormData();
           formData.append('file', selectedFile.value);
-          const res = await axios.post(baseURL + 'ItemPicUpload/upload?type=Lost', formData, {
+          const res = await axios.post('https://localhost:44343/api/ItemPicUpload/upload?type=Lost', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
@@ -79,14 +77,13 @@
         }
         const jsonFormData = JSON.stringify(form.value);
         console.log(jsonFormData);
-        await axios.post(baseURL + 'PublishItem/Lost', jsonFormData, {
+        await axios.post('https://localhost:44343/api/PublishItem/Lost', jsonFormData, {
           headers: {
             'Content-Type': 'application/json',
           },
         });
         getPublishs();
         setTimeout(() => {
-          location.reload();
           message.success('提交成功！');
           loading.value = false;
           open.value = false;
@@ -142,21 +139,10 @@
   const publishs = ref([]);
 
   const getPublishs = async () => {
-    try {
-      const res = await axios.get(baseURL + 'QueryItem', {
-        params: { type: 0 }
-      });
-      
-      // 假设返回的数据是一个数组或对象，直接赋值给 publishs
-      publishs.value = res.data;
-      
-      console.log('数据获取成功');
-      
-    } catch (error) {
-      console.error('获取数据时出错:', error);
-      // 可以在这里添加错误处理逻辑，比如设置一个错误状态
-    }
+    const res = await axios.get('api/publishs');
+    publishs.value = res.data;
   }
+
   onMounted(() => getPublishs());
 </script>
 

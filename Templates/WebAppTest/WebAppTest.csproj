@@ -19,7 +19,6 @@
   <ItemGroup>
     <Folder Include="APILayer\BasicFeatureAPI\" />
     <Folder Include="APILayer\CommunityFeatureAPI\" />
-    <Folder Include="APILayer\ManagementFeatureAPI\" />
   </ItemGroup>
 
 </Project>
