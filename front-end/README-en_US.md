@@ -16,7 +16,7 @@
 
 </div>
 
-简体中文 | [English](./README-en_US.md)
+English | [简体中文](./README.md)
 
 - 预览地址: https://stepin-template.pages.dev
 - 使用文档: https://docs.stepin-template.pages.dev
@@ -44,19 +44,19 @@
 
 ### 拉取代码
 
-```sh
+```bash
 git clone https://github.com/stepui/stepin-template.git
 ```
 
 ### 安装依赖
 
-```sh
+```bash
 yarn install
 ```
 
 ### 启动
 
-```sh
+```
 yarn dev
 ```
 
