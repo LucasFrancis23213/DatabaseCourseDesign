@@ -1,4 +1,6 @@
 import Mock from 'mockjs';
+import { useAccountStore } from '@/store';
+import { ref } from 'vue';
 
 const presetList = [
   {
@@ -107,12 +109,130 @@ const presetList = [
     cacheable: true,
     link: 'https://github.com/stepui/stepin-template',
   },
+  {
+    id: 11,
+    name: 'PublishSearchNotice',
+    title: 'PublishSearchNotice',
+    icon: '',
+    badge: '',
+    target: '_self',
+    path: '/PublishSearchNotice',
+    component: '@/pages/publishSearchNotice',
+    renderMenu: true,
+    parent: null,
+    permission: null,
+    cacheable: true,
+  },
+  {
+    id: 12,
+    name: 'PublishUnclaimedItem',
+    title: 'PublishUnclaimedItem',
+    icon: '',
+    badge: '',
+    target: '_self',
+    path: '/PublishUnclaimedItem',
+    component: '@/pages/publishUnclaimedItem',
+    renderMenu: true,
+    parent: null,
+    permission: null,
+    cacheable: true,
+  },
+];
+
+const adminList = [
+  {
+    id: 3,
+    name: 'personal',
+    title: '个人中心',
+    path: '/personal',
+    icon: 'ProfileOutlined',
+    permission: null,
+    component: '@/pages/personal',
+    renderMenu: false,
+    parent: null,
+  },
+  {
+    id: 13,
+    name: 'adminCenter',
+    title: '管理中心',
+    icon: 'DashboardOutlined',
+    badge: 'new',
+    target: '_self',
+    path: '/admin',
+    component: '@/pages/admin',
+    renderMenu: true,
+    parent: null,
+    permission: 'admin',
+    cacheable: true,
+  },
+  {
+    id: 14,
+    name: 'BasicFeature',
+    title: 'BasicFeature',
+    icon: '',
+    badge: null,
+    target: '_self',
+    path: '/admin_BasicFeature',
+    component: '@/pages/admin_BasicFeature',
+    renderMenu: true,
+    parent: null,
+    permission: 'admin',
+    cacheable: true,
+  },
+  {
+    id: 15,
+    name: 'CommunityFeature',
+    title: 'CommunityFeature',
+    icon: '',
+    badge: 3,
+    target: '_self',
+    path: '/admin_CommunityFeature',
+    component: '@/pages/admin_CommunityFeature',
+    renderMenu: true,
+    parent: null,
+    permission: 'admin',
+    cacheable: true,
+  },
+  {
+    id: 16,
+    name: 'ManagementFeature',
+    title: 'ManagementFeature',
+    icon: '',
+    badge: null,
+    target: '_self',
+    path: '/admin_ManagementFeature',
+    component: '@/pages/admin_ManagementFeature',
+    renderMenu: true,
+    parent: null,
+    children : [
+      {
+        id: 17,
+        name: 'chart',
+        title: 'chart',
+        icon: '',
+        badge: null,
+        target: '_self',
+        path: '/admin_ManagementFeature/chart',
+        component: '@/pages/admin_ManagementFeature/chart',
+        renderMenu: true,
+        parent: 'ManagementFeature',
+        permission: 'admin',
+        cacheable: true,
+      },
+    ],
+    permission: 'admin',
+    cacheable: true,
+  },
 ];
 
 function getMenuList() {
+  const {permissions}=useAccountStore();
   const menuStr = localStorage.getItem('stepin-menu');
   let menuList = [];
-  if (!menuStr) {
+  if(permissions.includes('admin')){
+    menuList = adminList;
+    localStorage.setItem('stepin-menu', JSON.stringify(menuList));
+  } else if (!menuStr) {
     menuList = presetList;
     localStorage.setItem('stepin-menu', JSON.stringify(menuList));
   } else {
