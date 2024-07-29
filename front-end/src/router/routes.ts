@@ -37,6 +37,14 @@ const routes: RouteRecordRaw[] = [
           view: 'blank',
         },
         component: () => import('@/pages/home'),
+      }, 
+      {
+        path: '/signup',
+        name: '注册',
+        meta: {
+          view: 'blank',
+        },
+        component: () => import('@/pages/signUp'),
       },
     ],
   },
@@ -60,6 +68,34 @@ const routes: RouteRecordRaw[] = [
       _is404Page: true,
     },
     component: () => import('@/pages/Exp404.vue'),
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: '404',
+    props: true,
+    meta: {
+      icon: 'CreditCardOutlined',
+      renderMenu: false,
+      cacheable: false,
+      _is404Page: true,
+    },
+    component: () => import('@/pages/Exp404.vue'),
+  },
+  {
+    path: '/PublishSearchNotice',
+    name: 'PublishSearchNotice',
+    meta: {
+      renderMenu: false,
+    },
+    component: () => import('@/pages/publishSearchNotice')
+  },
+  {
+    path: '/PublishUnclaimedItem',
+    name: 'PublishUnclaimedItem',
+    meta: {
+      renderMenu: false,
+    },
+    component: () => import('@/pages/publishUnclaimedItem')
   },
 
 ];
