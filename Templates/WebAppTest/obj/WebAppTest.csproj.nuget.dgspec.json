@@ -56,15 +56,11 @@
             },
             "Oracle.ManagedDataAccess.Core": {
               "target": "Package",
-              "version": "[3.21.130, )"
+              "version": "[23.5.0, )"
             },
             "Renci.SshNet.Async": {
               "target": "Package",
               "version": "[1.4.0, )"
-            },
-            "Swashbuckle.AspNetCore": {
-              "target": "Package",
-              "version": "[6.5.0, )"
             }
           },
           "imports": [
@@ -143,7 +139,7 @@
             },
             "Oracle.ManagedDataAccess.Core": {
               "target": "Package",
-              "version": "[3.21.130, )"
+              "version": "[23.5.0, )"
             },
             "Renci.SshNet.Async": {
               "target": "Package",
@@ -151,7 +147,7 @@
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[6.5.0, )"
+              "version": "[6.6.2, )"
             }
           },
           "imports": [

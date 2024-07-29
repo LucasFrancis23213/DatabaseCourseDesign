@@ -1,8 +1,107 @@
-﻿// 该C#文件里存储的是数据库表转化的数据类
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace SQLOperation.PublicAccess.Utilities
 {
+    public class User_Conversations
+    {
+        public int User1_ID { get; set; }
+        public int User2_ID { get; set; }
+        public int Last_Message_ID { get; set; }
+       
+
+        public int Unread_Count {  get; set; }
+    }
+
+
+    public class User_Messages
+    {
+        public int Message_ID { get; set; }
+        public string Message_Content { get; set; } // Corresponds to CLOB in SQL
+        public string Read_Status { get; set; }
+        public DateTime Send_Time { get; set; }
+        public string Message_Type { get; set; }
+        public int Sender_User_ID { get; set; }
+        public int Receiver_User_ID { get; set; }
+    }
+
+    public class User_Posts
+    {
+        public int Post_ID { get; set; }
+        public int User_ID { get; set; }
+        public string Content { get; set; }
+        public DateTime Post_Date { get; set; }
+        public int Popularity { get; set; }
+    }
+
+    public class User_Relationships
+    {
+        public int Relation_ID { get; set; }
+        public int User_ID1 { get; set; }
+        public int User_ID2 { get; set; }
+        public string Relation_Type { get; set; }
+        public DateTime Established_Date { get; set; }
+    }
+
+    public class Follow_List
+    {
+        public int Follow_ID { get; set; }
+        public int Follower_User_ID { get; set; }
+        public int Followed_User_ID { get; set; }
+        public DateTime Follow_Date { get; set; }
+    }
+
+    public class Questions
+    {
+        public int Question_ID { get; set; }
+        public string Item_ID { get; set; }
+        public int User_ID { get; set; }
+        public string Question_Content { get; set; }
+        public DateTime Question_Time { get; set; }
+
+       
+    }
+
+    public class Answers
+    {
+        public int Answer_ID { get; set; }
+        public int Question_ID { get; set; }
+        public int User_ID { get; set; }
+        public string Answer_Content { get; set; }
+        public DateTime Answer_Date { get; set; }
+    }
+    public class UserInfo
+    {
+        public string UserName { get; set; }
+        public string Password { get; set; }
+    }
+
+    public class Item_Comments
+    {
+        public int Comment_ID { get; set; }
+        public string Item_ID { get; set; }
+
+        public int User_ID { get; set; }
+        public string Content { get; set; }
+        public DateTime Datetime { get; set; }
+    }
+
+    public class User_Activity {
+        public int Activity_ID { get; set; }
+        public int User_ID { get; set; }
+        public string Activity_Type {  get; set; }
+
+        public int Score {  get; set; }
+
+        public DateTime DateTime { get; set; }
+    }
+
+    public class User_Points
+    {
+        public int User_ID { get; set; }
+        public int Points { get; set; }
+    }
+
+
     public class Lost_Item
     {
         public string Item_ID;
@@ -196,15 +295,6 @@ namespace SQLOperation.PublicAccess.Utilities
         public string Edit_Content;
     }
 
-    public class Item_Comments//
-    {
-        public int Comment_ID;
-        public int Item_ID;
-        public int User_ID;
-        public string Content;
-        public DateTime Date;
-    }
-
     public class User_Preferences
     {
         public int Preference_ID;
@@ -238,74 +328,6 @@ namespace SQLOperation.PublicAccess.Utilities
         public DateTime Release_Date;// 原来是int
     }
 
-    public class User_Activity
-    {
-        public int Activity_ID;
-        public int User_ID;
-        public int Activity_Type;
-        public int Score;
-        public DateTime Date;
-    }
-
-    public class User_Points
-    {
-        public int User_ID;
-        public int Points;
-    }
-
-    public class User_Messages
-    {
-        public int Message_ID;
-        public int Sender_User_ID;
-        public int Receiver_User_ID;
-        public string Message_Content;// SQL里是CLOB
-        public string Read_Status;
-    }
-
-    public class User_Posts
-    {
-        public int Post_ID;
-        public int User_ID;
-        public string Content;
-        public DateTime Post_Date;
-        public int Popularity;
-    }
-
-    public class User_Relationships
-    {
-        public int Relation_ID;
-        public int User_ID1;
-        public int User_ID2;
-        public string Relation_Type;
-        public DateTime Established_Date;
-    }
-
-    public class Follow_List
-    {
-        public int Follow_ID;
-        public int Follower_User_ID;
-        public int Followed_User_ID;
-        public DateTime Follow_Date;
-    }
-
-    public class Questions
-    {
-        public int Question_ID;
-        public int Item_ID;
-        public int User_ID;
-        public string Question_Content;
-        public DateTime Question_Time;
-        public int Subscriber_ID;
-    }
-
-    public class Answers
-    {
-        public int Answer_ID;
-        public int Question_ID;
-        public int User_ID;
-        public string Answer_Content;
-        public DateTime Answer_Date;
-    }
 
     public class Auth_Info
     {
@@ -315,7 +337,7 @@ namespace SQLOperation.PublicAccess.Utilities
         public string Status;
     }
 
-    public class System_Logs 
+    public class System_Logs
     {
         public int System_Log_ID;
         public string Operation_Type;
@@ -394,12 +416,6 @@ namespace SQLOperation.PublicAccess.Utilities
         public string Transaction_Type;
         public string Status;
     }
-    public class UserInfo
-    {
-        public string UserName { get; set; }
-        public string Password { get; set; }
-    }
-
 
 
 }

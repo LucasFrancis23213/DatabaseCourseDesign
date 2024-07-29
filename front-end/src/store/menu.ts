@@ -160,20 +160,11 @@ export const useMenuStore = defineStore('menu', () => {
       .finally(getMenuList);
   }
 
-  function clearMenu() {
-    menuList.value = [];  
-    router.options.routes = [];  
-  }
-
   return {
     menuList,
     getMenuList,
     addMenu,
     updateMenu,
     removeMenu,
-    clearMenu,
   };
-  
 });
-
-

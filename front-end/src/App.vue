@@ -27,6 +27,7 @@
       </stepin-view>
     </ThemeProvider>
   </a-config-provider>
+  <login-modal :unless="['/login']" />
 </template>
 
 <script lang="ts" setup>
@@ -36,40 +37,43 @@
   import avatar from '@/assets/avatar.png';
   import { PageFooter, HeaderActions } from '@/components/layout';
   import Setting from './components/setting';
+  import { LoginModal } from '@/pages/login';
   import { configTheme, themeList } from '@/theme';
   import { ThemeProvider } from 'stepin';
-  import { useAuthStore } from '@/plugins';
   import { computed } from 'vue';
 
-  const { logout, account, permissions} = useAccountStore();
+  const { logout, profile } = useAccountStore();
+
+  // 获取个人信息
+  profile().then((response) => {
+    const { account } = response;
+    user.name = account.username;
+    // user.avatar = account.avatar;
+  });
+
   const showSetting = ref(false);
   const router = useRouter();
+
+  useMenuStore().getMenuList();
 
   const { navigation, useTabs, theme, contentClass } = storeToRefs(useSettingStore());
   const themeConfig = computed(() => themeList.find((item) => item.key === theme.value)?.config ?? {});
 
   const user = reactive({
-    get name() {
-      return account.userName;
-    },
+    name: 'admin',
     avatar: avatar,
     menuList: [
-      { title: '个人中心', key: 'personal', icon: 'UserOutlined', onClick: () => router.push('./Personal') },
+      { title: '个人中心', key: 'personal', icon: 'UserOutlined', onClick: () => router.push('/profile') },
       { title: '设置', key: 'setting', icon: 'SettingOutlined', onClick: () => (showSetting.value = true) },
       { type: 'divider' },
       {
         title: '退出登录',
         key: 'logout',
         icon: 'LogoutOutlined',
-        onClick: () => logout().then(() => router.push('/home')),
+        onClick: () => logout().then(() => router.push('/login')),
       },
     ],
   });
-
-  if(user.name!==''){
-    useMenuStore().getMenuList();
-    useAuthStore().setAuthorities(permissions);
-  }
 
   function getPopupContainer() {
     return document.querySelector('.stepin-layout');

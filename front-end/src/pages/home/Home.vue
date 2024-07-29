@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+  import { GithubFilled } from '@ant-design/icons-vue';
   import { useRouter } from 'vue-router';
 
   const router = useRouter();
@@ -19,8 +20,9 @@
         @click="signIn"
         class="bg-primary-300 hover:bg-primary-400 cursor-pointer mt-lg shadow border-0 outline-none text-xl px-[64px] py-lg rounded-sm"
       >
-        Sign In and Start
+        Sign In and Start Preview
         <br />
+        <div class="text-base text-subtext"><GithubFilled /> @iczer</div>
       </button>
       <br />
       <div class="inline-block text-gray-200 text-xl mr-lg">Powered by:</div>
