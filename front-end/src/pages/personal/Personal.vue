@@ -78,14 +78,6 @@ const idCard = ref('');
 const isAuthModalVisible = ref(false); // 控制实名认证模态框显示
 const isDeleteModalVisible = ref(false); // 控制注销模态框显示
 
-
-// 当组件挂载完成后，从 Pinia store 加载用户信息
-onMounted(async () => {
-  if (accountStore.account.userName) { 
-    await accountStore.profile();
-  }
-});
-
 // 访问 userInfo 数据
 const userInfo = computed(() => ({
   username: accountStore.account.userName,

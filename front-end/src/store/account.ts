@@ -1,10 +1,9 @@
 import { defineStore } from 'pinia';
 import http from './http';
 import { useLoadingStore } from './loading';
-import axios from 'axios';
-import { Response } from '@/types';
 import { useMenuStore } from './menu';
 import { useAuthStore } from '@/plugins';
+import axios from 'axios';
 
 export interface Profile {
   account: Account;
@@ -41,7 +40,16 @@ export const useAccountStore = defineStore('account', {
         if (response.status === 200) {
           this.logged = true;
           this.account.userName = username;
+          if(username ==='admin'){
+            this.permissions.push('admin');
+          }
+          else{
+            this.permissions.push('user');
+          }
+          useAuthStore().setAuthorities(this.permissions);
           http.setAuthorization(`Bearer ${response.data.token}`, new Date(response.data.expires));
+          this.profile();
+          await useMenuStore().getMenuList();
           return { success: true, message: "登录成功！"};
         } 
       } catch (error) {
@@ -66,6 +74,8 @@ export const useAccountStore = defineStore('account', {
         http.removeAuthorization();
         this.logged = false;
         this.account.userName='';
+        this.permissions=[];
+        useMenuStore().clearMenu();
         resolve(true);
       });
     },
@@ -73,7 +83,7 @@ export const useAccountStore = defineStore('account', {
       const { setAuthLoading } = useLoadingStore();
       setAuthLoading(true);
       if(!this.account.userName){
-        return { account: this.account };
+        return { account: this};
       }
       else{
         try {
@@ -82,11 +92,11 @@ export const useAccountStore = defineStore('account', {
             this.account.userName = response.data.userName;
             this.account.userId = response.data.userID;
             this.account.contact = response.data.contact;
-            return { success: true, message: "用户信息加载成功", account: this.account };
+            return { success: true, message: "用户信息加载成功", account: this};
           } 
         } catch (error) {
           console.error('Failed to fetch user info:', error);
-          return { account: this.account };
+          return { account: this};
         } finally {
           setAuthLoading(false); // 确保加载状态在操作完成后被重置
         }

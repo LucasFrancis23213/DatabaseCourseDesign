@@ -19,7 +19,7 @@
             />
           </a-form-item>
           <a-form-item :required="true" name="password">
-            <a-input
+            <a-input-password
               v-model:value="form.password"
               autocomplete="new-password"
               placeholder="请输入自定义密码:"
@@ -27,17 +27,26 @@
               type="password"
             />
           </a-form-item>
+          <a-form-item>
+            <a-input-password
+              v-model:value="form.confirmPassword"
+              placeholder="请确认自定义密码:"
+              class="login-input h-[40px]"
+              type="password"
+            />
+            <p v-if="passwordMismatch" class="text-red-500" style="font-size: 0.8rem; margin-bottom:-20px">密码不一致</p>
+          </a-form-item>
           <a-form-item :required="true" name="contact">
             <a-input
               v-model:value="form.contact"
               autocomplete="new-contact"
-              placeholder="请输入联系方式（邮箱或手机号）:"
+              placeholder="请输入联系方式（手机号）:"
               class="login-input h-[40px]"
             />
           </a-form-item>
           <div class="terms">
             <label>
-              <input type="checkbox" id="agree" name="agree" required>
+              <input type="checkbox" id="agree" name="agree" required="true">
               同意我们的
               <span class="font-bold">用户条款</span>、
               <span class="font-bold">数据使用协议</span>、以及
@@ -45,15 +54,16 @@
             </label>
           </div>
           <a-divider></a-divider>
-          <a-button htmlType="submit" class="h-[40px] w-full" type="primary" :loading="loading"> 注册 </a-button>
+          <a-button htmlType="submit" class="h-[40px] w-full" type="primary" :loading="loading" :disabled="passwordMismatch"
+           :style="passwordMismatch ? { backgroundColor: '#ccc', color: '#666', borderColor: '#aaa' } : {}"> 注册 </a-button>
         </a-form>
       </div>
     </ThemeProvider>
   </template>
   <script lang="ts" setup>
-  import { reactive, ref } from 'vue';
+  import { reactive, ref, computed, watch } from 'vue';
   import { useRouter } from 'vue-router';
-  import axios from 'axios';  // 引入 axios
+  import axios from 'axios'; 
   import { ThemeProvider } from 'stepin';
   import { CloseCircleOutlined } from '@ant-design/icons-vue';
   import { message } from 'ant-design-vue';
@@ -61,6 +71,7 @@
   interface SignUpFormProps {
     username: string;
     password: string;
+    confirmPassword: string;
     contact: string;
   }
 
@@ -70,6 +81,7 @@
   const form = reactive<SignUpFormProps>({
     username: '',
     password: '',
+    confirmPassword: '',
     contact: ''
   });
 
@@ -77,6 +89,10 @@
     (e: 'success', fields: SignUpFormProps): void;
     (e: 'failure', reason: string, fields: SignUpFormProps): void;
   }>();
+
+  const passwordMismatch = computed(() => {
+    return form.password !== form.confirmPassword;
+  });
 
   function signUp() {
     loading.value = true;
