@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { reactive, ref, watch } from 'vue';
+  import { reactive, ref } from 'vue';
   import { useRouter } from 'vue-router';
   import { useAccountStore, useMenuStore, useSettingStore, storeToRefs } from '@/store';
   import avatar from '@/assets/avatar.png';
@@ -38,13 +38,12 @@
   import Setting from './components/setting';
   import { configTheme, themeList } from '@/theme';
   import { ThemeProvider } from 'stepin';
+  import { useAuthStore } from '@/plugins';
   import { computed } from 'vue';
 
-  const { logout, account} = useAccountStore();
+  const { logout, account, permissions} = useAccountStore();
   const showSetting = ref(false);
   const router = useRouter();
-
-  useMenuStore().getMenuList();
 
   const { navigation, useTabs, theme, contentClass } = storeToRefs(useSettingStore());
   const themeConfig = computed(() => themeList.find((item) => item.key === theme.value)?.config ?? {});
@@ -66,6 +65,11 @@
       },
     ],
   });
+
+  if(user.name!==''){
+    useMenuStore().getMenuList();
+    useAuthStore().setAuthorities(permissions);
+  }
 
   function getPopupContainer() {
     return document.querySelector('.stepin-layout');

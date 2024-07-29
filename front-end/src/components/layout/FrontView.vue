@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-  import { LogoutOutlined } from '@ant-design/icons-vue';
   import { onMounted } from 'vue';
   import { ThemeProvider, alert } from 'stepin';
 

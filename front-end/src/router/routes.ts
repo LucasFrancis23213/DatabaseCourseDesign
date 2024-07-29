@@ -72,11 +72,17 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/PublishSearchNotice',
     name: 'PublishSearchNotice',
+    meta: {
+      renderMenu: false,
+    },
     component: () => import('@/pages/publishSearchNotice')
   },
   {
     path: '/PublishUnclaimedItem',
     name: 'PublishUnclaimedItem',
+    meta: {
+      renderMenu: false,
+    },
     component: () => import('@/pages/publishUnclaimedItem')
   },
 ];
