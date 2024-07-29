@@ -1053,19 +1053,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\zyn\\.nuget\\packages\\": {}
+    "C:\\Users\\cjh15\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\同济\\大二下\\数据库\\期末大项目\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
+      "projectUniqueName": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
       "projectName": "SQLOperation",
-      "projectPath": "D:\\同济\\大二下\\数据库\\期末大项目\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
-      "packagesPath": "C:\\Users\\zyn\\.nuget\\packages\\",
-      "outputPath": "D:\\同济\\大二下\\数据库\\期末大项目\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\obj\\",
+      "projectPath": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
+      "packagesPath": "C:\\Users\\cjh15\\.nuget\\packages\\",
+      "outputPath": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\zyn\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\cjh15\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -1126,7 +1131,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
