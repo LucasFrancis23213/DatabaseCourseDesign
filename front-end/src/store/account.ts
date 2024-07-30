@@ -1,10 +1,9 @@
 import { defineStore } from 'pinia';
 import http from './http';
-import { Response } from '@/types';
+import { useLoadingStore } from './loading';
 import { useMenuStore } from './menu';
 import { useAuthStore } from '@/plugins';
-import { useLoadingStore } from './loading';
-import axios from 'axios'
+import axios from 'axios';
 
 export interface Profile {
   account: Account;
@@ -12,11 +11,10 @@ export interface Profile {
   role: string;
 }
 export interface Account {
-  username: string;
-  avatar: string;
-  gender: number;
+  userName: string;
+  userId:string;
+  contact:string;
 }
-
 export type TokenResult = {
   token: string;
   expires: number;
