@@ -1,4 +1,12 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using System.Net;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// 配置 Kestrel 只使用 HTTP
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.Listen(IPAddress.Any, 5000);  // 使用端口 5000，您可以根据需要更改
+});
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -27,7 +35,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.UseCors("AllowAllOrigins"); // Use the CORS policy
 

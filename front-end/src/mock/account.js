@@ -46,16 +46,16 @@ Mock.mock('api/account', 'get', ({}) => {
 });
 const arr = [
   {
-    "Category_ID": '手表',
-    "Description": '劳力士',
-    "Lost_Location": '公园',
-    "Lost_Date": '2024-07-01 15:30:48',
-    "Tag_ID":['贵重物品', '私人用品', '医疗用品', '66666666'],
-    "Image_URL": '/src/assets/avatar/face-2.jpg',
+    "CATEGORY_ID": '手表',
+    "DESCRIPTION": '劳力士',
+    "LOST_LOCATION": '公园',
+    "LOST_DATE": '2024-07-01 15:30:48',
+    "TAG_ID":['贵重物品', '私人用品', '医疗用品', '66666666'],
+    "IMAGE_URL": '/src/assets/avatar/face-2.jpg',
     "isRewarded": true,
-    "Reward_Amount": '80000',
-    "Deadline": '2024-07-01 15:30:48',
-    "Item_Name": 'Li Zhi',
+    "REWARD_AMOUNT": '80000',
+    "DEADLINE": '2024-07-01 15:30:48',
+    "ITEM_NAME": 'Li Zhi',
   },
   {
     "Item_Name": 'Li Zhi',
