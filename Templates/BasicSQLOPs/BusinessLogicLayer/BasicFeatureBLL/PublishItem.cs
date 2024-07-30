@@ -308,9 +308,9 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                 if (OracleConnection.State == ConnectionState.Open)
                 {
                     string ConditionString = string.Join(" AND ", index.Keys.Select(key => $"{key.ToUpper()} = :{key.ToUpper()}"));
-                    string DeleteSQL = $"SELECT * FROM {TableName.ToUpper()} WHERE {ConditionString}";
+                    string QuerySQL = $"SELECT * FROM {TableName.ToUpper()} NATURAL JOIN REWARD_OFFERS WHERE {ConditionString}";
 
-                    using (OracleCommand cmd = new OracleCommand(DeleteSQL, OracleConnection))
+                    using (OracleCommand cmd = new OracleCommand(QuerySQL, OracleConnection))
                     {
                         foreach (var condition in index)
                         {
