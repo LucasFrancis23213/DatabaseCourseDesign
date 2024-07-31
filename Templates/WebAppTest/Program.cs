@@ -40,7 +40,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-// app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
@@ -50,6 +50,6 @@ app.MapControllers();
 
 // 配置 SignalR 路由
 app.MapHub<ChatHub>("/chathub");
-app.UseCors("AllowSpecificOrigin"); // Use the CORS policy
+app.UseCors("AllowAllOrigins"); // Use the CORS policy
 
 app.Run();
