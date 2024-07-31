@@ -18,7 +18,7 @@ namespace SQLOperation.PublicAccess.Utilities
 
     public class Found_Item
     {
-        public int Item_ID;
+        public string Item_ID;
         public string Item_Name;
         public int Category_ID;
         public string Description;
