@@ -6,45 +6,41 @@ using SQLOperation.PublicAccess.Utilities.ManagementFeatureUtil;
 
 namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
 {
-    public class UserOpsLogsDAL : BaseDAL
+    public class SystemLogsDAL : BaseDAL
     {
         /// <summary>
-        /// Retrieves user operation logs.
+        /// Retrieves system logs.
         /// </summary>
-        /// <param name="ActivityLogID">The ID of the activity log (nullable).</param>
+        /// <param name="SystemLogID">The ID of the system log (nullable).</param>
+        /// <param name="OperationType">The type of operation (nullable).</param>
         /// <param name="UserID">The ID of the user (nullable).</param>
-        /// <param name="ActionType">The type of action performed by the user.</param>
-        /// <param name="StartTime">The start time for the log query (nullable).</param>
-        /// <param name="EndTime">The end time for the log query (nullable).</param>
         /// <returns>A tuple containing a boolean indicating success and the query result as a string.</returns>
-        public Tuple<bool, string> GetTargetLogs(
-            int? ActivityLogID,
-            int? UserID,
-            string ActionType,
-            DateTime? StartTime,
-            DateTime? EndTime)
+        public Tuple<bool, string> GetSystemLogs(
+            int? SystemLogID,
+            string OperationType,
+            int? UserID)
         {
-            return DoQuery(QueryGenerator(ActivityLogID, UserID, ActionType, StartTime, EndTime));
+            return DoQuery(QueryGenerator(SystemLogID, OperationType, UserID));
         }
 
         /// <summary>
-        /// Inserts a new user operation log.
+        /// Inserts a new system log.
         /// </summary>
-        /// <param name="NewInfo">An instance of User_Activity_Logs containing the information of the new log entry.</param>
+        /// <param name="NewInfo">An instance of System_Logs containing the information of the new log entry.</param>
         /// <returns>A tuple containing a boolean indicating success and the result of the insertion as a string.</returns>
-        public Tuple<bool, string> InsertNewLog(UserOpsLogsInsertUtil NewInfo)
+        public Tuple<bool, string> InsertNewLog(SystemLogsInsertUtil NewInfo)
         {
             return DoQuery(InsertGenerator(NewInfo));
         }
 
-        private Func<Tuple<bool, string>> InsertGenerator(UserOpsLogsInsertUtil NewInfo)
+        private Func<Tuple<bool, string>> InsertGenerator(SystemLogsInsertUtil NewInfo)
         {
             return () =>
             {
-                List<string> ColumnNames = ["USER_ID", "ACTION_TYPE", "OCCURRENCE_TIME"];
-                List<object> Values = [NewInfo.User_ID, NewInfo.Action_Type, NewInfo.Occurrence_Time];
+                List<string> ColumnNames = ["OPERATION_TYPE", "OPERATION_DETAILS", "USER_ID"];
+                List<object> Values = [NewInfo.OperationType, NewInfo.OperationDetails, NewInfo.UserID];
 
-                Tuple<bool, string> QueryResult = BasicSQLOps.InsertOperation("USER_ACTIVITY_LOGS", ColumnNames, Values);
+                Tuple<bool, string> QueryResult = BasicSQLOps.InsertOperation("SYSTEM_LOGS", ColumnNames, Values);
                 return QueryResult;
             };
         }
@@ -68,11 +64,9 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
         }
 
         private Func<Tuple<bool, string>> QueryGenerator(
-        int? activityLogID,
-        int? userID,
-        string actionType,
-        DateTime? startTime,
-        DateTime? endTime)
+            int? SystemLogID,
+            string OperationType,
+            int? UserID)
         {
             return () =>
             {
@@ -80,28 +74,26 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
                 {
                     try
                     {
-                        var query = "SELECT * FROM User_Activity_Logs WHERE 1=1";
+                        var query = "SELECT * FROM System_Logs WHERE 1=1";
                         var parameters = new List<OracleParameter>();
 
-                        AddParameterIfValueExists(ref query, parameters, "Activity_Log_ID", activityLogID);
-                        AddParameterIfValueExists(ref query, parameters, "User_ID", userID);
-                        AddParameterIfValueExists(ref query, parameters, "Action_Type", actionType);
-                        AddParameterIfValueExists(ref query, parameters, "Occurrence_Time", startTime, ">=");
-                        AddParameterIfValueExists(ref query, parameters, "Occurrence_Time", endTime, "<=");
+                        AddParameterIfValueExists(ref query, parameters, "System_Log_ID", SystemLogID);
+                        AddParameterIfValueExists(ref query, parameters, "Operation_Type", OperationType);
+                        AddParameterIfValueExists(ref query, parameters, "User_ID", UserID);
 
                         var command = new OracleCommand(query, OracleConnection);
                         command.Parameters.AddRange(parameters.ToArray());
 
                         var reader = command.ExecuteReader();
-                        var result = new List<User_Activity_Logs>();
+                        var result = new List<System_Logs>();
                         while (reader.Read())
                         {
-                            var log = new User_Activity_Logs
+                            var log = new System_Logs
                             {
                                 User_ID = reader.GetInt32(0),
-                                Action_Type = reader.GetString(1),
-                                Occurrence_Time = reader.GetDateTime(2),
-                                Activity_Log_ID = reader.GetInt32(3),
+                                Operation_Type = reader.GetString(1),
+                                Operation_Details = !reader.IsDBNull(2) ? reader.GetString(2) : string.Empty,
+                                System_Log_ID = reader.GetInt32(3)
                             };
                             result.Add(log);
                         }

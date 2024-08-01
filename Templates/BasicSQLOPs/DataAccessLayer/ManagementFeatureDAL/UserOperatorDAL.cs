@@ -2,51 +2,77 @@
 {
     public class UserOperatorDAL : BaseDAL
     {
-        /***********************************************************************
-         * 获取用户信息
-         * 输入参数: UserName - 用户名
-         * 返回值: 包含操作是否成功和查询结果的元组
-         ***********************************************************************/
+        /// <summary>
+        /// Get user ID by user name.
+        /// </summary>
+        /// <param ID="UserID">The userID of the user.</param>
+        /// <returns>A boolean indicating existence.</returns>
+        public bool CheckUserID(int UserID)
+        {
+            int MaxCheckTime = 5;
+            bool IsSucceed;
+            string Message;
+
+            do
+            {
+                (IsSucceed, Message) = DoQuery(CheckUserIDGenerator(UserID));
+            } while (!IsSucceed && Message != "Users表没有符合要求的元素" && --MaxCheckTime > 0);
+
+            return IsSucceed;
+        }
+
+        /// <summary>
+        /// Retrieves user information.
+        /// </summary>
+        /// <param name="UserName">The username of the user.</param>
+        /// <returns>A tuple containing a boolean indicating success and the query result as a string.</returns>
         public Tuple<bool, string> GetUserInfo(string UserName)
         {
             return DoQuery(GetUserInfoGenerator(UserName));
         }
 
-        /***********************************************************************
-         * 删除用户
-         * 输入参数: UserName - 用户名
-         * 返回值: 包含操作是否成功和删除结果的元组
-         ***********************************************************************/
+        /// <summary>
+        /// Deletes a user.
+        /// </summary>
+        /// <param name="UserName">The username of the user to be deleted.</param>
+        /// <returns>A tuple containing a boolean indicating success and the result of the deletion as a string.</returns>
         public Tuple<bool, string> DeleteUser(string UserName)
         {
             return DoQuery(DeleteUserGenerator(UserName));
         }
 
-        /***********************************************************************
-         * 插入用户
-         * 输入参数: 
-         *     UserName - 用户名
-         *     Password - 用户密码
-         *     Contact - 用户联系方式
-         * 返回值: 包含操作是否成功和插入结果的元组
-         ***********************************************************************/
+        /// <summary>
+        /// Inserts a new user.
+        /// </summary>
+        /// <param name="UserName">The username of the new user.</param>
+        /// <param name="Password">The password of the new user.</param>
+        /// <param name="Contact">The contact information of the new user.</param>
+        /// <returns>A tuple containing a boolean indicating success and the result of the insertion as a string.</returns>
         public Tuple<bool, string> InsertUser(string UserName, string Password, string Contact)
         {
             return DoQuery(InsertUserGenerator(UserName, Password, Contact));
         }
 
-        /***********************************************************************
-        * 修改用户信息
-        * 输入参数: 
-        *     UserID - 用户ID
-        *     UserName - 用户名
-        *     Password - 用户密码
-        *     Contact - 用户联系方式
-        * 返回值: 包含操作是否成功和修改结果的元组
-        ***********************************************************************/
+        /// <summary>
+        /// Updates user information.
+        /// </summary>
+        /// <param name="UserID">The ID of the user.</param>
+        /// <param name="UserName">The new username of the user.</param>
+        /// <param name="Password">The new password of the user.</param>
+        /// <param name="Contact">The new contact information of the user.</param>
+        /// <returns>A tuple containing a boolean indicating success and the result of the update as a string.</returns>
         public Tuple<bool, string> UpdateUserInfo(int UserID, string UserName, string Password, string Contact)
         {
             return DoQuery(UpdateUserInfoGenerator(UserID, UserName, Password, Contact));
+        }
+
+        private Func<Tuple<bool, string>> CheckUserIDGenerator(int UserID)
+        {
+            return () =>
+            {
+                Tuple<bool, string> QueryResult = BasicSQLOps.QueryOperation("Users", "User_ID", UserID);
+                return QueryResult;
+            };
         }
 
         private Func<Tuple<bool, string>> UpdateUserInfoGenerator(int UserID, string UserName, string Password, string Contact)

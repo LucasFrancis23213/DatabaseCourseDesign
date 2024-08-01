@@ -6,45 +6,45 @@ using SQLOperation.PublicAccess.Utilities.ManagementFeatureUtil;
 
 namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
 {
-    public class UserOpsLogsDAL : BaseDAL
+    public class SecurityEventsDAL : BaseDAL
     {
         /// <summary>
-        /// Retrieves user operation logs.
+        /// Retrieves security event logs.
         /// </summary>
-        /// <param name="ActivityLogID">The ID of the activity log (nullable).</param>
-        /// <param name="UserID">The ID of the user (nullable).</param>
-        /// <param name="ActionType">The type of action performed by the user.</param>
-        /// <param name="StartTime">The start time for the log query (nullable).</param>
-        /// <param name="EndTime">The end time for the log query (nullable).</param>
+        /// <param name="EventID">The ID of the event (nullable).</param>
+        /// <param name="EventType">The type of event (nullable).</param>
+        /// <param name="Status">The status of the event (nullable).</param>
+        /// <param name="StartTime">The start date for the event query (nullable).</param>
+        /// <param name="EndTime">The end date for the event query (nullable).</param>
         /// <returns>A tuple containing a boolean indicating success and the query result as a string.</returns>
-        public Tuple<bool, string> GetTargetLogs(
-            int? ActivityLogID,
-            int? UserID,
-            string ActionType,
+        public Tuple<bool, string> GetSecurityEvents(
+            int? EventID,
+            string EventType,
+            string Status,
             DateTime? StartTime,
             DateTime? EndTime)
         {
-            return DoQuery(QueryGenerator(ActivityLogID, UserID, ActionType, StartTime, EndTime));
+            return DoQuery(QueryGenerator(EventID, EventType, Status, StartTime, EndTime));
         }
 
         /// <summary>
-        /// Inserts a new user operation log.
+        /// Inserts a new security event log.
         /// </summary>
-        /// <param name="NewInfo">An instance of User_Activity_Logs containing the information of the new log entry.</param>
+        /// <param name="NewInfo">An instance of Security_Events containing the information of the new event entry.</param>
         /// <returns>A tuple containing a boolean indicating success and the result of the insertion as a string.</returns>
-        public Tuple<bool, string> InsertNewLog(UserOpsLogsInsertUtil NewInfo)
+        public Tuple<bool, string> InsertNewEvent(SecurityEventsInsertUtil NewInfo)
         {
             return DoQuery(InsertGenerator(NewInfo));
         }
 
-        private Func<Tuple<bool, string>> InsertGenerator(UserOpsLogsInsertUtil NewInfo)
+        private Func<Tuple<bool, string>> InsertGenerator(SecurityEventsInsertUtil NewInfo)
         {
             return () =>
             {
-                List<string> ColumnNames = ["USER_ID", "ACTION_TYPE", "OCCURRENCE_TIME"];
-                List<object> Values = [NewInfo.User_ID, NewInfo.Action_Type, NewInfo.Occurrence_Time];
+                List<string> ColumnNames = ["EVENT_TYPE", "EVENT_DETAILS", "STATUS", "OCCURRENCE_TIME"];
+                List<object> Values = [NewInfo.Event_Type, NewInfo.Event_Details, NewInfo.Status, NewInfo.Occurrence_Date];
 
-                Tuple<bool, string> QueryResult = BasicSQLOps.InsertOperation("USER_ACTIVITY_LOGS", ColumnNames, Values);
+                Tuple<bool, string> QueryResult = BasicSQLOps.InsertOperation("SECURITY_EVENTS", ColumnNames, Values);
                 return QueryResult;
             };
         }
@@ -68,11 +68,11 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
         }
 
         private Func<Tuple<bool, string>> QueryGenerator(
-        int? activityLogID,
-        int? userID,
-        string actionType,
-        DateTime? startTime,
-        DateTime? endTime)
+            int? EventID,
+            string EventType,
+            string Status,
+            DateTime? StartDate,
+            DateTime? EndDate)
         {
             return () =>
             {
@@ -80,30 +80,31 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
                 {
                     try
                     {
-                        var query = "SELECT * FROM User_Activity_Logs WHERE 1=1";
+                        var query = "SELECT * FROM Security_Events WHERE 1=1";
                         var parameters = new List<OracleParameter>();
 
-                        AddParameterIfValueExists(ref query, parameters, "Activity_Log_ID", activityLogID);
-                        AddParameterIfValueExists(ref query, parameters, "User_ID", userID);
-                        AddParameterIfValueExists(ref query, parameters, "Action_Type", actionType);
-                        AddParameterIfValueExists(ref query, parameters, "Occurrence_Time", startTime, ">=");
-                        AddParameterIfValueExists(ref query, parameters, "Occurrence_Time", endTime, "<=");
+                        AddParameterIfValueExists(ref query, parameters, "Event_ID", EventID);
+                        AddParameterIfValueExists(ref query, parameters, "Event_Type", EventType);
+                        AddParameterIfValueExists(ref query, parameters, "Status", Status);
+                        AddParameterIfValueExists(ref query, parameters, "Occurrence_Time", StartDate, ">=");
+                        AddParameterIfValueExists(ref query, parameters, "Occurrence_Time", EndDate, "<=");
 
                         var command = new OracleCommand(query, OracleConnection);
                         command.Parameters.AddRange(parameters.ToArray());
 
                         var reader = command.ExecuteReader();
-                        var result = new List<User_Activity_Logs>();
+                        var result = new List<Security_Events>();
                         while (reader.Read())
                         {
-                            var log = new User_Activity_Logs
+                            var evt = new Security_Events
                             {
-                                User_ID = reader.GetInt32(0),
-                                Action_Type = reader.GetString(1),
-                                Occurrence_Time = reader.GetDateTime(2),
-                                Activity_Log_ID = reader.GetInt32(3),
+                                Event_Type = reader.GetString(0),
+                                Event_Details = !reader.IsDBNull(1) ? reader.GetString(1) : string.Empty,
+                                Status = reader.GetString(2),
+                                Occurrence_Date = reader.GetDateTime(3),
+                                Event_ID = reader.GetInt32(4)
                             };
-                            result.Add(log);
+                            result.Add(evt);
                         }
 
                         // Assuming success if we got this far

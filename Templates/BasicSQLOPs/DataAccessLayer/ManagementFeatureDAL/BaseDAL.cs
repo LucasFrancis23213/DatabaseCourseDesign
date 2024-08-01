@@ -8,7 +8,7 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
     {
         protected readonly BasicSQLOps BasicSQLOps;
         private readonly Connection conn;
-        private readonly OracleConnection OracleConnection;
+        protected readonly OracleConnection OracleConnection;
         private static readonly string Uid = "ADMIN";
         private static readonly string Password = "123456";
         private static readonly string DataSource = "121.36.200.128:1521/ORCL";

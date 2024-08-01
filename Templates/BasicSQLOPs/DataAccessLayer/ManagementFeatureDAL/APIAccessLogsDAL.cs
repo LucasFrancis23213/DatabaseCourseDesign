@@ -6,45 +6,46 @@ using SQLOperation.PublicAccess.Utilities.ManagementFeatureUtil;
 
 namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
 {
-    public class UserOpsLogsDAL : BaseDAL
+    public class APILogsDAL : BaseDAL
     {
         /// <summary>
-        /// Retrieves user operation logs.
+        /// Retrieves API access logs.
         /// </summary>
-        /// <param name="ActivityLogID">The ID of the activity log (nullable).</param>
-        /// <param name="UserID">The ID of the user (nullable).</param>
-        /// <param name="ActionType">The type of action performed by the user.</param>
-        /// <param name="StartTime">The start time for the log query (nullable).</param>
-        /// <param name="EndTime">The end time for the log query (nullable).</param>
+        /// <param name="AccessID">The ID of the access log (nullable).</param>
+        /// <param name="APIName">The name of the API (nullable).</param>
+        /// <param name="AccessorID">The ID of the accessor (nullable).</param>
+        /// <param name="StartTime">The start time for the access query (nullable).</param>
+        /// <param name="EndTime">The end time for the access query (nullable).</param>
         /// <returns>A tuple containing a boolean indicating success and the query result as a string.</returns>
-        public Tuple<bool, string> GetTargetLogs(
-            int? ActivityLogID,
-            int? UserID,
-            string ActionType,
+        public Tuple<bool, string> GetAPIAccessLogs(
+            int? AccessID,
+            string APIName,
+            string Result,
+            int? AccessorID,
             DateTime? StartTime,
             DateTime? EndTime)
         {
-            return DoQuery(QueryGenerator(ActivityLogID, UserID, ActionType, StartTime, EndTime));
+            return DoQuery(QueryGenerator(AccessID, APIName, Result, AccessorID, StartTime, EndTime));
         }
 
         /// <summary>
-        /// Inserts a new user operation log.
+        /// Inserts a new API access log.
         /// </summary>
-        /// <param name="NewInfo">An instance of User_Activity_Logs containing the information of the new log entry.</param>
+        /// <param name="NewInfo">An instance of API_Access_Logs containing the information of the new log entry.</param>
         /// <returns>A tuple containing a boolean indicating success and the result of the insertion as a string.</returns>
-        public Tuple<bool, string> InsertNewLog(UserOpsLogsInsertUtil NewInfo)
+        public Tuple<bool, string> InsertNewLog(APIAccessLogsInsertUtil NewInfo)
         {
             return DoQuery(InsertGenerator(NewInfo));
         }
 
-        private Func<Tuple<bool, string>> InsertGenerator(UserOpsLogsInsertUtil NewInfo)
+        private Func<Tuple<bool, string>> InsertGenerator(APIAccessLogsInsertUtil NewInfo)
         {
             return () =>
             {
-                List<string> ColumnNames = ["USER_ID", "ACTION_TYPE", "OCCURRENCE_TIME"];
-                List<object> Values = [NewInfo.User_ID, NewInfo.Action_Type, NewInfo.Occurrence_Time];
+                List<string> ColumnNames = ["API_NAME", "ACCESSOR_ID", "ACCESS_TIME", "ACCESS_RESULT"];
+                List<object> Values = [NewInfo.API_Name, NewInfo.Accessor_ID, NewInfo.Access_Time, NewInfo.Access_Result];
 
-                Tuple<bool, string> QueryResult = BasicSQLOps.InsertOperation("USER_ACTIVITY_LOGS", ColumnNames, Values);
+                Tuple<bool, string> QueryResult = BasicSQLOps.InsertOperation("API_ACCESS_LOGS", ColumnNames, Values);
                 return QueryResult;
             };
         }
@@ -68,11 +69,12 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
         }
 
         private Func<Tuple<bool, string>> QueryGenerator(
-        int? activityLogID,
-        int? userID,
-        string actionType,
-        DateTime? startTime,
-        DateTime? endTime)
+            int? AccessID,
+            string APIName,
+            string Result,
+            int? AccessorID,
+            DateTime? StartTime,
+            DateTime? EndTime)
         {
             return () =>
             {
@@ -80,28 +82,30 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
                 {
                     try
                     {
-                        var query = "SELECT * FROM User_Activity_Logs WHERE 1=1";
+                        var query = "SELECT * FROM API_Access_Logs WHERE 1=1";
                         var parameters = new List<OracleParameter>();
 
-                        AddParameterIfValueExists(ref query, parameters, "Activity_Log_ID", activityLogID);
-                        AddParameterIfValueExists(ref query, parameters, "User_ID", userID);
-                        AddParameterIfValueExists(ref query, parameters, "Action_Type", actionType);
-                        AddParameterIfValueExists(ref query, parameters, "Occurrence_Time", startTime, ">=");
-                        AddParameterIfValueExists(ref query, parameters, "Occurrence_Time", endTime, "<=");
+                        AddParameterIfValueExists(ref query, parameters, "Access_ID", AccessID);
+                        AddParameterIfValueExists(ref query, parameters, "API_Name", APIName);
+                        AddParameterIfValueExists(ref query, parameters, "Accessor_ID", AccessorID);
+                        AddParameterIfValueExists(ref query, parameters, "Access_Result", Result);
+                        AddParameterIfValueExists(ref query, parameters, "Access_Time", StartTime, ">=");
+                        AddParameterIfValueExists(ref query, parameters, "Access_Time", EndTime, "<=");
 
                         var command = new OracleCommand(query, OracleConnection);
                         command.Parameters.AddRange(parameters.ToArray());
 
                         var reader = command.ExecuteReader();
-                        var result = new List<User_Activity_Logs>();
+                        var result = new List<API_Access_Logs>();
                         while (reader.Read())
                         {
-                            var log = new User_Activity_Logs
+                            var log = new API_Access_Logs
                             {
-                                User_ID = reader.GetInt32(0),
-                                Action_Type = reader.GetString(1),
-                                Occurrence_Time = reader.GetDateTime(2),
-                                Activity_Log_ID = reader.GetInt32(3),
+                                API_Name = reader.GetString(0),
+                                Accessor_ID = reader.GetString(1),
+                                Access_Time = reader.GetDateTime(2),
+                                Access_Result = reader.GetString(3),
+                                Access_ID = reader.GetInt32(4),
                             };
                             result.Add(log);
                         }
