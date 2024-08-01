@@ -21,6 +21,16 @@ const messageRoute:RouteRecordRaw[] = [
     },
     component:() =>import('@/pages/CommunityFeature/ConversationList')
   },
+  {
+    path:'/ad',
+    name:'广告',
+    props:true,
+    meta: {
+      renderMenu: true,
+      cacheable: true,
+    },
+    component:() =>import('@/pages/CommunityFeature/advertisement')
+  },
 ]
 
 export default messageRoute;

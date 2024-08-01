@@ -30,7 +30,7 @@ axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
 let conversations = ref([]);
 const router = useRouter();
-let current_user_id = ref(12345);
+let current_user_id = ref(123);
 async function getConversations() {
   console.log("getConversations");
   try {
