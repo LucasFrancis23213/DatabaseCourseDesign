@@ -1,4 +1,12 @@
-.vs
+.vs/
+*.log
+*.suo
+*.user
+*.userosscache
+*.suo
+*.cache
+*.dbmdl
+.gitignore
 front-end/node_modules
 front-end/.DS_Store
 front-end/dist
