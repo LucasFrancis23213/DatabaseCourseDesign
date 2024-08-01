@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Oracle.ManagedDataAccess.Client;
 using System.Data;
 using System.Diagnostics;
@@ -39,10 +39,10 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                     LostItemObj.Description = TmpJson["Description"].ToString();
                     LostItemObj.Lost_Location = TmpJson["Lost_Location"].ToString();
                     LostItemObj.Lost_Date = (DateTime)TmpJson["Lost_Date"];
-                    
+
                     //LostItemObj.User_ID = (int)TmpJson["User_ID"];
                     LostItemObj.User_ID = 65; // Debug Only
-                    
+
                     LostItemObj.Lost_Status = "LOST";
                     LostItemObj.Review_Status = 0; // 默认是Pending
                     LostItemObj.Image_URL = TmpJson["Image_URL"].ToString();
@@ -72,11 +72,57 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                 Rewards.Add(RewardObj);
                 Tuple<bool, string> OperationStatus = PublishItemObject.PublishLostItem(LostItems, Rewards, (bool)TmpJson["isRewarded"]);
                 return OperationStatus.Item1;
-               
+
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"In PublishLostItem Function,报错为：{ex.Message}");
+                return false;
+            }
+        }
+
+
+        [Route("api/PublishItem/Found")]
+        [HttpPost]
+        public bool FoundItemOPs([FromBody] dynamic InputPubJson)
+        {
+            try
+            {
+                string PubString = InputPubJson.ToString();
+                JObject TmpJson = JObject.Parse(PubString);
+                Found_Item FoundItemObj = new Found_Item();
+                List<Found_Item> FoundItems = new List<Found_Item>();
+
+                try
+                {
+                    //由于前端传入的数据涉及多张表，此处手动解析
+                    FoundItemObj.Item_ID = TmpJson["Item_ID"].ToString();
+                    FoundItemObj.Item_Name = TmpJson["Item_Name"].ToString();
+                    FoundItemObj.Category_ID = (int)TmpJson["Category_ID"];
+                    FoundItemObj.Description = TmpJson["Description"].ToString();
+                    FoundItemObj.Found_Location = TmpJson["Found_Location"].ToString();
+                    FoundItemObj.Found_Date = (DateTime)TmpJson["Found_Date"];
+
+                    //FoundItemObj.User_ID = (int)TmpJson["User_ID"];
+                    FoundItemObj.User_ID = 65; // Debug Only
+
+                    FoundItemObj.Match_Status = TmpJson["Found_Location"].ToString();
+                    FoundItemObj.Review_Status = 0; // 默认是Pending
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"Json Deserialization Error: {ex.Message}");
+                    return false;
+                }
+
+                FoundItems.Add(FoundItemObj);
+                Tuple<bool, string> OperationStatus = PublishItemObject.PublishFoundItem(FoundItems);
+                return OperationStatus.Item1;
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"In PublishFoundItem Function,报错为：{ex.Message}");
                 return false;
             }
         }
@@ -107,6 +153,38 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                 }
 
 
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"In QueryLostItem Function,报错为：{ex.Message}");
+                return StatusCode(500, "服务器内部错误");
+            }
+        }
+
+        [Route("api/DeleteItem")]
+        [HttpDelete]
+        public IActionResult DeleteItem([FromQuery] int type)
+        {
+            // type==0表格Lost_Item
+            // type==1表格Found_Item
+            try
+            {
+                Dictionary<string, object> Conditions = new Dictionary<string, object>();
+
+                // 添加一条where条件
+                Conditions.Add("Review_Status", "0");
+
+                Tuple<bool, string> OperationStatus = PublishItemObject.DeleteItem(type, Conditions);
+
+                if (OperationStatus.Item1)
+                {
+                    // OperationStatus.Item2 包含 JSON 格式的数据
+                    return Ok(OperationStatus.Item2);
+                }
+                else
+                {
+                    return BadRequest("删除失败");
+                }
             }
             catch (Exception ex)
             {

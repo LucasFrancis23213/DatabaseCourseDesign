@@ -119,7 +119,7 @@ namespace SQLOperation.PublicAccess.Utilities
 
     public class Found_Item
     {
-        public int Item_ID;
+        public string Item_ID;
         public string Item_Name;
         public string Category_ID;
         public string Description;
