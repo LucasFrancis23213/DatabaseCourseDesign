@@ -8,6 +8,7 @@ namespace SQLOperation.PublicAccess.Templates.SQLManager
 {
     public class Assistance : IAssistance
     {
+        //数据库连接对象
         private OracleConnection OracleConnection;
         public Assistance(OracleConnection conn)
         {
@@ -17,6 +18,7 @@ namespace SQLOperation.PublicAccess.Templates.SQLManager
         {
             if (OracleConnection.State == ConnectionState.Open)
             {
+
                 ColumnName = ColumnName.ToUpper();
                 TableName = TableName.ToUpper();
                 string Query = "SELECT COUNT(*) FROM ALL_TAB_COLUMNS WHERE TABLE_NAME = :TableName AND COLUMN_NAME = :ColumnName";
