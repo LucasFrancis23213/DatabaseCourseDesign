@@ -4,17 +4,14 @@ import vipList from '@/components/CommunityFeature/vip/vipList.vue'
 import vipDetails from '@/components/CommunityFeature/vip/vipDetails.vue'
 import {ref} from "vue";
 
-const vipInfo = ref({
-  user_id:123,
-  username:"ss",
-  start_time:new Date().toLocaleDateString(),
-  end_time:new Date()
-})
+const user_id = ref(
+  123,
+);
 </script>
 
 <template>
   <vipAddItem></vipAddItem>
-  <vipDetails :vip='vipInfo'></vipDetails>
+  <vipDetails :user_id='user_id'></vipDetails>
 </template>
 
 <style scoped lang="less">

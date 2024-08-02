@@ -1,13 +1,11 @@
 <template>
   <div class="vip-details">
-    <h2 class="vip-title">{{ vip.username }}的VIP详情</h2>
     <div class="vip-info">
-
       <div class="vip-text">
-        <p><strong>用户 ID:</strong> {{ vip.user_id }}</p>
-        <p><strong>注册时间:</strong> {{ formatDate(vip.start_time) }}</p>
-        <p><strong>VIP 到期时间:</strong> {{ formatDate(vip.end_time) }}</p>
-
+        <p><strong>用户ID:</strong> {{ props.user_id }}</p>
+        <p><strong>注册时间:</strong> {{ formatDate(vipInfo.start_time) }}</p>
+        <p><strong>VIP 到期时间:</strong> {{ formatDate(vipInfo.end_time) }}</p>
+        <p><strong>VIP状态:</strong> {{ vipInfo.vip_status }}</p>
 
 
       </div>
@@ -49,12 +47,12 @@ import axios from "axios";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
-const props = defineProps(['vip']);
+const props = defineProps(['user_id']);
 const emit = defineEmits(['update', 'delete']);
 
 const isEditing = ref(false);
-const editedVip = ref({...props.vip});
 const vipInfo = ref(null);
+const editedVip = ref({...vipInfo.value});
 const showOrderDetails = ref(false);
 
 function formatDate(dateString) {
@@ -77,14 +75,14 @@ function getOrderStatus(status) {
 
 function editVip() {
   isEditing.value = true;
-  editedVip.value = {...props.vip};
+  editedVip.value = {...vipInfo.value};
 }
 
 async function saveEdit() {
   try {
     const changedParams = {};
     for (const key in editedVip.value) {
-      if (editedVip.value[key] !== props.vip[key]) {
+      if (editedVip.value[key] !== vipInfo.value[key]) {
         changedParams[key] = editedVip.value[key];
       }
     }
@@ -96,12 +94,12 @@ async function saveEdit() {
     }
 
     const response = await axios.put('/api/vip/UpdateVipMember', {
-      user_id: editedVip.value.user_id,
+      user_id: props.user_id,
       ...changedParams
     });
 
     if (response.status === 200) {
-      Object.assign(props.vip, changedParams);
+      Object.assign(vipInfo.value, changedParams);
       isEditing.value = false;
       alert('VIP信息更新成功');
     } else {
@@ -121,14 +119,14 @@ async function deleteVip() {
   if (confirm('确定要删除这个VIP用户吗？')) {
     try {
       const response = await axios.delete('/api/vip/DeleteVipMember', {
-        params: {
-          user_id: props.vip.user_id
+        data: {
+          user_id: props.user_id
         }
       });
 
       if (response.status === 200) {
         alert('VIP用户已成功删除');
-        emit('delete', props.vip.user_id);
+        emit('delete', props.user_id);
       } else {
         throw new Error('Failed to delete VIP user');
       }
@@ -142,9 +140,9 @@ async function deleteVip() {
 async function getVipInfo() {
   try {
     const res = await axios.post('api/vip/GetVIPstatus', {
-      user_id: props.vip.user_id
+      user_id: props.user_id
     });
-    vipInfo.value = res.data;
+    vipInfo.value = res.data.vip_info;
   } catch (e) {
     console.error(e);
     alert(`获取VIP详情失败，错误原因：${e}`);

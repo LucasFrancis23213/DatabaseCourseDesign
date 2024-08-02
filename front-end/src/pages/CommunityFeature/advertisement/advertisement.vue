@@ -29,7 +29,7 @@ const getRandomAd = async () => {
 const isMember = async ()=>{
   try{
     const res =await axios.post("/api/vip/isMember",{
-      user_id:user_id
+      user_id:user_id.value
     })
     return res.data.is_vip;
   }catch (e){
