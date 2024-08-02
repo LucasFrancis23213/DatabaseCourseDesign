@@ -2,8 +2,7 @@
 import reviewSearchNotice from './reviewSearchNotice.vue'
 import reviewEnterOldMarket from './reviewEnterOldMarket.vue'
 import reviewOldMarketPurchase from './reviewOldMarketPurchase.vue'
-import reviewReturnItemMatch from './reviewReturnItemMatch.vue'
-import reviewReturnItemProcess from './reviewReturnItemProcess.vue'
+import reviewReturnItem from './reviewReturnItem.vue'
 import reviewUnclaimedItem from './reviewUnclaimedItem.vue'
 import reviewUserPreference from './reviewUserPreference.vue'
 
@@ -15,8 +14,7 @@ import reviewUserPreference from './reviewUserPreference.vue'
     
     <reviewUserPreference />
     
-    <reviewReturnItemMatch />
-    <reviewReturnItemProcess />
+    <reviewReturnItem />
 
     <reviewEnterOldMarket />
     <reviewOldMarketPurchase />

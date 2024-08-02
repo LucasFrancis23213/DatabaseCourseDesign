@@ -3,7 +3,7 @@
 import axios from 'axios';
 import { onMounted, ref } from 'vue'
 
-const baseURL = 'https://localhost:44343/api/';
+const baseURL = 'http://121.36.200.128:5000/api/';
 
 const unreviewLostItems = ref([])
 const columns = [
@@ -72,7 +72,7 @@ onMounted(() => {
             <template v-else-if="column.dataIndex === 'IS_REWARDED'">
                 <a-badge class="text-subtext" :color="'green'">
                     <template #text>
-                        <span class="text-subtext">{{ IS_REWARDEDDict[Number(record.IS_REWARDED) as IS_REWARDED] }}</span>
+                        <span class="text-subtext">{{ IS_REWARDEDDict[Number(record.IS_REWARDED)] }}</span>
                     </template>
                 </a-badge>
             </template>

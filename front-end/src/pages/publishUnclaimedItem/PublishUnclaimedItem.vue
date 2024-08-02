@@ -7,6 +7,8 @@
   import { onMounted } from 'vue';
   import dayjs from 'dayjs';
 
+  const baseURL = 'http://121.36.200.128:5000/api/';
+
   type oneFind = {
     itemName?: string;
     itemCategory?: string;
@@ -24,7 +26,7 @@
         if (selectedFile.value) {
           const formData = new FormData();
           formData.append('file', selectedFile.value);
-          const res = await axios.post('https://localhost:44343/api/ItemPicUpload/upload?type=Found', formData, {
+          const res = await axios.post(baseURL + 'ItemPicUpload/upload?type=Found', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
