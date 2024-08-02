@@ -142,7 +142,7 @@ h2 {
 <script setup>
 import { ref, computed } from 'vue'
 import axios from 'axios'
-axios.defaults.baseURL=import.meta.env.VITE_API_URL_VIP
+axios.defaults.baseURL=import.meta.env.VITE_API_URL;
 const rechargeOptions = [
   { id: 1, name: '月度VIP', price: 30, months: 1 },
   { id: 2, name: '季度VIP', price: 80, months: 3 },

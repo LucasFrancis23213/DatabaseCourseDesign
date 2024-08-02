@@ -38,7 +38,7 @@
 <script setup>
 import { ref } from 'vue';
 import axios from "axios";
-axios.defaults.baseURL = import.meta.env.VITE_API_URL_AD;
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
 const emit = defineEmits(['adAdded']);
 

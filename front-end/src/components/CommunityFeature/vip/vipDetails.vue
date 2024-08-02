@@ -47,7 +47,7 @@
 import { ref, onMounted } from 'vue';
 import axios from "axios";
 
-axios.defaults.baseURL = import.meta.env.VITE_API_URL_VIP;
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
 const props = defineProps(['vip']);
 const emit = defineEmits(['update', 'delete']);

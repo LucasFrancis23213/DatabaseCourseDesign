@@ -39,7 +39,7 @@
 import {ref, computed} from 'vue';
 import axios from "axios";
 
-axios.defaults.baseURL = import.meta.env.VITE_API_URL_VIP;
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
 const emit = defineEmits(['vipAdded']);
 const user_id = ref(123);
