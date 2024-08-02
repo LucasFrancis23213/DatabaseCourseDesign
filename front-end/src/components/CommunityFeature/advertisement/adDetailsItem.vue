@@ -18,22 +18,24 @@
           {{ showClickDetails ? '隐藏点击详情' : '查看点击详情' }}
         </button>
         <div v-if="showClickDetails" class="click-details">
-          <table>
-            <thead>
-            <tr>
-              <th>用户ID</th>
-              <th>点击时间</th>
-              <th>IP地址</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="click in entireAdInfo.click_statistics" :key="click.user_id">
-              <td>{{ click.user_id }}</td>
-              <td>{{ formatDate(click.click_time) }}</td>
-              <td>{{ click.ip_address }}</td>
-            </tr>
-            </tbody>
-          </table>
+          <div class="table-container">
+            <table class="styled-table">
+              <thead>
+              <tr>
+                <th>用户ID</th>
+                <th>点击时间</th>
+                <th>IP地址</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="click in entireAdInfo.click_statistics" :key="click.user_id">
+                <td>{{ click.user_id }}</td>
+                <td>{{ formatDate(click.click_time) }}</td>
+                <td>{{ click.ip_address }}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
         <a :href="ad.ad_url" target="_blank" class="ad-link">访问广告链接</a>
       </div>
@@ -298,7 +300,46 @@ onMounted(() => {
 .table-container {
   overflow-x: auto;
 }
+.table-container {
+  overflow-x: auto;
+}
 
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styled-table thead tr {
+  background-color: #009879;
+  color: #100505;
+  text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 12px 15px;
+}
+
+.styled-table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+  border-bottom: 2px solid #009879;
+}
+
+.styled-table tbody tr:hover {
+  background-color: #f5f5f5;
+  transition: background-color 0.3s ease;
+}
 table {
   width: 100%;
   border-collapse: collapse;
