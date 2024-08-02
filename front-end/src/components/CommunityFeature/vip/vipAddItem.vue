@@ -7,7 +7,7 @@
         <input
             id="start_time"
             type="datetime-local"
-            v-model="vipData.start_time"
+            v-model="vipData.vip_start_time"
             required
         >
       </div>
@@ -16,7 +16,7 @@
         <input
             id="end_time"
             type="datetime-local"
-            v-model="vipData.end_time"
+            v-model="vipData.vip_end_time"
             required
         >
       </div>
@@ -45,15 +45,15 @@ const emit = defineEmits(['vipAdded']);
 const user_id = ref(123);
 
 const vipData = ref({
-  start_time: '',
-  end_time: '',
+  vip_start_time: '',
+  vip_end_time: '',
   vip_status:'Inactive'
 });
 
 const isSubmitting = ref(false);
 
 const isFormValid = computed(() => {
-  return vipData.value.start_time && vipData.value.end_time;
+  return vipData.value.start_time && vipData.value.vip_end_time;
 });
 
 const submitVip = async () => {
@@ -82,8 +82,9 @@ const submitVip = async () => {
 
 const resetForm = () => {
   vipData.value = {
-    start_time: '',
-    end_time: ''
+    vip_start_time: '',
+    vip_end_time: '',
+    vip_status:'Inactive'
   };
 };
 </script>

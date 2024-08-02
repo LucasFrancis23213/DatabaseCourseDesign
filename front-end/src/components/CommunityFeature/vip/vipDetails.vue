@@ -3,8 +3,8 @@
     <div class="vip-info">
       <div class="vip-text">
         <p><strong>用户ID:</strong> {{ props.user_id }}</p>
-        <p><strong>注册时间:</strong> {{ formatDate(vipInfo.start_time) }}</p>
-        <p><strong>VIP 到期时间:</strong> {{ formatDate(vipInfo.end_time) }}</p>
+        <p><strong>注册时间:</strong> {{ formatDate(vipInfo.vip_start_time) }}</p>
+        <p><strong>VIP 到期时间:</strong> {{ formatDate(vipInfo.vip_end_time) }}</p>
         <p><strong>VIP状态:</strong> {{ vipInfo.vip_status }}</p>
 
 
@@ -18,12 +18,12 @@
 
       <div class="form-group">
         <label for="start_time">开始时间:</label>
-        <input id="start_time" type="datetime-local" v-model="editedVip.start_time" placeholder="请选择开始时间">
+        <input id="start_time" type="datetime-local" v-model="editedVip.vip_start_time" placeholder="请选择开始时间">
       </div>
 
       <div class="form-group">
         <label for="end_time">到期时间:</label>
-        <input id="end_time" type="datetime-local" v-model="editedVip.end_time" placeholder="请选择到期时间">
+        <input id="end_time" type="datetime-local" v-model="editedVip.vip_end_time" placeholder="请选择到期时间">
       </div>
       <div class="form-group">
         <label for="vip_status">vip状态</label>
@@ -95,6 +95,7 @@ async function saveEdit() {
 
     const response = await axios.put('/api/vip/UpdateVipMember', {
       user_id: props.user_id,
+      vip_member_id: vipInfo.value.vip_member_id,
       ...changedParams
     });
 
@@ -120,7 +121,8 @@ async function deleteVip() {
     try {
       const response = await axios.delete('/api/vip/DeleteVipMember', {
         data: {
-          user_id: props.user_id
+          user_id: props.user_id,
+          vip_member_id: vipInfo.value.vip_member_id
         }
       });
 
