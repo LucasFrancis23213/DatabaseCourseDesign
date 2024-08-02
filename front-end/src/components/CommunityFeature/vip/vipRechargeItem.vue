@@ -166,7 +166,8 @@ const recharge = async () => {
     try {
       const response = await axios.post('api/vip/RechargeVip', {
         user_id: 2, // 这里应该是实际的用户ID，可能需要从用户状态或登录信息中获取
-        recharge_time: selectedOption.value.months
+        recharge_time: selectedOption.value.months,
+        total_amount:selectedOption.value.price
       })
 
       if (response.data.status === 'success') {
