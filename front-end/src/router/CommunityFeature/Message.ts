@@ -31,6 +31,26 @@ const messageRoute:RouteRecordRaw[] = [
     },
     component:() =>import('@/pages/CommunityFeature/advertisement')
   },
+    {
+    path:'/vip',
+    name:'会员充值',
+    props:true,
+    meta: {
+      renderMenu: true,
+      cacheable: true,
+    },
+    component:() =>import('@/pages/CommunityFeature/vip')
+  },
+    {
+    path:'/adminAd',
+    name:'管理广告',
+    props:true,
+    meta: {
+      renderMenu: true,
+      cacheable: true,
+    },
+    component:() =>import('@/pages/admin_CommunityFeature/ad/adminAd.vue')
+  },
 ]
 
 export default messageRoute;
