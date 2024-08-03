@@ -21,6 +21,7 @@ const messages = ref([]);
 
 const isSending = ref(false);
 console.log("cuid是的数据类型是"+typeof current_user_id.value);
+console.log("ccid是"+conversation_id.value);
 
 async function getMessages(){
   console.log("getMessages");

@@ -21,6 +21,46 @@ const messageRoute:RouteRecordRaw[] = [
     },
     component:() =>import('@/pages/CommunityFeature/ConversationList')
   },
+  {
+    path:'/ad',
+    name:'广告',
+    props:true,
+    meta: {
+      renderMenu: true,
+      cacheable: true,
+    },
+    component:() =>import('@/pages/CommunityFeature/advertisement')
+  },
+    {
+    path:'/vip',
+    name:'会员充值',
+    props:true,
+    meta: {
+      renderMenu: true,
+      cacheable: true,
+    },
+    component:() =>import('@/pages/CommunityFeature/vip')
+  },
+    {
+    path:'/adminAd',
+    name:'管理广告',
+    props:true,
+    meta: {
+      renderMenu: true,
+      cacheable: true,
+    },
+    component:() =>import('@/pages/admin_CommunityFeature/ad/adminAd.vue')
+  },
+    {
+    path:'/adminvip',
+    name:'管理vip(test)',
+    props:true,
+    meta: {
+      renderMenu: true,
+      cacheable: true,
+    },
+    component:() =>import('@/pages/admin_CommunityFeature/vip/vipTest.vue')
+  },
 ]
 
 export default messageRoute;
