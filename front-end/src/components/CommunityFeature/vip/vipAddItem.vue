@@ -55,7 +55,7 @@ const submitVip = async () => {
 
   isSubmitting.value = true;
   try {
-    vipData.value.vip_start_time = new Date().toLocaleDateString();
+    vipData.value.vip_start_time = new Date().toISOString();
     const res = await axios.post('/api/vip/AddVIPMember', {
       user_id: user_id.value,
       ...vipData.value
