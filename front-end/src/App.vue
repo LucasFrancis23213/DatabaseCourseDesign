@@ -38,27 +38,20 @@
   import Setting from './components/setting';
   import { configTheme, themeList } from '@/theme';
   import { ThemeProvider } from 'stepin';
+  import { useAuthStore } from '@/plugins';
   import { computed } from 'vue';
 
-  const { logout, profile } = useAccountStore();
-
-  // 获取个人信息
-  profile().then((response) => {
-    const { account } = response;
-    user.name = account.userName;
-    // user.avatar = account.avatar;
-  });
-
+  const { logout, account, permissions} = useAccountStore();
   const showSetting = ref(false);
   const router = useRouter();
-
-  useMenuStore().getMenuList();
 
   const { navigation, useTabs, theme, contentClass } = storeToRefs(useSettingStore());
   const themeConfig = computed(() => themeList.find((item) => item.key === theme.value)?.config ?? {});
 
   const user = reactive({
-    name: 'admin',
+    get name() {
+      return account.userName;
+    },
     avatar: avatar,
     menuList: [
       { title: '个人中心', key: 'personal', icon: 'UserOutlined', onClick: () => router.push('./Personal') },
@@ -72,6 +65,11 @@
       },
     ],
   });
+
+  if(user.name!==''){
+    useMenuStore().getMenuList();
+    useAuthStore().setAuthorities(permissions);
+  }
 
   function getPopupContainer() {
     return document.querySelector('.stepin-layout');

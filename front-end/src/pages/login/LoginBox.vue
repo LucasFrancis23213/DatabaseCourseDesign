@@ -21,7 +21,7 @@
             />
           </a-form-item>
           <a-form-item :required="true" name="password">
-            <a-input
+            <a-input-password
               v-model:value="form.password"
               autocomplete="new-password"
               placeholder="请输入登录密码:"
@@ -103,5 +103,3 @@
       }
     }
   </style>
-  
-  

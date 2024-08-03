@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "G:\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj": {}
+    "D:\\database project\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj": {}
   },
   "projects": {
-    "G:\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj": {
+    "D:\\database project\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "G:\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
+        "projectUniqueName": "D:\\database project\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
         "projectName": "SQLOperation",
-        "projectPath": "G:\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
-        "packagesPath": "C:\\Users\\yxh\\.nuget\\packages\\",
-        "outputPath": "G:\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\obj\\",
+        "projectPath": "D:\\database project\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
+        "packagesPath": "C:\\Users\\PeiYu Duan\\.nuget\\packages\\",
+        "outputPath": "D:\\database project\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\yxh\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\PeiYu Duan\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -38,6 +34,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -50,11 +51,11 @@
             },
             "Oracle.ManagedDataAccess.Core": {
               "target": "Package",
-              "version": "[3.21.130, )"
+              "version": "[23.5.0, )"
             },
-            "Swashbuckle.AspNetCore": {
+            "Renci.SshNet.Async": {
               "target": "Package",
-              "version": "[6.5.0, )"
+              "version": "[1.4.0, )"
             }
           },
           "imports": [
@@ -73,7 +74,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

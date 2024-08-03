@@ -6,10 +6,15 @@
 <script lang="ts" setup>
   import LoginBox from './LoginBox.vue';
   import { useRouter } from 'vue-router';
+  import { useAccountStore } from '@/store/account';
 
   const router = useRouter();
+  const {permissions} = useAccountStore();
   function onLoginSuccess() {
-    router.push('/workplace');
+    if(permissions.includes('admin'))
+      router.push('/admin');
+    else
+      router.push('/workplace');
   }
 </script>
 <style scoped lang="less">

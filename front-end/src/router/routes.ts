@@ -37,7 +37,7 @@ const routes: RouteRecordRaw[] = [
           view: 'blank',
         },
         component: () => import('@/pages/home'),
-      },
+      }, 
       {
         path: '/signup',
         name: '注册',
@@ -70,11 +70,43 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/pages/Exp404.vue'),
   },
   {
-    path:'/hjxItem',
-    name:'hjxItem',
-    props:true,
-    component:() =>import('@/pages/hjx')
+    path: '/:pathMatch(.*)*',
+    name: '404',
+    props: true,
+    meta: {
+      icon: 'CreditCardOutlined',
+      renderMenu: false,
+      cacheable: false,
+      _is404Page: true,
+    },
+    component: () => import('@/pages/Exp404.vue'),
   },
-];
+  {
+    path: '/PublishSearchNotice',
+    name: 'PublishSearchNotice',
+    meta: {
+      renderMenu: false,
+    },
+    component: () => import('@/pages/publishSearchNotice')
+  },
+  {
+    path: '/PublishUnclaimedItem',
+    name: 'PublishUnclaimedItem',
+    meta: {
+      renderMenu: false,
+    },
+    component: () => import('@/pages/publishUnclaimedItem')
+  },
 
+];
+//Community Feature -- QandAList -- 路由添加
+import testRoute from './CommunityFeature/test';
+testRoute.forEach(route => {
+  routes.push(route);
+});
+//CommunityFeature -- Message路由添加
+import messageRoute from "@/router/CommunityFeature/Message";
+messageRoute.forEach(route =>{
+  routes.push(route);
+})
 export default routes;

@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia';
 import http from './http';
 import { useLoadingStore } from './loading';
+import { useMenuStore } from './menu';
+import { useAuthStore } from '@/plugins';
 import axios from 'axios';
 
 export interface Profile {
@@ -34,17 +36,26 @@ export const useAccountStore = defineStore('account', {
       this.username = username;
       const queryParams = new URLSearchParams({ UserName: username, Password: password }).toString();
       try {
-        const response = await axios.get(`https://localhost:7116/api/CheckPassword?${queryParams}`);
+        const response = await axios.get(`https://localhost:44343/api/CheckPassword?${queryParams}`);
         if (response.status === 200) {
           this.logged = true;
           this.account.userName = username;
+          if(username ==='admin'){
+            this.permissions.push('admin');
+          }
+          else{
+            this.permissions.push('user');
+          }
+          useAuthStore().setAuthorities(this.permissions);
           http.setAuthorization(`Bearer ${response.data.token}`, new Date(response.data.expires));
-          return { success: true, message: "登录成功！" };
+          this.profile();
+          await useMenuStore().getMenuList();
+          return { success: true, message: "登录成功！"};
         } 
       } catch (error) {
         if (error.response) {
           if (error.response.status === 401) {
-            return { success: false, message: "登录失败：密码错误" }; 
+            return { success: false, message: "登录失败：密码错误" };
           } else if (error.response.status === 404) {
             return { success: false, message: "登录失败：用户名不存在，请先注册" };
           } else {
@@ -62,6 +73,9 @@ export const useAccountStore = defineStore('account', {
         localStorage.removeItem('stepin-menu');
         http.removeAuthorization();
         this.logged = false;
+        this.account.userName='';
+        this.permissions=[];
+        useMenuStore().clearMenu();
         resolve(true);
       });
     },
@@ -69,20 +83,20 @@ export const useAccountStore = defineStore('account', {
       const { setAuthLoading } = useLoadingStore();
       setAuthLoading(true);
       if(!this.account.userName){
-        return { account: this.account };
+        return { account: this};
       }
       else{
         try {
-          const response = await axios.get(`https://localhost:7116/api/GetUserInfo?UserName=${this.account.userName}`);
+          const response = await axios.get(`https://localhost:44343/api/GetUserInfo?UserName=${this.account.userName}`);
           if (response.data) {
             this.account.userName = response.data.userName;
             this.account.userId = response.data.userID;
             this.account.contact = response.data.contact;
-            return { success: true, message: "用户信息加载成功", account: this.account };
+            return { success: true, message: "用户信息加载成功", account: this};
           } 
         } catch (error) {
           console.error('Failed to fetch user info:', error);
-          return { account: this.account };
+          return { account: this};
         } finally {
           setAuthLoading(false); // 确保加载状态在操作完成后被重置
         }
@@ -94,7 +108,7 @@ export const useAccountStore = defineStore('account', {
   async deleteUser() {
     if(!!this.account.userName){
       try {
-        const response = await axios.get(`https://localhost:7116/api/DeleteUser?UserName=${this.account.userName}`);
+        const response = await axios.get(`https://localhost:44343/api/DeleteUser?UserName=${this.account.userName}`);
         this.account.userName = '';
         this.account.userId = '';
         this.account.contact = '';

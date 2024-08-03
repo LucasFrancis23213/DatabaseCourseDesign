@@ -31,20 +31,16 @@ const edit = ref(false)
 </script>
 <template>
   <a-card title="Profile Information" class="profile-info rounded-xl shadow-lg" :bordered="false">
-    <!--
     <template #extra>
       <EditFilled @click="edit = true" class="text-subtext hover:text-primary cursor-pointer" />
     </template>
-   
     <div class="description">
       <EditableCell :options="{ rows: 4 }" v-model:edit="edit" type="textarea" value="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no.
       If two equally difficult paths, choose the one more painful in the short
       term (pain avoidance is creating an illusion of equality).">
       </EditableCell>
     </div>
-    -->
     <a-divider />
-    <!--
     <div class="text-title font-medium">Oliver Liam</div>
     <a-descriptions class="profile-list mt-3 font-medium" :column="1">
       <a-descriptions-item :label="item.label" v-for="item in profiles">
@@ -56,7 +52,6 @@ const edit = ref(false)
         <InstagramOutlined class="text-red-500" />
       </a-descriptions-item>
     </a-descriptions>
-    -->
   </a-card>
 </template>
 <style lang="less" scoped>
