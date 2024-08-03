@@ -6476,19 +6476,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\PeiYu Duan\\.nuget\\packages\\": {}
+    "C:\\Users\\zyn\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\database project\\DatabaseCourseDesign\\Templates\\WebAppTest\\WebAppTest.csproj",
+      "projectUniqueName": "D:\\同济\\大二下\\数据库\\期末大项目\\DatabaseCourseDesign\\Templates\\WebAppTest\\WebAppTest.csproj",
       "projectName": "WebAppTest",
-      "projectPath": "D:\\database project\\DatabaseCourseDesign\\Templates\\WebAppTest\\WebAppTest.csproj",
-      "packagesPath": "C:\\Users\\PeiYu Duan\\.nuget\\packages\\",
-      "outputPath": "D:\\database project\\DatabaseCourseDesign\\Templates\\WebAppTest\\obj\\",
+      "projectPath": "D:\\同济\\大二下\\数据库\\期末大项目\\DatabaseCourseDesign\\Templates\\WebAppTest\\WebAppTest.csproj",
+      "packagesPath": "C:\\Users\\zyn\\.nuget\\packages\\",
+      "outputPath": "D:\\同济\\大二下\\数据库\\期末大项目\\DatabaseCourseDesign\\Templates\\WebAppTest\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\PeiYu Duan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\zyn\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -6496,14 +6496,15 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\database project\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj": {
-              "projectPath": "D:\\database project\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj"
+            "D:\\同济\\大二下\\数据库\\期末大项目\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj": {
+              "projectPath": "D:\\同济\\大二下\\数据库\\期末大项目\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj"
             }
           }
         }
@@ -6559,7 +6560,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

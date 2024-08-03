@@ -1,7 +1,11 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\database project\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\",
-  "Documents": [],
+  "WorkspaceRootPath": "D:\\\u540C\u6D4E\\\u5927\u4E8C\u4E0B\\\u6570\u636E\u5E93\\\u671F\u672B\u5927\u9879\u76EE\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{E6B51281-D084-407E-9C8A-23C634543442}|..\\WebAppTest\\WebAppTest.csproj|d:\\\u540C\u6D4E\\\u5927\u4E8C\u4E0B\\\u6570\u636E\u5E93\\\u671F\u672B\u5927\u9879\u76EE\\databasecoursedesign\\templates\\webapptest\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,29 +13,28 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 2,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            }
-          ]
-        },
-        {
-          "DockedWidth": 1524,
-          "SelectedChildIndex": -1,
-          "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\\u540C\u6D4E\\\u5927\u4E8C\u4E0B\\\u6570\u636E\u5E93\\\u671F\u672B\u5927\u9879\u76EE\\DatabaseCourseDesign\\Templates\\WebAppTest\\Program.cs",
+              "RelativeDocumentMoniker": "..\\WebAppTest\\Program.cs",
+              "ToolTip": "D:\\\u540C\u6D4E\\\u5927\u4E8C\u4E0B\\\u6570\u636E\u5E93\\\u671F\u672B\u5927\u9879\u76EE\\DatabaseCourseDesign\\Templates\\WebAppTest\\Program.cs",
+              "RelativeToolTip": "..\\WebAppTest\\Program.cs",
+              "ViewState": "AQIAAAwAAAAAAAAAAADwvwAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-03T03:27:33.988Z",
+              "EditorCaption": ""
             }
           ]
         }

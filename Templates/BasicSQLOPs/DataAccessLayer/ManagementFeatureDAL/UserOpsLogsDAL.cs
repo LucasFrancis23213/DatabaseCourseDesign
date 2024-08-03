@@ -1,60 +1,126 @@
-﻿using Oracle.ManagedDataAccess.Client;
+﻿using Newtonsoft.Json;
+using Oracle.ManagedDataAccess.Client;
+using SQLOperation.PublicAccess.Utilities;
 using System.Data;
-using SQLOperation.PublicAccess.Templates.SQLManager;
+using SQLOperation.PublicAccess.Utilities.ManagementFeatureUtil;
 
 namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
 {
-    public class UserOpsLogsDAL
+    public class UserOpsLogsDAL : BaseDAL
     {
-        private Connection conn;
-        private OracleConnection OracleConnection;
-        private static readonly string Uid = "ADMIN";
-        private static readonly string Password = "123456";
-        private static readonly string DataSource = "121.36.200.128:1521/ORCL";
-
-        public UserOpsLogsDAL()
+        /// <summary>
+        /// Retrieves user operation logs.
+        /// </summary>
+        /// <param name="ActivityLogID">The ID of the activity log (nullable).</param>
+        /// <param name="UserID">The ID of the user (nullable).</param>
+        /// <param name="ActionType">The type of action performed by the user.</param>
+        /// <param name="StartTime">The start time for the log query (nullable).</param>
+        /// <param name="EndTime">The end time for the log query (nullable).</param>
+        /// <returns>A tuple containing a boolean indicating success and the query result as a string.</returns>
+        public Tuple<bool, string> GetTargetLogs(
+            int? ActivityLogID,
+            int? UserID,
+            string ActionType,
+            DateTime? StartTime,
+            DateTime? EndTime)
         {
-            conn = new Connection(Uid, Password, DataSource);
-            OracleConnection = conn.GetOracleConnection();
+            return DoQuery(QueryGenerator(ActivityLogID, UserID, ActionType, StartTime, EndTime));
         }
 
-        public Tuple<bool, string> InsertUserOpsLogs(string UserID, string ActionType, string OccurrenceTime)
+        /// <summary>
+        /// Inserts a new user operation log.
+        /// </summary>
+        /// <param name="NewInfo">An instance of User_Activity_Logs containing the information of the new log entry.</param>
+        /// <returns>A tuple containing a boolean indicating success and the result of the insertion as a string.</returns>
+        public Tuple<bool, string> InsertNewLog(UserOpsLogsInsertUtil NewInfo)
         {
-            try
+            return DoQuery(InsertGenerator(NewInfo));
+        }
+
+        private Func<Tuple<bool, string>> InsertGenerator(UserOpsLogsInsertUtil NewInfo)
+        {
+            return () =>
             {
-                string query = "INSERT INTO Users (User_ID, Action_Type, Occurrence_Time) VALUES (@UserID, @ActionType, @OccurrenceTime)";
-                using OracleCommand command = new OracleCommand(query, OracleConnection);
+                List<string> ColumnNames = ["USER_ID", "ACTION_TYPE", "OCCURRENCE_TIME"];
+                List<object> Values = [NewInfo.User_ID, NewInfo.Action_Type, NewInfo.Occurrence_Time];
 
-                command.Parameters.Add(new OracleParameter("UserID", UserID));
-                command.Parameters.Add(new OracleParameter("ActionType", ActionType));
-                command.Parameters.Add(new OracleParameter("OccurrenceTime", OccurrenceTime));
+                Tuple<bool, string> QueryResult = BasicSQLOps.InsertOperation("USER_ACTIVITY_LOGS", ColumnNames, Values);
+                return QueryResult;
+            };
+        }
 
-                if (OracleConnection.State != ConnectionState.Open)
-                {
-                    OracleConnection.Open();
-                }
-
-                int result = command.ExecuteNonQuery();
-                if (result < 0)
-                {
-                    return new Tuple<bool, string>(false, "Error inserting data into Database");
-                }
-                else
-                {
-                    return new Tuple<bool, string>(true, string.Empty);
-                }
-            }
-            catch (Exception ex)
+        private void AddParameterIfValueExists<T>(ref string query, List<OracleParameter> parameters, string columnName, T? value, string operatorSymbol = "=") where T : struct
+        {
+            if (value.HasValue)
             {
-                return new Tuple<bool, string>(false, ex.Message);
+                query += $" AND {columnName} {operatorSymbol} :{columnName}";
+                parameters.Add(new OracleParameter($":{columnName}", value.Value));
             }
-            finally
+        }
+
+        private void AddParameterIfValueExists(ref string query, List<OracleParameter> parameters, string columnName, string value)
+        {
+            if (!string.IsNullOrEmpty(value))
+            {
+                query += $" AND {columnName} = :{columnName}";
+                parameters.Add(new OracleParameter($":{columnName}", value));
+            }
+        }
+
+        private Func<Tuple<bool, string>> QueryGenerator(
+        int? activityLogID,
+        int? userID,
+        string actionType,
+        DateTime? startTime,
+        DateTime? endTime)
+        {
+            return () =>
             {
                 if (OracleConnection.State == ConnectionState.Open)
                 {
-                    OracleConnection.Close();
+                    try
+                    {
+                        var query = "SELECT * FROM User_Activity_Logs WHERE 1=1";
+                        var parameters = new List<OracleParameter>();
+
+                        AddParameterIfValueExists(ref query, parameters, "Activity_Log_ID", activityLogID);
+                        AddParameterIfValueExists(ref query, parameters, "User_ID", userID);
+                        AddParameterIfValueExists(ref query, parameters, "Action_Type", actionType);
+                        AddParameterIfValueExists(ref query, parameters, "Occurrence_Time", startTime, ">=");
+                        AddParameterIfValueExists(ref query, parameters, "Occurrence_Time", endTime, "<=");
+
+                        var command = new OracleCommand(query, OracleConnection);
+                        command.Parameters.AddRange(parameters.ToArray());
+
+                        var reader = command.ExecuteReader();
+                        var result = new List<User_Activity_Logs>();
+                        while (reader.Read())
+                        {
+                            var log = new User_Activity_Logs
+                            {
+                                User_ID = reader.GetInt32(0),
+                                Action_Type = reader.GetString(1),
+                                Occurrence_Time = reader.GetDateTime(2),
+                                Activity_Log_ID = reader.GetInt32(3),
+                            };
+                            result.Add(log);
+                        }
+
+                        // Assuming success if we got this far
+                        var jsonResult = JsonConvert.SerializeObject(result);
+                        return Tuple.Create(true, jsonResult);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Return failure with exception message
+                        return Tuple.Create(false, ex.Message);
+                    }
                 }
-            }
+                else
+                {
+                    return Tuple.Create(false, "Connection Error");
+                }
+            };
         }
     }
 }
