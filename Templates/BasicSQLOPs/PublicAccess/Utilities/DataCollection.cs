@@ -234,21 +234,21 @@ namespace SQLOperation.PublicAccess.Utilities
 
     public class VIP_Members
     {
-        public int VIP_Member_ID;
-        public int User_ID;
-        public string Status;
-        public DateTime VIP_Start_Date;
-        public DateTime VIP_End_Date;
+        public int VIP_Member_ID { get; set; }
+        public int User_ID { get; set; }
+        public string Status { get; set; }
+        public DateTime VIP_Start_Date { get; set; }
+        public DateTime VIP_End_Date { get; set; }
     }
 
     public class VIP_Orders
     {
-        public int Order_ID;
-        public int User_ID;
-        public double Total_Amount;
-        public int Point_Return;
-        public DateTime Order_Time;
-        public int Recharge_Time;
+        public int Order_ID { get; set; }
+        public int User_ID { get; set; }
+        public double Total_Amount { get; set; }
+        public int Point_Return { get; set; }
+        public DateTime Order_Time { get; set; }
+        public int Recharge_Time { get; set; }
     }
 
     public class Admin_Edit_VIP
@@ -262,28 +262,28 @@ namespace SQLOperation.PublicAccess.Utilities
 
     public class Advertisements
     {
-        public int Ad_ID;
-        public string Ad_Content;
-        public byte[] Ad_Picture;
-        public string Ad_URL;
-        public string Ad_Type;
-        public DateTime VIP_Start_Date;
-        public DateTime VIP_End_Date;
+        public int Ad_ID { get; set; }
+        public string Ad_Content { get; set; }
+        public string Ad_Picture { get; set; }
+        public string Ad_URL { get; set; }
+        public string Ad_Type { get; set; }
+        public DateTime Start_Time { get; set; }
+        public DateTime End_Time { get; set; }
     }
 
     public class Ad_Click_Statistics
     {
-        public int Ad_ID;
-        public int User_ID;
-        public DateTime Time_Stamp;
-        public string IP_Address;
+        public int Ad_ID { get; set; }
+        public int User_ID { get; set; }
+        public DateTime Click_Time { get; set; }
+        public string IP_Address { get; set; }
     }
 
     public class Ad_Show_Statistics
     {
-        public int Ad_ID;
-        public int User_ID;
-        public DateTime Time_Stamp;
+        public int Ad_ID { get; set; }
+        public int User_ID { get; set; }
+        public DateTime Time { get; set; }
     }
 
     public class Admin_Edit_Ad
