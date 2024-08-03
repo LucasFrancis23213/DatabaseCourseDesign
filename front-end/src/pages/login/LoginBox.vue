@@ -47,7 +47,7 @@
   <script lang="ts" setup>
     import { reactive, ref } from 'vue';
     import { useRouter } from 'vue-router';
-    import { useAccountStore } from '@/store/account';
+    import { useAccountStore } from '@/store';
     import { ThemeProvider } from 'stepin';
     import { CloseCircleOutlined } from '@ant-design/icons-vue'; // 导入图标组件
     import { message } from 'ant-design-vue';
