@@ -167,7 +167,7 @@ async function deleteAd() {
     try {
       // 发送删除请求到后台
       const response = await axios.delete('/api/advertisement/DeleteAdvertisement', {
-        params: {
+        data: {
           ad_id: props.ad.ad_id
         }
       });

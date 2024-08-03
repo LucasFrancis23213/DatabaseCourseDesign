@@ -38,13 +38,13 @@ const user_id = ref(123);
 const vipData = ref({
   vip_start_time: '',
   vip_end_time: '',
-  vip_status:'Inactive'
+  vip_status:''
 });
 
 const isSubmitting = ref(false);
 
 const isFormValid = computed(() => {
-  return vipData.value.start_time && vipData.value.vip_end_time;
+  return vipData.value.vip_end_time && 1;
 });
 
 const submitVip = async () => {
