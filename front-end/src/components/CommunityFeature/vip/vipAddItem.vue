@@ -3,15 +3,6 @@
     <h2 class="form-title">新增VIP信息</h2>
     <form @submit.prevent="submitVip" class="vip-form">
       <div class="form-group">
-        <label for="start_time">开始时间</label>
-        <input
-            id="start_time"
-            type="datetime-local"
-            v-model="vipData.vip_start_time"
-            required
-        >
-      </div>
-      <div class="form-group">
         <label for="end_time">结束时间</label>
         <input
             id="end_time"
@@ -64,6 +55,7 @@ const submitVip = async () => {
 
   isSubmitting.value = true;
   try {
+    vipData.value.vip_start_time = new Date().toLocaleDateString();
     const res = await axios.post('/api/vip/AddVIPMember', {
       user_id: user_id.value,
       ...vipData.value

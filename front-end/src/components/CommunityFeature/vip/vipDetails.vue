@@ -15,12 +15,6 @@
       <button @click="deleteVip" class="action-button delete">删除VIP用户</button>
     </div>
     <div v-if="isEditing" class="edit-form">
-
-      <div class="form-group">
-        <label for="start_time">开始时间:</label>
-        <input id="start_time" type="datetime-local" v-model="editedVip.vip_start_time" placeholder="请选择开始时间">
-      </div>
-
       <div class="form-group">
         <label for="end_time">到期时间:</label>
         <input id="end_time" type="datetime-local" v-model="editedVip.vip_end_time" placeholder="请选择到期时间">

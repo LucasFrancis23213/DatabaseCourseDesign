@@ -19,7 +19,7 @@ const ad = ref<Ad | null>(null);
 
 const getRandomAd = async () => {
   try {
-    const res = await axios.post("/api/advertisement/GetRandomAd");
+    const res = await axios.post("/api/advertisement/GetRandomAd",{user_id:user_id.value});
     ad.value = res.data.ad; // 假设响应数据中包含了广告信息
   } catch (e) {
     console.error(e);
@@ -37,8 +37,9 @@ const isMember = async ()=>{
   }
 }
 
-onMounted(() => {
-  if(isMember()){
+onMounted(async() => {
+  const memberStatus = await isMember();
+  if( !memberStatus){
     getRandomAd();
   }
 
