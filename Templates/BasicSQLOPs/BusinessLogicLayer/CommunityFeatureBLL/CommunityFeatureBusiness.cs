@@ -268,7 +268,6 @@ namespace DatabaseProject.BusinessLogicLayer.CommunityFeatureBLL
         }
 
 
-
         // 任意指定where语句
         public List<T> QueryTableWithWhereBusiness(string whereClause, OracleParameter[] parameters)
         {
