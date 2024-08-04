@@ -10,10 +10,16 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AAvatar: typeof import('ant-design-vue/es')['Avatar']
+    ABreadcrumb: typeof import('ant-design-vue/es')['Breadcrumb']
+    ABreadcrumbItem: typeof import('ant-design-vue/es')['BreadcrumbItem']
     AButton: typeof import('ant-design-vue/es')['Button']
+    ACard: typeof import('ant-design-vue/es')['Card']
+    ACardMeta: typeof import('ant-design-vue/es')['CardMeta']
     AConfigProvider: typeof import('ant-design-vue/es')['ConfigProvider']
     ActivityPoint: typeof import('./src/components/CommunityFeature/ActivityPoint.vue')['default']
     ADatePicker: typeof import('ant-design-vue/es')['DatePicker']
+    ADescriptions: typeof import('ant-design-vue/es')['Descriptions']
+    ADescriptionsItem: typeof import('ant-design-vue/es')['DescriptionsItem']
     AdItem: typeof import('./src/components/CommunityFeature/advertisement/adItem.vue')['default']
     ADivider: typeof import('ant-design-vue/es')['Divider']
     AForm: typeof import('ant-design-vue/es')['Form']
