@@ -1,6 +1,5 @@
 import Mock from 'mockjs';
 import { useAccountStore } from '@/store';
-import { ref } from 'vue';
 
 const presetList = [
   {

@@ -15,7 +15,7 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
             InsertUserOpsLogsBLL = new();
         }
 
-        [HttpGet]
+        [HttpPost]
         public IActionResult InsertUserOpsLog([FromBody] UserOpsLogsInsertUtil NewLog)
         {
             var result = InsertUserOpsLogsBLL.InsertLog(NewLog);
