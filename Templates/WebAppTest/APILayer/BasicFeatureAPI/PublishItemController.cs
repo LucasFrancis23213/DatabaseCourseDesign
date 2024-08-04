@@ -33,29 +33,35 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                 try
                 {
                     //由于前端传入的数据涉及多张表，此处手动解析
-                    LostItemObj.Item_ID = TmpJson["Item_ID"].ToString();
-                    LostItemObj.Item_Name = TmpJson["Item_Name"].ToString();
-                    LostItemObj.Category_ID = (int)TmpJson["Category_ID"];
-                    LostItemObj.Description = TmpJson["Description"].ToString();
-                    LostItemObj.Lost_Location = TmpJson["Lost_Location"].ToString();
-                    LostItemObj.Lost_Date = (DateTime)TmpJson["Lost_Date"];
+                    LostItemObj.Item_ID = TmpJson["ITEM_ID"].ToString();
+                    LostItemObj.Item_Name = TmpJson["ITEM_NAME"].ToString();
+                    LostItemObj.Category_ID = (int)TmpJson["CATEGORY_ID"];
+                    LostItemObj.Description = TmpJson["DESCRIPTION"].ToString();
+                    LostItemObj.Lost_Location = TmpJson["LOST_LOCATION"].ToString();
+                    LostItemObj.Lost_Date = (DateTime)TmpJson["LOST_DATE"];
 
                     //LostItemObj.User_ID = (int)TmpJson["User_ID"];
                     LostItemObj.User_ID = 65; // Debug Only
 
                     LostItemObj.Lost_Status = "LOST";
                     LostItemObj.Review_Status = 0; // 默认是Pending
-                    LostItemObj.Image_URL = TmpJson["Image_URL"].ToString();
-                    LostItemObj.Tag_ID = (int)TmpJson["Tag_ID"];
+                    LostItemObj.Image_URL = TmpJson["IMAGE_URL"].ToString();
+                    LostItemObj.Tag_ID = (int)TmpJson["TAG_ID"];
+                    LostItemObj.Is_Rewarded = (int)TmpJson["IS_REWARDED"];
 
                     //再处理悬赏部分
-                    if ((bool)TmpJson["isRewarded"])
+                    if ((bool)TmpJson["IS_REWARDED"])
                     {
-                        RewardObj.Deadline = (DateTime)TmpJson["Deadline"];
+                        RewardObj.Deadline = (DateTime)TmpJson["DEADLINE"];
                         //Release_Date自动为调用函数时候的时间
                         RewardObj.Release_Date = DateTime.Now;
-                        RewardObj.Reward_Amount = (int)TmpJson["Reward_Amount"];
+                        RewardObj.Reward_Amount = (int)TmpJson["REWARD_AMOUNT"];
                         RewardObj.Status = "LOST";
+                        RewardObj.Item_ID = LostItemObj.Item_ID;
+                        RewardObj.User_ID = LostItemObj.User_ID;
+                    }
+                    else
+                    {
                         RewardObj.Item_ID = LostItemObj.Item_ID;
                         RewardObj.User_ID = LostItemObj.User_ID;
                     }
@@ -70,7 +76,7 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
 
                 LostItems.Add(LostItemObj);
                 Rewards.Add(RewardObj);
-                Tuple<bool, string> OperationStatus = PublishItemObject.PublishLostItem(LostItems, Rewards, (bool)TmpJson["isRewarded"]);
+                Tuple<bool, string> OperationStatus = PublishItemObject.PublishLostItem(LostItems, Rewards);
                 return OperationStatus.Item1;
 
             }
@@ -96,18 +102,21 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                 try
                 {
                     //由于前端传入的数据涉及多张表，此处手动解析
-                    FoundItemObj.Item_ID = TmpJson["Item_ID"].ToString();
-                    FoundItemObj.Item_Name = TmpJson["Item_Name"].ToString();
-                    FoundItemObj.Category_ID = (int)TmpJson["Category_ID"];
-                    FoundItemObj.Description = TmpJson["Description"].ToString();
-                    FoundItemObj.Found_Location = TmpJson["Found_Location"].ToString();
-                    FoundItemObj.Found_Date = (DateTime)TmpJson["Found_Date"];
+                    FoundItemObj.Item_ID = TmpJson["ITEM_ID"].ToString();
+                    FoundItemObj.Item_Name = TmpJson["ITEM_NAME"].ToString();
+                    FoundItemObj.Category_ID = (int)TmpJson["CATEGORY_ID"];
+                    FoundItemObj.Description = TmpJson["DESCRIPTION"].ToString();
+                    FoundItemObj.Found_Location = TmpJson["FOUND_LOCATION"].ToString();
+                    FoundItemObj.Found_Date = (DateTime)TmpJson["FOUND_DATE"];
 
                     //FoundItemObj.User_ID = (int)TmpJson["User_ID"];
                     FoundItemObj.User_ID = 65; // Debug Only
 
-                    FoundItemObj.Match_Status = TmpJson["Found_Location"].ToString();
+                    FoundItemObj.Match_Status = "Matching";
                     FoundItemObj.Review_Status = 0; // 默认是Pending
+                    FoundItemObj.Image_URL = TmpJson["IMAGE_URL"].ToString();
+                    FoundItemObj.Tag_ID = (int)TmpJson["TAG_ID"];
+
                 }
                 catch (Exception ex)
                 {
@@ -163,16 +172,28 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
 
         [Route("api/DeleteItem")]
         [HttpDelete]
-        public IActionResult DeleteItem([FromQuery] int type)
+        public IActionResult DeleteItem([FromBody] dynamic InputDelJson)
         {
             // type==0表格Lost_Item
             // type==1表格Found_Item
             try
             {
                 Dictionary<string, object> Conditions = new Dictionary<string, object>();
+                
+                int type = 0;
 
-                // 添加一条where条件
-                Conditions.Add("Review_Status", "0");
+                try
+                {
+                    string DelString = InputDelJson.ToString();
+                    JObject TmpJson = JObject.Parse(DelString);
+                    type = (int)TmpJson["type"];
+                    Conditions.Add("ITEM_ID", TmpJson["ITEM_ID"].ToString());
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"Json Deserialization Error: {ex.Message}");
+                    return BadRequest("Json解析错误");
+                }
 
                 Tuple<bool, string> OperationStatus = PublishItemObject.DeleteItem(type, Conditions);
 
