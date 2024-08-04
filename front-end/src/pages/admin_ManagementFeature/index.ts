@@ -1,2 +1,4 @@
-import chart from './chart/chart.vue';
-export default chart;
+import UserOps from './UserOpsLog/UserOpsLog.vue';
+export default UserOps;
+
+
