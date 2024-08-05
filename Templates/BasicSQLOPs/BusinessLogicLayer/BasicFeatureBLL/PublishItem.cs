@@ -11,6 +11,7 @@ using Newtonsoft.Json.Linq;
 using Oracle.ManagedDataAccess.Client;
 using System.Data;
 using System.Drawing;
+using System.Reflection;
 
 
 namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
@@ -342,9 +343,63 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                 }
             }
         }
+        public Tuple<bool, string> ReviewItem(int type, List<string> itemID)
+        {
+            // 假设0为未审核，1为通过
+            string TableName = "";
+            if (type == 0)
+            {
+                TableName = "Lost_Item";
+            }
+            else if (type == 1)
+            {
+                TableName = "Found_Item";
+            }
+            else
+            {
+                string errorReason = "不合法的type值，请输入0/1！";
+                return new Tuple<bool, string>(false, errorReason);
+            }
+
+            string ErrorReason = string.Empty;
+            if (OracleConnection.State == ConnectionState.Open)
+            {
+                string itemIDs = string.Join(",", itemID.Select(id => $"'{id}'"));
+                string UpdateSQL = $"UPDATE {TableName.ToUpper()} SET REVIEW_STATE = 1 WHERE ITEM_ID IN ({itemIDs})";
+
+                using (OracleCommand cmd = new OracleCommand(UpdateSQL, OracleConnection))
+                {
+                    try
+                    {
+                        int rowsUpdated = cmd.ExecuteNonQuery();
+                        if (rowsUpdated > 0)
+                        {
+                            return new Tuple<bool, string>(true, ErrorReason);
+                        }
+                        else
+                        {
+                            ErrorReason = "未找到对应的记录进行更新";
+                            return new Tuple<bool, string>(false, ErrorReason);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        ErrorReason = ex.Message;
+                        Debug.Write($"更新失败,报错为：{ErrorReason}");
+                        return new Tuple<bool, string>(false, ErrorReason);
+                    }
+                }
+            }
+            else
+            {
+                ErrorReason = "数据库未连接";
+                Debug.WriteLine("更新操作失败：", ErrorReason);
+                return new Tuple<bool, string>(false, ErrorReason);
+            }
+        }
 
 
     }
 
-    
+
 }
