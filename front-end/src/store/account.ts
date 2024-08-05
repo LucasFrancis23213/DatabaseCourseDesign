@@ -67,10 +67,24 @@ export const useAccountStore = defineStore('account', {
             occurrence_Time: getLocalISOTime()
           };
           await axios.post('https://localhost:44343/api/InsertUserOperatorLog', logData);
+          const APIData = {
+            apI_Name: "CheckPassword",
+            accessor_ID: this.account.userId,
+            access_Time: getLocalISOTime(),
+            access_Result: "success"
+          };
+          await axios.post('https://localhost:44343/api/InsertAPILogs', APIData);
           await useMenuStore().getMenuList();
           return { success: true, message: "登录成功！"};
         } 
       } catch (error) {
+        const APIData = {
+          apI_Name: "CheckPassword",
+          accessor_ID: this.account.userId,
+          access_Time: getLocalISOTime(),
+          access_Result: "failure"
+        };
+        await axios.post('https://localhost:44343/api/InsertAPILogs', APIData);
         if (error.response) {
           if (error.response.status === 401) {
             return { success: false, message: "登录失败：密码错误" };

@@ -61,7 +61,7 @@
   { value: 'Logout', label: 'Logout' },
   { value: 'Signup', label: 'Signup' },
   { value: 'DeleteUser', label: 'DeleteUser' },
-  { value: '', label: 'all' }
+  { value: '', label: '操作类型(all)' }
 ]);
 
 const columns = [
