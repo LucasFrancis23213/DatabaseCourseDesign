@@ -200,7 +200,7 @@ const adminList = [
     badge: null,
     target: '_self',
     path: '/admin_ManagementFeature',
-    component: '@/pages/admin_ManagementFeature',
+    component: '@/components/layout/BlankView.vue',
     renderMenu: true,
     parent: null,
     children : [
