@@ -1,4 +1,4 @@
-using SQLOperation.BusinessLogicLayer.ManagementFeatureBLL;
+ï»¿using SQLOperation.BusinessLogicLayer.ManagementFeatureBLL;
 using Microsoft.AspNetCore.Mvc;
 using SQLOperation.PublicAccess.Utilities;
 
@@ -26,7 +26,7 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
 
             switch (Message)
             {
-                case "Î´ÕÒµ½ÓÃ»§":
+                case "Î´ï¿½Òµï¿½ï¿½Ã»ï¿½":
                     return NotFound(Message);
                 default:
                     return BadRequest(Message);

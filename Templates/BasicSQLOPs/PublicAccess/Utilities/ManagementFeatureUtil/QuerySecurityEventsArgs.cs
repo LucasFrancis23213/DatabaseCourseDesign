@@ -11,8 +11,8 @@ namespace SQLOperation.PublicAccess.Utilities.ManagementFeatureUtil
     {
         public int? EventID { get; set; }
         public string? EventType { get; set; }
-        public string? Status {  get; set; }
+        public string? Status { get; set; }
         public DateTime? StartTime { get; set; }
-        public DateTime? EndTime { get; set;}
+        public DateTime? EndTime { get; set; }
     }
 }

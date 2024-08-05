@@ -6,7 +6,7 @@ namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
     public class InsertUserOpsLogsBLL
     {
         private UserOpsLogsDAL UserOpsLogsDAL;
-        public InsertUserOpsLogsBLL() 
+        public InsertUserOpsLogsBLL()
         {
             UserOpsLogsDAL = new UserOpsLogsDAL();
         }

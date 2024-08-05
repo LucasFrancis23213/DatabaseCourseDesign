@@ -8,9 +8,9 @@ namespace SQLOperation.PublicAccess.Utilities.ManagementFeatureUtil
 {
     public class APIAccessLogsInsertUtil
     {
-        public string API_Name {  get; set; }
-        public int Accessor_ID {  get; set; }
-        public DateTime Access_Time {  get; set; }
-        public string Access_Result {  get; set; }
+        public string API_Name { get; set; }
+        public int Accessor_ID { get; set; }
+        public DateTime Access_Time { get; set; }
+        public string Access_Result { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using Oracle.ManagedDataAccess.Client;
 using SQLOperation.PublicAccess.Utilities;
 using System.Data;
 using SQLOperation.PublicAccess.Utilities.ManagementFeatureUtil;
+using SQLOperation.PublicAccess.Templates.SQLManager;
 
 namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
 {

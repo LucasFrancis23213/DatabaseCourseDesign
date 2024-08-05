@@ -9,7 +9,7 @@ namespace SQLOperation.PublicAccess.Utilities.ManagementFeatureUtil
     public class UserOpsLogsInsertUtil
     {
         public int User_ID { get; set; }
-        public string Action_Type {  get; set; }
-        public DateTime Occurrence_Time {  get; set; }
+        public string Action_Type { get; set; }
+        public DateTime Occurrence_Time { get; set; }
     }
 }

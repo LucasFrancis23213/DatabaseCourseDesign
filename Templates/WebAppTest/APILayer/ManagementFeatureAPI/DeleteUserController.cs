@@ -14,7 +14,7 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
         }
 
         [HttpGet]
-        public IActionResult DeleteUser(string UserName)
+        public IActionResult CheckPassword(string UserName)
         {
             Tuple<bool, string> result = DeleteUserBLL.DeleteUser(UserName);
             if (result.Item1)

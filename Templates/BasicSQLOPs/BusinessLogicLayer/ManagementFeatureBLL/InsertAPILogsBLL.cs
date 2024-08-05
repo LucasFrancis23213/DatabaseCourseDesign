@@ -13,8 +13,8 @@ namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
 
         public Tuple<bool, string> InsertLog(APIAccessLogsInsertUtil NewLog)
         {
-            if (string.IsNullOrEmpty(NewLog.API_Name) || 
-                string.IsNullOrEmpty(NewLog.Access_Result) || 
+            if (string.IsNullOrEmpty(NewLog.API_Name) ||
+                string.IsNullOrEmpty(NewLog.Access_Result) ||
                 NewLog.Accessor_ID <= 0 ||
                 NewLog.Access_Time == default
                 )

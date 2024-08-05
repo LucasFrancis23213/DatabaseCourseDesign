@@ -8,16 +8,16 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
     [ApiController]
     public class GetUserInfoController : ControllerBase
     {
-        private GetUserInfoBLL GetUserInfoBLL;
+        private GetUserInfoBLL GetUserInfo;
         public GetUserInfoController()
         {
-            GetUserInfoBLL = new GetUserInfoBLL();
+            GetUserInfo = new GetUserInfoBLL();
         }
 
         [HttpGet]
-        public IActionResult GetInfoByUserName(string UserName)
+        public IActionResult CheckPassword(string UserName)
         {
-            Tuple<bool, UserAccessibleInfo, string> result = GetUserInfoBLL.GetInfo(UserName);
+            Tuple<bool, UserAccessibleInfo, string> result = GetUserInfo.GetInfo(UserName);
             if (result.Item1)
             {
                 return Ok(result.Item2);

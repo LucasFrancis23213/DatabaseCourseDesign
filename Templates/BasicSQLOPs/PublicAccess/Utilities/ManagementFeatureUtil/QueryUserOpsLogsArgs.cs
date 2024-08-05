@@ -8,10 +8,10 @@ namespace SQLOperation.PublicAccess.Utilities.ManagementFeatureUtil
 {
     public class QueryUserOpsLogsArgs
     {
-        public int? ActivityLogID {  get; set; }
-        public int? UserID {  get; set; }
-        public string? ActionType {  get; set; }
-        public DateTime? StartTime {  get; set; }
+        public int? ActivityLogID { get; set; }
+        public int? UserID { get; set; }
+        public string? ActionType { get; set; }
+        public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
     }
 }

@@ -8,8 +8,8 @@ namespace SQLOperation.PublicAccess.Utilities.ManagementFeatureUtil
 {
     public class QuerySystemLogsArgs
     {
-        public int? SystemLogID {  get; set; }
+        public int? SystemLogID { get; set; }
         public int? UserID { get; set; }
-        public string? OperationType {  get; set; }
+        public string? OperationType { get; set; }
     }
 }

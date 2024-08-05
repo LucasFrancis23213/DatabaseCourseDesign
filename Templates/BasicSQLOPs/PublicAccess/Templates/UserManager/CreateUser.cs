@@ -1,9 +1,8 @@
-﻿using System;
-using System.Data;
-using System.Diagnostics;
-using Oracle.ManagedDataAccess.Client;
+﻿using Oracle.ManagedDataAccess.Client;
 using SQLOperation.PublicAccess.Templates.SQLManager;
 using SQLOperation.PublicAccess.Utilities;
+using System.Data;
+using System.Diagnostics;
 
 namespace SQLOperation.PublicAccess.Templates.UserManager
 {
