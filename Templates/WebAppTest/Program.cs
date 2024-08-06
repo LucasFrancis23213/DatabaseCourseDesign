@@ -10,7 +10,7 @@ https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 // 添加connection服务
-builder.Services.AddSingleton<Connection>(new Connection("BAMBOO", "123456", "localhost:1521/ORCL"));
+builder.Services.AddSingleton<Connection>(new Connection("ADMIN", "123456", "121.36.200.128:1521/ORCL"));
 
 builder.Services.AddSignalR();
 
