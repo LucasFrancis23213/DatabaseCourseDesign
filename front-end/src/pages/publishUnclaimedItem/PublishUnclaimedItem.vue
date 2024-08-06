@@ -7,15 +7,57 @@
   import { onMounted } from 'vue';
   import dayjs from 'dayjs';
 
+  const baseURL = 'http://121.36.200.128:5000/api/';
+
   type oneFind = {
-    itemName?: string;
-    itemCategory?: string;
-    itemDescribe?: string;
-    findPosition?: string;
-    findTime?: string;
-    itemTags?:string[];
-    itemImage?: string;
+    ITEM_ID?: string;
+    ITEM_NAME?: string;
+    CATEGORY_ID?: string;
+    DESCRIPTION?: string;
+    FOUND_LOCATION?: string;
+    FOUND_DATE?: string;
+    TAG_ID?:string[];
+    IMAGE_URL?: string;
   };
+
+    const tagMapping = {
+    1: '贵重物品',
+    2: '私人用品',
+    3: '医疗用品'
+  };
+
+  // 打乱字符集的函数
+  function shuffle(array: string[]) {
+    let currentIndex = array.length, randomIndex;
+
+    // While there remain elements to shuffle.
+    while (currentIndex !== 0) {
+      // Pick a remaining element.
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+
+    return array;
+  }
+
+  function generateItemID() {
+    const charset = '123456789abcdefghijklmnopqrstuvwxyz'.split('');
+    const shuffledCharset = shuffle(charset);
+    let uniqueID = '';
+    
+    // 生成16位ID
+    for (let i = 0; i < 16; i++) {
+      const randomIndex = Math.floor(Math.random() * shuffledCharset.length);
+      uniqueID += shuffledCharset[randomIndex];
+    }
+
+    return uniqueID;
+  }
+
   const formModel = ref<FormInstance>();
   const submit = () => {
     loading.value = true;
@@ -24,19 +66,23 @@
         if (selectedFile.value) {
           const formData = new FormData();
           formData.append('file', selectedFile.value);
-          const res = await axios.post('https://localhost:44343/api/ItemPicUpload/upload?type=Found', formData, {
+          const res = await axios.post(baseURL + 'ItemPicUpload/upload?type=Found', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
           });
-          form.value.itemImage = res.data.url;
+          form.value.IMAGE_URL = res.data.url;
         }
-        
-        form.value.itemCategory = form.value.itemCategory[0]
-        form.value.findTime = dayjs(form.value.findTime).format("YYYY-MM-DD HH:mm:ss")
+        form.value.ITEM_ID = generateItemID(); // 生成并设置 ITEM_ID
+        form.value.CATEGORY_ID = form.value.CATEGORY_ID[0]
+        form.value.FOUND_DATE = dayjs(form.value.FOUND_DATE).format("YYYY-MM-DD HH:mm:ss")
         const jsonFormData = JSON.stringify(form.value)
         console.log(jsonFormData)
-        await axios.post('api/addNewFind', jsonFormData)
+        await axios.post(baseURL + 'PublishItem/Found', jsonFormData, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
         getFinds()
         setTimeout(() => {
           message.success('提交成功！');
@@ -51,11 +97,11 @@
   };
   const columns = [
     { title: '丢失物品', dataIndex: 'itemNameAndCategory'},
-    { title: '物品描述', dataIndex: 'itemDescribe', ellipsis: true},
-    { title: '发现地点', dataIndex: 'findPosition', ellipsis: true},
-    { title: '发现时间', dataIndex: 'findTime' },
-    { title: '物品标签', dataIndex: 'itemTags' },
-    { title: '物品图片', dataIndex: 'itemImage' },
+    { title: '物品描述', dataIndex: 'DESCRIPTION', ellipsis: true},
+    { title: '发现地点', dataIndex: 'FOUND_LOCATION', ellipsis: true},
+    { title: '发现时间', dataIndex: 'FOUND_DATE' },
+    { title: '物品标签', dataIndex: 'TAG_ID' },
+    { title: '物品图片', dataIndex: 'IMAGE_URL' },
   ];
   const open = ref<boolean>(false);
   const loading = ref<boolean>(false);
@@ -63,20 +109,21 @@
     open.value = true;
   }
   const form = ref<oneFind>({
-    itemName : '',
-    itemCategory : '',
-    itemDescribe : '',
-    findPosition : '',
-    findTime : '',
-    itemTags : [],
-    itemImage : '',
+    ITEM_ID : '',
+    ITEM_NAME : '',
+    CATEGORY_ID : '',
+    DESCRIPTION : '',
+    FOUND_LOCATION : '',
+    FOUND_DATE : '',
+    TAG_ID : [],
+    IMAGE_URL : '',
   });
   const selectedFile = ref<File | null>(null);
   const handleFileChange = (file : File) => {
     selectedFile.value = file;
     const reader = new FileReader();
     reader.onload = (e) => {
-      form.value.itemImage = e.target?.result as string;
+      form.value.IMAGE_URL = e.target?.result as string;
     };
     reader.readAsDataURL(file);
   };
@@ -86,8 +133,22 @@
 
   const finds = ref([])
   const getFinds = async () => {
-    const res = await axios.get('api/finds')
-    finds.value = res.data
+    try {
+      const res = await axios.get(baseURL + 'QueryItem', {
+        params: { type: 1 }
+      });
+      
+      finds.value = res.data.map(item => ({
+      ...item,
+      TAG_ID: [tagMapping[item.TAG_ID as keyof typeof tagMapping] || '未知']
+    }));
+      
+      console.log('数据获取成功');
+      
+    } catch (error) {
+      console.error('获取数据时出错:', error);
+      // 可以在这里添加错误处理逻辑，比如设置一个错误状态
+    }
   }
   onMounted(() => getFinds())
 </script>
@@ -96,31 +157,31 @@
   <a-modal v-model:visible="open" title="发布无主物品" >
     <template #footer></template>
     <a-form ref="formModel" :model="form" :labelCol="{ span: 5 }" :wrapperCol="{ span: 16 }" >
-      <a-form-item label="物品名称" name="itemName" has-feedback :rules="[{ required: true, message: '请输入物品名称' }]">
-        <a-input v-model:value="form.itemName" :maxlength="20" />
+      <a-form-item label="物品名称" name="ITEM_NAME" has-feedback :rules="[{ required: true, message: '请输入物品名称' }]">
+        <a-input v-model:value="form.ITEM_NAME" :maxlength="20" />
       </a-form-item>
-      <a-form-item label="物品类别" name="itemCategory" has-feedback :rules="[{ required: true, message: '请选择物品类别' }]">
-        <a-cascader v-model:value="form.itemCategory" :options="[{label: '物品类别1', value: '物品类别1',}, {label: '手表', value: '手表',},]"/>
+      <a-form-item label="物品类别" name="CATEGORY_ID" has-feedback :rules="[{ required: true, message: '请选择物品类别' }]">
+        <a-cascader v-model:value="form.CATEGORY_ID" :options="[{label: '物品类别1', value: '物品类别1',}, {label: '手表', value: '手表',},]"/>
       </a-form-item>
-      <a-form-item label="物品描述" name="itemDescribe" has-feedback :rules="[{ required: true, message: '请输入物品描述' }]">
-        <a-textarea :rows="4" v-model:value="form.itemDescribe" :maxlength="100" />
+      <a-form-item label="物品描述" name="DESCRIPTION" has-feedback :rules="[{ required: true, message: '请输入物品描述' }]">
+        <a-textarea :rows="4" v-model:value="form.DESCRIPTION" :maxlength="100" />
       </a-form-item>
-      <a-form-item label="发现地点" name="findPosition" has-feedback :rules="[{ required: true, message: '请输入发现地点' }]">
-        <a-textarea :rows="4" v-model:value="form.findPosition" :maxlength="100" />
+      <a-form-item label="发现地点" name="FOUND_LOCATION" has-feedback :rules="[{ required: true, message: '请输入发现地点' }]">
+        <a-textarea :rows="4" v-model:value="form.FOUND_LOCATION" :maxlength="100" />
       </a-form-item>
-      <a-form-item label="发现时间" name="findTime" has-feedback :rules="[{ required: true, message: '请输入发现时间' }]">
-        <a-date-picker v-model:value="form.findTime" show-time/>
+      <a-form-item label="发现时间" name="FOUND_DATE" has-feedback :rules="[{ required: true, message: '请输入发现时间' }]">
+        <a-date-picker v-model:value="form.FOUND_DATE" show-time/>
       </a-form-item>
-      <a-form-item label="物品标签" name="itemTags" has-feedback :rules="[{ required: true, message: '请选择物品标签' }]">
-      <a-checkbox-group v-model:value="form.itemTags">
-        <a-checkbox value="贵重物品" >贵重物品</a-checkbox>
-        <a-checkbox value="私人用品" >私人用品</a-checkbox>
-        <a-checkbox value="医疗用品" >医疗用品</a-checkbox>
+      <a-form-item label="物品标签" name="TAG_ID" has-feedback :rules="[{ required: true, message: '请选择物品标签' }]">
+      <a-checkbox-group v-model:value="form.TAG_ID">
+        <a-checkbox value="1" >贵重物品</a-checkbox>
+        <a-checkbox value="2" >私人用品</a-checkbox>
+        <a-checkbox value="3" >医疗用品</a-checkbox>
       </a-checkbox-group>
     </a-form-item>
-      <a-form-item label="物品图片" name="itemImage" has-feedback :rules="[{ required: true, message: '请上传物品图片' }]">
+      <a-form-item label="物品图片" name="IMAGE_URL" has-feedback :rules="[{ required: true, message: '请上传物品图片' }]">
         <a-upload :show-upload-list="false" :beforeUpload="(file: File) => extractImg(file)">
-          <img class="h-8 p-0.5 rounded border border-dashed border-border" v-if="form.itemImage" :src="form.itemImage" />
+          <img class="h-8 p-0.5 rounded border border-dashed border-border" v-if="form.IMAGE_URL" :src="form.IMAGE_URL" />
           <a-button v-else type="dashed">
             <template #icon>
               <UploadOutlined />
@@ -151,19 +212,19 @@
     <template #bodyCell="{ column, record }">
       <template v-if="column.dataIndex === 'itemNameAndCategory'">
         <div class="text-title font-bold">
-          {{ record.itemName }}
+          {{ record.ITEM_NAME }}
         </div>
         <div class="text-subtext">
-          {{record.itemCategory}}
+          {{record.CATEGORY_ID}}
         </div>
       </template>
-      <template v-else-if="column.dataIndex === 'itemImage'">
-        <img class="w-12 rounded" :src="record.itemImage" />
+      <template v-else-if="column.dataIndex === 'IMAGE_URL'">
+        <img class="w-12 rounded" :src="record.IMAGE_URL" />
       </template>
-      <template v-else-if="column.dataIndex === 'itemTags'">
+      <template v-else-if="column.dataIndex === 'TAG_ID'">
         <span>
           <a-tag
-            v-for="tag in record.itemTags"
+            v-for="tag in record.TAG_ID"
             :key="tag"
             :color="tag === '贵重物品' ? 'volcano' : tag.length > 4 ? 'geekblue' : 'green'"
             >

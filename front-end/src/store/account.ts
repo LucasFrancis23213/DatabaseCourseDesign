@@ -1,10 +1,9 @@
 import { defineStore } from 'pinia';
 import http from './http';
-import { Response } from '@/types';
+import { useLoadingStore } from './loading';
 import { useMenuStore } from './menu';
 import { useAuthStore } from '@/plugins';
-import { useLoadingStore } from './loading';
-import axios from 'axios'
+import axios from 'axios';
 
 export interface Profile {
   account: Account;
@@ -12,11 +11,10 @@ export interface Profile {
   role: string;
 }
 export interface Account {
-  username: string;
-  avatar: string;
-  gender: number;
+  userName: string;
+  userId:string;
+  contact:string;
 }
-
 export type TokenResult = {
   token: string;
   expires: number;
@@ -38,7 +36,7 @@ export const useAccountStore = defineStore('account', {
       this.username = username;
       const queryParams = new URLSearchParams({ UserName: username, Password: password }).toString();
       try {
-        const response = await axios.get(`https://localhost:44343/api/CheckPassword?${queryParams}`);
+        const response = await axios.get(`http://121.36.200.128:5000/api/CheckPassword?${queryParams}`);
         if (response.status === 200) {
           this.logged = true;
           this.account.userName = username;
@@ -89,7 +87,7 @@ export const useAccountStore = defineStore('account', {
       }
       else{
         try {
-          const response = await axios.get(`https://localhost:44343/api/GetUserInfo?UserName=${this.account.userName}`);
+          const response = await axios.get(`http://121.36.200.128:5000/api/GetUserInfo?UserName=${this.account.userName}`);
           if (response.data) {
             this.account.userName = response.data.userName;
             this.account.userId = response.data.userID;
@@ -110,7 +108,7 @@ export const useAccountStore = defineStore('account', {
   async deleteUser() {
     if(!!this.account.userName){
       try {
-        const response = await axios.get(`https://localhost:44343/api/DeleteUser?UserName=${this.account.userName}`);
+        const response = await axios.get(`http://121.36.200.128:5000/api/DeleteUser?UserName=${this.account.userName}`);
         this.account.userName = '';
         this.account.userId = '';
         this.account.contact = '';

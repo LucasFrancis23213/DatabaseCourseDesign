@@ -5,17 +5,20 @@
     {
       title: 'ACCOUNT',
       children: [
-        { checked: false, label: 'Email me when someone follows me' },
-        { checked: true, label: 'Email me when someone answers me' },
-        { checked: true, label: 'Email me when someone mentions me' },
+        { checked: false, label: '特定位置附近新失物登记推送' },
+        { checked: true, label: '关注失物状态改变弹窗' },
+        { checked: true, label: '用户消息弹窗' },
+        { checked: true, label: '陌生人消息' },
+        { checked: true, label: '长辈模式' },
+        { checked: true, label: '位置信息' },
       ],
     },
     {
       title: 'APPLICATION',
       children: [
-        { checked: true, label: 'New launches and projects' },
-        { checked: false, label: 'Monthly product updates' },
-        { checked: true, label: 'Subscribe to newsletter' },
+        { checked: true, label: '白天模式' },
+        { checked: false, label: '短信接受消息' },
+        { checked: true, label: '邮件接收消息' },
       ],
     },
   ]);

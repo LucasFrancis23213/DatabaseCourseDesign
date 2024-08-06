@@ -197,11 +197,51 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
         //查找一条记录
         public Tuple<bool, string> QueryItem(string TableName, Dictionary<string, object> index)
         {
-            
+
             if (index == null)
             {
-                string errorReason = "查询索引不能为空！";
-                return new Tuple<bool, string>(false, errorReason);
+                if (TableName == "Match_Records" || (TableName == "Item_Status_History") || (TableName == "Item_Claim_Processes")) { }
+                else
+                {
+                    string errorReason = "不合法的TableName值！";
+                    return new Tuple<bool, string>(false, errorReason);
+                }
+                string ErrorReason = string.Empty;
+                if (OracleConnection.State == ConnectionState.Open)
+                {
+
+                    string DeleteSQL = $"SELECT * FROM {TableName.ToUpper()}";
+                    using (OracleCommand cmd = new OracleCommand(DeleteSQL, OracleConnection))
+                    {
+                        try
+                        {
+                            // 添加参数
+                            foreach (var condition in index)
+                            {
+                                cmd.Parameters.Add(new OracleParameter(condition.Key.ToUpper(), condition.Value ?? DBNull.Value));
+                            }
+                            int AffectedRow = cmd.ExecuteNonQuery();
+                            Debug.WriteLine($"共{AffectedRow}行被查找");
+                            if (AffectedRow == 0)
+                            {
+                                return new Tuple<bool, string>(false, "没有查找到相应内容");
+                            }
+                            return new Tuple<bool, string>(true, ErrorReason);
+                        }
+                        catch (Exception ex)
+                        {
+                            ErrorReason = ex.Message;
+                            Debug.Write($"查找失败,报错为：{ErrorReason}");
+                            return new Tuple<bool, string>(false, ErrorReason);
+                        }
+                    }
+                }
+                else
+                {
+                    ErrorReason = "数据库未连接";
+                    Debug.WriteLine("查找操作，", ErrorReason);
+                    return new Tuple<bool, string>(false, ErrorReason);
+                }
             }
             else
             {
