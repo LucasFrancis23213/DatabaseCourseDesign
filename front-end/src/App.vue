@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { reactive, ref } from 'vue';
+  import { reactive, ref, onMounted, onBeforeUnmount } from 'vue';
   import { useRouter } from 'vue-router';
   import { useAccountStore, useMenuStore, useSettingStore, storeToRefs } from '@/store';
   import avatar from '@/assets/avatar.png';
@@ -41,7 +41,7 @@
   import { useAuthStore } from '@/plugins';
   import { computed } from 'vue';
 
-  const { logout, account, permissions} = useAccountStore();
+  const { logout, account, permissions, closeApp} = useAccountStore();
   const showSetting = ref(false);
   const router = useRouter();
 
