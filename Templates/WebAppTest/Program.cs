@@ -9,8 +9,9 @@ builder.Services.AddControllers();
 // 配置 Kestrel 只使用 HTTP
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
-serverOptions.Listen(IPAddress.Any, 5000);  // 使用端口 5000，您可以根据需要更改
+serverOptions.Listen(IPAddress.Any, 5174);  // 使用端口 5000，您可以根据需要更改
 });
+
 // Learn more about configuring Swagger/OpenAPI at
 https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -40,6 +41,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 app.UseHttpsRedirection();
 app.UseDefaultFiles();
 app.UseStaticFiles();
