@@ -96,7 +96,7 @@
 
   function signUp() {
     loading.value = true;
-    axios.post('https://localhost:44343/api/Register', {
+    axios.post('http://121.36.200.128:5000/api/Register', {
       User_Name: form.username,
       Password: form.password,
       Contact: form.contact

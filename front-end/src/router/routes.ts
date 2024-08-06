@@ -85,7 +85,7 @@ const routes: RouteRecordRaw[] = [
     path: '/PublishSearchNotice',
     name: 'PublishSearchNotice',
     meta: {
-      renderMenu: false,
+      renderMenu: true,
     },
     component: () => import('@/pages/publishSearchNotice')
   },
@@ -93,11 +93,26 @@ const routes: RouteRecordRaw[] = [
     path: '/PublishUnclaimedItem',
     name: 'PublishUnclaimedItem',
     meta: {
-      renderMenu: false,
+      renderMenu: true,
     },
     component: () => import('@/pages/publishUnclaimedItem')
   },
-
+  {
+    path: '/Review',
+    name: 'Review',
+    meta: {
+      renderMenu: true,
+    },
+    component: () => import('@/pages/review')
+  },
+  {
+    path: '/Personal',
+    name: 'Personal',
+    meta: {
+      renderMenu: true,
+    },
+    component: () => import('@/pages/personal')
+  },
 ];
 //Community Feature -- QandAList -- 路由添加
 import testRoute from './CommunityFeature/test';

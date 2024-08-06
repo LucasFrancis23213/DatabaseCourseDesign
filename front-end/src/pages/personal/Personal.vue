@@ -59,6 +59,9 @@
     是否注销账号: {{ accountStore.account.userName }}?
   </template>
   </a-modal>
+
+  <MyFind />
+  <MySearch />
 </template>
 
 <script lang="ts" setup>
@@ -69,6 +72,8 @@ import PlatformSetting from './PlatformSetting.vue';
 import ProfileInfo from './ProfileInfo.vue';
 import Projects from './Projects.vue';
 import { useRouter } from 'vue-router';
+import MyFind from './MyFind.vue';
+import MySearch from './MySearch.vue';
 
 const select = ref('overview');
 const accountStore = useAccountStore();
