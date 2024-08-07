@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "AV9RcO8AwEU=",
+  "dgSpecHash": "W1zTgu1B3BY=",
   "success": true,
-  "projectFilePath": "F:\\数据库课程设计\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
+  "projectFilePath": "F:\\数据库课程设计\\gitpush\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Lenovo\\.nuget\\packages\\microsoft.csharp\\4.0.1\\microsoft.csharp.4.0.1.nupkg.sha512",
     "C:\\Users\\Lenovo\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",

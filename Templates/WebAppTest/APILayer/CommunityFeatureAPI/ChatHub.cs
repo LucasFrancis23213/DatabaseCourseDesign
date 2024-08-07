@@ -35,10 +35,10 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI
         // 覆盖 OnConnectedAsync 方法，在用户连接时调用
         public async Task OnConnectedAsync(int userId)
         {
-           
-             string connectionId = Context.ConnectionId;
-             onlineUsers[userId] = connectionId;
-         
+
+            string connectionId = Context.ConnectionId;
+            onlineUsers[userId] = connectionId;
+
             await base.OnConnectedAsync();
         }
 

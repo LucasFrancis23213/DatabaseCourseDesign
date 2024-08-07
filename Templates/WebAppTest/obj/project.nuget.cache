@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "l0/kATLWOE4=",
+  "dgSpecHash": "acq63p9ff3A=",
   "success": true,
-  "projectFilePath": "F:\\数据库课程设计\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\WebAppTest\\WebAppTest.csproj",
+  "projectFilePath": "F:\\数据库课程设计\\gitpush\\Templates\\WebAppTest\\WebAppTest.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Lenovo\\.nuget\\packages\\microsoft.csharp\\4.0.1\\microsoft.csharp.4.0.1.nupkg.sha512",
     "C:\\Users\\Lenovo\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",

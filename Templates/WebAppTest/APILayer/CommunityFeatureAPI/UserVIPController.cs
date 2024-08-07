@@ -143,15 +143,15 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
             try
             {
                 
-                if (!request.ContainsKey("user_id") || !request.ContainsKey("start_time")||
-                    !request.ContainsKey("end_time") || !request.ContainsKey("vip_status"))
+                if (!request.ContainsKey("user_id") || !request.ContainsKey("vip_start_time")||
+                    !request.ContainsKey("vip_end_time") || !request.ContainsKey("vip_status"))
                 {
                     return BadRequest(new { status = "error", message = "Missing required fields." });
                 }
 
                 int userId = request["user_id"].GetInt32();
-                DateTime vipStartDate = request["start_time"].GetDateTime();
-                DateTime vipEndDate = request["end_time"].GetDateTime();
+                DateTime vipStartDate = request["vip_start_time"].GetDateTime();
+                DateTime vipEndDate = request["vip_end_time"].GetDateTime();
                 string vipStatus = request["vip_status"].GetString();
 
                 if (userId <= 0 || string.IsNullOrEmpty(vipStatus))

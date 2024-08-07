@@ -165,7 +165,14 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
                 };
                 var result = UsersBusiness.QueryBusiness(condition,"AND");
 
-                return result.FirstOrDefault();
+                if (result.Count() > 0)
+                {
+                    return result.First();
+                }
+                else
+                {
+                    throw new Exception("未找到指定用户");
+                }
             }
             catch (Exception ex)
             {
@@ -250,7 +257,7 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
             }
         }
 
-        // 根据指定messageId更新message的阅读状态
+        // 根据指定messageId更新message的阅读状态 改成判定类型不为撤回的形式
         public bool UpdateMessageReadStatus(int messageId)
         {
             try
@@ -299,7 +306,6 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
             try
             {
                 
-
                 Dictionary<string, object> condition = new Dictionary<string, object>
                 {
                     { "message_id", messageId },

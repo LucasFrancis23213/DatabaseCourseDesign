@@ -6481,11 +6481,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\数据库课程设计\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\WebAppTest\\WebAppTest.csproj",
+      "projectUniqueName": "F:\\数据库课程设计\\gitpush\\Templates\\WebAppTest\\WebAppTest.csproj",
       "projectName": "WebAppTest",
-      "projectPath": "F:\\数据库课程设计\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\WebAppTest\\WebAppTest.csproj",
+      "projectPath": "F:\\数据库课程设计\\gitpush\\Templates\\WebAppTest\\WebAppTest.csproj",
       "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-      "outputPath": "F:\\数据库课程设计\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\WebAppTest\\obj\\",
+      "outputPath": "F:\\数据库课程设计\\gitpush\\Templates\\WebAppTest\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -6503,8 +6503,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "F:\\数据库课程设计\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj": {
-              "projectPath": "F:\\数据库课程设计\\DatabaseCourseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj"
+            "F:\\数据库课程设计\\gitpush\\Templates\\BasicSQLOPs\\SQLOperation.csproj": {
+              "projectPath": "F:\\数据库课程设计\\gitpush\\Templates\\BasicSQLOPs\\SQLOperation.csproj"
             }
           }
         }

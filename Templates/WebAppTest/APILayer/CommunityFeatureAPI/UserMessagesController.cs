@@ -14,8 +14,8 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
     public class UserMessagesController : ControllerBase
     {
         private UserMessages userMessages { get; set; }
-        private readonly Connection connection;
         private readonly IHubContext<ChatHub> _hubContext;
+
         public UserMessagesController(Connection connection, IHubContext<ChatHub> hubContext)
         {
             userMessages = new UserMessages(connection);
@@ -151,8 +151,11 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
                     // 向userId对应的指定客户端发送消息
                     if (ChatHub.onlineUsers.TryGetValue(receiverUserId, out string connectionId))
                     {
-                        // 使用 HubContext 发送消息
-                        await _hubContext.Clients.Client(connectionId).SendAsync("ReceiveMessage", success);
+                        if (connectionId != null)
+                        {
+                            // 使用 HubContext 发送消息
+                            await _hubContext.Clients.Client(connectionId).SendAsync("ReceiveMessage", success);
+                        }
                        
                     }
 
@@ -202,8 +205,12 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
                     
                     if (ChatHub.onlineUsers.TryGetValue(success.Receiver_User_ID, out string connectionId))
                     {
-                        // 使用 HubContext 发送消息
-                        await _hubContext.Clients.Client(connectionId).SendAsync("RetractMessage", success);
+                        if (connectionId != null)
+                        {
+                            // 使用 HubContext 发送消息
+                            await _hubContext.Clients.Client(connectionId).SendAsync("ReceiveMessage", success);
+                        }
+                        
 
                     }
 
@@ -276,6 +283,7 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
                 bool receiverInWindow = request["receiver_in_window"].GetBoolean();
                 int sender_user_id = request["sender_user_id"].GetInt32();
 
+
                 bool success = false;
                 if (receiverInWindow) {
                     // 更新消息的阅读状态为已读
@@ -307,6 +315,8 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
                 return StatusCode(StatusCodes.Status500InternalServerError, new { status = "error", message = ex.Message });
             }
         }
+
+        
 
 
     }

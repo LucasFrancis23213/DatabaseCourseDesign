@@ -10,8 +10,9 @@ https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 // 添加connection服务
-builder.Services.AddSingleton<Connection>(new Connection("BAMBOO", "123456", "localhost:1521/ORCL"));
+builder.Services.AddSingleton<Connection>(new Connection("ADMIN", "123456", "121.36.200.128:1521/ORCL"));
 
+builder.Services.AddRazorPages();
 builder.Services.AddSignalR();
 
 
@@ -23,22 +24,28 @@ builder.Services.AddCors(options =>
     {
         builder.WithOrigins("http://localhost:5173")
         .AllowAnyHeader()
-        .AllowAnyMethod();
-        });
+        .AllowAnyMethod()
+        .AllowCredentials();
+    });
 });
 
 var app = builder.Build();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
 }
+
 app.UseHttpsRedirection();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
+app.UseRouting();
 app.UseAuthorization();
+
 app.MapControllers();
 
 
@@ -47,4 +54,3 @@ app.MapHub<ChatHub>("/chathub");
 app.UseCors("AllowSpecificOrigin"); // Use the CORS policy
 
 app.Run();
-
