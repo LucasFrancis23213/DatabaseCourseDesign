@@ -1,10 +1,21 @@
 import { defineStore } from 'pinia';
 import http from './http';
-import { Response } from '@/types';
+import { useLoadingStore } from './loading';
 import { useMenuStore } from './menu';
 import { useAuthStore } from '@/plugins';
-import { useLoadingStore } from './loading';
-import axios from 'axios'
+import axios from 'axios';
+
+function getLocalISOTime() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+
+  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+}
 
 export interface Profile {
   account: Account;
@@ -12,11 +23,10 @@ export interface Profile {
   role: string;
 }
 export interface Account {
-  username: string;
-  avatar: string;
-  gender: number;
+  userName: string;
+  userId:string;
+  contact:string;
 }
-
 export type TokenResult = {
   token: string;
   expires: number;
@@ -38,7 +48,9 @@ export const useAccountStore = defineStore('account', {
       this.username = username;
       const queryParams = new URLSearchParams({ UserName: username, Password: password }).toString();
       try {
-        const response = await axios.get(`https://localhost:44343/api/CheckPassword?${queryParams}`);
+        console.log("ready to post request to server");
+        const response = await axios.get(`http://121.36.200.128:5000/api/CheckPassword?${queryParams}`);
+        console.log("get response! and response status is ",response.status);
         if (response.status === 200) {
           this.logged = true;
           this.account.userName = username;
@@ -51,10 +63,30 @@ export const useAccountStore = defineStore('account', {
           useAuthStore().setAuthorities(this.permissions);
           http.setAuthorization(`Bearer ${response.data.token}`, new Date(response.data.expires));
           this.profile();
+          const logData = {
+            user_ID: this.account.userId,
+            action_Type: "Login",
+            occurrence_Time: getLocalISOTime()
+          };
+          await axios.post('http://localhost:5174/api/InsertUserOperatorLog', logData);
+          const APIData = {
+            apI_Name: "CheckPassword",
+            accessor_ID: this.account.userId,
+            access_Time: getLocalISOTime(),
+            access_Result: "success"
+          };
+          await axios.post('http://localhost:5174/api/InsertAPILogs', APIData);
           await useMenuStore().getMenuList();
           return { success: true, message: "登录成功！"};
         } 
       } catch (error) {
+        const APIData = {
+          apI_Name: "CheckPassword",
+          accessor_ID: this.account.userId,
+          access_Time: getLocalISOTime(),
+          access_Result: "failure"
+        };
+        await axios.post('http://localhost:5174/api/InsertAPILogs', APIData);
         if (error.response) {
           if (error.response.status === 401) {
             return { success: false, message: "登录失败：密码错误" };
@@ -70,7 +102,7 @@ export const useAccountStore = defineStore('account', {
         }
       }
     },
-    async logout() {
+    async closeApp() {
       return new Promise<boolean>((resolve) => {
         localStorage.removeItem('stepin-menu');
         http.removeAuthorization();
@@ -81,6 +113,15 @@ export const useAccountStore = defineStore('account', {
         resolve(true);
       });
     },
+    async logout() {
+      const logData = {
+        user_ID: this.account.userId,
+        action_Type: "Logout",
+        occurrence_Time: getLocalISOTime()
+      };
+      await axios.post('http://localhost:5174/api/InsertUserOperatorLog', logData);
+      await this.closeApp();
+    },
     async profile() {
       const { setAuthLoading } = useLoadingStore();
       setAuthLoading(true);
@@ -89,7 +130,7 @@ export const useAccountStore = defineStore('account', {
       }
       else{
         try {
-          const response = await axios.get(`https://localhost:44343/api/GetUserInfo?UserName=${this.account.userName}`);
+          const response = await axios.get(`http://121.36.200.128:5000/api/GetUserInfo?UserName=${this.account.userName}`);
           if (response.data) {
             this.account.userName = response.data.userName;
             this.account.userId = response.data.userID;
@@ -100,7 +141,7 @@ export const useAccountStore = defineStore('account', {
           console.error('Failed to fetch user info:', error);
           return { account: this};
         } finally {
-          setAuthLoading(false); // 确保加载状态在操作完成后被重置
+          setAuthLoading(false); 
         }
       }
     },
@@ -108,16 +149,55 @@ export const useAccountStore = defineStore('account', {
       this.logged = logged;
     },
   async deleteUser() {
+    const logData = {
+      user_ID: this.account.userId,
+      action_Type: "DeleteUser",
+      occurrence_Time: getLocalISOTime()
+    };
+    await axios.post('https://localhost:5174/api/InsertUserOperatorLog', logData);
     if(!!this.account.userName){
       try {
-        const response = await axios.get(`https://localhost:44343/api/DeleteUser?UserName=${this.account.userName}`);
+        const response = await axios.get(`http://121.36.200.128:5000/api/DeleteUser?UserName=${this.account.userName}`);
         this.account.userName = '';
         this.account.userId = '';
         this.account.contact = '';
-        await this.logout();
+        await this.closeApp();
       } catch (error) {
         console.error('Failed to delete user:', error);
       } 
+    }
+  },
+  async signup(username, password, contact) {
+    const queryParams = {
+      User_Name: username,
+      Password: password,
+      Contact: contact
+    }; 
+    try {
+      const response = await axios.post(`https://localhost:5174/api/Register`, queryParams);
+      if (response.status === 200) {
+        this.account.userName = username;
+        await this.profile();
+        const logData = {
+          user_ID: this.account.userId, 
+          action_Type: "Signup",
+          occurrence_Time: getLocalISOTime()
+        };
+        await axios.post('https://localhost:5174/api/InsertUserOperatorLog', logData);
+        return { success: true, message: "注册成功！即将跳转回登录界面..."};
+      }
+    } catch (error) {
+      if (error.response) {
+        if (error.response.status === 500) {
+          return { success: false, message: "注册失败，用户名已存在。"};
+        } else {
+          console.error("Registration error:", error);
+          return { success: false, message: `${error.message}`};
+        }
+      } else {
+        console.error("Error:", error);
+        return { success: false, message: "网络或服务器错误"};
+      }
     }
   },
 },
