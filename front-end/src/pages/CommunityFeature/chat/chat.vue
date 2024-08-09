@@ -5,13 +5,16 @@ import MessageInput from "@/components/CommunityFeature/chat/MessageInput.vue";
 import axios from "axios";
 import {useRoute} from 'vue-router';
 import * as signalR from '@microsoft/signalr';
+import { useAccountStore } from '@/store/account';
+const {account, permissions} = useAccountStore();
+
 
 axios.defaults.baseURL= import.meta.env.VITE_API_URL;
 
 const route =useRoute();
 
 const conversation_id  = ref(+route.params.conversation_id);
-const current_user_id = ref(+route.query.current_user_id);
+const current_user_id = ref(account.userId);//ref(+route.query.current_user_id);
 
 const other_avatar = ref();
 
@@ -20,10 +23,10 @@ const other_name = ref();
 const messages = ref([]);
 
 const isSending = ref(false);
-console.log("cuid是的数据类型是"+typeof current_user_id.value);
-console.log("ccid是"+conversation_id.value);
+
 
 async function getMessages(){
+  /*获取消息列表*/
   console.log("getMessages");
   try{
     const res = await axios.post(`/api/conversations/${conversation_id.value}`,{
@@ -112,6 +115,7 @@ function isSelf(sender_id){
   return sender_id === current_user_id.value;
 }
 async function updateReadStatus(){
+  /*更新消息的读取状态*/
   try{
     const res = await axios.post(`/api/conversations/${conversation_id.value}/update_read_status`,
         {conversation_id:conversation_id.value,
@@ -124,6 +128,7 @@ async function updateReadStatus(){
 }
 
 async function retractMessage(message_id){
+  /*撤回消息*/
   console.log(message_id);
   // 处理撤回逻辑
   try{
@@ -143,54 +148,111 @@ async function retractMessage(message_id){
 }
 
 const connection = ref(null);
+const debugInfo = ref('');
+const handleReceiveMessage = async (userMessages) => {
+  debugInfo.value = JSON.stringify(userMessages, null, 2);
 
-const startConnection = async () =>{
-  connection.value = new signalR.HubConnectionBuilder()
-      .withUrl(`/chathub`)
-      .build();
-  try{
-    await connection.value.start();
-    console.log("SignalR Connected. ");
+  const receiver_in_window = true; // Replace with actual logic
 
-    connection.value.on('ReceiveMessage',async (message) => {
-      if (message.data.receiver_user_id === current_user_id) {
-        messages.value.push(message);
-        try {
-          const res = await axios.post(`/api/messages/receive`, {
-            message_id: message.message_id,
-            receiver_in_window: true,
-            sender_user_id: message.sender_user_id,
-          });
+  try {
+    if (userMessages.message_type === "retract") {
+      retractMessage(userMessages.message_id, userMessages.sender_user_id);
+    } else {
+      const response = await updateReadStatus(userMessages.message_id, receiver_in_window, userMessages.sender_user_id);
+      const senderUserName = response.data.sender_user_name;
 
-          console.log(res);
-        } catch (e) {
-          console.error(e);
-          alert(e);
-        }
-
-      }
-
-    });
-
-
-  } catch (e){
-    console.error("SignalR Connection Error: ");
-    console.error(e);
+      messages.value.push({
+        id: userMessages.message_id,
+        senderId: userMessages.sender_user_id,
+        senderName: senderUserName,
+        content: userMessages.message_content
+      });
+    }
+  } catch (error) {
+    console.error('Failed to process message:', error);
   }
+};
+const connectionStatus = ref('Disconnected');
+const errorStatus = ref('');
+const connect = async () => {
 
-}
 
+  connectionStatus.value = "Connecting...";
+  errorStatus.value = "";
+
+  connection.value = new signalR.HubConnectionBuilder()
+    .withUrl(`${import.meta.env.VITE_API_URL}/chathub`)
+    .build();
+
+  connection.value.on("ReceiveMessage", handleReceiveMessage);
+
+  try {
+    await connection.value.start();
+    console.log("Connected!");
+    connectionStatus.value = `Connected as user ${account.userId}`;
+    await connection.value.invoke("OnConnectedAsync", parseInt(account.userId));
+  } catch (err) {
+    connectionStatus.value = "Connection failed.";
+    errorStatus.value = `Error: ${err.toString()}`;
+    console.error("Connection error:", err.toString());
+  }
+};
+// const startConnection = async () =>{
+//   connection.value = new signalR.HubConnectionBuilder()
+//       .withUrl(`/chathub`)
+//       .build();
+//   try{
+//     await connection.value.start();
+//     console.log("SignalR Connected. ");
+//
+//     connection.value.on('ReceiveMessage',async (message) => {
+//       if (message.data.receiver_user_id === current_user_id) {
+//         messages.value.push(message);
+//         try {
+//           const res = await axios.post(`/api/messages/receive`, {
+//             message_id: message.message_id,
+//             receiver_in_window: true,
+//             sender_user_id: message.sender_user_id,
+//           });
+//
+//           console.log(res);
+//         } catch (e) {
+//           console.error(e);
+//           alert(e);
+//         }
+//
+//       }
+//
+//     });
+//
+//
+//   } catch (e){
+//     console.error("SignalR Connection Error: ");
+//     console.error(e);
+//   }
+//
+// }
+const disconnect = async () => {
+  if (connection.value) {
+    try {
+      await connection.value.stop();
+      console.log("Disconnected!");
+      connectionStatus.value = "Disconnected";
+    } catch (err) {
+      console.error(err.toString());
+    }
+  }
+};
 
 onMounted(()=>{
   updateReadStatus();
   getMessages();
   //startConnection();
+  connect();
 })
 
 onUnmounted(()=>{
-  if(connection.value){
-    connection.value.stop();
-  }
+  disconnect();
 })
 
 

@@ -61,6 +61,26 @@ const messageRoute:RouteRecordRaw[] = [
     },
     component:() =>import('@/pages/admin_CommunityFeature/vip/vipTest.vue')
   },
+    {
+    path:'/follow',
+    name:'你的关注',
+    props:true,
+    meta: {
+      renderMenu: true,
+      cacheable: true,
+    },
+    component:() =>import('@/pages/CommunityFeature/follow/follow.vue')
+  },
+    {
+    path:'/fans',
+    name:'你的粉丝',
+    props:true,
+    meta: {
+      renderMenu: true,
+      cacheable: true,
+    },
+    component:() =>import('@/components/CommunityFeature/follow/fansList.vue')
+  },
 ]
 
 export default messageRoute;
