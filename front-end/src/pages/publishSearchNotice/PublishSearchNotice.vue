@@ -115,6 +115,7 @@
     { title: '是否悬赏', dataIndex: 'IS_REWARDED' },
     { title: '悬赏金额', dataIndex: 'REWARD_AMOUNT' },
     { title: '截止时间', dataIndex: 'DEADLINE' },
+    { title: '操作', dataIndex: 'RETURN_ITEM'},
   ];
 
   const open = ref<boolean>(false);
@@ -168,6 +169,10 @@
     }
   }
   onMounted(() => getPublishs());
+
+  const returnItem = () => {
+
+  }
 </script>
 
 <template>
@@ -266,6 +271,9 @@
               {{ tag }}
           </a-tag>
         </span>
+      </template>
+      <template v-else-if="column.dataIndex === 'RETURN_ITEM'">
+        <a-button type="primary" @click="returnItem">归还</a-button>
       </template>
     </template>
   </a-table>
