@@ -170,9 +170,41 @@
   }
   onMounted(() => getPublishs());
 
-  const returnItem = () => {
-
-  }
+ 
+const returnModel = ref<FormInstance>();
+//点击归还，openClaim变为true显示a-modal
+const openReturn = ref<boolean>(false)
+//提交归还时的加载
+const returnLoading = ref<boolean>(false)
+//归还的是finds数组中索引为claimRow的一行
+const returnRow = ref()
+//归还按钮的点击函数
+const clickReturn = (row) => {
+  returnRow.value = row
+  openReturn.value = true
+}
+//确认归还的点击函数
+const returnItem = () => {
+  returnLoading.value = true
+  returnModel.value?.validateFields()
+    .then(async () => {
+      setTimeout(() => {
+        message.success('归还已提交审核！');
+        returnLoading.value = false;
+        openReturn.value = false
+        location.reload()
+      }, 2000);
+    })
+    .catch(() => {
+      returnLoading.value = false;
+      message.error('提交失败！')
+    })
+}
+//填写的留言和上传的图片
+const returnForm = ref({
+  MESSAGE: '',
+  IMAGE_URL: '',
+})
 </script>
 
 <template>
@@ -242,7 +274,7 @@
         </a-button>
       </div>
     </template>
-    <template #bodyCell="{ column, record }">
+    <template #bodyCell="{ column, record, index }">
       <template v-if="column.dataIndex === 'itemNameAndCategory'">
         <div class="text-title font-bold">
           {{ record.ITEM_NAME }}
@@ -273,8 +305,38 @@
         </span>
       </template>
       <template v-else-if="column.dataIndex === 'RETURN_ITEM'">
-        <a-button type="primary" @click="returnItem">归还</a-button>
+        <a-button type="primary" @click="clickReturn(index)">归还</a-button>
       </template>
     </template>
   </a-table>
+
+  <!-- 归还 -->
+  <a-modal v-model:visible="openReturn" title="归还物品">
+    <template #footer></template>
+    <span style="font-size: medium;">名称：</span><span>{{ publishs[returnRow].ITEM_NAME }}</span><br><br>
+    <span style="font-size: medium;">图片：</span><img style="width: 150px;" :src="publishs[returnRow].IMAGE_URL" /><br><br>
+    <span style="font-size: medium;">丢失地点：</span><span>{{ publishs[returnRow].FOUND_LOCATION }}</span><br><br>
+    <span style="font-size: medium;">物品描述：</span><span>{{ publishs[returnRow].DESCRIPTION }}</span><br>
+    <hr>
+    <a-form ref="claimModel" :model="returnForm" :labelCol="{ span: 5 }" :wrapperCol="{ span: 16 }">
+      <a-form-item label="填写留言" name="MESSAGE" has-feedback :rules="[{ required: true, message: '请输入留言' }]">
+        <a-textarea :rows="4" v-model:value="returnForm.MESSAGE" :maxlength="150" />
+      </a-form-item>
+      <a-form-item label="物品图片" name="IMAGE_URL" has-feedback :rules="[{ required: true, message: '请上传图片' }]">
+        <a-upload :show-upload-list="false" :beforeUpload="(file: File) => extractImg(file)">
+          <img class="h-8 p-0.5 rounded border border-dashed border-border" v-if="form.IMAGE_URL"
+            :src="form.IMAGE_URL" />
+          <a-button v-else type="dashed">
+            <template #icon>
+              <UploadOutlined />
+            </template>
+            上传
+          </a-button>
+        </a-upload>
+      </a-form-item>
+      <a-form-item :wrapper-col="{ offset: 10, span: 16 }">
+        <a-button type="primary" html-type="submit" @click="returnItem" :loading="returnLoading">确认归还</a-button>
+      </a-form-item>
+    </a-form>
+  </a-modal>
 </template>
