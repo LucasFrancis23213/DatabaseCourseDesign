@@ -1,4 +1,4 @@
-using SQLOperation.PublicAccess.Templates.SQLManager;
+﻿using SQLOperation.PublicAccess.Templates.SQLManager;
 using SQLOperation.PublicAccess.Utilities;
 using SQLOperation.PublicAccess.Templates.TemplateInterfaceManager;
 using System;
@@ -151,9 +151,11 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
         public Tuple<bool, string> PublishLostItem(List<Lost_Item> lostItems, List<Reward_Offers> rewardOffers)
         {
             int n = 0;
-            try{
-                foreach (Lost_Item item in lostItems) {
-                //先插入基础表单
+            try
+            {
+                foreach (Lost_Item item in lostItems)
+                {
+                    //先插入基础表单
                     var basicExcel = PublishLostItemBasic(item);
                     bool isSuccess1 = basicExcel.Item1; // 获取是否成功插入
                     string errorReason1 = "表单写入数据库过程中" + basicExcel.Item2; // 获取出错误原因
@@ -175,11 +177,11 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
 
                     }
                     else //插入基础表单失败
-                    { 
-                        return new Tuple<bool, string>(false, errorReason1); 
+                    {
+                        return new Tuple<bool, string>(false, errorReason1);
                     }
                 }//end of foreach
-                return new Tuple<bool, string>(true, string.Empty); 
+                return new Tuple<bool, string>(true, string.Empty);
             }
             catch (Exception ex)
             {
@@ -206,8 +208,8 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                     }
                     //插入基础表单失败
                     else
-                    { 
-                        return new Tuple<bool, string>(false, errorReason1); 
+                    {
+                        return new Tuple<bool, string>(false, errorReason1);
                     }
                 }
                 return new Tuple<bool, string>(true, string.Empty);
@@ -226,17 +228,17 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                 string errorReason = "删除索引不能为空！";
                 return new Tuple<bool, string>(false, errorReason);
             }
-            
+
             else
             {
-                if(type == 0)
-                {TableName = "Lost_Items";}
+                if (type == 0)
+                { TableName = "Lost_Items"; }
                 else if (type == 1)
-                {TableName = "Found_Items";}
+                { TableName = "Found_Items"; }
                 else
                 {
                     string errorReason = "不合法的type值，请输入0/1！";
-                    return new Tuple<bool, string>(false, errorReason); 
+                    return new Tuple<bool, string>(false, errorReason);
                 }
                 string ErrorReason = string.Empty;
                 if (OracleConnection.State == ConnectionState.Open)
@@ -309,7 +311,7 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                     {
                         QuerySQL = $"SELECT * FROM {TableName.ToUpper()} WHERE {ConditionString}";
                     }
-                    
+
 
                     using (OracleCommand cmd = new OracleCommand(QuerySQL, OracleConnection))
                     {
@@ -353,8 +355,63 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
             }
         }
 
+        public Tuple<bool, string> ReviewItem(int type, List<string> itemID)
+        {
+            // 假设0为未审核，1为通过
+            string TableName = "";
+            if (type == 0)
+            {
+                TableName = "Lost_Items";
+            }
+            else if (type == 1)
+            {
+                TableName = "Found_Items";
+            }
+            else
+            {
+                string errorReason = "不合法的type值，请输入0/1！";
+                return new Tuple<bool, string>(false, errorReason);
+            }
+
+            string ErrorReason = string.Empty;
+            if (OracleConnection.State == ConnectionState.Open)
+            {
+                string itemIDs = string.Join(",", itemID.Select(id => $"'{id}'"));
+                string UpdateSQL = $"UPDATE {TableName.ToUpper()} SET REVIEW_STATUS = 1 WHERE ITEM_ID IN ({itemIDs})";
+
+                using (OracleCommand cmd = new OracleCommand(UpdateSQL, OracleConnection))
+                {
+                    try
+                    {
+                        int rowsUpdated = cmd.ExecuteNonQuery();
+                        if (rowsUpdated > 0)
+                        {
+                            return new Tuple<bool, string>(true, ErrorReason);
+                        }
+                        else
+                        {
+                            ErrorReason = "未找到对应的记录进行更新";
+                            return new Tuple<bool, string>(false, ErrorReason);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        ErrorReason = ex.Message;
+                        Debug.Write($"更新失败,报错为：{ErrorReason}");
+                        return new Tuple<bool, string>(false, ErrorReason);
+                    }
+                }
+            }
+            else
+            {
+                ErrorReason = "数据库未连接";
+                Debug.WriteLine("更新操作失败：", ErrorReason);
+                return new Tuple<bool, string>(false, ErrorReason);
+            }
+        }
+
 
     }
 
-    
+
 }

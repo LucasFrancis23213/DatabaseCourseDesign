@@ -3,7 +3,7 @@
 import axios from 'axios';
 import { onMounted, ref } from 'vue'
 
-const baseURL = 'http://121.36.200.128:5000/api/';
+const baseURL = 'https://localhost:44343/api/';
 
 const unreviewFoundItems = ref([])
 const columns = [
@@ -25,13 +25,16 @@ const tagMapping = {
 };
 
 const categoryMapping = {
-  '1': '物品类别1',
+  '1': '日用品',
   '2': '手表',
 };
 
 const getUnreviewFoundItems = async () => {
     const res = await axios.get(baseURL + 'QueryItem', {
-        params: { type: 1 }
+        params: { 
+            type: 1,
+            review: 0
+        }
       });
       unreviewFoundItems.value = res.data.map(item => ({
       ...item,
