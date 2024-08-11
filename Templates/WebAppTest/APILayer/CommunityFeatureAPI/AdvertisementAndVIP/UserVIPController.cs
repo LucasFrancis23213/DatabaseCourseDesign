@@ -6,6 +6,7 @@ using System.Text.Json.Nodes;
 using System.Text.Json;
 using System.Transactions;
 using DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature;
+using System.Net.NetworkInformation;
 
 namespace WebAppTest.APILayer.CommunityFeatureAPI
 {
@@ -24,6 +25,10 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
         {
             try
             {
+                if (!requestBody.ContainsKey("user_id"))
+                {
+                    return BadRequest(new { status="error", message="缺少参数" });
+                }
                 int userId = requestBody["user_id"].GetInt32();   
                 int vipMemberId = userVIPService.IsVIP(userId);
                 bool isVip = vipMemberId > 0;
@@ -152,7 +157,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
                 int userId = request["user_id"].GetInt32();
                 DateTime vipStartDate = request["vip_start_time"].GetDateTime();
                 DateTime vipEndDate = request["vip_end_time"].GetDateTime();
-                string vipStatus = request["vip_status"].GetString();
+                string vipStatus = ControllerHelper.GetSafeString(request, "vip_status");
 
                 if (userId <= 0 || string.IsNullOrEmpty(vipStatus))
                 {
@@ -249,7 +254,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
                 }
                 if (request.ContainsKey("vip_status"))
                 {
-                    updateParams["status"] = request["vip_status"].GetString();
+                    updateParams["status"] = ControllerHelper.GetSafeString(request, "vip_status");
                 }
 
                 bool result = userVIPService.UpdateVIPMember(vipMemberId, updateParams);

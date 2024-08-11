@@ -6,6 +6,7 @@ using System.Text.Json.Nodes;
 using System.Text.Json;
 using System.Transactions;
 using DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature;
+using WebAppTest.APILayer.CommunityFeatureAPI;
 
 
 namespace DatabaseProject.APILayer.CommunityFeatureAPI {
@@ -15,7 +16,6 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
     public class QuestionAnswerController : ControllerBase
     {
         private  QuestionAnswers questionAnswers;
-        private readonly Connection _connection;
         private UserActivity userActivity;
 
         public QuestionAnswerController(Connection connection)
@@ -39,7 +39,7 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
                 }
 
                 // 使用 GetInt32 方法直接获取整数类型的值
-                var itemId = requestData["item_id"].GetString();
+                string itemId = ControllerHelper.GetSafeString(requestData, "item_id");
 
                 // 调用 QuestionAnswers 类中的方法获取问题列表
                 var questions = questionAnswers.GetQuestionsByItemId(itemId);
@@ -166,8 +166,8 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
                 }
 
                 // 获取 content, item_id 和 current_user_id 参数
-                string content = requestData["content"].GetString();
-                string itemId = requestData["item_id"].GetString();
+                string content = ControllerHelper.GetSafeString(requestData, "content");
+                string itemId = ControllerHelper.GetSafeString(requestData, "item_id");
                 int userId = requestData["current_user_id"].GetInt32();
                 DateTime time = requestData["time"].GetDateTime();
 
@@ -263,7 +263,7 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
                 int userId = requestData["current_user_id"].GetInt32();
 
                 // 获取回答内容
-                string answerContent = requestData["content"].GetString();
+                string answerContent = ControllerHelper.GetSafeString(requestData, "content");
 
                 // 获取回答时间
                 DateTime time = requestData["time"].GetDateTime();

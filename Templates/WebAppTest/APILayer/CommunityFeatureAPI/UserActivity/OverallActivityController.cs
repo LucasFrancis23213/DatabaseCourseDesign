@@ -13,7 +13,6 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
     [Route("api/overallactivity/")]
     public class OverallActivityController : Controller
     {
-        private readonly Connection connection;
         private UserActivity userActivityService;
 
         public OverallActivityController(Connection connection)
@@ -21,7 +20,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
             userActivityService=new UserActivity(connection);
         }
 
-        // 5. 用户查看整体活跃度
+        // 5. 用户查看整体活跃度 测试成功
         [HttpPost("overall")]
         public IActionResult GetOverallActivity([FromBody] Dictionary<string, JsonElement> requestData)
         {

@@ -35,7 +35,7 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
                 return newCommentId;
             }
             catch(Exception ex) {
-                throw new Exception($"{ex.Message}");
+                throw new Exception($"用户发表评论时发生错误：{ex.Message}");
             }
             
         }
@@ -56,7 +56,7 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
             }
             catch (Exception ex)
             {
-                throw new Exception($"{ex.Message}");
+                throw new Exception($"用户删除评论时发生错误：{ex.Message}");
             }
         }
 
@@ -68,7 +68,8 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
             try
             {
                 // 构造查询语句
-                string fromClause = "ITEM_COMMENTS NATURAL JOIN USERS";
+                
+                string fromClause = "ITEM_COMMENTS LEFT OUTER JOIN USERS ON ITEM_COMMENTS.USER_ID = USERS.USER_ID";
                 string whereClause = "ITEM_ID = :itemId";
                 OracleParameter[] parameters = new OracleParameter[]
                 {
@@ -83,6 +84,10 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
                 foreach (var row in result)
                 {
                     Users user = UserBusiness.MapDictionaryToObject(row);
+                    if (user.User_Name == "{}")
+                    {
+                        user.User_Name = "";
+                    }
                     Item_Comments comment = CommentBusiness.MapDictionaryToObject(row);
                     commentsList.Add(new Tuple<Users, Item_Comments>(user, comment));
                 }
@@ -91,7 +96,7 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
             }
             catch (Exception ex)
             {
-                throw new Exception($"{ex.Message}");
+                throw new Exception($"用户查看评论时发生错误：{ex.Message}");
             }
         }
     }

@@ -52,7 +52,8 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
                 string fromClause = @"
             
                 USER_MESSAGES m
-            JOIN 
+
+            LEFT OUTER JOIN 
                 USERS u
             ON 
                 u.USER_ID = m.SENDER_USER_ID OR u.USER_ID = m.RECEIVER_USER_ID
@@ -171,7 +172,7 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
                 }
                 else
                 {
-                    throw new Exception("未找到指定用户");
+                    return new Users();
                 }
             }
             catch (Exception ex)
@@ -195,12 +196,19 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
                 List<User_Messages> messages = UserMessagesBusiness.QueryBusiness(condition,"AND");
 
                 // 如果查询到消息，则返回第一条消息（假设消息ID是唯一的）
-                return messages.FirstOrDefault();
+                if(messages!=null&& messages.Count() > 0)
+                {
+                    return messages.First();
+                }
+                else
+                {
+                    throw new Exception("未找到指定消息");
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error finding message with id {messageId}: {ex.Message}");
-                throw new Exception($"Error finding message with id {messageId}: {ex.Message}");
+                Console.WriteLine($"使用{messageId}查找消息时发生错误: {ex.Message}");
+                throw new Exception($"使用{messageId}查找消息时发生错误: {ex.Message}");
             }
         }
 
@@ -228,7 +236,7 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
             catch (Exception ex)
             {
                 Console.WriteLine($"Error finding messages between users {localUserId} and {chatUserId}: {ex.Message}");
-                throw new Exception($"Error finding messages between users {localUserId} and {chatUserId}: {ex.Message}");
+                throw new Exception($"寻找{localUserId}和{chatUserId}之间消息时发生错误: {ex.Message}");
             }
         }
 
@@ -330,6 +338,7 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
                 {
                     {"message_id",messageId }
                 };
+                
                 bool deleteRow = UserMessagesBusiness.RemoveBusiness(deleteColumns);
                 // 如果成功撤回
                 if (deleteRow)
@@ -342,7 +351,7 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
                 }
                 else
                 {
-                    return null;
+                    throw new Exception("与数据库连接错误");
                 }
             }
             catch (Exception ex)

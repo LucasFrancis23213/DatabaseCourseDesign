@@ -34,7 +34,7 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
             try
             {
                 // 定义 FROM 子句
-                string fromClause = "QUESTIONS NATURAL JOIN USERS";
+                string fromClause = "QUESTIONS LEFT OUTER JOIN USERS ON QUESTIONS.USER_ID=USERS.USER_ID";
 
                 // 定义 WHERE 子句
                 string whereClause = "ITEM_ID = :itemId";
@@ -57,6 +57,10 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
                 {
                     // 将数据映射到 Users 和 Questions 对象
                     Users user = UserBusiness.MapDictionaryToObject(row);
+                    if (user.User_Name == "{}")
+                    {
+                        user.User_Name = "";
+                    }
                     Questions question = QuestionBusiness.MapDictionaryToObject(row);
 
                     result.Add(new Tuple<Users, Questions>(user, question));
@@ -113,7 +117,7 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
                     throw new Exception("问题不存在");
                 }
                 // 定义 FROM 子句
-                string fromClause = "ANSWERS NATURAL JOIN USERS";
+                string fromClause = "ANSWERS LEFT OUTER JOIN USERS ON ANSWERS.USER_ID = USERS.USER_ID";
 
                 // 定义 WHERE 子句
                 string whereClause = "QUESTION_ID = :questionId";
@@ -133,6 +137,10 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
                 {
                     // 将数据映射到 Users 和 Answers 对象
                     Users user = UserBusiness.MapDictionaryToObject(row);
+                    if (user.User_Name == "{}")
+                    {
+                        user.User_Name = "";
+                    }
                     Answers answer = AnswerBusiness.MapDictionaryToObject(row);
 
                     result.Add(new Tuple<Users, Answers>(user, answer));
@@ -185,7 +193,14 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
             try
             {
                 var result = QuestionBusiness.QueryBusiness(new Dictionary<string, object> { { "question_id", questionId } }, "AND");
-                return result.FirstOrDefault();
+                if (result != null && result.Count()>0)
+                {
+                    return result.First();
+                }
+                else
+                {
+                    throw new Exception("问题不存在");
+                }
             }
             catch (Exception ex)
             {
@@ -235,7 +250,14 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
             try
             {
                 var result = AnswerBusiness.QueryBusiness(new Dictionary<string, object> { { "answer_id", answerId } }, "AND");
-                return result.FirstOrDefault();
+                if (result != null && result.Count() > 0)
+                {
+                    return result.First();
+                }
+                else
+                {
+                    throw new Exception("回答不存在");
+                }
             }
             catch (Exception ex)
             {

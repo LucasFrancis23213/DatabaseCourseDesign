@@ -43,7 +43,7 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
             catch (Exception ex)
             {
                 Console.WriteLine($"{ex.Message}");
-                throw new Exception($"{ex.Message}");
+                throw new Exception($"查看近期活跃行为发生错误：{ex.Message}");
             }
         }
 
@@ -61,7 +61,7 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
             catch (Exception ex)
             {
                 Console.WriteLine($"{ex.Message}");
-                throw new Exception($"{ex.Message}");
+                throw new Exception($"新增活跃行为发生错误：{ex.Message}");
             }
         }
 
@@ -87,13 +87,13 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
                 }
                 else
                 {
-                    throw new Exception("修改活跃行为时发生错误");
+                    throw new Exception("数据库连接错误");
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"{ex.Message}");
-                throw new Exception($"{ex.Message}");
+                throw new Exception($"修改活跃行为发生错误：{ex.Message}");
             }
         }
 
@@ -111,7 +111,7 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
             catch (Exception ex)
             {
                 Console.WriteLine($"删除活跃行为时发生错误：{ex.Message}");
-                throw new Exception($"{ex.Message}");
+                throw new Exception($"删除活跃行为时发生错误：{ex.Message}");
             }
         }
 
@@ -125,7 +125,7 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
             catch (Exception ex)
             {
                 Console.WriteLine($"查看整体活跃度时发生错误：{ex.Message}");
-                throw new Exception($"{ex.Message}");
+                throw new Exception($"查看整体活跃度时发生错误：{ex.Message}");
             }
         }
 
@@ -174,7 +174,7 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
             catch (Exception ex)
             {
                 Console.WriteLine($"查看所有用户的整体活跃度时发生错误：{ex.Message}");
-                throw new Exception($"{ex.Message}");
+                throw new Exception($"查看所有用户的整体活跃度时发生错误：{ex.Message}");
             }
         }
 
@@ -268,7 +268,7 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
             catch (Exception ex)
             {
                 Console.WriteLine($"更新用户分数时发生错误：{ex.Message}");
-                throw new Exception($"{ex.Message}");
+                throw new Exception($"更新用户分数时发生错误：{ex.Message}");
             }
         }
 

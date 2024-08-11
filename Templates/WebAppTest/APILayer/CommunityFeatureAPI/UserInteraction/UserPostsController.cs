@@ -5,6 +5,7 @@ using SQLOperation.PublicAccess.Utilities;
 using System.Text.Json.Nodes;
 using System.Text.Json;
 using System.Transactions;
+using WebAppTest.APILayer.CommunityFeatureAPI;
 
 namespace WebApplication1.APILayer.CommunityFeatureAPI
 {
@@ -12,7 +13,6 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
     [ApiController]
     public class UserPostsController : ControllerBase
     {
-        private readonly Connection connection;
         private UserPosts userPosts;
 
         public UserPostsController(Connection connection)
@@ -122,7 +122,7 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
             {
                 // 直接转换 user_id 和 current_user_id
                 int userId = requestData["user_id"].GetInt32();
-                string content = requestData["content"].GetString();
+                string content = ControllerHelper.GetSafeString(requestData, "content");
                 DateTime postTime = requestData["time"].GetDateTime();
 
                 // 调用 UserPosts 类的 CreatePost 方法发布动态
@@ -245,9 +245,9 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
                 // 转换 user_id 和 current_user_id
                 int userId = requestData["user_id"].GetInt32();
                 int currentUserId = requestData["current_user_id"].GetInt32();
-                string action = requestData["action"].GetString();
+                string action = ControllerHelper.GetSafeString(requestData, "action");
 
-                
+
 
                 // 调用 UserPosts 类的 ManageFollow 方法进行关注/取消关注操作
                 int result = userPosts.ManageFollow(currentUserId, userId, action);
@@ -255,14 +255,14 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
                 // 构建响应对象
                 var response = new
                 {
-                    status = result > 0 ? "success" : "fail"
+                    status = result > 0 ? "success" : "error"
                 };
 
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"内部服务器错误: {ex.Message}");
+                return BadRequest(new { status = "error", message = $"内部服务器错误:{ex.Message}" });
             }
         }
 
@@ -299,7 +299,7 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"内部服务器错误: {ex.Message}");
+                return BadRequest(new { status="error", message= $"内部服务器错误: {ex.Message}" } );
 
             }
         }
@@ -321,11 +321,6 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
                 int targetUserId = requestData["target_id"].GetInt32();
                 int currentUserId = requestData["current_user_id"].GetInt32();
 
-                // 调用 UserPosts 类的方法来获取关注状态
-                if (userPosts.GetUserByID(targetUserId) == null) {
-                    return StatusCode(500, $"内部服务器错误: 指定用户不存在");
-                }
-                
                 var result=userPosts.CheckFollowStatus(currentUserId,targetUserId);
 
                 // 构建响应对象
@@ -339,7 +334,7 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"内部服务器错误: {ex.Message}");
+                return BadRequest(new { status = "error", message = $"内部服务器错误: {ex.Message}" });
             }
         }
 
@@ -378,7 +373,7 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"内部服务器错误: {ex.Message}");
+                return BadRequest(new { status = "error", message = $"内部服务器错误: {ex.Message}" });
             }
         }
 

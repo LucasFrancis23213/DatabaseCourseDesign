@@ -73,9 +73,10 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
 
                 // 定义 WHERE 子句，这里不需要 WHERE 子句，因为我们获取所有帖子
                 string whereClause = "1=1";
-
+                // 参数为空数组
+                OracleParameter[] parameters = Array.Empty<OracleParameter>();
                 // 调用查询方法
-                List<Dictionary<string, object>> rowList = UserPostsBusiness.QueryTableWithFromAndWhereBusiness(fromClause, whereClause, null);
+                List<Dictionary<string, object>> rowList = UserPostsBusiness.QueryTableWithFromAndWhereBusiness(fromClause, whereClause, parameters);
 
                 List<Tuple<Users, User_Posts>> result = new List<Tuple<Users, User_Posts>>();
 
@@ -108,7 +109,14 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
             try
             {
                 var result = UserPostsBusiness.QueryBusiness(new Dictionary<string, object> { { "post_id", postId } },"AND").FirstOrDefault();
-                return result;
+                if (result != null)
+                {
+                    return result;
+                }
+                else
+                {
+                    throw new Exception("未找到指定动态");
+                }
             }
             catch (Exception ex)
             {
@@ -311,7 +319,14 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
             try
             {
                 var user=UserBusiness.QueryBusiness(new Dictionary<string, object> { { "user_id",userId} },"AND");
-                return user.FirstOrDefault();
+                if (user != null && user.Count > 0)
+                {
+                    return user.First();
+                }
+                else
+                {
+                    throw new Exception("未找到指定用户");
+                }
             }
             catch (Exception ex)
             {

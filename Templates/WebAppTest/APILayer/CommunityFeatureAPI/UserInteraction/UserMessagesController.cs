@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.SignalR;
 using SQLOperation.PublicAccess.Utilities;
 using SQLOperation.PublicAccess.Templates.SQLManager;
 using System.Text.Json;
+using WebAppTest.APILayer.CommunityFeatureAPI;
 
 namespace WebApplication1.APILayer.CommunityFeatureAPI
 {
@@ -14,12 +15,14 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
     public class UserMessagesController : ControllerBase
     {
         private UserMessages userMessages { get; set; }
-        private readonly IHubContext<ChatHub> _hubContext;
+        //private readonly IHubContext<ChatHub> _hubContext;
+        private readonly WebSocketService _webSocketService; // 注入 WebSocketService
 
-        public UserMessagesController(Connection connection, IHubContext<ChatHub> hubContext)
+        public UserMessagesController(Connection connection, WebSocketService webSocketService)
         {
             userMessages = new UserMessages(connection);
-            _hubContext = hubContext;
+            //_hubContext = hubContext;
+            _webSocketService = webSocketService; // 初始化 WebSocketService
         }
 
         // 获取所有会话
@@ -130,9 +133,9 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
                 }
 
                 // 解析请求参数
-                
-                string messageContent = request["content"].GetString();
-                string messageType = request["type"].GetString();
+
+                string messageContent = ControllerHelper.GetSafeString(request, "content");
+                string messageType = ControllerHelper.GetSafeString(request, "type");
 
                 if (string.IsNullOrEmpty(messageContent) || string.IsNullOrEmpty(messageType))
                 {
@@ -149,15 +152,16 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
                 if (success!=null)
                 {
                     // 向userId对应的指定客户端发送消息
-                    if (ChatHub.onlineUsers.TryGetValue(receiverUserId, out string connectionId))
-                    {
-                        if (connectionId != null)
-                        {
-                            // 使用 HubContext 发送消息
-                            await _hubContext.Clients.Client(connectionId).SendAsync("ReceiveMessage", success);
-                        }
-                       
-                    }
+                    //if (ChatHub.onlineUsers.TryGetValue(receiverUserId, out string connectionId))
+                    //{
+                    //  if (connectionId != null)
+                    //{
+
+                    //}
+
+                    //}
+                    // 使用 WebSocketService 发送消息
+                    await _webSocketService.SendMessageAsync(receiverUserId, success);
 
                     return Ok(new { status = "success", message_id = success.Message_ID });
                 }
@@ -202,17 +206,20 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
                         
                     };
                     // 向指定
-                    
-                    if (ChatHub.onlineUsers.TryGetValue(success.Receiver_User_ID, out string connectionId))
-                    {
-                        if (connectionId != null)
-                        {
-                            // 使用 HubContext 发送消息
-                            await _hubContext.Clients.Client(connectionId).SendAsync("ReceiveMessage", success);
-                        }
-                        
 
-                    }
+                    //if (ChatHub.onlineUsers.TryGetValue(success.Receiver_User_ID, out string connectionId))
+                    //{
+                    //  if (connectionId != null)
+                    // {
+                    // 使用 HubContext 发送消息
+                    //await _hubContext.Clients.Client(connectionId).SendAsync("ReceiveMessage", success);
+
+                    // }
+
+
+                    //}
+                    // 使用 WebSocketService 发送消息
+                    await _webSocketService.SendMessageAsync(success.Receiver_User_ID, success);
 
                     return Ok(response);
                 }

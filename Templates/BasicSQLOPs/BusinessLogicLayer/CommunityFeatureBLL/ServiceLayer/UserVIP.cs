@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Oracle.ManagedDataAccess.Client;
 using SQLOperation.BusinessLogicLayer.ManagementFeatureBLL;
+using System.Transactions;
 
 namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
 {
@@ -59,77 +60,87 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
         }
 
         // 用户充值vip 传入user_id recharge_time total_amount 返回订单的基本信息VIP_Order
-        public Tuple<VIP_Orders,DateTime> RechargeVIP(int userId, int rechargeTime,double totalAmount)
+        public Tuple<VIP_Orders, DateTime> RechargeVIP(int userId, int rechargeTime, double totalAmount)
         {
-            try
+            using (var scope = new TransactionScope())
             {
-                DateTime startTime=DateTime.Now;
-                // 计算结束日期
-                var endDate = startTime.AddMonths(rechargeTime);
-
-                // 创建 VIP 订单
-                var vipOrder = VIP_OrdersBusiness.PackageData(0, userId, totalAmount, 0, DateTime.Now, rechargeTime);
-                var orderId = VIP_OrdersBusiness.AddBusiness(VIP_OrderList, "order_id", vipOrder);
-                if (orderId <= 0)
+                try
                 {
-                    throw new ApplicationException("创建VIP订单时发生错误");
-                }
+                    DateTime startTime = DateTime.Now;
+                    // 计算结束日期
+                    var endDate = startTime.AddMonths(rechargeTime);
 
-                // 更新或创建 VIP 会员信息
-                var condition = new Dictionary<string, object> { { "user_id", userId }, { "status", "Active" } };
-                var vipMember = VIP_MembersBusiness.QueryBusiness(condition, "AND").FirstOrDefault();
-               
-                if (vipMember != null)
-                {
-                    if (vipMember.VIP_End_Date < DateTime.Now)
+                    // 创建 VIP 订单
+                    var vipOrder = VIP_OrdersBusiness.PackageData(0, userId, totalAmount, 0, DateTime.Now, rechargeTime);
+                    var orderId = VIP_OrdersBusiness.AddBusiness(VIP_OrderList, "order_id", vipOrder);
+                    if (orderId <= 0)
                     {
-                        // 更新状态为“逾期”
-                        var updateParams = new Dictionary<string, object> { { "status", "Inactive" } };
-                        VIP_MembersBusiness.UpdateBusiness(updateParams, condition);
+                        throw new ApplicationException("创建VIP订单时发生错误");
                     }
-                    else
+
+                    // 更新或创建 VIP 会员信息
+                    var condition = new Dictionary<string, object> { { "user_id", userId }, { "status", "Active" } };
+                    var vipMember = VIP_MembersBusiness.QueryBusiness(condition, "AND").FirstOrDefault();
+
+                    if (vipMember != null)
                     {
-                        // 接着当前活跃时间之后
-                        startTime = vipMember.VIP_End_Date;
-                        endDate = startTime.AddMonths(rechargeTime);
-                        // 更新 VIP 会员信息
-                        var updateParams = new Dictionary<string, object>
+                        if (vipMember.VIP_End_Date < DateTime.Now)
                         {
-
-                            { "vip_end_date", endDate },
-                            { "status", "Active" }
-                        };
-                        var condition_1 = new Dictionary<string, object>
+                            // 更新状态为“逾期”
+                            var updateParams = new Dictionary<string, object> { { "status", "Inactive" } };
+                            VIP_MembersBusiness.UpdateBusiness(updateParams, condition);
+                        }
+                        else
+                        {
+                            // 接着当前活跃时间之后
+                            startTime = vipMember.VIP_End_Date;
+                            endDate = startTime.AddMonths(rechargeTime);
+                            // 更新 VIP 会员信息
+                            var updateParams = new Dictionary<string, object>
                             {
-                                {"vip_member_id",vipMember.VIP_Member_ID}
+                                { "vip_end_date", endDate },
+                                { "status", "Active" }
                             };
-                        VIP_MembersBusiness.UpdateBusiness(updateParams, condition_1);
-                        // 返回订单的基本信息
-                        vipOrder.Order_ID = orderId;
-                        return new Tuple<VIP_Orders, DateTime>(vipOrder, startTime);
-                    }
-                    
-                }
-               
-                // 创建新的 VIP 会员
-                var newVipMember = VIP_MembersBusiness.PackageData(0, userId,  "Active", startTime, endDate);
-                var vipMemberId = VIP_MembersBusiness.AddBusiness(VIP_MembersList, "vip_member_id", newVipMember);
-                if (vipMemberId <= 0)
-                {
-                    throw new ApplicationException("新增VIP会员时发生错误");
-                }
-                
+                            var condition_1 = new Dictionary<string, object>
+                            {
+                                { "vip_member_id", vipMember.VIP_Member_ID }
+                            };
+                            VIP_MembersBusiness.UpdateBusiness(updateParams, condition_1);
 
-                // 返回订单的基本信息
-                vipOrder.Order_ID = orderId;
-                return new Tuple<VIP_Orders,DateTime> (vipOrder, startTime);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"用户充值VIP时发生错误: {ex.Message}");
-                throw new ApplicationException("用户充值VIP时发生错误，请稍后再试。", ex);
+                            // 返回订单的基本信息
+                            vipOrder.Order_ID = orderId;
+
+                            // 完成事务
+                            scope.Complete();
+
+                            return new Tuple<VIP_Orders, DateTime>(vipOrder, startTime);
+                        }
+                    }
+
+                    // 创建新的 VIP 会员
+                    var newVipMember = VIP_MembersBusiness.PackageData(0, userId, "Active", startTime, endDate);
+                    var vipMemberId = VIP_MembersBusiness.AddBusiness(VIP_MembersList, "vip_member_id", newVipMember);
+                    if (vipMemberId <= 0)
+                    {
+                        throw new ApplicationException("新增VIP会员时发生错误");
+                    }
+
+                    // 返回订单的基本信息
+                    vipOrder.Order_ID = orderId;
+
+                    // 完成事务
+                    scope.Complete();
+
+                    return new Tuple<VIP_Orders, DateTime>(vipOrder, startTime);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"用户充值VIP时发生错误: {ex.Message}");
+                    throw new ApplicationException("用户充值VIP时发生错误，请稍后再试。", ex);
+                }
             }
         }
+
 
         // 查找user_id对应的用户VIP特征返回list<vip_members> 只查找包含当前时间段的
         public List<VIP_Members> GetVIPInfo(int userId)
@@ -162,8 +173,9 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
         {
             try
             {
+                
                 // 如果当前没有VIP状态
-                if (GetVIPInfo(userId).Count<=0)
+                if (GetVIPInfo(userId).Count==0)
                 {
                     var vipMember = VIP_MembersBusiness.PackageData(0, userId, status, startDate, endDate);
                     var memberId = VIP_MembersBusiness.AddBusiness(VIP_MembersList, "vip_member_id", vipMember);
@@ -182,7 +194,7 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
             catch (Exception ex)
             {
                 Console.WriteLine($"新增VIP会员时发生错误: {ex.Message}");
-                throw new ApplicationException("新增VIP会员时发生错误，请稍后再试。", ex);
+                throw new Exception($"新增VIP会员时发生错误: {ex.Message}");
             }
         }
 
@@ -225,7 +237,9 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
         {
             try
             {
-                return VIP_MembersBusiness.QueryTableWithWhereBusiness("1=1", null);
+                // 参数为空数组
+                OracleParameter[] parameters = Array.Empty<OracleParameter>();
+                return VIP_MembersBusiness.QueryTableWithWhereBusiness("1=1", parameters);
             }
             catch (Exception ex)
             {

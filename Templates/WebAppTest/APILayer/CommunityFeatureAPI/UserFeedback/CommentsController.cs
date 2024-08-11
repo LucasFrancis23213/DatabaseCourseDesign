@@ -13,7 +13,6 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
     [Route("api/comments/")]
     public class CommentsController : Controller
     {
-        private readonly Connection connection;
         private Comments commentService;
         private UserActivity userActivity;
 
@@ -38,9 +37,9 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
                 }
 
                 // 从 Dictionary 中提取参数
-                var itemId = request["item_id"].GetString();
+                string itemId = ControllerHelper.GetSafeString(request, "item_id");
                 var userId = request["user_id"].GetInt32();
-                var content = request["content"].GetString();
+                string content = ControllerHelper.GetSafeString(request, "content");
                 DateTime time = request["time"].GetDateTime();
 
                 int commentId = commentService.PostComment(itemId, userId, content, time);
@@ -97,7 +96,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
                     return BadRequest(new { status = "error", message = "缺少必要参数" });
                 }
 
-                var itemId = request["item_id"].GetString();
+                string itemId = ControllerHelper.GetSafeString(request, "item_id");
 
                 var commentsList = commentService.ViewItemComments(itemId);
                 // 格式化响应

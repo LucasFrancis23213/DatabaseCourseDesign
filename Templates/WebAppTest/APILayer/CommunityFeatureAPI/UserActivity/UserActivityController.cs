@@ -13,7 +13,6 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
     [Route("api/activity/")]
     public class UserActivityController : Controller
     {
-        private readonly Connection connection;
         private UserActivity userActivityService;
 
         public UserActivityController(Connection connection)
@@ -21,7 +20,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
             userActivityService = new UserActivity(connection);
         }
 
-        // 查看近期活跃
+        // 查看近期活跃 测试成功 空则返回空列表
         [HttpPost("recent")]
         public ActionResult GetRecentActivities([FromBody] Dictionary<string, JsonElement> request)
         {
@@ -58,7 +57,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
             }
         }
 
-        // 管理员新增活跃行为
+        // 管理员新增活跃行为 测试成功
         [HttpPost("add")]
         public ActionResult AddActivity([FromBody] Dictionary<string, JsonElement> request)
         {
@@ -72,7 +71,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
                 }
 
                 var userId = request["user_id"].GetInt32();
-                var activityType = request["activity_type"].GetString();
+                string activityType = ControllerHelper.GetSafeString(request, "activity_type");
                 var score = request["score"].GetInt32();
                 var datetime = request["datetime"].GetDateTime();
 
@@ -85,7 +84,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
             }
         }
 
-        // 管理员修改活跃行为
+        // 管理员修改活跃行为 不能修改不存在的活跃行为 测试成功
         [HttpPut("update")]
         public ActionResult UpdateActivity([FromBody] Dictionary<string, JsonElement> request)
         {
@@ -99,7 +98,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
                 }
 
                 var activityId = request["activity_id"].GetInt32();
-                var activityType = request["activity_type"].GetString();
+                string activityType = ControllerHelper.GetSafeString(request, "activity_type");
                 var score = request["score"].GetInt32();
                 var datetime = request["datetime"].GetDateTime();
 
@@ -112,7 +111,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
             }
         }
 
-        // 管理员删除活跃行为
+        // 管理员删除活跃行为 测试成功
 
         [HttpDelete("delete")]
         public ActionResult DeleteActivity([FromBody] Dictionary<string, JsonElement> request)
@@ -134,6 +133,35 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
                 return BadRequest(new { status = "error", message = $"删除活跃行为时发生错误: {ex.Message}" });
             }
         }
+
+        [HttpPost("AutoAdd")]
+        public IActionResult AddUserActivity([FromBody] Dictionary<string, JsonElement> request)
+        {
+            try
+            {
+                // 从 Dictionary 中提取数据
+                if (!request.TryGetValue("userId", out JsonElement userIdElement) ||
+                    !request.TryGetValue("activityType", out JsonElement activityTypeElement) ||
+                    !request.TryGetValue("datetime", out JsonElement datetimeElement))
+                {
+                    return BadRequest("请求中缺少必要的字段。");
+                }
+
+                int userId = userIdElement.GetInt32();
+                string activityType = ControllerHelper.GetSafeString(request, "activity_type");
+                DateTime datetime = datetimeElement.GetDateTime();
+
+                // 调用已有的 AddUserActivity 方法
+                int result = userActivityService.AddUserActivity(userId, activityType, datetime);
+
+                return Ok(new {status="success"});
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"新增用户活跃度时发生错误：{ex.Message}");
+            }
+        }
+
 
 
 

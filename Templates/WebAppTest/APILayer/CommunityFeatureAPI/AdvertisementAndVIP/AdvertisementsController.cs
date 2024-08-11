@@ -26,6 +26,17 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
         {
             try
             {
+                // 检查是否包含 "user_id" 键
+                if (!request.ContainsKey("user_id"))
+                {
+                    var errorResponse = new
+                    {
+                        status = "error",
+                        message = "请求中缺少 user_id 参数"
+                    };
+                    return BadRequest(errorResponse);
+                }
+
                 int userId = request["user_id"].GetInt32();
                 var ad = advertisementsService.GetAdForUser(userId);
                 var response = new
@@ -47,7 +58,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
                 var errorResponse = new
                 {
                     status = "error",
-                    message = $"获取广告时发生错误: {ex.Message}"
+                    message = $"内部服务器错误：{ex.Message}"
                 };
                 return StatusCode(500, errorResponse);
             }
@@ -60,6 +71,14 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
         {
             try
             {
+                // 检查是否包含必要的键
+                if (!request.ContainsKey("user_id") ||
+                    !request.ContainsKey("ad_id") ||
+                    !request.ContainsKey("click_time"))
+                {
+                    return BadRequest(new { status = "error", message = "请求中缺少必要参数" });
+                }
+
                 int userId = request["user_id"].GetInt32();
                 int adId = request["ad_id"].GetInt32();
                 DateTime clickTime = request["click_time"].GetDateTime();
@@ -78,7 +97,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { status = "error", message = $"记录广告点击时发生错误: {ex.Message}" });
+                return StatusCode(500, new { status = "error", message = $"内部服务器错误: {ex.Message}" });
             }
         }
 
@@ -88,10 +107,23 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
         {
             try
             {
-                string content = request["ad_content"].GetString();
-                string picture = request["ad_picture"].GetString();
-                string url = request["ad_url"].GetString();
-                string type = request["ad_type"].GetString();
+                // 检查是否包含必要的键
+                if (!request.ContainsKey("ad_content") ||
+                    !request.ContainsKey("ad_picture") ||
+                    !request.ContainsKey("ad_url") ||
+                    !request.ContainsKey("ad_type") ||
+                    !request.ContainsKey("start_time") ||
+                    !request.ContainsKey("end_time"))
+                {
+                    return BadRequest(new { status = "error", message = "请求中缺少必要参数" });
+                }
+
+                // 获取并验证
+                string content = ControllerHelper.GetSafeString(request, "ad_content");
+                string picture = ControllerHelper.GetSafeString(request, "ad_picture");
+                string url = ControllerHelper.GetSafeString(request, "ad_url");
+                string type = ControllerHelper.GetSafeString(request, "ad_type");
+                // 获取
                 DateTime startTime = request["start_time"].GetDateTime();
                 DateTime endTime = request["end_time"].GetDateTime();
 
@@ -101,7 +133,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { status = "error", message = $"添加广告时发生错误: {ex.Message}" });
+                return StatusCode(500, new { status = "error", message = $"内部服务器错误: {ex.Message}" });
             }
         }
 
@@ -115,13 +147,17 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
                 var updateFields = new Dictionary<string, object>();
 
                 if (request.ContainsKey("ad_content"))
-                    updateFields["ad_content"] = request["ad_content"].GetString();
+                    updateFields["ad_content"] = ControllerHelper.GetSafeString(request, "ad_content");
+
                 if (request.ContainsKey("ad_picture"))
-                    updateFields["ad_picture"] = request["ad_picture"].GetString();
+                    updateFields["ad_picture"] = ControllerHelper.GetSafeString(request, "ad_picture");
+
                 if (request.ContainsKey("ad_url"))
-                    updateFields["ad_url"] = request["ad_url"].GetString();
+                    updateFields["ad_url"] = ControllerHelper.GetSafeString(request, "ad_url");
+
                 if (request.ContainsKey("ad_type"))
-                    updateFields["ad_type"] = request["ad_type"].GetString();
+                    updateFields["ad_type"] = ControllerHelper.GetSafeString(request, "ad_type");
+
                 if (request.ContainsKey("start_time"))
                     updateFields["start_time"] = request["start_time"].GetDateTime();
                 if (request.ContainsKey("end_time"))
@@ -140,7 +176,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { status = "error", message = $"更新广告时发生错误: {ex.Message}" });
+                return StatusCode(500, new { status = "error", message = $"内部服务器错误: {ex.Message}" });
             }
         }
 
@@ -150,6 +186,12 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
         {
             try
             {
+                // 检查是否包含 "ad_id" 键
+                if (!request.ContainsKey("ad_id"))
+                {
+                    return BadRequest(new { status = "error", message = "请求中缺少 ad_id 参数" });
+                }
+
                 int adId = request["ad_id"].GetInt32();
 
                 var success = advertisementsService.RemoveAdvertisement(adId);
@@ -165,7 +207,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { status = "error", message = $"删除广告时发生错误: {ex.Message}" });
+                return StatusCode(500, new { status = "error", message = $"内部服务器错误: {ex.Message}" });
             }
         }
 
@@ -196,7 +238,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { status = "error", message = $"获取广告信息时发生错误: {ex.Message}" });
+                return StatusCode(500, new { status = "error", message = $"内部服务器错误： {ex.Message}" });
             }
         }
 
@@ -219,13 +261,13 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
                     status = "success",
                     ad = new
                     {
-                        id = adDetails.Advertisements.Ad_ID,
-                        content = adDetails.Advertisements.Ad_Content,
-                        picture = adDetails.Advertisements.Ad_Picture,
-                        url = adDetails.Advertisements.Ad_URL,
-                        type = adDetails.Advertisements.Ad_Type,
-                        start_time = adDetails.Advertisements.Start_Time.ToLocalTime(),
-                        end_time = adDetails.Advertisements.End_Time.ToLocalTime(),
+                        id = adDetails.Ad_ID,
+                        content = adDetails.Ad_Content,
+                        picture = adDetails.Ad_Picture,
+                        url = adDetails.Ad_URL,
+                        type = adDetails.Ad_Type,
+                        start_time = adDetails.Start_Time.ToLocalTime(),
+                        end_time = adDetails.End_Time.ToLocalTime(),
                         click_count = adDetails.Click_Count,
                         show_count = adDetails.Show_Count
                     },
@@ -239,7 +281,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
             }
             catch (Exception ex)
             {
-                return Ok(new { status = "error", message = $"获取广告详细信息时发生错误: {ex.Message}" });
+                return Ok(new { status = "error", message = $"内部服务器错误: {ex.Message}" });
             }
         }
     }
