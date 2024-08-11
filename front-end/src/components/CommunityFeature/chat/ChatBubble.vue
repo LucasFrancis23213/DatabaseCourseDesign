@@ -23,7 +23,7 @@ const props = defineProps({
     default: "text"
   },
   id:{
-    type: String,
+    type: Number,
     required:true
   },
 

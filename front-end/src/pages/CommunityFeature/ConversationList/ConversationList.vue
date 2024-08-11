@@ -26,11 +26,14 @@
 import {onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
 import axios from 'axios';
-axios.defaults.baseURL = import.meta.env.VITE_API_URL;
+import { useAccountStore } from '@/store/account';
+const {account, permissions} = useAccountStore();
+
+axios.defaults.baseURL =  import.meta.env.VITE_API_URL;//"https://eefda1d6-f72c-4ecd-9ab7-f462f0945631.mock.pstmn.io"//
 
 let conversations = ref([]);
 const router = useRouter();
-let current_user_id = ref(123);
+let current_user_id = ref(account.userId);
 async function getConversations() {
   console.log("getConversations");
   try {
@@ -63,8 +66,6 @@ const formatTime = (timeString) => {
     return date.toLocaleDateString()
   }
 }
-
-console.log("cuid是的数据类型是"+typeof current_user_id.value);
 
 const navigateToConversation = (conversation_id,current_user_id) => {
   console.log( conversation_id,current_user_id);
