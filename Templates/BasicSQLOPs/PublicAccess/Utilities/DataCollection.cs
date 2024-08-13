@@ -272,10 +272,14 @@ namespace SQLOperation.PublicAccess.Utilities
         public string Ad_Type { get; set; }
         public DateTime Start_Time { get; set; }
         public DateTime End_Time { get; set; }
+        public int Click_Count {  get; set; }
+
+        public int Show_Count {  get; set; }
     }
 
     public class Ad_Click_Statistics
     {
+        public int Click_ID { get; set; }
         public int Ad_ID { get; set; }
         public int User_ID { get; set; }
         public DateTime Click_Time { get; set; }
@@ -284,6 +288,7 @@ namespace SQLOperation.PublicAccess.Utilities
 
     public class Ad_Show_Statistics
     {
+        public int Show_ID { get; set; }    
         public int Ad_ID { get; set; }
         public int User_ID { get; set; }
         public DateTime Time { get; set; }
