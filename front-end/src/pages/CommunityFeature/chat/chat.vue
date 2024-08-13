@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import {onMounted, onUnmounted, ref, watchEffect} from 'vue';
+import {onMounted, onUnmounted, ref} from 'vue';
 import ChatBubble from "@/components/CommunityFeature/chat/ChatBubble.vue";
 import MessageInput from "@/components/CommunityFeature/chat/MessageInput.vue";
+import apiService from './apiService';
 import axios from "axios";
 import {useRoute} from 'vue-router';
-import * as signalR from '@microsoft/signalr';
 import { useAccountStore } from '@/store/account';
 const {account, permissions} = useAccountStore();
 
@@ -14,66 +14,53 @@ axios.defaults.baseURL= import.meta.env.VITE_API_URL;
 const route =useRoute();
 
 const conversation_id  = ref(+route.params.conversation_id);
-const current_user_id = ref(account.userId);//ref(+route.query.current_user_id);
+const current_user_id = ref(+account.userId);
 
 const other_avatar = ref();
-
 const other_name = ref();
 
 const messages = ref([]);
 
 const isSending = ref(false);
 
-
-async function getMessages(){
-  /*获取消息列表*/
-  console.log("getMessages");
-  try{
-    const res = await axios.post(`/api/conversations/${conversation_id.value}`,{
-      "conversation_id":conversation_id.value,
-      "current_user_id":current_user_id.value,
-    });
-    console.log(res);
-    messages.value = res.data.messages;
-    other_name.value = res.data.name;
-    other_avatar.value = res.data.avatar;
-
-
-  }catch (e){
-    console.log(e);
-    alert(`获取聊天历史记录失败，错误信息为：${e}`);
+const getMessages = async () => {
+  try {
+    const response = await apiService.getMessages(conversation_id.value, +current_user_id.value);
+    messages.value = response.messages;
+    other_name.value = response.name;
+    other_avatar.value = response.avatar;
+  } catch (error) {
+    alert("获取消息列表出现错误");
   }
-}
+};
 async function handleSendMessage(message) {
   if (!message.trim()) {
     return; // 如果消息为空，则不发送
   }
   // 创建消息对象
   const newMessage = {
-    id: Date.now().toString(), // 使用当前时间戳作为临时ID
+    id: parseInt(Date.now().toString()) , // 使用当前时间戳作为临时ID
     conversation_id: conversation_id.value,
     content: message,
     type:'text',
     time: new Date().toISOString(),
-    sender:current_user_id.value,
-    current_user_id: current_user_id.value, // 假设这是用户发送的消息
+    sender:+current_user_id.value,
+    current_user_id: +current_user_id.value, // 假设这是用户发送的消息
   };
-  console.log(newMessage);
+  // console.log(newMessage);
   // 在前端立即显示消息（回显）
   displayMessage(newMessage);
 
   try {
     // 发送消息到后台
-    const response = await sendMessageToBackend(newMessage);
+    const response = await apiService.sendMessage(newMessage);
 
     // 如果后台返回了更新后的消息（例如，带有服务器生成的ID），则更新前端显示
-    if (response.data) {
-      updateDisplayedMessage(newMessage.id,response.data.message_id);
+    if (response) {
+      updateDisplayedMessage(newMessage.id,response.message_id);
     }
   } catch (error) {
-    console.error('发送消息到后台失败:', error);
-    // 在UI中显示错误消息
-    displayErrorMessage('消息发送失败，请稍后重试');
+    alert("消息发送失败，请稍后重试");
   }
 }
 function displayMessage(message) {
@@ -81,17 +68,6 @@ function displayMessage(message) {
   messages.value.push(message);
 }
 
-async function sendMessageToBackend(message) {
-  // 实现发送消息到后台的逻辑
-  try {
-    const res = await axios.post(`/api/conversations/messages`, message);
-    console.log(res);
-    return res;
-  }catch (e) {
-    console.log(e);
-    alert(`发送消息失败，错误信息为：${e}`);
-  }
-}
 
 // 辅助函数：更新已显示的消息的id
 function updateDisplayedMessage(oldId,newId) {
@@ -100,154 +76,108 @@ function updateDisplayedMessage(oldId,newId) {
 
 }
 
-// 辅助函数：显示错误消息
-function displayErrorMessage(errorMessage) {
-  // 实现显示错误消息的逻辑
-  const errorContainer = document.getElementById('error-container');
-  errorContainer.textContent = errorMessage;
-  errorContainer.style.display = 'block';
-  setTimeout(() => {
-    errorContainer.style.display = 'none';
-  }, 3000);
-}
-
 function isSelf(sender_id){
   return sender_id === current_user_id.value;
 }
 async function updateReadStatus(){
   /*更新消息的读取状态*/
   try{
-    const res = await axios.post(`/api/conversations/${conversation_id.value}/update_read_status`,
-        {conversation_id:conversation_id.value,
-        current_user_id:current_user_id.value,});
-    console.log(res);
+    await apiService.updateReadStatus(conversation_id.value,current_user_id.value);
   }catch(e){
-    console.log(e);
     alert(`更新已读状态失败，错误信息为：${e}`);
   }
 }
 
 async function retractMessage(message_id){
   /*撤回消息*/
-  console.log(message_id);
-  // 处理撤回逻辑
+  // 向后台发送消息处理撤回逻辑
   try{
-    const res = await axios.post(`/api/messages/${message_id}/retract`,{
-      message_id:+message_id,
-      current_user_id:+current_user_id.value,
-      time:new Date().toISOString(),
-    });
-    console.log(res);
+    await apiService.retractMessage(message_id,current_user_id.value);
   }catch (e){
-    console.log(e);
-    alert(`撤回失败，错误信息为：${e}`);
+    alert(`撤回失败，请重试`);
   }
-  console.log('撤回消息:', message_id)
-  // 例如,从messages数组中移除该消息
+  // 前台移除该消息
   messages.value = messages.value.filter(msg => msg.id !== message_id)
 }
 
 const connection = ref(null);
-const debugInfo = ref('');
-const handleReceiveMessage = async (userMessages) => {
-  debugInfo.value = JSON.stringify(userMessages, null, 2);
-
-  const receiver_in_window = true; // Replace with actual logic
-
-  try {
-    if (userMessages.message_type === "retract") {
-      retractMessage(userMessages.message_id, userMessages.sender_user_id);
-    } else {
-      const response = await updateReadStatus(userMessages.message_id, receiver_in_window, userMessages.sender_user_id);
-      const senderUserName = response.data.sender_user_name;
-
-      messages.value.push({
-        id: userMessages.message_id,
-        senderId: userMessages.sender_user_id,
-        senderName: senderUserName,
-        content: userMessages.message_content
-      });
-    }
-  } catch (error) {
-    console.error('Failed to process message:', error);
-  }
-};
+const socket = ref(null);
 const connectionStatus = ref('Disconnected');
 const errorStatus = ref('');
-const connect = async () => {
 
+const connect = () => {
+  socket.value = new WebSocket(`wss://localhost:44343/ws?user_id=${current_user_id.value}`);
 
-  connectionStatus.value = "Connecting...";
-  errorStatus.value = "";
+  socket.value.onopen = () => {
+    connectionStatus.value = 'Connected';
+    errorStatus.value = '';
+  };
 
-  connection.value = new signalR.HubConnectionBuilder()
-    .withUrl(`${import.meta.env.VITE_API_URL}/chathub`)
-    .build();
+  socket.value.onclose = () => {
+    connectionStatus.value = 'Disconnected';
+    setTimeout(connect,3000);//断连后三秒重连
+  };
 
-  connection.value.on("ReceiveMessage", handleReceiveMessage);
+  socket.value.onerror = (error) => {
+    errorStatus.value = `WebSocket Error: ${error.message}`;
+  };
 
-  try {
-    await connection.value.start();
-    console.log("Connected!");
-    connectionStatus.value = `Connected as user ${account.userId}`;
-    await connection.value.invoke("OnConnectedAsync", parseInt(account.userId));
-  } catch (err) {
-    connectionStatus.value = "Connection failed.";
-    errorStatus.value = `Error: ${err.toString()}`;
-    console.error("Connection error:", err.toString());
+  socket.value.onmessage = (event) => {
+    receiveMessage(event.data);
+  };
+};
+function convertMessageFormat(originalMessage) {
+  //解析接收消息的格式并更改为此组件中使用的message格式
+  const msg = JSON.parse(originalMessage);
+  console.log(msg);
+  return {
+    id: msg.Message_ID,
+    conversation_id: conversation_id.value,
+    content: msg.Message_Content,
+    type: msg.Message_Type,
+    time: msg.Send_Time,
+    sender: msg.Sender_User_ID,
+    current_user_id: msg.Receiver_User_ID
+  };
+}
+const receiveMessage = (message) => {
+  //接收消息
+  let newMessage = convertMessageFormat(message);
+  displayMessage(newMessage);
+};
+const disconnect = () => {
+  //断开连接
+  if (socket.value) {
+    socket.value.close();
+    socket.value = null;
   }
 };
-// const startConnection = async () =>{
-//   connection.value = new signalR.HubConnectionBuilder()
-//       .withUrl(`/chathub`)
-//       .build();
-//   try{
-//     await connection.value.start();
-//     console.log("SignalR Connected. ");
-//
-//     connection.value.on('ReceiveMessage',async (message) => {
-//       if (message.data.receiver_user_id === current_user_id) {
-//         messages.value.push(message);
-//         try {
-//           const res = await axios.post(`/api/messages/receive`, {
-//             message_id: message.message_id,
-//             receiver_in_window: true,
-//             sender_user_id: message.sender_user_id,
-//           });
-//
-//           console.log(res);
-//         } catch (e) {
-//           console.error(e);
-//           alert(e);
-//         }
-//
-//       }
-//
-//     });
-//
-//
-//   } catch (e){
-//     console.error("SignalR Connection Error: ");
-//     console.error(e);
-//   }
-//
-// }
-const disconnect = async () => {
-  if (connection.value) {
-    try {
-      await connection.value.stop();
-      console.log("Disconnected!");
-      connectionStatus.value = "Disconnected";
-    } catch (err) {
-      console.error(err.toString());
+const checkConnection = () => {
+  //检查连接状态的函数
+  if (socket.value) {
+    switch (socket.value.readyState) {
+      case WebSocket.CONNECTING:
+        connectionStatus.value = 'Connecting...';
+        break;
+      case WebSocket.OPEN:
+        connectionStatus.value = 'Connected';
+        break;
+      case WebSocket.CLOSING:
+        connectionStatus.value = 'Closing...';
+        break;
+      case WebSocket.CLOSED:
+        connectionStatus.value = 'Disconnected';
+        break;
     }
+  } else {
+    connectionStatus.value = 'No connection';
   }
+  console.log(connectionStatus.value);
 };
 
 onMounted(()=>{
   updateReadStatus();
   getMessages();
-  //startConnection();
   connect();
 })
 
@@ -275,6 +205,7 @@ onUnmounted(()=>{
         @retract="retractMessage"
       />
     </div>
+    <button @click="checkConnection">检查连接</button>
 
     <MessageInput
       :is-sending="isSending"
