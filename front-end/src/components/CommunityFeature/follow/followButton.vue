@@ -11,7 +11,6 @@
 import {ref, computed} from 'vue'
 import axios from "axios";
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
-import {unfollowUser} from "@/components/CommunityFeature/follow/followApi.ts";
 import { useAccountStore } from '@/store/account';
 const {account, permissions} = useAccountStore();
 
@@ -57,14 +56,28 @@ const followUser = async (followUserId) => {
   try{
     const res = await axios.post("api/user/follow",{
       user_id:followUserId,
-      action:"unfollow",
+      action:"follow",
       current_user_id:account.userId
     })
+    console.log(res);
   }catch (error){
-    console.error(`关注失败，错误原因${error}`);
+    console.error(error);
     alert(`关注失败，请重试`);
   }
 }
+const unfollowUser = async (unfollowUserId) => {
+  try {
+    await axios.post(`/api/user/follow`,{
+      user_id:unfollowUserId,
+      action:"unfollow",
+      current_user_id:account.userId
+    })
+  } catch (error) {
+    console.error('取消关注失败:', error)
+    throw error
+  }
+}
+
 </script>
 
 <style scoped>

@@ -1,21 +1,31 @@
 <template>
-  <div class="fans-list">
-    <h2>我的粉丝</h2>
-    <div v-if="loading">加载中...</div>
-    <div v-else-if="error">{{ error }}</div>
+  <div class="bg-container shadow-middle rounded-md p-md">
+    <h2 class="text-lg text-title font-bold mb-lg text-center">我的粉丝</h2>
+    <div v-if="loading" class="text-text-3 text-center p-md italic">加载中...</div>
+    <div v-else-if="error" class="text-error-500 text-center p-md italic">{{ error }}</div>
     <template v-else>
-      <ul v-if="followers.length">
-        <li v-for="follower in followers" :key="follower.user_id">
-          <img :src="follower.user_avatar" :alt="follower.user_name">
-          <span>{{ follower.user_name }}</span>
+      <ul v-if="followers.length" class="space-y-sm">
+        <li v-for="follower in followers" :key="follower.user_id"
+            class="flex items-center p-sm bg-container-light rounded-sm hover:bg-bg-hover transition-colors duration-200">
+          <img :src="follower.user_avatar" :alt="follower.user_name"
+               class="w-12 h-12 rounded-full mr-sm object-cover">
+          <span class="text-text font-medium">{{ follower.user_name }}</span>
         </li>
       </ul>
-      <p v-else>暂无粉丝</p>
+      <p v-else class="text-text-3 text-center p-md italic">暂无粉丝</p>
 
-      <div class="pagination">
-        <button @click="fetchFollowers(currentPage - 1)" :disabled="currentPage === 1">上一页</button>
-        <span>{{ currentPage }} / {{ totalPages }}</span>
-        <button @click="fetchFollowers(currentPage + 1)" :disabled="currentPage === totalPages">下一页</button>
+      <div class="flex justify-center items-center mt-xl">
+        <button @click="fetchFollowers(currentPage - 1)"
+                :disabled="currentPage === 1"
+                class="bg-primary-bg text-primary-text hover:bg-primary-bg-hover disabled:bg-disabled disabled:text-text-disabled px-md py-sm rounded-md transition-colors duration-200 mr-sm">
+          上一页
+        </button>
+        <span class="text-text-2 text-sm mx-sm">{{ currentPage }} / {{ totalPages }}</span>
+        <button @click="fetchFollowers(currentPage + 1)"
+                :disabled="currentPage === totalPages"
+                class="bg-primary-bg text-primary-text hover:bg-primary-bg-hover disabled:bg-disabled disabled:text-text-disabled px-md py-sm rounded-md transition-colors duration-200 ml-sm">
+          下一页
+        </button>
       </div>
     </template>
   </div>
@@ -41,7 +51,7 @@ const fetchFollowers = async (page = 1) => {
   error.value = null
   try {
     const response = await axios.post('/api/user/followers', {
-      user_id: account.userId, // 假设当前用户ID为1，实际应用中应该是动态的
+      user_id: account.userId,
     })
 
     if (response.data.status === 'success') {
@@ -61,31 +71,5 @@ onMounted(() => fetchFollowers())
 </script>
 
 <style scoped>
-.fans-list {
-  /* 添加样式 */
-}
 
-.pagination {
-  margin-top: 20px;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-li img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  margin-right: 10px;
-}
-
-/* 添加更多样式... */
 </style>

@@ -3,9 +3,9 @@
     <h1 class="title">广告列表</h1>
 
     <div class="action-bar">
-      <button @click="toggleAddNewAd()" class="btn btn-primary">
+      <a-button @click="toggleAddNewAd()" class="btn btn-primary">
         {{ addNewAd ? '取消新增' : '新增广告' }}
-      </button>
+      </a-button>
       <div class="search-container">
         <input
           v-model="searchQuery"
@@ -23,9 +23,9 @@
     <ul class="ad-list">
       <li v-for="ad in displayedFilteredAds" :key="ad.ad_id" class="ad-item">
         <div class="ad-content">{{ ad.ad_content }}</div>
-        <button @click="toggleDetails(ad)" class="btn btn-secondary">
+        <a-button @click="toggleDetails(ad)" class="btn btn-secondary">
           {{ ad.showDetails ? '关闭详情' : '查看详情' }}
-        </button>
+        </a-button>
         <transition name="expand">
           <AdDetailsItem v-if="ad.showDetails" :ad="ad" @close="toggleDetails(ad)" />
         </transition>
@@ -33,9 +33,9 @@
     </ul>
 
     <div class="pagination">
-      <button @click="prevPage" :disabled="currentPage === 1" class="btn btn-outline">上一页</button>
+      <a-button @click="prevPage" :disabled="currentPage === 1" class="btn btn-outline">上一页</a-button>
       <span class="page-info">{{ currentPage }} / {{ totalFilteredPages }}</span>
-      <button @click="nextPage" :disabled="currentPage === totalFilteredPages" class="btn btn-outline">下一页</button>
+      <a-button @click="nextPage" :disabled="currentPage === totalFilteredPages" class="btn btn-outline">下一页</a-button>
     </div>
   </div>
 </template>
@@ -144,59 +144,6 @@ onMounted(async () => {
   margin-bottom: 20px;
 }
 
-.btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 1rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.btn-primary {
-  background-color: var(--primary-color);
-  color: #0c0505;
-  box-shadow: 0 2px 4px rgba(52, 152, 219, 0.3);
-}
-
-.btn-primary:hover {
-  background-color: var(--primary-dark);
-  box-shadow: 0 4px 8px rgba(52, 152, 219, 0.5);
-}
-
-.btn-secondary {
-  background-color: var(--secondary-color);
-  color: #100505;
-  box-shadow: 0 2px 4px rgba(46, 204, 113, 0.3);
-}
-
-.btn-secondary:hover {
-  background-color: var(--secondary-dark);
-  box-shadow: 0 4px 8px rgba(46, 204, 113, 0.5);
-}
-
-.btn-outline {
-  background-color: white;
-  border: 2px solid var(--primary-color);
-  color: var(--primary-color);
-  box-shadow: 0 2px 4px rgba(52, 152, 219, 0.1);
-}
-
-.btn-outline:hover {
-  background-color: var(--primary-color);
-  color: white;
-  box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
-}
-
-.btn:disabled {
-  background-color: #ccc;
-  color: #666;
-  cursor: not-allowed;
-  box-shadow: none;
-}
 
 
 .search-container {

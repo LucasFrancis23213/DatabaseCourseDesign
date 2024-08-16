@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {onMounted, onUnmounted, ref} from 'vue';
+import {onMounted, onUnmounted, onUpdated, ref,nextTick} from 'vue';
 import ChatBubble from "@/components/CommunityFeature/chat/ChatBubble.vue";
 import MessageInput from "@/components/CommunityFeature/chat/MessageInput.vue";
 import apiService from './apiService';
@@ -175,10 +175,25 @@ const checkConnection = () => {
   console.log(connectionStatus.value);
 };
 
+const chatContainerRef = ref(null);
+const scrollToBottom = () => {
+  nextTick(() => {
+    if (chatContainerRef.value) {
+      chatContainerRef.value.scrollTop = chatContainerRef.value.scrollHeight
+    }
+  })
+}
+
 onMounted(()=>{
   updateReadStatus();
   getMessages();
+  scrollToBottom();
   connect();
+})
+
+onUpdated(()=>{
+  scrollToBottom();
+
 })
 
 onUnmounted(()=>{
@@ -188,10 +203,11 @@ onUnmounted(()=>{
 
 
 
+
 </script>
 
 <template>
-  <div class="chat-container">
+  <div class="chat-container" ref="chatContainerRef">
     <div class="messages-list">
       <ChatBubble
         v-for="msg in messages"
@@ -202,6 +218,7 @@ onUnmounted(()=>{
         :isSelf="isSelf(msg.sender)"
         :avatar="isSelf(msg.sender) ? '' :other_avatar"
         :type="msg.type"
+        @follow=""
         @retract="retractMessage"
       />
     </div>
