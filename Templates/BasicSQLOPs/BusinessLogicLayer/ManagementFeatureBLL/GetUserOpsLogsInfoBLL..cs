@@ -1,5 +1,6 @@
 ﻿using SQLOperation.DataAccessLayer.ManagementFeatureDAL;
 using SQLOperation.PublicAccess.Utilities.ManagementFeatureUtil;
+using System.Configuration;
 
 namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
 {
@@ -14,30 +15,24 @@ namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
 
         public Tuple<bool, string> GetUserOpsLogs(QueryUserOpsLogsArgs InputArgs)
         {
-            int? ActivityLogID = null;
-            int? UserID = null;
-            string ActionType = InputArgs.ActionType;
-            DateTime? StartTime = null;
-            DateTime? EndTime = null;
-
-            if (InputArgs.ActivityLogID > 0)
+            if (InputArgs.ActivityLogID <= 0)
             {
-                ActivityLogID = InputArgs.ActivityLogID;
+                return Tuple.Create(false, "ActivityLogID不合法");
             }
-            if (InputArgs.UserID > 0)
+            if (InputArgs.UserID <= 0)
             {
-                UserID = InputArgs.UserID;
+                return Tuple.Create(false, "UserID不合法");
             }
-            if (InputArgs.StartTime != default)
+            if (InputArgs.StartTime is not null && InputArgs.StartTime is not DateTime)
             {
-                StartTime = InputArgs.StartTime;
+                return Tuple.Create(false, "开始时间不合法");
             }
-            if (InputArgs.EndTime != default)
+            if (InputArgs.EndTime is not null && InputArgs.EndTime is not DateTime)
             {
-                EndTime = InputArgs.EndTime;
+                return Tuple.Create(false, "结束时间不合法");
             }
 
-            return UserOpsLogsDAL.GetTargetLogs(ActivityLogID, UserID, ActionType, StartTime, EndTime);
+            return UserOpsLogsDAL.GetTargetLogs(InputArgs);
         }
 
     }

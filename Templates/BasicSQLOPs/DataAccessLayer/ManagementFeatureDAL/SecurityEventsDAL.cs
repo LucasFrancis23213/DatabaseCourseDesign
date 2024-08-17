@@ -6,9 +6,9 @@ using SQLOperation.PublicAccess.Utilities.ManagementFeatureUtil;
 
 namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
 {
-    public class SecurityEventsDAL : BaseDAL
+    public class SecurityEventsDAL : BaseLogDAL<Security_Events>
     {
-        /// <summary>
+        /*/// <summary>
         /// Retrieves security event logs.
         /// </summary>
         /// <param name="EventID">The ID of the event (nullable).</param>
@@ -122,6 +122,45 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
                     return Tuple.Create(false, "Connection Error");
                 }
             };
+        }
+    }*/
+        protected override string TableName => "SECURITY_EVENTS";
+
+        protected override List<string> ColumnNames => ["USER_ID", "ACTION_TYPE", "OCCURRENCE_TIME"];
+
+        protected override Func<OracleDataReader, Security_Events> MapFromReader => reader => new Security_Events
+        {
+            Event_Type = reader.GetString(0),
+            Event_Details = !reader.IsDBNull(1) ? reader.GetString(1) : string.Empty,
+            Status = reader.GetString(2),
+            Occurrence_Date = reader.GetDateTime(3),
+            Event_ID = reader.GetInt32(4)
+        };
+
+        public Tuple<bool, string> GetSecurityEvents(QuerySecurityEventsArgs args)
+        {
+            var parameters = new Dictionary<(string ColumnName, string Operator), object>
+            {
+                { ("Event_ID", "="), args.EventID },
+                { ("Event_Type", "="), args.EventType },
+                { ("Status", "="), args.Status },
+                { ("Occurrence_Time", ">="), args.StartTime },
+                { ("Occurrence_Time", "<="), args.EndTime }
+            };
+
+            return GetLogsAux(parameters);
+        }
+
+        public Tuple<bool, string> InsertNewEvent(SecurityEventsInsertUtil args)
+        {
+            var values = new Dictionary<string, object>
+            {
+                { "Event_Type", args.Event_Type },
+                { "Event_Details", args.Event_Details },
+                { "Status", args.Status },
+                { "Occurrence_Time", args.Occurrence_Date }
+            };
+            return InsertNewLogAux(values);
         }
     }
 }
