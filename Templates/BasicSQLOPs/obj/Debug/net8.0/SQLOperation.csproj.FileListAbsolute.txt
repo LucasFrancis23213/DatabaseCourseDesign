@@ -181,39 +181,3 @@ D:\同济\大二下\数据库\期末大项目\DatabaseCourseDesign\Templates\Bas
 D:\同济\大二下\数据库\期末大项目\DatabaseCourseDesign\Templates\BasicSQLOPs\obj\Debug\net8.0\SQLOperation.pdb
 D:\同济\大二下\数据库\期末大项目\DatabaseCourseDesign\Templates\BasicSQLOPs\obj\Debug\net8.0\SQLOperation.genruntimeconfig.cache
 D:\同济\大二下\数据库\期末大项目\DatabaseCourseDesign\Templates\BasicSQLOPs\obj\Debug\net8.0\ref\SQLOperation.dll
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\SQLOperation.exe
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\SQLOperation.deps.json
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\SQLOperation.runtimeconfig.json
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\SQLOperation.dll
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\SQLOperation.pdb
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\Newtonsoft.Json.dll
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\Oracle.ManagedDataAccess.dll
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\Renci.SshNet.Async.dll
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\Renci.SshNet.dll
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\SshNet.Security.Cryptography.dll
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\System.Diagnostics.EventLog.dll
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\System.Diagnostics.PerformanceCounter.dll
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\System.DirectoryServices.Protocols.dll
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\System.Xml.XPath.XmlDocument.dll
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.Messages.dll
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.dll
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.PerformanceCounter.dll
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\runtimes\linux\lib\net8.0\System.DirectoryServices.Protocols.dll
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\runtimes\osx\lib\net8.0\System.DirectoryServices.Protocols.dll
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.DirectoryServices.Protocols.dll
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\obj\Debug\net8.0\SQLOperation.csproj.AssemblyReference.cache
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\obj\Debug\net8.0\SQLOperation.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\obj\Debug\net8.0\SQLOperation.AssemblyInfoInputs.cache
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\obj\Debug\net8.0\SQLOperation.AssemblyInfo.cs
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\obj\Debug\net8.0\SQLOperation.csproj.CoreCompileInputs.cache
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\obj\Debug\net8.0\SQLOperation.sourcelink.json
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\obj\Debug\net8.0\SQLOpera.E7EFEEB4.Up2Date
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\obj\Debug\net8.0\SQLOperation.dll
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\obj\Debug\net8.0\refint\SQLOperation.dll
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\obj\Debug\net8.0\SQLOperation.pdb
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\obj\Debug\net8.0\SQLOperation.genruntimeconfig.cache
-C:\Users\PeiYu Duan\Desktop\DatabaseCourseDesign\DatabaseCourseDesign\Templates\BasicSQLOPs\obj\Debug\net8.0\ref\SQLOperation.dll

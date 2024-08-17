@@ -1,6 +1,5 @@
 import Mock from 'mockjs';
 import { useAccountStore } from '@/store';
-import { ref } from 'vue';
 
 const presetList = [
   {
@@ -201,7 +200,7 @@ const adminList = [
     badge: null,
     target: '_self',
     path: '/admin_ManagementFeature',
-    component: '@/pages/admin_ManagementFeature',
+    component: '@/components/layout/BlankView.vue',
     renderMenu: true,
     parent: null,
     children : [
@@ -228,6 +227,34 @@ const adminList = [
         target: '_self',
         path: '/admin_ManagementFeature/SystemLog',
         component: '@/pages/admin_ManagementFeature/SystemLog',
+        renderMenu: true,
+        parent: 'ManagementFeature',
+        permission: 'admin',
+        cacheable: true,
+      },
+      {
+        id: 19,
+        name: 'APILog',
+        title: 'API访问日志',
+        icon: '',
+        badge: null,
+        target: '_self',
+        path: '/admin_ManagementFeature/APILog',
+        component: '@/pages/admin_ManagementFeature/APILog',
+        renderMenu: true,
+        parent: 'ManagementFeature',
+        permission: 'admin',
+        cacheable: true,
+      },
+      {
+        id: 20,
+        name: 'SecurityEvent',
+        title: '安全事件记录',
+        icon: '',
+        badge: null,
+        target: '_self',
+        path: '/admin_ManagementFeature/SecurityEvent',
+        component: '@/pages/admin_ManagementFeature/SecurityEvent',
         renderMenu: true,
         parent: 'ManagementFeature',
         permission: 'admin',

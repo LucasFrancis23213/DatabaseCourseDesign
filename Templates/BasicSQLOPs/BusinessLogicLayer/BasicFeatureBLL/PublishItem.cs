@@ -1,4 +1,4 @@
-﻿using SQLOperation.PublicAccess.Templates.SQLManager;
+using SQLOperation.PublicAccess.Templates.SQLManager;
 using SQLOperation.PublicAccess.Utilities;
 using SQLOperation.PublicAccess.Templates.TemplateInterfaceManager;
 using System;
@@ -148,7 +148,7 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
         }
 
         //外部接口函数
-        public Tuple<bool, string> PublishLostItem(List<Lost_Item> lostItems, List<Reward_Offers> rewardOffers, bool reward_or_not)
+        public Tuple<bool, string> PublishLostItem(List<Lost_Item> lostItems, List<Reward_Offers> rewardOffers)
         {
             int n = 0;
             try{
@@ -159,27 +159,19 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                     string errorReason1 = "表单写入数据库过程中" + basicExcel.Item2; // 获取出错误原因
                     if (isSuccess1)
                     {
-                        //图片插入成功，插入是否悬赏
-                        if (!reward_or_not)
+                        //插入悬赏
+
+                        var reward = HaveReward(rewardOffers[n]);
+                        bool isSuccess3 = reward.Item1; // 获取是否成功插入
+                        string errorReason3 = "悬赏设置过程中" + reward.Item2; // 获取出错误原因
+                        if (isSuccess3)
                         {
                             n++;
                             continue;
                         }
-                        //有悬赏
+                        //悬赏设置失败
                         else
-                        {
-                            var reward = HaveReward(rewardOffers[n]);
-                            bool isSuccess3 = reward.Item1; // 获取是否成功插入
-                            string errorReason3 = "悬赏设置过程中" + reward.Item2; // 获取出错误原因
-                            if (isSuccess3)
-                            {
-                                n++;
-                                continue;
-                            }
-                            //悬赏设置失败
-                            else
-                            { return new Tuple<bool, string>(false, errorReason3); }
-                        }
+                        { return new Tuple<bool, string>(false, errorReason3); }
 
                     }
                     else //插入基础表单失败
@@ -238,9 +230,9 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
             else
             {
                 if(type == 0)
-                {TableName = "Lost_Item";}
+                {TableName = "Lost_Items";}
                 else if (type == 1)
-                {TableName = "Found_Item";}
+                {TableName = "Found_Items";}
                 else
                 {
                     string errorReason = "不合法的type值，请输入0/1！";
@@ -308,9 +300,18 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                 if (OracleConnection.State == ConnectionState.Open)
                 {
                     string ConditionString = string.Join(" AND ", index.Keys.Select(key => $"{key.ToUpper()} = :{key.ToUpper()}"));
-                    string DeleteSQL = $"SELECT * FROM {TableName.ToUpper()} WHERE {ConditionString}";
+                    string QuerySQL = "";
+                    if (type == 0)
+                    {
+                        QuerySQL = $"SELECT * FROM {TableName.ToUpper()} NATURAL JOIN REWARD_OFFERS WHERE {ConditionString}";
+                    }
+                    else
+                    {
+                        QuerySQL = $"SELECT * FROM {TableName.ToUpper()} WHERE {ConditionString}";
+                    }
+                    
 
-                    using (OracleCommand cmd = new OracleCommand(DeleteSQL, OracleConnection))
+                    using (OracleCommand cmd = new OracleCommand(QuerySQL, OracleConnection))
                     {
                         foreach (var condition in index)
                         {
