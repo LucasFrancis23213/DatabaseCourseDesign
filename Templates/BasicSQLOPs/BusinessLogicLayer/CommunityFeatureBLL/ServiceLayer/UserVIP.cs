@@ -10,12 +10,14 @@ using System.Threading.Tasks;
 using Oracle.ManagedDataAccess.Client;
 using SQLOperation.BusinessLogicLayer.ManagementFeatureBLL;
 using System.Transactions;
+using System.Data.Common;
 
 namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
 {
     public class UserVIP {
         private CommunityFeatureBusiness<VIP_Members> VIP_MembersBusiness;
         private CommunityFeatureBusiness<VIP_Orders> VIP_OrdersBusiness;
+        private Connection VIPConnection;
 
         private List<string> VIP_MembersList=new List<string> { "user_id","vip_start_date","vip_end_date","status"};
         private List<string> VIP_OrderList = new List<string> {"user_id","total_amount","point_return","order_time","recharge_time" };
@@ -25,6 +27,7 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
         {
             VIP_MembersBusiness = new CommunityFeatureBusiness<VIP_Members>(connection);
             VIP_OrdersBusiness = new CommunityFeatureBusiness<VIP_Orders>(connection);
+            VIPConnection = connection;
         }
 
         // 判断用户是否为VIP会员 使用vip_end_date和当前时间进行比较 并且status为active 如果逾期要修改状态为“逾期”
@@ -62,7 +65,7 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
         // 用户充值vip 传入user_id recharge_time total_amount 返回订单的基本信息VIP_Order
         public Tuple<VIP_Orders, DateTime> RechargeVIP(int userId, int rechargeTime, double totalAmount)
         {
-            using (var scope = new TransactionScope())
+            using (var transaction = VIPConnection.GetOracleConnection().BeginTransaction())
             {
                 try
                 {
@@ -110,8 +113,7 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
                             // 返回订单的基本信息
                             vipOrder.Order_ID = orderId;
 
-                            // 完成事务
-                            scope.Complete();
+                           
 
                             return new Tuple<VIP_Orders, DateTime>(vipOrder, startTime);
                         }
@@ -129,12 +131,13 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
                     vipOrder.Order_ID = orderId;
 
                     // 完成事务
-                    scope.Complete();
+                    transaction.Commit();
 
                     return new Tuple<VIP_Orders, DateTime>(vipOrder, startTime);
                 }
                 catch (Exception ex)
                 {
+                    transaction.Rollback();
                     Console.WriteLine($"用户充值VIP时发生错误: {ex.Message}");
                     throw new ApplicationException("用户充值VIP时发生错误，请稍后再试。", ex);
                 }

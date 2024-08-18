@@ -14,8 +14,7 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
    
     public class Comments {
         private CommunityFeatureBusiness<Users> UserBusiness;
-        private CommunityFeatureBusiness<Item_Comments> CommentBusiness;
-        
+        private CommunityFeatureBusiness<Item_Comments> CommentBusiness;        
 
         private List<string> ItemCommentsList = new List<string> { "item_id", "user_id", "content", "datetime" };
 
