@@ -14,26 +14,20 @@ namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
 
         public Tuple<bool, string> GetSecurityEvents(QuerySecurityEventsArgs InputArgs)
         {
-            int? EventID = null;
-            string? EventType = InputArgs.EventType;
-            string? Status = InputArgs.Status;
-            DateTime? StartTime = default;
-            DateTime? EndTime = default;
-
-            if (InputArgs.EventID > 0)
+            if (InputArgs.EventID <= 0)
             {
-                EventID = InputArgs.EventID;
+                return Tuple.Create(false, "EventID不合法");
             }
-            if (InputArgs.StartTime != default)
+            if (InputArgs.StartTime is not null && InputArgs.StartTime is not DateTime)
             {
-                StartTime = InputArgs.StartTime;
+                return Tuple.Create(false, "开始时间不合法");
             }
-            if (InputArgs.EndTime != default)
+            if (InputArgs.EndTime is not null && InputArgs.EndTime is not DateTime)
             {
-                EndTime = InputArgs.EndTime;
+                return Tuple.Create(false, "结束时间不合法");
             }
 
-            return SecurityEventsDAL.GetSecurityEvents(EventID, EventType, Status, StartTime, EndTime);
+            return SecurityEventsDAL.GetSecurityEvents(InputArgs);
         }
 
     }

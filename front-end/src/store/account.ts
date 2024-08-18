@@ -4,6 +4,8 @@ import { useLoadingStore } from './loading';
 import { useMenuStore } from './menu';
 import { useAuthStore } from '@/plugins';
 import axios from 'axios';
+import { message } from 'ant-design-vue';
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
 function getLocalISOTime() {
   const now = new Date();
@@ -48,7 +50,9 @@ export const useAccountStore = defineStore('account', {
       this.username = username;
       const queryParams = new URLSearchParams({ UserName: username, Password: password }).toString();
       try {
-        const response = await axios.get(`https://localhost:44343/api/CheckPassword?${queryParams}`);
+        console.log("ready to post request to server");
+        const response = await axios.get(`/api/UserManagement/CheckPassword?${queryParams}`);
+        console.log("get response! and response status is ",response.status);
         if (response.status === 200) {
           this.logged = true;
           this.account.userName = username;
@@ -66,14 +70,14 @@ export const useAccountStore = defineStore('account', {
             action_Type: "Login",
             occurrence_Time: getLocalISOTime()
           };
-          await axios.post('https://localhost:44343/api/InsertUserOperatorLog', logData);
+          await axios.post(`/api/LogsInsert/UserOpsLogs`, logData);
           const APIData = {
             apI_Name: "CheckPassword",
             accessor_ID: this.account.userId,
             access_Time: getLocalISOTime(),
             access_Result: "success"
           };
-          await axios.post('https://localhost:44343/api/InsertAPILogs', APIData);
+          await axios.post(`/api/LogsInsert/APILogs`, APIData);
           await useMenuStore().getMenuList();
           return { success: true, message: "登录成功！"};
         } 
@@ -84,7 +88,7 @@ export const useAccountStore = defineStore('account', {
           access_Time: getLocalISOTime(),
           access_Result: "failure"
         };
-        await axios.post('https://localhost:44343/api/InsertAPILogs', APIData);
+        await axios.post(`/api/LogsInsert/APILogs`, APIData);
         if (error.response) {
           if (error.response.status === 401) {
             return { success: false, message: "登录失败：密码错误" };
@@ -117,7 +121,7 @@ export const useAccountStore = defineStore('account', {
         action_Type: "Logout",
         occurrence_Time: getLocalISOTime()
       };
-      await axios.post('https://localhost:44343/api/InsertUserOperatorLog', logData);
+      await axios.post(`/api/LogsInsert/UserOpsLogs`, logData);
       await this.closeApp();
     },
     async profile() {
@@ -128,7 +132,7 @@ export const useAccountStore = defineStore('account', {
       }
       else{
         try {
-          const response = await axios.get(`https://localhost:44343/api/GetUserInfo?UserName=${this.account.userName}`);
+          const response = await axios.get(`/api/UserManagement/GetUserInfo?UserName=${this.account.userName}`);
           if (response.data) {
             this.account.userName = response.data.userName;
             this.account.userId = response.data.userID;
@@ -152,15 +156,17 @@ export const useAccountStore = defineStore('account', {
       action_Type: "DeleteUser",
       occurrence_Time: getLocalISOTime()
     };
-    await axios.post('https://localhost:44343/api/InsertUserOperatorLog', logData);
+    await axios.post(`/api/LogsInsert/UserOpsLogs`, logData);
     if(!!this.account.userName){
       try {
-        const response = await axios.get(`https://localhost:44343/api/DeleteUser?UserName=${this.account.userName}`);
+        const response = await axios.get(`/api/UserManagement/DeleteUser?UserName=${this.account.userName}`);
         this.account.userName = '';
         this.account.userId = '';
         this.account.contact = '';
         await this.closeApp();
+        message.success('已注销');
       } catch (error) {
+        message.error('注销失败:',error);
         console.error('Failed to delete user:', error);
       } 
     }
@@ -172,7 +178,7 @@ export const useAccountStore = defineStore('account', {
       Contact: contact
     }; 
     try {
-      const response = await axios.post(`https://localhost:44343/api/Register`, queryParams);
+      const response = await axios.post(`/api/UserManagement/RegisterUser`, queryParams);
       if (response.status === 200) {
         this.account.userName = username;
         await this.profile();
@@ -181,7 +187,7 @@ export const useAccountStore = defineStore('account', {
           action_Type: "Signup",
           occurrence_Time: getLocalISOTime()
         };
-        await axios.post('https://localhost:44343/api/InsertUserOperatorLog', logData);
+        await axios.post(`/api/LogsInsert/UserOpsLogs`, logData);
         return { success: true, message: "注册成功！即将跳转回登录界面..."};
       }
     } catch (error) {

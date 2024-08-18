@@ -115,19 +115,22 @@ namespace SQLOperation.PublicAccess.Utilities
         public int Review_Status;
         public string Image_URL;
         public int Tag_ID;
+        public int Is_Rewarded;
     }
 
     public class Found_Item
     {
-        public int Item_ID;
+        public string Item_ID;
         public string Item_Name;
-        public string Category_ID;
+        public int Category_ID;
         public string Description;
         public string Found_Location;
-        public int Found_Date;
+        public DateTime Found_Date;
         public int User_ID;
         public string Match_Status;
         public int Review_Status;
+        public string Image_URL;
+        public int Tag_ID;
     }
 
     public class Reward_Offers
@@ -411,11 +414,11 @@ namespace SQLOperation.PublicAccess.Utilities
         public int Transaction_ID;
         public int From_User_ID;
         public int To_User_ID;
-        public int Item_ID;
+        public string Item_ID;
         public double Amount;
         public string Transaction_Type;
         public string Status;
+        public DateTime StartTime;
+        public DateTime FinishTime;
     }
-
-
 }
