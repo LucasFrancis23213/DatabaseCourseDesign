@@ -19,6 +19,8 @@ namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
                 return new Tuple<bool, string>(false, "User details are incomplete");
             }
 
+            NewInfo.Password = PasswordEncryptor.EncryptPassword(NewInfo.Password);
+
             return UserOperatorDAL.UpdateUserInfo(NewInfo.User_ID, NewInfo.User_Name, NewInfo.Password, NewInfo.Contact);
         }
     }

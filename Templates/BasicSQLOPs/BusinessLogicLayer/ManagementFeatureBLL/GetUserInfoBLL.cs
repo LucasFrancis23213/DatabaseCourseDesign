@@ -13,9 +13,9 @@ namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
             UserOperatorDAL = new UserOperatorDAL();
         }
 
-        public Tuple<bool, UserAccessibleInfo, string> GetInfo(string UserName)
+        public Tuple<bool, UserAccessibleInfo, string> GetInfo(int? UserID, string? UserName)
         {
-            Tuple<bool, string> QueryResult = UserOperatorDAL.GetUserInfo(UserName);
+            Tuple<bool, string> QueryResult = UserOperatorDAL.GetUserInfo(UserID, UserName);
 
             if (QueryResult.Item1)
             {
@@ -24,7 +24,7 @@ namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
                 {
                     UserAccessibleInfo Info = new()
                     {
-                        UserName = UserName,
+                        UserName = users[0].User_Name,
                         UserID = users[0].User_ID,
                         Contact = users[0].Contact
                     };

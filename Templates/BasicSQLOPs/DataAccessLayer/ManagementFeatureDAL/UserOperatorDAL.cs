@@ -1,4 +1,9 @@
-﻿namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
+﻿using Newtonsoft.Json;
+using SQLOperation.PublicAccess.Utilities;
+using SQLOperation.PublicAccess.Utilities.ManagementFeatureUtil;
+using System.Diagnostics;
+
+namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
 {
     public class UserOperatorDAL : BaseDAL
     {
@@ -24,11 +29,12 @@
         /// <summary>
         /// Retrieves user information.
         /// </summary>
+        /// <param id="UserID">The userID of the user.</param>
         /// <param name="UserName">The username of the user.</param>
         /// <returns>A tuple containing a boolean indicating success and the query result as a string.</returns>
-        public Tuple<bool, string> GetUserInfo(string UserName)
+        public Tuple<bool, string> GetUserInfo(int? UserID, string? UserName)
         {
-            return DoQuery(GetUserInfoGenerator(UserName));
+            return DoQuery(GetUserInfoGenerator(UserID, UserName));
         }
 
         /// <summary>
@@ -102,12 +108,59 @@
             };
         }
 
-        private Func<Tuple<bool, string>> GetUserInfoGenerator(string UserName)
+        private Func<Tuple<bool, string>> GetUserInfoGenerator(int? UserID, string? UserName)
         {
             return () =>
             {
-                Tuple<bool, string> QueryResult = BasicSQLOps.QueryOperation("Users", "User_Name", UserName);
-                return QueryResult;
+                Tuple<bool, string>? QueryResultID = null;
+                Tuple<bool, string>? QueryResultName = null;
+
+                if (UserID is not null || UserID >= 0)
+                {
+                    QueryResultID = BasicSQLOps.QueryOperation("Users", "User_ID", UserID);
+                }
+                if (!string.IsNullOrEmpty(UserName))
+                {
+                    QueryResultName = BasicSQLOps.QueryOperation("Users", "User_Name", UserName);
+                }
+
+                bool SucceedID = QueryResultID is not null && QueryResultID.Item1;
+                bool SucceedName = QueryResultName is not null && QueryResultName.Item1;
+
+                if (!SucceedID && SucceedName)
+                {
+                    return QueryResultName;
+                }
+                else if (SucceedID && !SucceedName)
+                {
+                    return QueryResultID;
+                }
+                else if (SucceedID && SucceedName)
+                {
+                    try
+                    {
+                        var usersFromName = JsonConvert.DeserializeObject<List<Users>>(QueryResultName.Item2);
+
+                        // 检查列表中是否有用户与 ID 匹配
+                        if (usersFromName.Any(u => u.User_ID == UserID))
+                        {
+                            return QueryResultName;
+                        }
+                        else
+                        {
+                            return Tuple.Create(false, "用户名与用户ID不匹配");
+                        }
+                    }
+                    catch (JsonException ex)
+                    {
+                        // 处理 JSON 反序列化错误
+                        return Tuple.Create(false, "JSON反序列化错误: " + ex.Message);
+                    }
+                }
+                else
+                {
+                    return Tuple.Create(false, "未找到用户");
+                }
             };
         }
 

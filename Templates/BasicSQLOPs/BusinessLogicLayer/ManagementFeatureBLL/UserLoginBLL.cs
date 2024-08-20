@@ -14,7 +14,7 @@ namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
 
         public Tuple<bool, string> CheckPassword(string UserName, string Password)
         {
-            Tuple<bool, string> QueryResult = UserOperatorDAL.GetUserInfo(UserName);
+            Tuple<bool, string> QueryResult = UserOperatorDAL.GetUserInfo(null, UserName);
             Users Info;
 
             // get the target user's information
@@ -35,7 +35,7 @@ namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
                 return new Tuple<bool, string>(false, QueryResult.Item2);
             }
 
-            if (Info.Password == Password)
+            if (Info.Password == PasswordEncryptor.EncryptPassword(Password))
             {
                 return new Tuple<bool, string>(true, "用户名与密码匹配，登录成功");
             }

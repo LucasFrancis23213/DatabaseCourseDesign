@@ -25,9 +25,9 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
         }
 
         [HttpGet("GetUserInfo")]
-        public IActionResult GetUserInfo(string UserName)
+        public IActionResult GetUserInfo(int? UserID, string? UserName)
         {
-            var result = _getUserInfoBLL.GetInfo(UserName);
+            var result = _getUserInfoBLL.GetInfo(UserID, UserName);
             if (result.Item1)
             {
                 return Ok(result.Item2);
