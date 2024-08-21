@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Renci.SshNet.Messages;
 using SQLOperation.PublicAccess.Utilities;
 using SQLOperation.PublicAccess.Utilities.ManagementFeatureUtil;
 using System.Diagnostics;
@@ -40,11 +41,11 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
         /// <summary>
         /// Deletes a user.
         /// </summary>
-        /// <param name="UserName">The username of the user to be deleted.</param>
+        /// <param id="UserID">The username of the user to be deleted.</param>
         /// <returns>A tuple containing a boolean indicating success and the result of the deletion as a string.</returns>
-        public Tuple<bool, string> DeleteUser(string UserName)
+        public Tuple<bool, string> DeleteUser(int UserID)
         {
-            return DoQuery(DeleteUserGenerator(UserName));
+            return DoQuery(DeleteUserGenerator(UserID));
         }
 
         /// <summary>
@@ -144,7 +145,7 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
                         // 检查列表中是否有用户与 ID 匹配
                         if (usersFromName.Any(u => u.User_ID == UserID))
                         {
-                            return QueryResultName;
+                            return QueryResultID;
                         }
                         else
                         {
@@ -164,26 +165,23 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
             };
         }
 
-        private Func<Tuple<bool, string>> DeleteUserGenerator(string UserName)
+        private Func<Tuple<bool, string>> DeleteUserGenerator(int UserID)
         {
             return () =>
             {
-                Tuple<bool, string> DeleteResult = BasicSQLOps.DeleteOperation("Users", "User_Name", UserName);
+                var (IsSucceeded, Message) = BasicSQLOps.UpdateOperation("Users", "IS_DELETED", 1, "USER_ID", UserID);
 
-                if (!DeleteResult.Item1)
+                if (!IsSucceeded)
                 {
-                    return DeleteResult;
+                    return new Tuple<bool, string>(IsSucceeded, Message);
                 }
-                else
-                {
-                    int AffectedRow = int.Parse(DeleteResult.Item2);
-                    if (AffectedRow == 0)
-                    {
-                        return new Tuple<bool, string>(false, "数据库中不存在此行");
-                    }
 
-                    return new Tuple<bool, string>(true, "");
+                if (Message != "更新了1行")
+                {
+                    return new Tuple<bool, string>(false, "未找到用户");
                 }
+
+                return Tuple.Create(true, "删除成功");
             };
         }
 

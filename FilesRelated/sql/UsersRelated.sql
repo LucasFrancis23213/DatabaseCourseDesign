@@ -1,0 +1,13 @@
+ALTER TABLE USERS
+    ADD IS_DELETED NUMBER(
+        1
+    ) DEFAULT 0;
+
+CREATE UNIQUE INDEX IDX_UNIQUE_USER_NAME ON USERS(
+    DECODE(
+        IS_DELETED,
+        0,
+        USER_NAME,
+        NULL
+    )
+);

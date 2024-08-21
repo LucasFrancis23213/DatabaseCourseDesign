@@ -320,6 +320,9 @@ namespace SQLOperation.PublicAccess.Utilities
 
         [JsonPropertyName("CONTACT")]
         public string Contact { get; set; }
+
+        [JsonPropertyName("IS_DELETED")]
+        public int Is_Deleted { get; set; }
     }
 
     public class User_Subscriptions

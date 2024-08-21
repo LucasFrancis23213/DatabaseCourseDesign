@@ -24,8 +24,8 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
             _userLoginBLL = new UserLoginBLL();
         }
 
-        [HttpGet("GetUserInfo")]
-        public IActionResult GetUserInfo(int? UserID, string? UserName)
+        [HttpGet("UserGetUserInfo")]
+        public IActionResult UserGetUserInfo(int? UserID, string? UserName)
         {
             var result = _getUserInfoBLL.GetInfo(UserID, UserName);
             if (result.Item1)
@@ -34,7 +34,21 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
             }
             else
             {
-                return BadRequest(result.Item3);
+                return BadRequest(result.Item2);
+            }
+        }
+
+        [HttpGet("AdminGetUserInfo")]
+        public IActionResult AdminGetUserInfo(int? UserID, string? UserName)
+        {
+            var result = _getUserInfoBLL.GetInfo(UserID, UserName, true);
+            if (result.Item1)
+            {
+                return Ok(result.Item2);
+            }
+            else
+            {
+                return BadRequest(result.Item2);
             }
         }
 
@@ -85,9 +99,9 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
         }
 
         [HttpDelete("DeleteUser")]
-        public IActionResult DeleteUser(string UserName)
+        public IActionResult DeleteUser(int UserID)
         {
-            var result = _deleteUserBLL.DeleteUser(UserName);
+            var result = _deleteUserBLL.DeleteUser(UserID);
             if (result.Item1)
             {
                 return Ok(result.Item2);

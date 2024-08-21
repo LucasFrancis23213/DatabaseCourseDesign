@@ -1274,6 +1274,27 @@
   },
   {
     "ContainingType": "WebAppTest.APILayer.ManagementFeatureAPI.UserManagementController",
+    "Method": "AdminGetUserInfo",
+    "RelativePath": "api/UserManagement/AdminGetUserInfo",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "UserID",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "UserName",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebAppTest.APILayer.ManagementFeatureAPI.UserManagementController",
     "Method": "CheckPassword",
     "RelativePath": "api/UserManagement/CheckPassword",
     "HttpMethod": "GET",
@@ -1302,29 +1323,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "UserName",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "WebAppTest.APILayer.ManagementFeatureAPI.UserManagementController",
-    "Method": "GetUserInfo",
-    "RelativePath": "api/UserManagement/GetUserInfo",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
         "Name": "UserID",
-        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
-        "IsRequired": false
-      },
-      {
-        "Name": "UserName",
-        "Type": "System.String",
+        "Type": "System.Int32",
         "IsRequired": false
       }
     ],
@@ -1358,6 +1358,27 @@
         "Name": "NewInfo",
         "Type": "SQLOperation.PublicAccess.Utilities.Users",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebAppTest.APILayer.ManagementFeatureAPI.UserManagementController",
+    "Method": "UserGetUserInfo",
+    "RelativePath": "api/UserManagement/UserGetUserInfo",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "UserID",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "UserName",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
