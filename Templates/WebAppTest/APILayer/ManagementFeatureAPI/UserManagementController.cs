@@ -53,7 +53,7 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
         }
 
         [HttpPut("UpdateUserInfo")]
-        public IActionResult UpdateUserInfo([FromBody] Users NewInfo)
+        public IActionResult UpdateUserInfo([FromBody] UpdateUserInfoUtil NewInfo)
         {
             var (QueryResult, Message) = _updateUserInfoBLL.UpdateUserInfo(NewInfo);
             if (QueryResult)

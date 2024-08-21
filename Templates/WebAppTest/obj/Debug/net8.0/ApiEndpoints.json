@@ -1356,7 +1356,7 @@
     "Parameters": [
       {
         "Name": "NewInfo",
-        "Type": "SQLOperation.PublicAccess.Utilities.Users",
+        "Type": "SQLOperation.PublicAccess.Utilities.ManagementFeatureUtil.UpdateUserInfoUtil",
         "IsRequired": true
       }
     ],

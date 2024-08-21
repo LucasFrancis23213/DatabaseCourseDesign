@@ -68,7 +68,7 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
         /// <param name="Password">The new password of the user.</param>
         /// <param name="Contact">The new contact information of the user.</param>
         /// <returns>A tuple containing a boolean indicating success and the result of the update as a string.</returns>
-        public Tuple<bool, string> UpdateUserInfo(int UserID, string UserName, string Password, string Contact)
+        public Tuple<bool, string> UpdateUserInfo(int UserID, string? UserName, string? Password, string? Contact)
         {
             return DoQuery(UpdateUserInfoGenerator(UserID, UserName, Password, Contact));
         }
@@ -82,15 +82,20 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
             };
         }
 
-        private Func<Tuple<bool, string>> UpdateUserInfoGenerator(int UserID, string UserName, string Password, string Contact)
+        private Func<Tuple<bool, string>> UpdateUserInfoGenerator(int UserID, string? UserName, string? Password, string? Contact)
         {
             return () =>
             {
                 List<string> UpdateColumn = ["User_Name", "Password_", "Contact"];
-                List<object> UpdateValue = [UserName, Password, Contact];
+                List<string> UpdateValue = [UserName, Password, Contact];
 
                 for (int i = 0; i < UpdateColumn.Count; i++)
                 {
+                    if (string.IsNullOrEmpty(UpdateValue[i]))
+                    {
+                        continue;
+                    }
+
                     var (IsSucceeded, Message) = BasicSQLOps.UpdateOperation("Users", UpdateColumn[i], UpdateValue[i], "USER_ID", UserID);
 
                     // 连接错误导致的失败

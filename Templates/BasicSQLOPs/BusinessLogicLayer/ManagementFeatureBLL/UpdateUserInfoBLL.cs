@@ -1,5 +1,6 @@
 ﻿using SQLOperation.DataAccessLayer.ManagementFeatureDAL;
 using SQLOperation.PublicAccess.Utilities;
+using SQLOperation.PublicAccess.Utilities.ManagementFeatureUtil;
 
 namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
 {
@@ -12,16 +13,12 @@ namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
             UserOperatorDAL = new UserOperatorDAL();
         }
 
-        public Tuple<bool, string> UpdateUserInfo(Users NewInfo)
+        public Tuple<bool, string> UpdateUserInfo(UpdateUserInfoUtil NewInfo)
         {
-            if (string.IsNullOrEmpty(NewInfo.User_Name) || string.IsNullOrEmpty(NewInfo.Password) || string.IsNullOrEmpty(NewInfo.Contact))
-            {
-                return new Tuple<bool, string>(false, "User details are incomplete");
-            }
+            if (!string.IsNullOrEmpty(NewInfo.Password))
+                NewInfo.Password = PasswordEncryptor.EncryptPassword(NewInfo.Password);
 
-            NewInfo.Password = PasswordEncryptor.EncryptPassword(NewInfo.Password);
-
-            return UserOperatorDAL.UpdateUserInfo(NewInfo.User_ID, NewInfo.User_Name, NewInfo.Password, NewInfo.Contact);
+            return UserOperatorDAL.UpdateUserInfo(NewInfo.UserID, NewInfo.UserName, NewInfo.Password, NewInfo.Contact);
         }
     }
 }
