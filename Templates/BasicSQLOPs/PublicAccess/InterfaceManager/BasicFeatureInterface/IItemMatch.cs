@@ -30,6 +30,7 @@ namespace SQLOperation.PublicAccess.InterfaceManager.BasicFeatureInterface
         //index是条件，返回默认是*
         public Tuple<bool, string> QueryItem(string TableName, Dictionary<string, object> index);
         //更改记录(主要是提供给修改阅读状态和交换状态和归还状态)
+        //当物品选择进入旧物市场之后，修改found_item的match_status==“出售”，即会出现在出售物品池。
         public Tuple<bool, string> UpdateItem(string TableName, Dictionary<string, object> UpdateColumns, Dictionary<string, object> index);
     }
    
