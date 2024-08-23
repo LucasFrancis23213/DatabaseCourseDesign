@@ -17,11 +17,13 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
     {
         private  QuestionAnswers questionAnswers;
         private UserActivity userActivity;
+        private Connection QAConnection;
 
         public QuestionAnswerController(Connection connection)
         {
             questionAnswers = new QuestionAnswers(connection);
             userActivity= new UserActivity(connection);
+            QAConnection = connection;
         }
 
         //1 `/api/questions`
@@ -152,44 +154,52 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
         [HttpPost("post_questions")]
         public IActionResult PostQuestion([FromBody] Dictionary<string, JsonElement> requestData)
         {
-            try
+            using (var transaction = QAConnection.GetOracleConnection().BeginTransaction())
             {
-                // 检查请求中是否包含必要的参数 content, item_id, current_user_id 和 time
-                if (requestData == null ||
+                try
+                {
+
+                    // 检查请求中是否包含必要的参数 content, item_id, current_user_id 和 time
+                    if (requestData == null ||
                     !requestData.ContainsKey("content") ||
                     !requestData.ContainsKey("item_id") ||
                     !requestData.ContainsKey("current_user_id") ||
                     !requestData.ContainsKey("time"))
+                    {
+                        return BadRequest("缺少必需的参数：content、item_id、current_user_id 或 time");
+
+                    }
+
+                    // 获取 content, item_id 和 current_user_id 参数
+                    string content = ControllerHelper.GetSafeString(requestData, "content");
+                    string itemId = ControllerHelper.GetSafeString(requestData, "item_id");
+                    int userId = requestData["current_user_id"].GetInt32();
+                    DateTime time = requestData["time"].GetDateTime();
+
+                    // 调用 QuestionAnswers 类中的方法提问
+                    int questionId = questionAnswers.PostQuestion(content, itemId, userId, time);
+                    userActivity.AddUserActivity(userId, "问答", time);
+                    // 构建响应对象
+                    var response = new
+                    {
+                        status = "success",
+                        question_id = questionId,
+
+                    };
+
+                    transaction.Commit();
+                    return Ok(response);
+                }
+                catch (Exception ex)
                 {
-                    return BadRequest("缺少必需的参数：content、item_id、current_user_id 或 time");
+                    transaction.Rollback();
+                    Console.WriteLine($"发布问题时出错: {ex.Message}");
+                    return StatusCode(500, $"服务器内部错误: {ex.Message}");
 
                 }
 
-                // 获取 content, item_id 和 current_user_id 参数
-                string content = ControllerHelper.GetSafeString(requestData, "content");
-                string itemId = ControllerHelper.GetSafeString(requestData, "item_id");
-                int userId = requestData["current_user_id"].GetInt32();
-                DateTime time = requestData["time"].GetDateTime();
-
-                // 调用 QuestionAnswers 类中的方法提问
-                int questionId = questionAnswers.PostQuestion(content, itemId, userId, time);
-                userActivity.AddUserActivity(userId, "问答", time);
-                // 构建响应对象
-                var response = new
-                {
-                    status = "success",
-                    question_id = questionId,
-                   
-                };
-
-                return Ok(response);
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"发布问题时出错: {ex.Message}");
-                return StatusCode(500, $"服务器内部错误: {ex.Message}");
-
-            }
+            
         }
 
 
@@ -247,53 +257,58 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
         [HttpPost("questions/{question_id}/post_answers")]
         public IActionResult PostAnswer(int question_id, [FromBody] Dictionary<string, JsonElement> requestData)
         {
-            try
+            using (var transaction = QAConnection.GetOracleConnection().BeginTransaction())
             {
-                // 检查请求中是否包含必要的参数 content, current_user_id 和 time
-                if (requestData == null ||
-                    !requestData.ContainsKey("content") ||
-                    !requestData.ContainsKey("current_user_id") ||
-                    !requestData.ContainsKey("time"))
+                try
                 {
-                    return BadRequest("缺少必填参数：content、current_user_id 或 time");
+                    // 检查请求中是否包含必要的参数 content, current_user_id 和 time
+                    if (requestData == null ||
+                        !requestData.ContainsKey("content") ||
+                        !requestData.ContainsKey("current_user_id") ||
+                        !requestData.ContainsKey("time"))
+                    {
+                        return BadRequest("缺少必填参数：content、current_user_id 或 time");
+
+                    }
+
+                    // 获取当前用户ID
+                    int userId = requestData["current_user_id"].GetInt32();
+
+                    // 获取回答内容
+                    string answerContent = ControllerHelper.GetSafeString(requestData, "content");
+
+                    // 获取回答时间
+                    DateTime time = requestData["time"].GetDateTime();
+
+                    // 调用 QuestionAnswers 类中的方法回答问题
+                    int answerId = questionAnswers.PostAnswer(question_id, answerContent, userId, time);
+
+                    // 如果回答ID为0，则表示回答操作失败
+                    if (answerId == 0)
+                    {
+                        throw new Exception("回答问题出错");
+
+                    }
+                    userActivity.AddUserActivity(userId, "问答", time);
+                    // 构建成功响应对象
+                    var response = new
+                    {
+                        status = "success",
+                        answer_id = answerId,
+
+                    };
+                    transaction.Commit();
+                    return Ok(response);
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    Console.WriteLine($"发布答案时出错: {ex.Message}");
+                    return StatusCode(500, $"内部服务器错误: {ex.Message}");
 
                 }
-
-                // 获取当前用户ID
-                int userId = requestData["current_user_id"].GetInt32();
-
-                // 获取回答内容
-                string answerContent = ControllerHelper.GetSafeString(requestData, "content");
-
-                // 获取回答时间
-                DateTime time = requestData["time"].GetDateTime();
-
-                // 调用 QuestionAnswers 类中的方法回答问题
-                int answerId = questionAnswers.PostAnswer(question_id, answerContent, userId, time);
-
-                // 如果回答ID为0，则表示回答操作失败
-                if (answerId == 0)
-                {
-                    return StatusCode(500, "发布答案时出错"); // 返回内部服务器错误
-
-                }
-                userActivity.AddUserActivity(userId, "问答", time);
-                // 构建成功响应对象
-                var response = new
-                {
-                    status = "success",
-                    answer_id = answerId,
-                    
-                };
-
-                return Ok(response);
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"发布答案时出错: {ex.Message}");
-                return StatusCode(500, $"内部服务器错误: {ex.Message}");
-
-            }
+                
         }
 
         // 撤回回答

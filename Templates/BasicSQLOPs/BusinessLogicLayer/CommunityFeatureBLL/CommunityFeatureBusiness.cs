@@ -1,6 +1,7 @@
 ﻿using DatabaseProject.DataAccessLayer.CommunityFeatureDAL;
 using Oracle.ManagedDataAccess.Client;
 using SQLOperation.PublicAccess.Templates.SQLManager;
+using SQLOperation.PublicAccess.Utilities;
 using System.Reflection;
 using System.Text.Json;
 
@@ -56,8 +57,11 @@ namespace DatabaseProject.BusinessLogicLayer.CommunityFeatureBLL
         // 映射数据
         public T MapDictionaryToObject(Dictionary<string, object> record)
         {
+            // 创建实例
             T instance = Activator.CreateInstance<T>();
             PropertyInfo[] properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+            
 
             if (record == null)
             {
@@ -80,8 +84,18 @@ namespace DatabaseProject.BusinessLogicLayer.CommunityFeatureBLL
                     try
                     {
                         string? stringValue = value.ToString();
-                        object? convertedValue = Convert.ChangeType(stringValue, property.PropertyType);
-                        property.SetValue(instance, convertedValue);
+                        if (stringValue == "{}" && property.PropertyType != typeof(string))
+                        {
+                            // 将 property 设置为其默认值
+                            object? defaultValue = Activator.CreateInstance(property.PropertyType);
+                            property.SetValue(instance, defaultValue);
+                        }
+                        else
+                        {
+                            object? convertedValue = Convert.ChangeType(stringValue, property.PropertyType);
+                            property.SetValue(instance, convertedValue);
+                        }
+                       
                     }
                     catch (Exception ex)
                     {
@@ -93,6 +107,10 @@ namespace DatabaseProject.BusinessLogicLayer.CommunityFeatureBLL
 
             return instance;
         }
+
+        
+
+        
 
 
         // json拆包并解包1
@@ -318,6 +336,7 @@ namespace DatabaseProject.BusinessLogicLayer.CommunityFeatureBLL
                     {
                         return new List<Dictionary<string, object>>();
                     }
+                    
 
                     // 解析 JSON 结果
                     List<Dictionary<string, object>>? rowList = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(success.Item2);

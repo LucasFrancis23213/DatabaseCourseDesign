@@ -7,6 +7,7 @@ using System.Text.Json;
 using System.Transactions;
 using DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature;
 
+
 namespace WebAppTest.APILayer.CommunityFeatureAPI
 {
     [ApiController]
@@ -15,11 +16,13 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
     {
         private Comments commentService;
         private UserActivity userActivity;
+        private Connection CommentsConnection;
 
         public CommentsController(Connection connection)
         {
             commentService=new Comments(connection);
             userActivity=new UserActivity(connection);
+            CommentsConnection = connection;
         }
 
         // 修改 不要重复报错
@@ -27,30 +30,39 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
         [HttpPost("add")]
         public ActionResult AddComment([FromBody] Dictionary<string, JsonElement> request)
         {
-            try
+            using (var transaction = CommentsConnection.GetOracleConnection().BeginTransaction())
             {
-                // 检查是否包含所有必要的参数
-                if (!request.ContainsKey("item_id") || !request.ContainsKey("user_id") ||
-                    !request.ContainsKey("content") || !request.ContainsKey("time"))
+                try
                 {
-                    return BadRequest(new { status = "error", message = "缺少必要参数" });
+                    // 检查是否包含所有必要的参数
+                    if (!request.ContainsKey("item_id") || !request.ContainsKey("user_id") ||
+                        !request.ContainsKey("content") || !request.ContainsKey("time"))
+                    {
+                        return BadRequest(new { status = "error", message = "缺少必要参数" });
+                    }
+
+                    // 从 Dictionary 中提取参数
+                    string itemId = ControllerHelper.GetSafeString(request, "item_id");
+                    var userId = request["user_id"].GetInt32();
+                    string content = ControllerHelper.GetSafeString(request, "content");
+                    DateTime time = request["time"].GetDateTime();
+
+                    // 执行评论发布和用户活动记录
+                    int commentId = commentService.PostComment(itemId, userId, content, time);
+                    userActivity.AddUserActivity(userId, "评论", time);
+
+                    transaction.Commit();
+                    return Ok(new { status = "success", comment_id = commentId });
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    return BadRequest(new { status = "error", message = $"发表评论时发生错误: {ex.Message}" });
                 }
 
-                // 从 Dictionary 中提取参数
-                string itemId = ControllerHelper.GetSafeString(request, "item_id");
-                var userId = request["user_id"].GetInt32();
-                string content = ControllerHelper.GetSafeString(request, "content");
-                DateTime time = request["time"].GetDateTime();
+            }
 
-                int commentId = commentService.PostComment(itemId, userId, content, time);
-                userActivity.AddUserActivity(userId, "评论", time);
-                
-                return Ok(new { status = "success", comment_id = commentId });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { status = "error", message = $"发表评论时发生错误: {ex.Message}" });
-            }
+
         }
 
         // 删除
