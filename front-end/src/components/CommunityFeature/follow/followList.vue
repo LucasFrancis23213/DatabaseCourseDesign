@@ -2,7 +2,7 @@
   <div class="bg-container shadow-middle rounded-md p-md">
     <h2 class="text-lg text-title font-bold mb-md text-center">我的关注</h2>
     <transition-group name="list" tag="ul" v-if="following.length > 0" class="space-y-sm">
-      <li v-for="user in following" :key="user.user_id" class="flex items-center p-sm bg-container-light rounded-sm hover:bg-bg-hover">
+      <li v-for="user in displayedFilteredFollowing" :key="user.user_id" class="flex items-center p-sm bg-container-light rounded-sm hover:bg-bg-hover">
         <img :src="user.user_avatar" :alt="user.user_name" class="w-10 h-10 rounded-full mr-sm">
         <div class="flex-grow flex justify-between items-center">
           <span class="text-text font-medium">{{ user.user_name }}</span>
@@ -15,16 +15,19 @@
 
     </transition-group>
     <p v-else class="text-text-3 text-center p-md">您还没有关注任何人。</p>
-    <PaginationItem
-      :current-page="currentPage"
-      :total-pages="totalPages"
-      @prev="prevPage"
-      @next="nextPage"
-    />
+    <div class="flex justify-center items-center mt-xl">
+
+        <a-pagination
+    :total="following.length"
+    :current="currentPage"
+    :pageSize="pageSize"
+    @change="onPageChange"
+  />
+      </div>
   </div>
 </template>
 <script setup>
-import { ref, onMounted } from 'vue'
+import {ref, onMounted, computed} from 'vue'
 import axios from 'axios'
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 import { useAccountStore } from '@/store/account';
@@ -36,10 +39,23 @@ const { setPrimaryColor } = useThemeStore();
 setPrimaryColor({DEFAULT: '#3B82F6'});
 
 const following = ref([])
+const pageSize = ref(10)
+const currentPage = ref(1)
+
+const onPageChange = (page, size) => {
+  currentPage.value = page;
+  pageSize.value = size;
+};
+const displayedFilteredFollowing = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return following.value.slice(start, end);
+});
 
 const fetchFollowing = async () => {
   try {
     following.value = await getFollowing();
+
   } catch (error) {
     console.error('获取关注列表失败:', error);
     alert(`获取关注列表失败，错误原因：${error}`);
@@ -82,14 +98,9 @@ const unfollowUser = async (unfollowUserId) => {
     throw error
   }
 }
-import { usePagination } from '@/components/CommunityFeature/usePagination.ts'
-import paginationItem from '@/components/CommunityFeature/paginationItem.vue'
 
-const { currentPage, totalPages, paginatedData, nextPage, prevPage } = usePagination({
-  totalItems: following.value.length,
-  itemsPerPage: 10,
-  currentPage: 1
-})
+
+
 
 onMounted(fetchFollowing)
 </script>

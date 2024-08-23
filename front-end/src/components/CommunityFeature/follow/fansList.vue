@@ -5,7 +5,7 @@
     <div v-else-if="error" class="text-error-500 text-center p-md italic">{{ error }}</div>
     <template v-else>
       <ul v-if="followers.length" class="space-y-sm">
-        <li v-for="follower in followers" :key="follower.user_id"
+        <li v-for="follower in displayedFilteredFollowers" :key="follower.user_id"
             class="flex items-center p-sm bg-container-light rounded-sm hover:bg-bg-hover transition-colors duration-200">
           <img :src="follower.user_avatar" :alt="follower.user_name"
                class="w-12 h-12 rounded-full mr-sm object-cover">
@@ -15,17 +15,13 @@
       <p v-else class="text-text-3 text-center p-md italic">暂无粉丝</p>
 
       <div class="flex justify-center items-center mt-xl">
-        <button @click="fetchFollowers(currentPage - 1)"
-                :disabled="currentPage === 1"
-                class="bg-primary-bg text-primary-text hover:bg-primary-bg-hover disabled:bg-disabled disabled:text-text-disabled px-md py-sm rounded-md transition-colors duration-200 mr-sm">
-          上一页
-        </button>
-        <span class="text-text-2 text-sm mx-sm">{{ currentPage }} / {{ totalPages }}</span>
-        <button @click="fetchFollowers(currentPage + 1)"
-                :disabled="currentPage === totalPages"
-                class="bg-primary-bg text-primary-text hover:bg-primary-bg-hover disabled:bg-disabled disabled:text-text-disabled px-md py-sm rounded-md transition-colors duration-200 ml-sm">
-          下一页
-        </button>
+
+        <a-pagination
+    :total="followers.length"
+    :current="currentPage"
+    :pageSize="pageSize"
+    @change="onPageChange"
+  />
       </div>
     </template>
   </div>
@@ -41,10 +37,21 @@ const {account, permissions} = useAccountStore();
 
 const followers = ref([])
 const currentPage = ref(1)
-const totalPages = ref(1)
+const pageSize = ref(10)
+const onPageChange = (page, size) => {
+  currentPage.value = page;
+  pageSize.value = size;
+};
+const displayedFilteredFollowers = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return followers.value.slice(start, end);
+});
+
+
 const loading = ref(false)
 const error = ref(null)
-const itemsPerPage = 10
+
 
 const fetchFollowers = async (page = 1) => {
   loading.value = true
@@ -53,10 +60,10 @@ const fetchFollowers = async (page = 1) => {
     const response = await axios.post('/api/user/followers', {
       user_id: account.userId,
     })
-
+    console.log(response)
     if (response.data.status === 'success') {
       followers.value = response.data.followers
-      totalPages.value = Math.ceil(response.data.total_count / itemsPerPage)
+
     } else {
       throw new Error(response.data.status)
     }
@@ -66,6 +73,8 @@ const fetchFollowers = async (page = 1) => {
     loading.value = false
   }
 }
+
+
 
 onMounted(() => fetchFollowers())
 </script>

@@ -32,10 +32,14 @@
       </li>
     </ul>
 
-    <div class="pagination">
-      <a-button @click="prevPage" :disabled="currentPage === 1" class="btn btn-outline">上一页</a-button>
-      <span class="page-info">{{ currentPage }} / {{ totalFilteredPages }}</span>
-      <a-button @click="nextPage" :disabled="currentPage === totalFilteredPages" class="btn btn-outline">下一页</a-button>
+
+    <div>
+      <a-pagination
+    :total="ads.length"
+    :current="currentPage"
+    :pageSize="pageSize"
+    @change="onPageChange"
+  />
     </div>
   </div>
 </template>
@@ -50,7 +54,7 @@ axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
 const ads = ref([]);
 const currentPage = ref(1);
-const pageSize = 10;
+const pageSize = ref(3);
 const searchQuery = ref('');
 
 
@@ -58,8 +62,15 @@ const refreshAdList = async () => {
   await getAds(); // 重新获取广告列表
 };
 
+const onPageChange = (page, size) => {
+  currentPage.value = page;
+  pageSize.value = size;
+};
+
+
 const filteredAds = computed(() => {
   if (!searchQuery.value) return ads.value;
+  console.log(ads.value)
   return ads.value.filter(ad =>
     ad.ad_content.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
@@ -68,8 +79,8 @@ const filteredAds = computed(() => {
 const totalFilteredPages = computed(() => Math.ceil(filteredAds.value.length / pageSize));
 
 const displayedFilteredAds = computed(() => {
-  const start = (currentPage.value - 1) * pageSize;
-  const end = start + pageSize;
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
   return filteredAds.value.slice(start, end);
 });
 
