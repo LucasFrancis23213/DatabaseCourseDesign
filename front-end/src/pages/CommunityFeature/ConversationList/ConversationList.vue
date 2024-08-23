@@ -1,6 +1,16 @@
 <template>
   <div class="conversation-list">
     <h1>用户列表</h1>
+    <a-input
+    v-model:value="userId"
+    placeholder="想要建立会话的用户id"
+    @pressEnter="navigateToConversation(userId,current_user_id)"
+  >
+    <template #suffix>
+      <a-button type="primary" @click="navigateToConversation(userId,current_user_id)">确定</a-button>
+    </template>
+  </a-input>
+    <CreateConversationBtn :target-id="302"></CreateConversationBtn>
     <div v-for="conversation in conversations"
          :key="conversation.id"
          class="conversation-item"
@@ -28,6 +38,7 @@ import {useRouter} from "vue-router";
 import axios from 'axios';
 import { useAccountStore } from '@/store/account';
 const {account, permissions} = useAccountStore();
+import CreateConversationBtn from "@/components/CommunityFeature/chat/CreateConversationBtn.vue";
 
 axios.defaults.baseURL =  import.meta.env.VITE_API_URL;//"https://eefda1d6-f72c-4ecd-9ab7-f462f0945631.mock.pstmn.io"//
 
