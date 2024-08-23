@@ -11,7 +11,7 @@ using Newtonsoft.Json.Linq;
 using Oracle.ManagedDataAccess.Client;
 using System.Data;
 using System.Drawing;
-using System.Reflection;
+using Newtonsoft.Json;
 
 
 namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
@@ -148,46 +148,40 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
         }
 
         //外部接口函数
-        public Tuple<bool, string> PublishLostItem(List<Lost_Item> lostItems, List<Reward_Offers> rewardOffers, bool reward_or_not)
+        public Tuple<bool, string> PublishLostItem(List<Lost_Item> lostItems, List<Reward_Offers> rewardOffers)
         {
             int n = 0;
-            try{
-                foreach (Lost_Item item in lostItems) {
-                //先插入基础表单
+            try
+            {
+                foreach (Lost_Item item in lostItems)
+                {
+                    //先插入基础表单
                     var basicExcel = PublishLostItemBasic(item);
                     bool isSuccess1 = basicExcel.Item1; // 获取是否成功插入
                     string errorReason1 = "表单写入数据库过程中" + basicExcel.Item2; // 获取出错误原因
                     if (isSuccess1)
                     {
-                        //图片插入成功，插入是否悬赏
-                        if (!reward_or_not)
+                        //插入悬赏
+
+                        var reward = HaveReward(rewardOffers[n]);
+                        bool isSuccess3 = reward.Item1; // 获取是否成功插入
+                        string errorReason3 = "悬赏设置过程中" + reward.Item2; // 获取出错误原因
+                        if (isSuccess3)
                         {
                             n++;
                             continue;
                         }
-                        //有悬赏
+                        //悬赏设置失败
                         else
-                        {
-                            var reward = HaveReward(rewardOffers[n]);
-                            bool isSuccess3 = reward.Item1; // 获取是否成功插入
-                            string errorReason3 = "悬赏设置过程中" + reward.Item2; // 获取出错误原因
-                            if (isSuccess3)
-                            {
-                                n++;
-                                continue;
-                            }
-                            //悬赏设置失败
-                            else
-                            { return new Tuple<bool, string>(false, errorReason3); }
-                        }
+                        { return new Tuple<bool, string>(false, errorReason3); }
 
                     }
                     else //插入基础表单失败
-                    { 
-                        return new Tuple<bool, string>(false, errorReason1); 
+                    {
+                        return new Tuple<bool, string>(false, errorReason1);
                     }
                 }//end of foreach
-                return new Tuple<bool, string>(true, string.Empty); 
+                return new Tuple<bool, string>(true, string.Empty);
             }
             catch (Exception ex)
             {
@@ -214,8 +208,8 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                     }
                     //插入基础表单失败
                     else
-                    { 
-                        return new Tuple<bool, string>(false, errorReason1); 
+                    {
+                        return new Tuple<bool, string>(false, errorReason1);
                     }
                 }
                 return new Tuple<bool, string>(true, string.Empty);
@@ -234,17 +228,17 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                 string errorReason = "删除索引不能为空！";
                 return new Tuple<bool, string>(false, errorReason);
             }
-            
+
             else
             {
-                if(type == 0)
-                {TableName = "Lost_Item";}
+                if (type == 0)
+                { TableName = "Lost_Items"; }
                 else if (type == 1)
-                {TableName = "Found_Item";}
+                { TableName = "Found_Items"; }
                 else
                 {
                     string errorReason = "不合法的type值，请输入0/1！";
-                    return new Tuple<bool, string>(false, errorReason); 
+                    return new Tuple<bool, string>(false, errorReason);
                 }
                 string ErrorReason = string.Empty;
                 if (OracleConnection.State == ConnectionState.Open)
@@ -296,9 +290,9 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
             else
             {
                 if (type == 0)
-                { TableName = "Lost_Item"; }
+                { TableName = "Lost_Items"; }
                 else if (type == 1)
-                { TableName = "Found_Item"; }
+                { TableName = "Found_Items"; }
                 else
                 {
                     string errorReason = "不合法的type值，请输入0/1！";
@@ -308,25 +302,42 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                 if (OracleConnection.State == ConnectionState.Open)
                 {
                     string ConditionString = string.Join(" AND ", index.Keys.Select(key => $"{key.ToUpper()} = :{key.ToUpper()}"));
-                    string DeleteSQL = $"SELECT * FROM {TableName.ToUpper()} WHERE {ConditionString}";
-
-                    using (OracleCommand cmd = new OracleCommand(DeleteSQL, OracleConnection))
+                    string QuerySQL = "";
+                    if (type == 0)
                     {
+                        QuerySQL = $"SELECT * FROM {TableName.ToUpper()} NATURAL JOIN REWARD_OFFERS WHERE {ConditionString}";
+                    }
+                    else
+                    {
+                        QuerySQL = $"SELECT * FROM {TableName.ToUpper()} WHERE {ConditionString}";
+                    }
+
+
+                    using (OracleCommand cmd = new OracleCommand(QuerySQL, OracleConnection))
+                    {
+                        foreach (var condition in index)
+                        {
+                            cmd.Parameters.Add(new OracleParameter(condition.Key.ToUpper(), condition.Value ?? DBNull.Value));
+                        }
+
                         try
                         {
-                            // 添加参数
-                            foreach (var condition in index)
+                            using (OracleDataReader reader = cmd.ExecuteReader())
                             {
-                                cmd.Parameters.Add(new OracleParameter(condition.Key.ToUpper(), condition.Value ?? DBNull.Value));
+                                var results = new List<Dictionary<string, object>>();
+                                while (reader.Read())
+                                {
+                                    var row = new Dictionary<string, object>();
+                                    for (int i = 0; i < reader.FieldCount; i++)
+                                    {
+                                        row[reader.GetName(i)] = reader.IsDBNull(i) ? null : reader.GetValue(i);
+                                    }
+                                    results.Add(row);
+                                }
+                                return new Tuple<bool, string>(true, JsonConvert.SerializeObject(results));
                             }
-                            int AffectedRow = cmd.ExecuteNonQuery();
-                            Debug.WriteLine($"共{AffectedRow}行被查找");
-                            if (AffectedRow == 0)
-                            {
-                                return new Tuple<bool, string>(false, "没有查找到相应内容");
-                            }
-                            return new Tuple<bool, string>(true, ErrorReason);
                         }
+
                         catch (Exception ex)
                         {
                             ErrorReason = ex.Message;
@@ -343,17 +354,18 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                 }
             }
         }
+
         public Tuple<bool, string> ReviewItem(int type, List<string> itemID)
         {
             // 假设0为未审核，1为通过
             string TableName = "";
             if (type == 0)
             {
-                TableName = "Lost_Item";
+                TableName = "Lost_Items";
             }
             else if (type == 1)
             {
-                TableName = "Found_Item";
+                TableName = "Found_Items";
             }
             else
             {
@@ -365,7 +377,7 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
             if (OracleConnection.State == ConnectionState.Open)
             {
                 string itemIDs = string.Join(",", itemID.Select(id => $"'{id}'"));
-                string UpdateSQL = $"UPDATE {TableName.ToUpper()} SET REVIEW_STATE = 1 WHERE ITEM_ID IN ({itemIDs})";
+                string UpdateSQL = $"UPDATE {TableName.ToUpper()} SET REVIEW_STATUS = 1 WHERE ITEM_ID IN ({itemIDs})";
 
                 using (OracleCommand cmd = new OracleCommand(UpdateSQL, OracleConnection))
                 {

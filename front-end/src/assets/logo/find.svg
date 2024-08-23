@@ -1,0 +1,11 @@
+<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(35,35) scale(0.95)">
+    <circle cx="60" cy="60" r="50" fill="none" stroke="#0066cc" stroke-width="10"/>
+    <line x1="95" y1="95" x2="135" y2="135" stroke="#0066cc" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="60" cy="60" r="35" fill="#0066cc" opacity="0.1"/>
+
+    <!-- 添加对勾 -->
+    <path d="M40 60 L55 75 L80 45" fill="none" stroke="#0066cc" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="100" y="180" font-family="Arial, sans-serif" font-size="24" fill="#0066cc" text-anchor="middle">找回</text>
+</svg>
