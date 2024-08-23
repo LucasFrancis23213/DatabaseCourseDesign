@@ -18,7 +18,7 @@ using System.Reflection.PortableExecutable;
 namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
 {
     
-    internal class ItemMatch:IItemMatch
+    public class ItemMatch:IItemMatch
     {
         private Connection conn;
         private OracleConnection OracleConnection;

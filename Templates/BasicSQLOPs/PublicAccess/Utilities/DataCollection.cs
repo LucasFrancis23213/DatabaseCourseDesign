@@ -144,9 +144,9 @@ namespace SQLOperation.PublicAccess.Utilities
     }
     public class Item_Status_History
     {
-        public int History_ID;
+        public string History_ID;
         public DateTime Change_Date;
-        public int Item_ID;
+        public string Item_ID;
         public string Preview_Status;
         public string New_Status;
     }
@@ -181,40 +181,40 @@ namespace SQLOperation.PublicAccess.Utilities
 
     public class Item_Claim_Processes
     {
-        public int Process_ID;
-        public int Item_ID;
-        public int Claimant_User_ID;
+        public string Process_ID;
+        public string Item_ID;
+        public string Claimant_User_ID;
         public string Status;
         public DateTime Application_Date;// 原来是int
     }
 
     public class Match_Records
     {
-        public int Record_ID;
-        public int Lost_Item_ID;
-        public int Found_Item_ID;
-        public int Match_Date;
+        public string Record_ID;
+        public string Lost_Item_ID;
+        public string Found_Item_ID;
+        public DateTime Match_Date;
         public string Processing_Status;
     }
 
     public class Item_Exchanges
     {
-        public int Exchange_ID;
-        public int Lost_Item_ID;
-        public int Found_Item_ID;
-        public int Initiator_User_ID;
+        public string Exchange_ID;
+        public string Lost_Item_ID;
+        public string Found_Item_ID;
+        public string Initiator_User_ID;
         public string Transaction_Type;
-        public int Responder_User_ID;
+        public string Responder_User_ID;
         public string Exchange_Status;
         public DateTime Creation_Time;// 原来是int
     }
 
     public class Item_Return_Agreements
     {
-        public int Agreement_ID;
-        public int Item_ID;
-        public int From_User_ID;
-        public int To_User_ID;
+        public string Agreement_ID;
+        public string Item_ID;
+        public string From_User_ID;
+        public string To_User_ID;
         public string Agreement_Content;
         public string Exchange_Status;
         public DateTime Creation_Time;//原来是int

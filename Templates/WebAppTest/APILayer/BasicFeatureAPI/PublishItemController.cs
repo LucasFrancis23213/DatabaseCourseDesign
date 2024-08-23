@@ -212,7 +212,7 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"In QueryLostItem Function,报错为：{ex.Message}");
+                Debug.WriteLine($"In DeleteLostItem Function,报错为：{ex.Message}");
                 return StatusCode(500, "服务器内部错误");
             }
         }
@@ -256,7 +256,7 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"In QueryLostItem Function,报错为：{ex.Message}");
+                Debug.WriteLine($"In PassLostItem Function,报错为：{ex.Message}");
                 return StatusCode(500, "服务器内部错误");
             }
         }

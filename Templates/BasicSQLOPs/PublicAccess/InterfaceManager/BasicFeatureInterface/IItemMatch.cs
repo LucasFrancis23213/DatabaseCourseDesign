@@ -14,7 +14,7 @@ namespace SQLOperation.PublicAccess.InterfaceManager.BasicFeatureInterface
         public Tuple<bool, string> ItemClaimProcessBasic(Item_Claim_Processes item);
         //进行物品的自动匹配，点击按钮后，可以进行选择，如果我也发布了寻物启事
         public Tuple<bool, string> AutoMatch(List<string> Status, List<Match_Records> MatchRecord);
-        //协议阅读表插入，这个不知道应该放在哪个里面怎么对应，直接给出
+        //协议阅读表插入，点击需要归还后给出
         public Tuple<bool, string> ItemReturnAgreementBasic(Item_Return_Agreements item);
         //当进行审核的时候，一般都会有这个状态变更，需要调用一下
         //historyid不知道编写方式，所以当作参数传参,单独列出，不用updateitem
@@ -30,7 +30,7 @@ namespace SQLOperation.PublicAccess.InterfaceManager.BasicFeatureInterface
         //index是条件，返回默认是*
         public Tuple<bool, string> QueryItem(string TableName, Dictionary<string, object> index);
         //更改记录(主要是提供给修改阅读状态和交换状态和归还状态)
-        //当物品选择进入旧物市场之后，修改found_item的match_status==“出售”，即会出现在出售物品池。
+        //当物品选择进入旧物市场之后，修改found_item的match_status==“selling”，即会出现在出售物品池。
         public Tuple<bool, string> UpdateItem(string TableName, Dictionary<string, object> UpdateColumns, Dictionary<string, object> index);
     }
    
