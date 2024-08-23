@@ -35,8 +35,6 @@ const props = defineProps({
 });
 const emit = defineEmits(['retract','follow']);
 const { formattedTime } = useTimeFormat(props.time);
-console.log(formattedTime)
-console.log(props.time)
 const showRetract = ref(false); // 是否显示撤回按钮
 const retractMessage = (()=>{
   emit('retract',props.id);

@@ -46,12 +46,10 @@ let conversations = ref([]);
 const router = useRouter();
 let current_user_id = ref(account.userId);
 async function getConversations() {
-  console.log("getConversations");
   try {
     const res = await axios.post(`/api/conversations`,{current_user_id:current_user_id.value})
-    console.log(res);
+    //console.log(res);
     conversations.value = res.data.conversations;
-    //console.log("conversations are " + conversations);
   } catch (e) {
     console.log(e);
     alert(`获取消息列表失败，错误信息为：${e}`);
@@ -80,7 +78,7 @@ const formatTime = (timeString) => {
 
 const navigateToConversation = (conversation_id,current_user_id) => {
   console.log( conversation_id,current_user_id);
-  console.log( typeof conversation_id,typeof current_user_id);
+  //console.log( typeof conversation_id,typeof current_user_id);
   router.push({
     name: "聊天",
     params: {
