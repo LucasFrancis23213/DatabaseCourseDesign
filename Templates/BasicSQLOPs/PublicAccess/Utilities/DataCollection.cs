@@ -181,16 +181,16 @@ namespace SQLOperation.PublicAccess.Utilities
 
     public class Item_Claim_Processes
     {
-        public string Process_ID;
+        public int Process_ID;
         public string Item_ID;
-        public string Claimant_User_ID;
+        public int Claimant_User_ID;
         public string Status;
         public DateTime Application_Date;// 原来是int
     }
 
     public class Match_Records
     {
-        public string Record_ID;
+        public int Record_ID;
         public string Lost_Item_ID;
         public string Found_Item_ID;
         public DateTime Match_Date;
@@ -199,22 +199,22 @@ namespace SQLOperation.PublicAccess.Utilities
 
     public class Item_Exchanges
     {
-        public string Exchange_ID;
+        public int Exchange_ID;
         public string Lost_Item_ID;
         public string Found_Item_ID;
-        public string Initiator_User_ID;
+        public int Initiator_User_ID;
         public string Transaction_Type;
-        public string Responder_User_ID;
+        public int Responder_User_ID;
         public string Exchange_Status;
         public DateTime Creation_Time;// 原来是int
     }
 
     public class Item_Return_Agreements
     {
-        public string Agreement_ID;
+        public int Agreement_ID;
         public string Item_ID;
-        public string From_User_ID;
-        public string To_User_ID;
+        public int From_User_ID;
+        public int To_User_ID;
         public string Agreement_Content;
         public string Exchange_Status;
         public DateTime Creation_Time;//原来是int

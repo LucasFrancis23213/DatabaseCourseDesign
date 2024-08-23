@@ -35,16 +35,16 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                 try
                 {
                     //由于前端传入的数据涉及多张表，此处手动解析
-                    ItemClaimProcessObj.Process_ID = TmpJson["PROCESS_ID"].ToString();
+                    ItemClaimProcessObj.Process_ID = (int)(TmpJson["PROCESS_ID"]);
                     ItemClaimProcessObj.Item_ID = TmpJson["ITEM_ID"].ToString();
-                    ItemClaimProcessObj.Claimant_User_ID = TmpJson["CLAIMANT_USER_ID"].ToString();
+                    ItemClaimProcessObj.Claimant_User_ID = (int)(TmpJson["CLAIMANT_USER_ID"]);
                     ItemClaimProcessObj.Status = TmpJson["STATUS"].ToString();
                     ItemClaimProcessObj.Application_Date = DateTime.Now;
                     //自动匹配部分
                     if (ItemClaimProcessObj.Status == "审核通过")
                     {
-                        RecordsObj.Record_ID = TmpJson["RECORD_ID"].ToString();
-                        RecordsObj.Lost_Item_ID = ItemClaimProcessObj.Claimant_User_ID;
+                        RecordsObj.Record_ID = (int)(TmpJson["RECORD_ID"]);
+                        RecordsObj.Lost_Item_ID = ItemClaimProcessObj.Item_ID;
                         RecordsObj.Found_Item_ID = TmpJson["FOUND_ID"].ToString();
                         RecordsObj.Match_Date = DateTime.Now;
                         RecordsObj.Processing_Status = TmpJson["PROCESSING_STATUS"].ToString();
@@ -52,7 +52,7 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                     //这里如果不用null是否会造成后续不对应？
                     else
                     {
-                        RecordsObj.Record_ID = null;
+                        RecordsObj.Record_ID = -1;
                         RecordsObj.Lost_Item_ID = null;
                         RecordsObj.Found_Item_ID = null;
                         RecordsObj.Match_Date = DateTime.Now;
@@ -92,10 +92,10 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                 try
                 {
                     //先进行阅读协议，此处传进来应该不需要内容，否则太大
-                    ReadItemObj.Agreement_ID = TmpJson["AGREEMENT_ID"].ToString();
-                    ReadItemObj.Item_ID = TmpJson["ITEM_ID"].ToString();
-                    ReadItemObj.From_User_ID = TmpJson["FROM_USER_ID"].ToString();
-                    ReadItemObj.To_User_ID = TmpJson["TO_USER_ID"].ToString();
+                    ReadItemObj.Agreement_ID = (int)(TmpJson["AGREEMENT_ID"]);
+                    ReadItemObj.Item_ID = (TmpJson["ITEM_ID"]).ToString();
+                    ReadItemObj.From_User_ID = (int)(TmpJson["FROM_USER_ID"]);
+                    ReadItemObj.To_User_ID = (int)(TmpJson["TO_USER_ID"]);
                     ReadItemObj.Agreement_Content = "contents";//这里每个人的都一样，有必要给出吗？
                     ReadItemObj.Exchange_Status = TmpJson["EXCHANGE_STATUS"].ToString();
                     ReadItemObj.Creation_Time = DateTime.Now;
@@ -131,12 +131,12 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                 try
                 {
                     status = TmpJson["STATUS"].ToString();
-                    ExchangeItemObj.Exchange_ID = TmpJson["EXCHANGE_ID"].ToString();
+                    ExchangeItemObj.Exchange_ID = (int)(TmpJson["EXCHANGE_ID"]);
                     ExchangeItemObj.Lost_Item_ID = TmpJson["LOST_ITEM_ID"].ToString();
                     ExchangeItemObj.Found_Item_ID = TmpJson["FOUND_ITEM_ID"].ToString();
-                    ExchangeItemObj.Initiator_User_ID = TmpJson["INITIATOR_USER_ID"].ToString();
+                    ExchangeItemObj.Initiator_User_ID = (int)TmpJson["INITIATOR_USER_ID"];
                     ExchangeItemObj.Transaction_Type = TmpJson["TRANSACTION_TYPE"].ToString();
-                    ExchangeItemObj.Responder_User_ID = TmpJson["RESPONDER_USER_ID"].ToString();
+                    ExchangeItemObj.Responder_User_ID = (int)TmpJson["RESPONDER_USER_ID"];
                     ExchangeItemObj.Exchange_Status = TmpJson["EXCHANGE_STATUS"].ToString();
                     ExchangeItemObj.Creation_Time = DateTime.Now;
                 }
@@ -147,7 +147,7 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                 }
                 ExchangeItems.Add(ExchangeItemObj);
                 statuses.Add(status);
-                Tuple<bool, string> OperationStatus = ItemMatchObject.ExchangeItem(statuses,ExchangeItems);
+                Tuple<bool, string> OperationStatus = ItemMatchObject.ExchangeItem(statuses, ExchangeItems);
                 return OperationStatus.Item1;
 
             }
@@ -240,4 +240,5 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
         }
         */
 
+    }
 }
