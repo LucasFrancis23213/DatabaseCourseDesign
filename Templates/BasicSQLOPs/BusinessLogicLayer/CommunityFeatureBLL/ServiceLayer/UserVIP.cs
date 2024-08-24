@@ -81,7 +81,7 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
                         throw new ApplicationException("创建VIP订单时发生错误");
                     }
 
-                    // 更新或创建 VIP 会员信息
+                    // 查询vip会员信息
                     var condition = new Dictionary<string, object> { { "user_id", userId }, { "status", "Active" } };
                     var vipMember = VIP_MembersBusiness.QueryBusiness(condition, "AND").FirstOrDefault();
 
@@ -113,7 +113,7 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
                             // 返回订单的基本信息
                             vipOrder.Order_ID = orderId;
 
-                           
+                            transaction.Commit();
 
                             return new Tuple<VIP_Orders, DateTime>(vipOrder, startTime);
                         }
