@@ -23,13 +23,21 @@ const props = defineProps({
     type: String,
     default: "text"
   },
-  id:{
+  message_id:{
     type: Number,
     required:true
   },
   user_name:{
     type: String,
     default:''
+  },
+  message_sender_id:{
+    type: Number,
+    required:true
+  },
+  is_following:{
+    type:Boolean,
+    required:true
   }
 
 });
@@ -37,9 +45,8 @@ const emit = defineEmits(['retract','follow']);
 const { formattedTime } = useTimeFormat(props.time);
 const showRetract = ref(false); // 是否显示撤回按钮
 const retractMessage = (()=>{
-  emit('retract',props.id);
+  emit('retract',props.message_id);
 });
-
 const toggleRetract = ()=>{
   showRetract.value=!showRetract.value;
 };
@@ -66,9 +73,6 @@ const toggleUserInfo = () => {
   showUserInfo.value = !showUserInfo.value;
 };
 
-const followUser = () => {
-  emit('follow', props.id);
-};
 
 </script>
 
@@ -85,9 +89,9 @@ const followUser = () => {
       <div class="time">{{ formattedTime }}</div>
     </div>
     <div v-if="showUserInfo && !isSelf" class="user-info" @mouseleave="toggleUserInfo">
-      <p><strong>ID:</strong> {{ id }}</p>
+      <p><strong>ID:</strong> {{ message_sender_id }}</p>
       <p><strong>用户名:</strong> {{ user_name }}</p>
-      <followButton class="follow-button" :user_id="id"></followButton>
+      <followButton class="follow-button" :user_id="message_sender_id" :initial-follow-state="is_following" ></followButton>
 
     </div>
   </div>

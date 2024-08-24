@@ -16,8 +16,11 @@ import { defineProps, ref } from 'vue';
 import axios from "axios";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
+import {useAccountStore} from '@/store/account';
 
-const user_id = ref(123); // 待修改
+const {account, permissions} = useAccountStore();
+const user_id = ref(account.userId); //
+
 const props = defineProps({
   adId: {
     type: Number,

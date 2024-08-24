@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-import {ref, computed} from 'vue'
+import {ref, computed, onMounted} from 'vue'
 import axios from "axios";
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 import { useAccountStore } from '@/store/account';
@@ -34,7 +34,7 @@ const props = defineProps({
 
 })
 
-const emit = defineEmits(['follow', 'unfollow'])
+const emit = defineEmits(['follow'])
 
 const isFollowed = ref(props.initialFollowState)
 
@@ -49,7 +49,7 @@ const toggleFollow = () => {
     unfollowUser(props.user_id);
   }
   isFollowed.value = !isFollowed.value
-  emit(isFollowed.value ? 'follow' : 'unfollow')
+
 }
 
 const followUser = async (followUserId) => {
@@ -59,7 +59,6 @@ const followUser = async (followUserId) => {
       action:"follow",
       current_user_id:account.userId
     })
-    console.log(res);
   }catch (error){
     console.error(error);
     alert(`关注失败，请重试`);
@@ -77,7 +76,24 @@ const unfollowUser = async (unfollowUserId) => {
     throw error
   }
 }
+const checkFollowingStatus = async ()=>{
+  try {
+    const res = await axios.post("/api/user/follow/status", {
+      target_id: props.user_id,
+      current_user_id: account.userId
+    })
 
+    isFollowed.value=res.data.is_following
+
+  }catch (err){
+    console.error(err)
+  }
+
+}
+
+onMounted(()=>{
+  checkFollowingStatus();
+});
 </script>
 
 <style scoped>

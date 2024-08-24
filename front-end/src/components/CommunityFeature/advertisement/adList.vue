@@ -33,7 +33,7 @@
     </ul>
 
 
-    <div>
+    <div class="flex justify-center items-center mt-xl">
       <a-pagination
     :total="ads.length"
     :current="currentPage"

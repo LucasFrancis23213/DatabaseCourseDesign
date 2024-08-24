@@ -149,6 +149,9 @@ const rechargeOptions = [
   { id: 3, name: '年度VIP', price: 280, months: 12 },
 ]
 
+import {useAccountStore} from '@/store/account';
+
+const {account, permissions} = useAccountStore();
 const selectedOption = ref(null)
 const rechargeResult = ref(null)
 const errorMessage = ref('')
@@ -165,7 +168,7 @@ const recharge = async () => {
   if (canRecharge.value) {
     try {
       const response = await axios.post('api/vip/RechargeVip', {
-        user_id: 2, // 这里应该是实际的用户ID，可能需要从用户状态或登录信息中获取
+        user_id: account.userId, // 这里应该是实际的用户ID，可能需要从用户状态或登录信息中获取
         recharge_time: selectedOption.value.months,
         total_amount:selectedOption.value.price
       })

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {onMounted, onUnmounted, onUpdated, ref, nextTick} from 'vue';
+import {onMounted, onUnmounted, onUpdated, ref, nextTick, onActivated} from 'vue';
 import ChatBubble from "@/components/CommunityFeature/chat/ChatBubble.vue";
 import MessageInput from "@/components/CommunityFeature/chat/MessageInput.vue";
 import apiService from './apiService';
@@ -8,7 +8,6 @@ import {useRoute} from 'vue-router';
 import {useAccountStore} from '@/store/account';
 
 const {account, permissions} = useAccountStore();
-
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
@@ -51,7 +50,6 @@ async function handleSendMessage(message) {
     sender: +current_user_id.value,
     current_user_id: +current_user_id.value, // 假设这是用户发送的消息
   };
-  console.log(newMessage.time)
   displayMessage(newMessage);
 
   try {
@@ -135,7 +133,6 @@ const connect = () => {
 function convertMessageFormat(originalMessage) {
   //解析接收消息的格式并更改为此组件中使用的message格式
   const msg = JSON.parse(originalMessage);
-  console.log(msg);
   return {
     id: msg.Message_ID,
     conversation_id: conversation_id.value,
@@ -151,6 +148,7 @@ function removeMessage(message_id: Number) {
   messages.value = messages.value.filter(msg => msg.id !== message_id)
 }
 
+const receiver_in_window = ref(true);
 const receiveMessage = (message) => {
   //接收消息
   let newMessage = convertMessageFormat(message);
@@ -159,7 +157,9 @@ const receiveMessage = (message) => {
   } else if (newMessage.type === 'text') {
     displayMessage(newMessage);
   }
+  apiService.receiveMessage(newMessage.id,receiver_in_window.value,newMessage.sender);
 };
+
 const disconnect = () => {
   //断开连接
   if (socket.value) {
@@ -187,7 +187,6 @@ const checkConnection = () => {
   } else {
     connectionStatus.value = 'No connection';
   }
-  console.log(connectionStatus.value);
 };
 
 const chatContainerRef = ref(null);
@@ -199,11 +198,29 @@ const scrollToBottom = () => {
   })
 }
 
+const is_following = ref(false);
+const checkFollowingStatus = async ()=>{
+  try {
+    const res = await axios.post("/api/user/follow/status", {
+      target_id: conversation_id.value,
+      current_user_id: current_user_id.value
+    })
+
+    is_following.value=res.data.is_following
+
+  }catch (err){
+    console.error(err)
+  }
+
+}
+
 onMounted(() => {
   updateReadStatus();
   getMessages();
   scrollToBottom();
+  receiver_in_window.value=true;
   connect();
+  checkFollowingStatus();
 })
 
 onUpdated(() => {
@@ -212,6 +229,7 @@ onUpdated(() => {
 })
 
 onUnmounted(() => {
+  receiver_in_window.value=false;
   disconnect();
 })
 
@@ -224,13 +242,16 @@ onUnmounted(() => {
       <ChatBubble
           v-for="msg in messages"
           :key="msg.id"
-          :id="msg.id"
+          :message_id="msg.id"
           :content="msg.content"
           :time="msg.time"
           :isSelf="isSelf(msg.sender)"
+          :message_sender_id="msg.sender"
           :avatar="isSelf(msg.sender) ? '' :other_avatar"
           :type="msg.type"
-          @follow=""
+          :user_name="other_name"
+          v-model:is_following="is_following"
+          @follow="checkFollowingStatus"
           @retract="retractMessage"
       />
     </div>
