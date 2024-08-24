@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "F:\\数据库课程设计\\gitpush\\Templates\\WebAppTest\\WebAppTest.csproj": {}
+    "F:\\databasedesign\\gitpush\\Templates\\WebAppTest\\WebAppTest.csproj": {}
   },
   "projects": {
-    "F:\\数据库课程设计\\gitpush\\Templates\\BasicSQLOPs\\SQLOperation.csproj": {
+    "F:\\databasedesign\\gitpush\\Templates\\BasicSQLOPs\\SQLOperation.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\数据库课程设计\\gitpush\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
+        "projectUniqueName": "F:\\databasedesign\\gitpush\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
         "projectName": "SQLOperation",
-        "projectPath": "F:\\数据库课程设计\\gitpush\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
+        "projectPath": "F:\\databasedesign\\gitpush\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
         "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "F:\\数据库课程设计\\gitpush\\Templates\\BasicSQLOPs\\obj\\",
+        "outputPath": "F:\\databasedesign\\gitpush\\Templates\\BasicSQLOPs\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -70,6 +70,20 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Runtime.linux-x64",
+              "version": "[8.0.5, 8.0.5]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.linux-x64",
+              "version": "[8.0.5, 8.0.5]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Runtime.linux-x64",
+              "version": "[8.0.5, 8.0.5]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
@@ -77,16 +91,21 @@
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
         }
+      },
+      "runtimes": {
+        "linux-x64": {
+          "#import": []
+        }
       }
     },
-    "F:\\数据库课程设计\\gitpush\\Templates\\WebAppTest\\WebAppTest.csproj": {
+    "F:\\databasedesign\\gitpush\\Templates\\WebAppTest\\WebAppTest.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\数据库课程设计\\gitpush\\Templates\\WebAppTest\\WebAppTest.csproj",
+        "projectUniqueName": "F:\\databasedesign\\gitpush\\Templates\\WebAppTest\\WebAppTest.csproj",
         "projectName": "WebAppTest",
-        "projectPath": "F:\\数据库课程设计\\gitpush\\Templates\\WebAppTest\\WebAppTest.csproj",
+        "projectPath": "F:\\databasedesign\\gitpush\\Templates\\WebAppTest\\WebAppTest.csproj",
         "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "F:\\数据库课程设计\\gitpush\\Templates\\WebAppTest\\obj\\",
+        "outputPath": "F:\\databasedesign\\gitpush\\Templates\\WebAppTest\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -104,8 +123,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "F:\\数据库课程设计\\gitpush\\Templates\\BasicSQLOPs\\SQLOperation.csproj": {
-                "projectPath": "F:\\数据库课程设计\\gitpush\\Templates\\BasicSQLOPs\\SQLOperation.csproj"
+              "F:\\databasedesign\\gitpush\\Templates\\BasicSQLOPs\\SQLOperation.csproj": {
+                "projectPath": "F:\\databasedesign\\gitpush\\Templates\\BasicSQLOPs\\SQLOperation.csproj"
               }
             }
           }
@@ -153,6 +172,20 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Runtime.linux-x64",
+              "version": "[8.0.5, 8.0.5]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.linux-x64",
+              "version": "[8.0.5, 8.0.5]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Runtime.linux-x64",
+              "version": "[8.0.5, 8.0.5]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -162,6 +195,11 @@
             }
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
+        }
+      },
+      "runtimes": {
+        "linux-x64": {
+          "#import": []
         }
       }
     }
