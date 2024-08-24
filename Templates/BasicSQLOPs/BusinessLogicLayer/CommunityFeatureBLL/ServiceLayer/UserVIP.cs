@@ -87,13 +87,7 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
 
                     if (vipMember != null)
                     {
-                        if (vipMember.VIP_End_Date < DateTime.Now)
-                        {
-                            // 更新状态为“逾期”
-                            var updateParams = new Dictionary<string, object> { { "status", "Inactive" } };
-                            VIP_MembersBusiness.UpdateBusiness(updateParams, condition);
-                        }
-                        else
+                        if (vipMember.VIP_End_Date >= DateTime.Now)
                         {
                             // 接着当前活跃时间之后
                             startTime = vipMember.VIP_End_Date;
@@ -117,8 +111,8 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
 
                             return new Tuple<VIP_Orders, DateTime>(vipOrder, startTime);
                         }
+                       
                     }
-
                     // 创建新的 VIP 会员
                     var newVipMember = VIP_MembersBusiness.PackageData(0, userId, "Active", startTime, endDate);
                     var vipMemberId = VIP_MembersBusiness.AddBusiness(VIP_MembersList, "vip_member_id", newVipMember);
