@@ -132,11 +132,11 @@ export const useAccountStore = defineStore('account', {
       }
       else{
         try {
-          const response = await axios.get(`/api/UserManagement/GetUserInfo?UserName=${this.account.userName}`);
-          if (response.data) {
-            this.account.userName = response.data.userName;
-            this.account.userId = response.data.userID;
-            this.account.contact = response.data.contact;
+          const response = await axios.get(`/api/UserManagement/UserGetUserInfo?UserName=${this.account.userName}`);
+          if (response.data && response.data.length > 0) {
+            this.account.userName = response.data[0].UserName;
+            this.account.userId = response.data[0].UserID;
+            this.account.contact = response.data[0].Contact;
             return { success: true, message: "用户信息加载成功", account: this};
           } 
         } catch (error) {
@@ -159,7 +159,7 @@ export const useAccountStore = defineStore('account', {
     await axios.post(`/api/LogsInsert/UserOpsLogs`, logData);
     if(!!this.account.userName){
       try {
-        const response = await axios.get(`/api/UserManagement/DeleteUser?UserName=${this.account.userName}`);
+        await axios.delete(`/api/UserManagement/DeleteUser?UserID=${this.account.userId}`);
         this.account.userName = '';
         this.account.userId = '';
         this.account.contact = '';

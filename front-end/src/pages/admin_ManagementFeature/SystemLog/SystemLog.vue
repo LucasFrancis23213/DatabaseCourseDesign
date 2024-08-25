@@ -28,7 +28,7 @@
 </div>
 <br>
 <div class="table w-full">
-  <a-table :columns="columns" :dataSource="sortedData" rowKey="Activity_Log_ID" />
+  <a-table :columns="columns" :dataSource="sortedData" rowKey="System_Log_ID" />
 </div>
 <br>
 <div style="display: flex; justify-content: flex-end;">

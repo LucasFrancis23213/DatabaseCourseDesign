@@ -16,7 +16,7 @@ namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
         {
             if (NewLog.FromUserID <= 0 ||
                 NewLog.ToUserID <= 0 ||
-                (NewLog.Amount <= 0) ||
+                NewLog.Amount < 0.01 ||
                 string.IsNullOrEmpty(NewLog.TransactionType) ||
                 NewLog.StartTime == default ||
                 string.IsNullOrEmpty(NewLog.Status))

@@ -1,4 +1,10 @@
-﻿namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
+﻿using Newtonsoft.Json;
+using Renci.SshNet.Messages;
+using SQLOperation.PublicAccess.Utilities;
+using SQLOperation.PublicAccess.Utilities.ManagementFeatureUtil;
+using System.Diagnostics;
+
+namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
 {
     public class UserOperatorDAL : BaseDAL
     {
@@ -24,21 +30,22 @@
         /// <summary>
         /// Retrieves user information.
         /// </summary>
+        /// <param id="UserID">The userID of the user.</param>
         /// <param name="UserName">The username of the user.</param>
         /// <returns>A tuple containing a boolean indicating success and the query result as a string.</returns>
-        public Tuple<bool, string> GetUserInfo(string UserName)
+        public Tuple<bool, string> GetUserInfo(int? UserID, string? UserName)
         {
-            return DoQuery(GetUserInfoGenerator(UserName));
+            return DoQuery(GetUserInfoGenerator(UserID, UserName));
         }
 
         /// <summary>
         /// Deletes a user.
         /// </summary>
-        /// <param name="UserName">The username of the user to be deleted.</param>
+        /// <param id="UserID">The username of the user to be deleted.</param>
         /// <returns>A tuple containing a boolean indicating success and the result of the deletion as a string.</returns>
-        public Tuple<bool, string> DeleteUser(string UserName)
+        public Tuple<bool, string> DeleteUser(int UserID)
         {
-            return DoQuery(DeleteUserGenerator(UserName));
+            return DoQuery(DeleteUserGenerator(UserID));
         }
 
         /// <summary>
@@ -61,7 +68,7 @@
         /// <param name="Password">The new password of the user.</param>
         /// <param name="Contact">The new contact information of the user.</param>
         /// <returns>A tuple containing a boolean indicating success and the result of the update as a string.</returns>
-        public Tuple<bool, string> UpdateUserInfo(int UserID, string UserName, string Password, string Contact)
+        public Tuple<bool, string> UpdateUserInfo(int UserID, string? UserName, string? Password, string? Contact)
         {
             return DoQuery(UpdateUserInfoGenerator(UserID, UserName, Password, Contact));
         }
@@ -75,15 +82,20 @@
             };
         }
 
-        private Func<Tuple<bool, string>> UpdateUserInfoGenerator(int UserID, string UserName, string Password, string Contact)
+        private Func<Tuple<bool, string>> UpdateUserInfoGenerator(int UserID, string? UserName, string? Password, string? Contact)
         {
             return () =>
             {
                 List<string> UpdateColumn = ["User_Name", "Password_", "Contact"];
-                List<object> UpdateValue = [UserName, Password, Contact];
+                List<string> UpdateValue = [UserName, Password, Contact];
 
                 for (int i = 0; i < UpdateColumn.Count; i++)
                 {
+                    if (string.IsNullOrEmpty(UpdateValue[i]))
+                    {
+                        continue;
+                    }
+
                     var (IsSucceeded, Message) = BasicSQLOps.UpdateOperation("Users", UpdateColumn[i], UpdateValue[i], "USER_ID", UserID);
 
                     // 连接错误导致的失败
@@ -102,35 +114,79 @@
             };
         }
 
-        private Func<Tuple<bool, string>> GetUserInfoGenerator(string UserName)
+        private Func<Tuple<bool, string>> GetUserInfoGenerator(int? UserID, string? UserName)
         {
             return () =>
             {
-                Tuple<bool, string> QueryResult = BasicSQLOps.QueryOperation("Users", "User_Name", UserName);
-                return QueryResult;
-            };
-        }
+                Tuple<bool, string>? QueryResultID = null;
+                Tuple<bool, string>? QueryResultName = null;
 
-        private Func<Tuple<bool, string>> DeleteUserGenerator(string UserName)
-        {
-            return () =>
-            {
-                Tuple<bool, string> DeleteResult = BasicSQLOps.DeleteOperation("Users", "User_Name", UserName);
-
-                if (!DeleteResult.Item1)
+                if (UserID is not null || UserID >= 0)
                 {
-                    return DeleteResult;
+                    QueryResultID = BasicSQLOps.QueryOperation("Users", "User_ID", UserID);
+                }
+                if (!string.IsNullOrEmpty(UserName))
+                {
+                    QueryResultName = BasicSQLOps.QueryOperation("Users", "User_Name", UserName);
+                }
+
+                bool SucceedID = QueryResultID is not null && QueryResultID.Item1;
+                bool SucceedName = QueryResultName is not null && QueryResultName.Item1;
+
+                if (!SucceedID && SucceedName)
+                {
+                    return QueryResultName;
+                }
+                else if (SucceedID && !SucceedName)
+                {
+                    return QueryResultID;
+                }
+                else if (SucceedID && SucceedName)
+                {
+                    try
+                    {
+                        var usersFromName = JsonConvert.DeserializeObject<List<Users>>(QueryResultName.Item2);
+
+                        // 检查列表中是否有用户与 ID 匹配
+                        if (usersFromName.Any(u => u.User_ID == UserID))
+                        {
+                            return QueryResultID;
+                        }
+                        else
+                        {
+                            return Tuple.Create(false, "用户名与用户ID不匹配");
+                        }
+                    }
+                    catch (JsonException ex)
+                    {
+                        // 处理 JSON 反序列化错误
+                        return Tuple.Create(false, "JSON反序列化错误: " + ex.Message);
+                    }
                 }
                 else
                 {
-                    int AffectedRow = int.Parse(DeleteResult.Item2);
-                    if (AffectedRow == 0)
-                    {
-                        return new Tuple<bool, string>(false, "数据库中不存在此行");
-                    }
-
-                    return new Tuple<bool, string>(true, "");
+                    return Tuple.Create(false, "未找到用户");
                 }
+            };
+        }
+
+        private Func<Tuple<bool, string>> DeleteUserGenerator(int UserID)
+        {
+            return () =>
+            {
+                var (IsSucceeded, Message) = BasicSQLOps.UpdateOperation("Users", "IS_DELETED", 1, "USER_ID", UserID);
+
+                if (!IsSucceeded)
+                {
+                    return new Tuple<bool, string>(IsSucceeded, Message);
+                }
+
+                if (Message != "更新了1行")
+                {
+                    return new Tuple<bool, string>(false, "未找到用户");
+                }
+
+                return Tuple.Create(true, "删除成功");
             };
         }
 
