@@ -1,0 +1,112 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\00DatabaseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{E6B51281-D084-407E-9C8A-23C634543442}|..\\WebAppTest\\WebAppTest.csproj|d:\\00databasedesign\\databasecoursedesign\\templates\\webapptest\\apilayer\\basicfeatureapi\\publishitemcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C38BBC15-C338-4273-9DEA-83F333F42DC1}|SQLOperation.csproj|d:\\00databasedesign\\databasecoursedesign\\templates\\basicsqlops\\businesslogiclayer\\basicfeaturebll\\publishitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C38BBC15-C338-4273-9DEA-83F333F42DC1}|SQLOperation.csproj|solutionrelative:businesslogiclayer\\basicfeaturebll\\publishitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C38BBC15-C338-4273-9DEA-83F333F42DC1}|SQLOperation.csproj|d:\\00databasedesign\\databasecoursedesign\\templates\\basicsqlops\\publicaccess\\utilities\\datacollection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C38BBC15-C338-4273-9DEA-83F333F42DC1}|SQLOperation.csproj|solutionrelative:publicaccess\\utilities\\datacollection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6B51281-D084-407E-9C8A-23C634543442}|..\\WebAppTest\\WebAppTest.csproj|d:\\00databasedesign\\databasecoursedesign\\templates\\webapptest\\apilayer\\basicfeatureapi\\itemmatchcotroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6B51281-D084-407E-9C8A-23C634543442}|..\\WebAppTest\\WebAppTest.csproj|d:\\00databasedesign\\databasecoursedesign\\templates\\webapptest\\apilayer\\basicfeatureapi\\itempicuploadcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 153,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 247,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "PublishItem.cs",
+              "DocumentMoniker": "D:\\00DatabaseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\BusinessLogicLayer\\BasicFeatureBLL\\PublishItem.cs",
+              "RelativeDocumentMoniker": "BusinessLogicLayer\\BasicFeatureBLL\\PublishItem.cs",
+              "ToolTip": "D:\\00DatabaseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\BusinessLogicLayer\\BasicFeatureBLL\\PublishItem.cs",
+              "RelativeToolTip": "BusinessLogicLayer\\BasicFeatureBLL\\PublishItem.cs",
+              "ViewState": "AQIAACYBAAAAAAAAAAAawDsBAAAbAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-26T14:02:18.75Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "PublishItemController.cs",
+              "DocumentMoniker": "D:\\00DatabaseDesign\\DatabaseCourseDesign\\Templates\\WebAppTest\\APILayer\\BasicFeatureAPI\\PublishItemController.cs",
+              "RelativeDocumentMoniker": "..\\WebAppTest\\APILayer\\BasicFeatureAPI\\PublishItemController.cs",
+              "ToolTip": "D:\\00DatabaseDesign\\DatabaseCourseDesign\\Templates\\WebAppTest\\APILayer\\BasicFeatureAPI\\PublishItemController.cs",
+              "RelativeToolTip": "..\\WebAppTest\\APILayer\\BasicFeatureAPI\\PublishItemController.cs",
+              "ViewState": "AQIAAAYBAAAAAAAAAAAAACsAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-26T13:56:27.007Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ItemPicUploadController.cs",
+              "DocumentMoniker": "D:\\00DatabaseDesign\\DatabaseCourseDesign\\Templates\\WebAppTest\\APILayer\\BasicFeatureAPI\\ItemPicUploadController.cs",
+              "RelativeDocumentMoniker": "..\\WebAppTest\\APILayer\\BasicFeatureAPI\\ItemPicUploadController.cs",
+              "ToolTip": "D:\\00DatabaseDesign\\DatabaseCourseDesign\\Templates\\WebAppTest\\APILayer\\BasicFeatureAPI\\ItemPicUploadController.cs",
+              "RelativeToolTip": "..\\WebAppTest\\APILayer\\BasicFeatureAPI\\ItemPicUploadController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-26T13:56:24.417Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ItemMatchCotroller.cs",
+              "DocumentMoniker": "D:\\00DatabaseDesign\\DatabaseCourseDesign\\Templates\\WebAppTest\\APILayer\\BasicFeatureAPI\\ItemMatchCotroller.cs",
+              "RelativeDocumentMoniker": "..\\WebAppTest\\APILayer\\BasicFeatureAPI\\ItemMatchCotroller.cs",
+              "ToolTip": "D:\\00DatabaseDesign\\DatabaseCourseDesign\\Templates\\WebAppTest\\APILayer\\BasicFeatureAPI\\ItemMatchCotroller.cs",
+              "RelativeToolTip": "..\\WebAppTest\\APILayer\\BasicFeatureAPI\\ItemMatchCotroller.cs",
+              "ViewState": "AQIAAC4AAAAAAAAAAAAgwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-26T13:56:21.191Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "DataCollection.cs",
+              "DocumentMoniker": "D:\\00DatabaseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\PublicAccess\\Utilities\\DataCollection.cs",
+              "RelativeDocumentMoniker": "PublicAccess\\Utilities\\DataCollection.cs",
+              "ToolTip": "D:\\00DatabaseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\PublicAccess\\Utilities\\DataCollection.cs",
+              "RelativeToolTip": "PublicAccess\\Utilities\\DataCollection.cs",
+              "ViewState": "AQIAAH0AAAAAAAAAAAAqwJAAAAARAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-23T13:47:44.977Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

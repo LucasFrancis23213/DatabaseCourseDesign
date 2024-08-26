@@ -6,6 +6,8 @@ import { message } from 'ant-design-vue';
 import axios from 'axios';
 import { onMounted } from 'vue';
 import dayjs from 'dayjs';
+import { useAccountStore } from '@/store/account';
+const {account, permissions} = useAccountStore();
 
 const baseURL = 'https://localhost:44343/api/';
 
@@ -18,6 +20,7 @@ type oneFind = {
   FOUND_DATE?: string;
   TAG_ID?: string[];
   IMAGE_URL?: string;
+  USER_ID?: string;
 };
 
 const tagMapping = {
@@ -78,6 +81,7 @@ const submit = () => {
         form.value.IMAGE_URL = res.data.url;
       }
       form.value.ITEM_ID = generateItemID(); // 生成并设置 ITEM_ID
+      form.value.USER_ID = account.userId;
       form.value.CATEGORY_ID = form.value.CATEGORY_ID[0]
       form.value.FOUND_DATE = dayjs(form.value.FOUND_DATE).format("YYYY-MM-DD HH:mm:ss")
       const jsonFormData = JSON.stringify(form.value)

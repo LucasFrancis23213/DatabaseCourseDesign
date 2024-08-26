@@ -39,9 +39,8 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                     LostItemObj.Description = TmpJson["DESCRIPTION"].ToString();
                     LostItemObj.Lost_Location = TmpJson["LOST_LOCATION"].ToString();
                     LostItemObj.Lost_Date = (DateTime)TmpJson["LOST_DATE"];
-
-                    //LostItemObj.User_ID = (int)TmpJson["User_ID"];
-                    LostItemObj.User_ID = 65; // Debug Only
+                    LostItemObj.User_ID = (int)TmpJson["User_ID"];
+                    
 
                     LostItemObj.Lost_Status = "LOST";
                     LostItemObj.Review_Status = 0; // 默认是Pending
@@ -110,12 +109,11 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                     FoundItemObj.Found_Date = (DateTime)TmpJson["FOUND_DATE"];
 
                     //FoundItemObj.User_ID = (int)TmpJson["User_ID"];
-                    FoundItemObj.User_ID = 65; // Debug Only
+                    FoundItemObj.User_ID = (int)TmpJson["User_ID"];
 
                     FoundItemObj.Match_Status = "Matching";
                     FoundItemObj.Review_Status = 0; // 默认是Pending
                     FoundItemObj.Image_URL = TmpJson["IMAGE_URL"].ToString();
-                    FoundItemObj.Tag_ID = (int)TmpJson["TAG_ID"];
 
                 }
                 catch (Exception ex)
@@ -182,7 +180,6 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
             try
             {
                 Dictionary<string, object> Conditions = new Dictionary<string, object>();
-
                 int type = 0;
 
                 try
@@ -212,7 +209,7 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"In QueryLostItem Function,报错为：{ex.Message}");
+                Debug.WriteLine($"In DeleteLostItem Function,报错为：{ex.Message}");
                 return StatusCode(500, "服务器内部错误");
             }
         }
@@ -256,10 +253,11 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"In QueryLostItem Function,报错为：{ex.Message}");
+                Debug.WriteLine($"In PassLostItem Function,报错为：{ex.Message}");
                 return StatusCode(500, "服务器内部错误");
             }
         }
+
     }
 
 }
