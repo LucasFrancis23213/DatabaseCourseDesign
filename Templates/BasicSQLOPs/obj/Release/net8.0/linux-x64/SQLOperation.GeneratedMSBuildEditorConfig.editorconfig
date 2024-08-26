@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = SQLOperation
-build_property.ProjectDir = F:\数据库课程设计\gitpush\Templates\BasicSQLOPs\
+build_property.ProjectDir = F:\databasedesign\gitpush\Templates\BasicSQLOPs\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 

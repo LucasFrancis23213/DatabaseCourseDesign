@@ -81,19 +81,13 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
                         throw new ApplicationException("创建VIP订单时发生错误");
                     }
 
-                    // 更新或创建 VIP 会员信息
+                    // 查询vip会员信息
                     var condition = new Dictionary<string, object> { { "user_id", userId }, { "status", "Active" } };
                     var vipMember = VIP_MembersBusiness.QueryBusiness(condition, "AND").FirstOrDefault();
 
                     if (vipMember != null)
                     {
-                        if (vipMember.VIP_End_Date < DateTime.Now)
-                        {
-                            // 更新状态为“逾期”
-                            var updateParams = new Dictionary<string, object> { { "status", "Inactive" } };
-                            VIP_MembersBusiness.UpdateBusiness(updateParams, condition);
-                        }
-                        else
+                        if (vipMember.VIP_End_Date >= DateTime.Now)
                         {
                             // 接着当前活跃时间之后
                             startTime = vipMember.VIP_End_Date;
@@ -113,12 +107,12 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
                             // 返回订单的基本信息
                             vipOrder.Order_ID = orderId;
 
-                           
+                            transaction.Commit();
 
                             return new Tuple<VIP_Orders, DateTime>(vipOrder, startTime);
                         }
+                       
                     }
-
                     // 创建新的 VIP 会员
                     var newVipMember = VIP_MembersBusiness.PackageData(0, userId, "Active", startTime, endDate);
                     var vipMemberId = VIP_MembersBusiness.AddBusiness(VIP_MembersList, "vip_member_id", newVipMember);
