@@ -18,7 +18,7 @@ namespace SQLOperation.PublicAccess.InterfaceManager.BasicFeatureInterface
         public Tuple<bool, string> ItemReturnAgreementBasic(Item_Return_Agreements item);
         //当进行审核的时候，一般都会有这个状态变更，需要调用一下
         //historyid不知道编写方式，所以当作参数传参,单独列出，不用updateitem
-        public Tuple<bool, string> UpdateHistory(OracleConnection conn, int itemId, int historyId, string newStatus);
+        public Tuple<bool, string> UpdateHistory(OracleConnection conn, string itemId, string historyId, string newStatus);
         //物品归还流程
         //status是阅读完协议是否同意的状态，但是我不太懂这个id怎么对应的，所以这里直接给list，麻烦调用时候自行给出状态
         public Tuple<bool, string> ExchangeItem(List<string> Status, List<Item_Exchanges> exchangeItems);

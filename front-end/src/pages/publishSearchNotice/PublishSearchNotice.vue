@@ -4,6 +4,8 @@
   import { FormInstance, message } from 'ant-design-vue';
   import axios from 'axios';
   import dayjs from 'dayjs'
+  import { useAccountStore } from '@/store/account';
+  const {account, permissions} = useAccountStore();
 
   const baseURL = 'https://localhost:44343/api/';
   
@@ -19,6 +21,7 @@
     IS_REWARDED?: boolean;
     REWARD_AMOUNT?: string;
     DEADLINE?: string | '无';
+    USER_ID?: string;
   };
 
   const tagMapping = {
@@ -82,6 +85,7 @@
         }
         
         form.value.ITEM_ID = generateItemID(); // 生成并设置 ITEM_ID
+        form.value.USER_ID = account.userId;
         form.value.CATEGORY_ID = form.value.CATEGORY_ID[0];
         form.value.LOST_DATE = dayjs(form.value.LOST_DATE).format("YYYY-MM-DD HH:mm:ss");
         if (form.value.IS_REWARDED) {
@@ -155,6 +159,7 @@
   const publishs = ref([]);
 
   const getPublishs = async () => {
+    console.log(account);
     try {
       const res = await axios.get(baseURL + 'QueryItem', {
         params: { 
