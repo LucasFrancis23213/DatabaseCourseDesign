@@ -12,4 +12,5 @@
 7.14日修改了front-end文件夹中的部分文件，完成个人主页的修改与修复个人主页跳转不正确的问题  
 7.18日修改了personal文件夹，加入了实名认证功能相关设计，加入了本组功能说明文档  
 8.5日修改了front-end\src\mock\menu.js内容，加入了front-end\src\pages\admin_ManagementFeature\APILog，front-end\src\pages\admin_ManagementFeature\SecurityEvent内容，实现了对应日志功能  
+8.27日修改了front-end\src\mock\menu.js内容，加入了通知与推荐的页面设计  
 by 杨烜赫  
