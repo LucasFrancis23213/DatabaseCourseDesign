@@ -15,7 +15,7 @@
           <template #prefix>
             <HourglassOutlined />
           </template>
-          <a-select-option value="">all</a-select-option>
+          <a-select-option value="">状态(all)</a-select-option>
           <a-select-option value="Open">Open</a-select-option>
           <a-select-option value="Closed">Closed</a-select-option>
       </a-select>
@@ -56,12 +56,7 @@
   import { ref, onMounted, computed } from 'vue';
   import axios from 'axios';
   import { HourglassOutlined } from '@ant-design/icons-vue';
-  
-  const options = ref([
-    { value: 'Open', label: 'Open' },
-    { value: 'Closed', label: 'Closed' },
-    { value: '', label: 'all' }
-  ]);
+  axios.defaults.baseURL = import.meta.env.VITE_API_URL;
   
   const columns = [
     { title: '事件ID', dataIndex: 'Event_ID' },
@@ -87,7 +82,7 @@
   
   onMounted(async () => {
     try {
-      const response = await axios.get('https://localhost:44343/api/GetSecurityEvents');
+      const response = await axios.get('/api/LogsQuery/SecurityEvents');
       data.value = response.data;
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -127,7 +122,7 @@
       query = query.slice(0, -1);
     }
     try {
-      const response = await axios.get(`https://localhost:44343/api/GetSecurityEvents?${query}`);
+      const response = await axios.get(`/api/LogsQuery/SecurityEvents?${query}`);
       data.value = response.data;
     } catch (error) {
       console.error('Error fetching data:', error);

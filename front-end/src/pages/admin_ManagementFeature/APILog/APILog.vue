@@ -16,11 +16,11 @@
             <HourglassOutlined />
           </template>
       </a-input>
-      <a-select v-model:value="filters.AccessResult" placeholder="访问结果" style="flex-grow: 1; width:100%">
+      <a-select v-model:value="filters.Result" placeholder="访问结果" style="flex-grow: 1; width:100%">
           <template #prefix>
             <HourglassOutlined />
           </template>
-          <a-select-option value="">all</a-select-option>
+          <a-select-option value="">访问结果(all)</a-select-option>
           <a-select-option value="success">success</a-select-option>
           <a-select-option value="failure">failure</a-select-option>
       </a-select>
@@ -61,12 +61,7 @@
   import { ref, onMounted, computed } from 'vue';
   import axios from 'axios';
   import { HourglassOutlined } from '@ant-design/icons-vue';
-  
-  const options = ref([
-    { value: 'success', label: '成功' },
-    { value: 'failure', label: '失败' },
-    { value: '', label: '全部' }
-  ]);
+  axios.defaults.baseURL = import.meta.env.VITE_API_URL;
   
   const columns = [
     { title: '访问ID', dataIndex: 'Access_ID' },
@@ -79,7 +74,7 @@
   const filters = ref({
     AccessID: '',
     APIName: '',
-    AccessResult: '',
+    Result: '',
     AccessorID: '',
     StartTime: null,
     EndTime: null
@@ -93,7 +88,7 @@
   
   onMounted(async () => {
     try {
-      const response = await axios.get('https://localhost:44343/api/GetAPILogs');
+      const response = await axios.get('/api/LogsQuery/APILogs');
       data.value = response.data;
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -123,8 +118,8 @@
     if (filters.value.AccessorID) {
       query += `AccessorID=${filters.value.AccessorID}&`;
     }
-    if (filters.value.AccessResult) {
-      query += `AccessResult=${filters.value.AccessResult}&`;
+    if (filters.value.Result) {
+      query += `Result=${filters.value.Result}&`;
     }
     if (filters.value.StartTime) {
       query += `StartTime=${formatDateTime(filters.value.StartTime)}&`;
@@ -136,7 +131,7 @@
       query = query.slice(0, -1);
     }
     try {
-      const response = await axios.get(`https://localhost:44343/api/GetAPILogs?${query}`);
+      const response = await axios.get(`/api/LogsQuery/APILogs?${query}`);
       data.value = response.data;
     } catch (error) {
       console.error('Error fetching data:', error);

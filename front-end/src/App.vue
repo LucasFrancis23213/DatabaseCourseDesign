@@ -41,7 +41,7 @@
   import { useAuthStore } from '@/plugins';
   import { computed } from 'vue';
 
-  const { logout, account, permissions} = useAccountStore();
+  const { logout, account, permissions } = useAccountStore();
   const showSetting = ref(false);
   const router = useRouter();
 

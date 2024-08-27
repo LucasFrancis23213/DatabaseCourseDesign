@@ -55,13 +55,14 @@
 <script lang="ts" setup>
   import { ref, onMounted, computed } from 'vue';
   import axios from 'axios';
+  axios.defaults.baseURL = import.meta.env.VITE_API_URL;
   
   const options = ref([
   { value: 'Login', label: 'Login' },
   { value: 'Logout', label: 'Logout' },
   { value: 'Signup', label: 'Signup' },
   { value: 'DeleteUser', label: 'DeleteUser' },
-  { value: '', label: 'all' }
+  { value: '', label: '操作类型(all)' }
 ]);
 
 const columns = [
@@ -87,7 +88,7 @@ const filters = ref({
 
   onMounted(async () => {
   try {
-    const response = await axios.get('https://localhost:44343/api/GetUserOpsLogs');
+    const response = await axios.get('/api/LogsQuery/UserOpsLogs');
     data.value = response.data;
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -127,7 +128,7 @@ const applyFilters = async () => {
     query = query.slice(0, -1);
   }
   try {
-    const response = await axios.get(`https://localhost:44343/api/GetUserOpsLogs?${query}`);
+    const response = await axios.get(`/api/LogsQuery/UserOpsLogs?${query}`);
     data.value = response.data;
   } catch (error) {
     console.error('Error fetching data:', error);
