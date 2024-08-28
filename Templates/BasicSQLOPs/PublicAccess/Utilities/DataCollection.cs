@@ -144,9 +144,9 @@ namespace SQLOperation.PublicAccess.Utilities
     }
     public class Item_Status_History
     {
-        public int History_ID;
+        public string History_ID;
         public DateTime Change_Date;
-        public int Item_ID;
+        public string Item_ID;
         public string Preview_Status;
         public string New_Status;
     }
@@ -182,7 +182,7 @@ namespace SQLOperation.PublicAccess.Utilities
     public class Item_Claim_Processes
     {
         public int Process_ID;
-        public int Item_ID;
+        public string Item_ID;
         public int Claimant_User_ID;
         public string Status;
         public DateTime Application_Date;// 原来是int
@@ -191,17 +191,17 @@ namespace SQLOperation.PublicAccess.Utilities
     public class Match_Records
     {
         public int Record_ID;
-        public int Lost_Item_ID;
-        public int Found_Item_ID;
-        public int Match_Date;
+        public string Lost_Item_ID;
+        public string Found_Item_ID;
+        public DateTime Match_Date;
         public string Processing_Status;
     }
 
     public class Item_Exchanges
     {
         public int Exchange_ID;
-        public int Lost_Item_ID;
-        public int Found_Item_ID;
+        public string Lost_Item_ID;
+        public string Found_Item_ID;
         public int Initiator_User_ID;
         public string Transaction_Type;
         public int Responder_User_ID;
@@ -212,7 +212,7 @@ namespace SQLOperation.PublicAccess.Utilities
     public class Item_Return_Agreements
     {
         public int Agreement_ID;
-        public int Item_ID;
+        public string Item_ID;
         public int From_User_ID;
         public int To_User_ID;
         public string Agreement_Content;
@@ -237,21 +237,21 @@ namespace SQLOperation.PublicAccess.Utilities
 
     public class VIP_Members
     {
-        public int VIP_Member_ID { get; set; }
-        public int User_ID { get; set; }
-        public string Status { get; set; }
-        public DateTime VIP_Start_Date { get; set; }
-        public DateTime VIP_End_Date { get; set; }
+        public int VIP_Member_ID;
+        public int User_ID;
+        public string Status;
+        public DateTime VIP_Start_Date;
+        public DateTime VIP_End_Date;
     }
 
     public class VIP_Orders
     {
-        public int Order_ID { get; set; }
-        public int User_ID { get; set; }
-        public double Total_Amount { get; set; }
-        public int Point_Return { get; set; }
-        public DateTime Order_Time { get; set; }
-        public int Recharge_Time { get; set; }
+        public int Order_ID;
+        public int User_ID;
+        public double Total_Amount;
+        public int Point_Return;
+        public DateTime Order_Time;
+        public int Recharge_Time;
     }
 
     public class Admin_Edit_VIP
@@ -272,9 +272,9 @@ namespace SQLOperation.PublicAccess.Utilities
         public string Ad_Type { get; set; }
         public DateTime Start_Time { get; set; }
         public DateTime End_Time { get; set; }
-        public int Click_Count {  get; set; }
+        public int Click_Count { get; set; }
 
-        public int Show_Count {  get; set; }
+        public int Show_Count { get; set; }
     }
 
     public class Ad_Click_Statistics
@@ -288,10 +288,9 @@ namespace SQLOperation.PublicAccess.Utilities
 
     public class Ad_Show_Statistics
     {
-        public int Show_ID { get; set; }    
-        public int Ad_ID { get; set; }
-        public int User_ID { get; set; }
-        public DateTime Time { get; set; }
+        public int Ad_ID;
+        public int User_ID;
+        public DateTime Time_Stamp;
     }
 
     public class Admin_Edit_Ad
