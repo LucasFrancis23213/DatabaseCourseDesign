@@ -5,10 +5,10 @@ namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
 {
     public class InsertAPILogsBLL
     {
-        private APILogsDAL SystemLogsDAL;
+        private APILogsDAL APILogsDAL;
         public InsertAPILogsBLL()
         {
-            SystemLogsDAL = new();
+            APILogsDAL = new();
         }
 
         public Tuple<bool, string> InsertLog(APIAccessLogsInsertUtil NewLog)
@@ -22,7 +22,7 @@ namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
                 return Tuple.Create(false, "日志信息不完整");
             }
 
-            return SystemLogsDAL.InsertNewLog(NewLog);
+            return APILogsDAL.InsertNewLog(NewLog);
         }
     }
 }
