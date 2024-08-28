@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\2023Spring\\DatabaseCourseDesign\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{267F59D7-51EC-41DE-A08A-237C5A5EC18C}|Templates\\BasicSQLOPs\\SQLOperation.csproj|d:\\2023spring\\databasecoursedesign\\templates\\basicsqlops\\businesslogiclayer\\managementfeaturebll\\getuserinfobll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{267F59D7-51EC-41DE-A08A-237C5A5EC18C}|Templates\\BasicSQLOPs\\SQLOperation.csproj|solutionrelative:templates\\basicsqlops\\businesslogiclayer\\managementfeaturebll\\getuserinfobll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{19588491-4131-4067-BAC4-320A0C53011B}|Templates\\WebAppTest\\WebAppTest.csproj|d:\\2023spring\\databasecoursedesign\\templates\\webapptest\\apilayer\\communityfeatureapi\\advertisementandvip\\advertisementscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{19588491-4131-4067-BAC4-320A0C53011B}|Templates\\WebAppTest\\WebAppTest.csproj|solutionrelative:templates\\webapptest\\apilayer\\communityfeatureapi\\advertisementandvip\\advertisementscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -26,15 +30,28 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "GetUserInfoBLL.cs",
+              "DocumentMoniker": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\BusinessLogicLayer\\ManagementFeatureBLL\\GetUserInfoBLL.cs",
+              "RelativeDocumentMoniker": "Templates\\BasicSQLOPs\\BusinessLogicLayer\\ManagementFeatureBLL\\GetUserInfoBLL.cs",
+              "ToolTip": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\BusinessLogicLayer\\ManagementFeatureBLL\\GetUserInfoBLL.cs",
+              "RelativeToolTip": "Templates\\BasicSQLOPs\\BusinessLogicLayer\\ManagementFeatureBLL\\GetUserInfoBLL.cs",
+              "ViewState": "AQIAAA0AAAAAAAAAAAAQwA8AAAAeAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-28T05:28:22.119Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "DataCollection.cs",
               "DocumentMoniker": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\PublicAccess\\Utilities\\DataCollection.cs",
               "RelativeDocumentMoniker": "Templates\\BasicSQLOPs\\PublicAccess\\Utilities\\DataCollection.cs",
@@ -42,25 +59,24 @@
               "RelativeToolTip": "Templates\\BasicSQLOPs\\PublicAccess\\Utilities\\DataCollection.cs",
               "ViewState": "AQIAABYBAAAAAAAAAAAhwBsBAAAoAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-28T05:10:28.532Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-28T05:10:28.532Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "AdvertisementsController.cs",
               "DocumentMoniker": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\WebAppTest\\APILayer\\CommunityFeatureAPI\\AdvertisementAndVIP\\AdvertisementsController.cs",
               "RelativeDocumentMoniker": "Templates\\WebAppTest\\APILayer\\CommunityFeatureAPI\\AdvertisementAndVIP\\AdvertisementsController.cs",
               "ToolTip": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\WebAppTest\\APILayer\\CommunityFeatureAPI\\AdvertisementAndVIP\\AdvertisementsController.cs",
               "RelativeToolTip": "Templates\\WebAppTest\\APILayer\\CommunityFeatureAPI\\AdvertisementAndVIP\\AdvertisementsController.cs",
-              "ViewState": "AQIAAPsAAAAAAAAAAAAWwBYBAAAfAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABYBAAAfAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-08-28T05:01:54.662Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "GetAPILogsBLL.cs",
               "DocumentMoniker": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\BusinessLogicLayer\\ManagementFeatureBLL\\GetAPILogsBLL.cs",
               "RelativeDocumentMoniker": "Templates\\BasicSQLOPs\\BusinessLogicLayer\\ManagementFeatureBLL\\GetAPILogsBLL.cs",
@@ -68,12 +84,11 @@
               "RelativeToolTip": "Templates\\BasicSQLOPs\\BusinessLogicLayer\\ManagementFeatureBLL\\GetAPILogsBLL.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAADwvwAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-28T04:52:12.715Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-28T04:52:12.715Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\WebAppTest\\Program.cs",
               "RelativeDocumentMoniker": "Templates\\WebAppTest\\Program.cs",
