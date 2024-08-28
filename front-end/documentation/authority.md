@@ -1,7 +1,6 @@
 # 权限管理
-Stepin Template 可以对路由、按钮和方法进行鉴权控制
 ## 配置用户权限
-你只需要从后端接口获取到权限数据后，调用权限插件的 `setAuthorities` 接口存储即可：
+
 ```ts {1,6-7,11}
 import { useAuthStore } from '@/plugins';
 ...

@@ -13,7 +13,6 @@ export default {
   ...Theme,
   Layout: () => {
     return h(MyLayout, null, {
-      // https://vitepress.dev/guide/extending-default-theme#layout-slots
     });
   },
   enhanceApp({ app, router, siteData }) {
