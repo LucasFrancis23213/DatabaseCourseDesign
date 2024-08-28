@@ -124,11 +124,12 @@
           }
         }
       },
-      "Oracle.ManagedDataAccess.Core/23.5.0": {
+      "Oracle.ManagedDataAccess.Core/23.5.1": {
         "type": "package",
         "dependencies": {
           "System.Diagnostics.PerformanceCounter": "8.0.0",
           "System.DirectoryServices.Protocols": "8.0.0",
+          "System.Formats.Asn1": "8.0.1",
           "System.Security.Cryptography.Pkcs": "8.0.0"
         },
         "compile": {
@@ -678,7 +679,7 @@
           "lib/netstandard1.3/System.Dynamic.Runtime.dll": {}
         }
       },
-      "System.Formats.Asn1/8.0.0": {
+      "System.Formats.Asn1/8.0.1": {
         "type": "package",
         "compile": {
           "lib/net8.0/System.Formats.Asn1.dll": {
@@ -1998,10 +1999,10 @@
         "packageIcon.png"
       ]
     },
-    "Oracle.ManagedDataAccess.Core/23.5.0": {
-      "sha512": "TmWvKM2aF0nRo4HHqp0Wz6JgTYYVxCXudRKgHjB7UM96axg2viXOniAy+cm/3+XOuF3NJ1JpMiDYOxNbObN/zg==",
+    "Oracle.ManagedDataAccess.Core/23.5.1": {
+      "sha512": "OYcTrQeUh3CEUYuUA0rSzdnqjVDvbQRByfeIxQub4WJShlbeY/o2NdKUuP87rU8TlGADf2ZPKsxqUdke90KNNg==",
       "type": "package",
-      "path": "oracle.manageddataaccess.core/23.5.0",
+      "path": "oracle.manageddataaccess.core/23.5.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2011,7 +2012,7 @@
         "README.md",
         "info.txt",
         "lib/netstandard2.1/Oracle.ManagedDataAccess.dll",
-        "oracle.manageddataaccess.core.23.5.0.nupkg.sha512",
+        "oracle.manageddataaccess.core.23.5.1.nupkg.sha512",
         "oracle.manageddataaccess.core.nuspec",
         "oracle.png"
       ]
@@ -3060,10 +3061,10 @@
         "system.dynamic.runtime.nuspec"
       ]
     },
-    "System.Formats.Asn1/8.0.0": {
-      "sha512": "AJukBuLoe3QeAF+mfaRKQb2dgyrvt340iMBHYv+VdBzCUM06IxGlvl0o/uPOS7lHnXPN6u8fFRHSHudx5aTi8w==",
+    "System.Formats.Asn1/8.0.1": {
+      "sha512": "XqKba7Mm/koKSjKMfW82olQdmfbI5yqeoLV/tidRp7fbh5rmHAQ5raDI/7SU0swTzv+jgqtUGkzmFxuUg0it1A==",
       "type": "package",
-      "path": "system.formats.asn1/8.0.0",
+      "path": "system.formats.asn1/8.0.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -3084,7 +3085,7 @@
         "lib/net8.0/System.Formats.Asn1.xml",
         "lib/netstandard2.0/System.Formats.Asn1.dll",
         "lib/netstandard2.0/System.Formats.Asn1.xml",
-        "system.formats.asn1.8.0.0.nupkg.sha512",
+        "system.formats.asn1.8.0.1.nupkg.sha512",
         "system.formats.asn1.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -6014,24 +6015,29 @@
   "projectFileDependencyGroups": {
     "net8.0": [
       "Newtonsoft.Json >= 13.0.3",
-      "Oracle.ManagedDataAccess.Core >= 23.5.0",
+      "Oracle.ManagedDataAccess.Core >= 23.5.1",
       "Renci.SshNet.Async >= 1.4.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\IamNotLCB\\.nuget\\packages\\": {}
+    "C:\\Users\\cjh15\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\00DatabaseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
+      "projectUniqueName": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
       "projectName": "SQLOperation",
-      "projectPath": "D:\\00DatabaseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
-      "packagesPath": "C:\\Users\\IamNotLCB\\.nuget\\packages\\",
-      "outputPath": "D:\\00DatabaseDesign\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\obj\\",
+      "projectPath": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
+      "packagesPath": "C:\\Users\\cjh15\\.nuget\\packages\\",
+      "outputPath": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\IamNotLCB\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\cjh15\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -6069,7 +6075,7 @@
           },
           "Oracle.ManagedDataAccess.Core": {
             "target": "Package",
-            "version": "[23.5.0, )"
+            "version": "[23.5.1, )"
           },
           "Renci.SshNet.Async": {
             "target": "Package",
@@ -6092,7 +6098,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

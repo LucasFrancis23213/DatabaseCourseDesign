@@ -14,7 +14,7 @@ namespace SQLOperation.PublicAccess.Templates.SQLManager
             //dbORM db = new dbORM();
             //db.getInstance();
             string DataSource = "(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=ORCL)))";
-            Connection connection = new Connection("BAMBOO", "123456", "localhost:1521/ORCL");
+            Connection connection = new Connection("ADMIN", "123456", "121.36.200.128:1521/ORCL");
         }
 
         private Connection DatabaseConnector;

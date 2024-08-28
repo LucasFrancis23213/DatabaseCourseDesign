@@ -265,21 +265,25 @@ namespace SQLOperation.PublicAccess.Utilities
 
     public class Advertisements
     {
-        public int Ad_ID;
-        public string Ad_Content;
-        public byte[] Ad_Picture;
-        public string Ad_URL;
-        public string Ad_Type;
-        public DateTime VIP_Start_Date;
-        public DateTime VIP_End_Date;
+        public int Ad_ID { get; set; }
+        public string Ad_Content { get; set; }
+        public string Ad_Picture { get; set; }
+        public string Ad_URL { get; set; }
+        public string Ad_Type { get; set; }
+        public DateTime Start_Time { get; set; }
+        public DateTime End_Time { get; set; }
+        public int Click_Count { get; set; }
+
+        public int Show_Count { get; set; }
     }
 
     public class Ad_Click_Statistics
     {
-        public int Ad_ID;
-        public int User_ID;
-        public DateTime Time_Stamp;
-        public string IP_Address;
+        public int Click_ID { get; set; }
+        public int Ad_ID { get; set; }
+        public int User_ID { get; set; }
+        public DateTime Click_Time { get; set; }
+        public string IP_Address { get; set; }
     }
 
     public class Ad_Show_Statistics
@@ -320,6 +324,9 @@ namespace SQLOperation.PublicAccess.Utilities
 
         [JsonPropertyName("CONTACT")]
         public string Contact { get; set; }
+
+        [JsonPropertyName("IS_DELETED")]
+        public int Is_Deleted { get; set; }
     }
 
     public class User_Subscriptions
@@ -414,11 +421,12 @@ namespace SQLOperation.PublicAccess.Utilities
         public int Transaction_ID;
         public int From_User_ID;
         public int To_User_ID;
-        public int Item_ID;
+        public string Item_ID;
         public double Amount;
         public string Transaction_Type;
         public string Status;
+        public DateTime StartTime;
+        public DateTime FinishTime;
     }
-
 
 }
