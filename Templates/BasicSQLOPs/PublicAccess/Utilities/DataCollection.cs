@@ -324,6 +324,9 @@ namespace SQLOperation.PublicAccess.Utilities
 
         [JsonPropertyName("CONTACT")]
         public string Contact { get; set; }
+
+        [JsonPropertyName("IS_DELETED")]
+        public int Is_Deleted { get; set; }
     }
 
     public class User_Subscriptions
@@ -418,11 +421,12 @@ namespace SQLOperation.PublicAccess.Utilities
         public int Transaction_ID;
         public int From_User_ID;
         public int To_User_ID;
-        public int Item_ID;
+        public string Item_ID;
         public double Amount;
         public string Transaction_Type;
         public string Status;
+        public DateTime StartTime;
+        public DateTime FinishTime;
     }
-
 
 }

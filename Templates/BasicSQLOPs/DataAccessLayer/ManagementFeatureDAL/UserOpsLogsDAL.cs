@@ -6,7 +6,7 @@ using SQLOperation.PublicAccess.Utilities.ManagementFeatureUtil;
 
 namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
 {
-    public class UserOpsLogsDAL : BaseDAL
+    /*public class UserOpsLogsDAL : BaseDAL
     {
         /// <summary>
         /// Retrieves user operation logs.
@@ -121,6 +121,46 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
                     return Tuple.Create(false, "Connection Error");
                 }
             };
+        }
+    }*/
+
+    public class UserOpsLogsDAL : BaseLogDAL<User_Activity_Logs>
+    {
+        protected override string TableName => "USER_ACTIVITY_LOGS";
+
+        protected override List<string> ColumnNames => ["USER_ID", "ACTION_TYPE", "OCCURRENCE_TIME"];
+
+        protected override Func<OracleDataReader, User_Activity_Logs> MapFromReader => reader => new User_Activity_Logs
+        {
+            User_ID = reader.GetInt32(0),
+            Action_Type = reader.GetString(1),
+            Occurrence_Time = reader.GetDateTime(2),
+            Activity_Log_ID = reader.GetInt32(3),
+        };
+
+        public Tuple<bool, string> GetTargetLogs(QueryUserOpsLogsArgs args)
+        {
+            var parameters = new Dictionary<(string ColumnName, string Operator), object>
+            {
+                { ("USER_ID", "="), args.UserID },
+                { ("ACTION_TYPE", "="), args.ActionType },
+                { ("OCCURRENCE_TIME", ">="), args.StartTime },
+                { ("OCCURRENCE_TIME", "<="), args.EndTime },
+                { ("ACTIVITY_LOG_ID", "="), args.ActivityLogID }
+            };
+
+            return GetLogsAux(parameters);
+        }
+
+        public Tuple<bool, string> InsertNewLog(UserOpsLogsInsertUtil args)
+        {
+            var values = new Dictionary<string, object>
+            {
+                { "USER_ID", args.User_ID },
+                { "ACTION_TYPE", args.Action_Type },
+                { "OCCURRENCE_TIME", args.Occurrence_Time }
+            };
+            return InsertNewLogAux(values);
         }
     }
 }
