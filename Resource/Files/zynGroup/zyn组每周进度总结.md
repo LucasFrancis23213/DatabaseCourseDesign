@@ -4,9 +4,9 @@
 
 - 完成数据库42个表的建表工作：
 
-<img src="image/5.png" alt="My Image" width="500"  />
+<img src="../../Images/zynGroup/image/5.png" alt="My Image" width="500"  />
 
-<img src="image/6.png" alt="My Image" width="500"/>
+<img src="../../Images/zynGroup/image/6.png" alt="My Image" width="500"/>
 
  
 
@@ -22,49 +22,49 @@
 
 #### 前端：
 
-<img src="image/屏幕截图 2024-08-12 180006.png" alt="屏幕截图 2024-08-12 180006" style="zoom: 25%;" />
+<img src="../../Images/zynGroup/image/屏幕截图 2024-08-12 180006.png" alt="屏幕截图 2024-08-12 180006" style="zoom: 25%;" />
 
 ​	==zyn与yxh：==登录界面：输入用户名和密码，设置了若干情况的登录提示；实现了登录界面的关闭按钮的实现，主页面跳转等一系列问题，对相关路由进行了修复。
 
-<img src="image/屏幕截图 2024-08-12 180339.png" alt="屏幕截图 2024-08-12 180339" style="zoom: 33%;" />
+<img src="../../Images/zynGroup/image/屏幕截图 2024-08-12 180339.png" alt="屏幕截图 2024-08-12 180339" style="zoom: 33%;" />
 
-<img src="image/屏幕截图 2024-08-12 180406.png" alt="屏幕截图 2024-08-12 180406" style="zoom:33%;" />
+<img src="../../Images/zynGroup/image/屏幕截图 2024-08-12 180406.png" alt="屏幕截图 2024-08-12 180406" style="zoom:33%;" />
 
 ​	登录成功：
 
-<img src="image/屏幕截图 2024-08-12 180618.png" alt="屏幕截图 2024-08-12 180618" style="zoom:33%;" />
+<img src="../../Images/zynGroup/image/屏幕截图 2024-08-12 180618.png" alt="屏幕截图 2024-08-12 180618" style="zoom:33%;" />
 
 ​	==zyn：==注册：由登录界面引入
 
-<img src="image/屏幕截图 2024-08-12 190242.png" alt="屏幕截图 2024-08-12 190242" style="zoom: 40%;" />
+<img src="../../Images/zynGroup/image/屏幕截图 2024-08-12 190242.png" alt="屏幕截图 2024-08-12 190242" style="zoom: 40%;" />
 
 ​	设置若干注册输入条件：
 
-<img src="image/屏幕截图 2024-08-12 190305.png" alt="屏幕截图 2024-08-12 190305" style="zoom:40%;" />
+<img src="../../Images/zynGroup/image/屏幕截图 2024-08-12 190305.png" alt="屏幕截图 2024-08-12 190305" style="zoom:40%;" />
 
 ​	设置注册提示，避免用户名重名
 
-<img src="image/image-20240812194334780.png" alt="image-20240812194334780" style="zoom: 33%;" />
+<img src="../../Images/zynGroup/image/image-20240812194334780.png" alt="image-20240812194334780" style="zoom: 33%;" />
 
 
 
 ​	==zyn与yxh：==个人中心：实现用户信息随登录后实时更新
 
-<img src="image/image-20240812182534648.png" alt="image-20240812182534648" style="zoom:33%;" />
+<img src="../../Images/zynGroup/image/image-20240812182534648.png" alt="image-20240812182534648" style="zoom:33%;" />
 
 
 
 ​	==zyn：==注销：实现用户注销，同时连接后端，清除用户信息
 
-<img src="image/屏幕截图 2024-08-12 180740.png" alt="屏幕截图 2024-08-12 180740" style="zoom: 43%;" />
+<img src="../../Images/zynGroup/image/屏幕截图 2024-08-12 180740.png" alt="屏幕截图 2024-08-12 180740" style="zoom: 43%;" />
 
 ​	==zyn：==退出登录：清空当前前端用户信息，并回退至主界面
 
-<img src="image/image-20240812185940391.png" alt="image-20240812185940391" style="zoom: 67%;" />
+<img src="../../Images/zynGroup/image/image-20240812185940391.png" alt="image-20240812185940391" style="zoom: 67%;" />
 
 ​	==yxh：==主页面实名认证：输入用户姓名与身份证能进行实名认证功能
 
-<img src="image/1.png" alt="My Image" width="500"/>
+<img src="../../Images/zynGroup/image/1.png" alt="My Image" width="500"/>
 
 
 
@@ -110,15 +110,15 @@
 
 ​	==zyn：==设置管理员账号及权限：
 
-<img src="image/image-20240812194531036.png" alt="image-20240812194531036" style="zoom: 50%;" />
+<img src="../../Images/zynGroup/image/image-20240812194531036.png" alt="image-20240812194531036" style="zoom: 50%;" />
 
 ​	没有权限的用户无法访问相应界面：
 
-<img src="image/屏幕截图 2024-08-12 194724.png" alt="屏幕截图 2024-08-12 194724" style="zoom:50%;" />
+<img src="../../Images/zynGroup/image/屏幕截图 2024-08-12 194724.png" alt="屏幕截图 2024-08-12 194724" style="zoom:50%;" />
 
 ​	设置用户与管理员分离的侧边菜单栏，便于界面管理：	
 
-​																<img src="image/image-20240812201126704.png" alt="image-20240812201126704" style="zoom: 50%;" /><img src="image/image-20240812201209852.png" alt="image-20240812201209852" style="zoom:50%;" />
+​																<img src="../../Images/zynGroup/image/image-20240812201126704.png" alt="image-20240812201126704" style="zoom: 50%;" /><img src="../../Images/zynGroup/image/image-20240812201209852.png" alt="image-20240812201209852" style="zoom:50%;" />
 
 #### 后端-==dpy：==：
 
@@ -176,25 +176,25 @@
 
 ​	==zyn：==用户操作日志：
 
-<img src="image/image-20240813204539990.png" alt="image-20240813204539990" style="zoom: 67%;" />
+<img src="../../Images/zynGroup/image/image-20240813204539990.png" alt="image-20240813204539990" style="zoom: 67%;" />
 
 ​	
 
 ​	==zyn：==系统日志：
 
-![image-20240813204648538](image/image-20240813204648538.png)
+![image-20240813204648538](../../Images/zynGroup/image/image-20240813204648538.png)
 
 ​	
 
 ​	==yxh：==API访问日志：
 
-<img src="image/2.png" alt="My Image" style="zoom: 33%;" />
+<img src="../../Images/zynGroup/image/2.png" alt="My Image" style="zoom: 33%;" />
 
 
 
 ​	==yxh：==安全事件记录：
 
-<img src="image/4.png" alt="My Image"/>
+<img src="../../Images/zynGroup/image/4.png" alt="My Image"/>
 
 
 
