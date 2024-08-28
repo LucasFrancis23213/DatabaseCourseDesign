@@ -11,14 +11,14 @@ namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
             UserOperatorDAL = new UserOperatorDAL();
         }
 
-        public Tuple<bool, string> DeleteUser(string UserName)
+        public Tuple<bool, string> DeleteUser(int UserID)
         {
-            if (string.IsNullOrEmpty(UserName))
+            if (UserID < 0)
             {
-                return new Tuple<bool, string>(false, "UserName is empty");
+                return new Tuple<bool, string>(false, "UserID不合法");
             }
 
-            return UserOperatorDAL.DeleteUser(UserName);
+            return UserOperatorDAL.DeleteUser(UserID);
         }
     }
 }
