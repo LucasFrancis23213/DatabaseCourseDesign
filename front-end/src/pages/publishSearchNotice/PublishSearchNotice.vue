@@ -4,6 +4,7 @@
   import { FormInstance, message } from 'ant-design-vue';
   import axios from 'axios';
   import dayjs from 'dayjs'
+  import CreateConversationBtn from "@/components/CommunityFeature/chat/CreateConversationBtn.vue";
 
   const baseURL = 'http://121.36.200.128:5000/api/';
   
@@ -116,6 +117,7 @@
     { title: '悬赏金额', dataIndex: 'REWARD_AMOUNT' },
     { title: '截止时间', dataIndex: 'DEADLINE' },
     { title: '操作', dataIndex: 'RETURN_ITEM'},
+    { title: '联系失主', dataIndex: 'CONTACT'}
   ];
 
   const open = ref<boolean>(false);
@@ -205,6 +207,22 @@ const returnForm = ref({
   MESSAGE: '',
   IMAGE_URL: '',
 })
+//聊天目标用户的id
+const targetId = ref(302)
+const getTargetId = async () =>{
+  try {
+      const res = await axios.get(baseURL + '', {
+        
+      });
+      
+      
+      console.log('数据获取成功');
+      
+    } catch (error) {
+      console.error('获取数据时出错:', error);
+      // 可以在这里添加错误处理逻辑，比如设置一个错误状态
+    }
+}
 </script>
 
 <template>
@@ -306,6 +324,9 @@ const returnForm = ref({
       </template>
       <template v-else-if="column.dataIndex === 'RETURN_ITEM'">
         <a-button type="primary" @click="clickReturn(index)">归还</a-button>
+      </template>
+      <template v-else-if="column.dataIndex === 'CONTACT'">
+        <CreateConversationBtn :target-id="targetId" button-text="进入聊天" @click="getTargetId"></CreateConversationBtn>
       </template>
     </template>
   </a-table>
