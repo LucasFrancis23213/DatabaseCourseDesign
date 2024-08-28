@@ -567,9 +567,7 @@ namespace DatabaseProject.DataAccessLayer.CommunityFeatureDAL
             }
         }
 
-        
-
-
+      
         
     }
 }

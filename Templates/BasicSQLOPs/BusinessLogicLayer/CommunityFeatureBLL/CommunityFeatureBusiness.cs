@@ -1,6 +1,7 @@
 ﻿using DatabaseProject.DataAccessLayer.CommunityFeatureDAL;
 using Oracle.ManagedDataAccess.Client;
 using SQLOperation.PublicAccess.Templates.SQLManager;
+using SQLOperation.PublicAccess.Utilities;
 using System.Reflection;
 using System.Text.Json;
 
@@ -56,12 +57,15 @@ namespace DatabaseProject.BusinessLogicLayer.CommunityFeatureBLL
         // 映射数据
         public T MapDictionaryToObject(Dictionary<string, object> record)
         {
+            // 创建实例
             T instance = Activator.CreateInstance<T>();
             PropertyInfo[] properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
+            
+
             if (record == null)
             {
-                return default(T);
+                throw new Exception("转换错误：record为空");
             }
 
             foreach (var kvp in record)
@@ -72,16 +76,26 @@ namespace DatabaseProject.BusinessLogicLayer.CommunityFeatureBLL
 
 
                 // 查找与键匹配的属性
-                PropertyInfo property = properties.FirstOrDefault(p => p.Name.ToUpper() == propertyName);
+                PropertyInfo? property = properties.FirstOrDefault(p => p.Name.ToUpper() == propertyName);
 
                 if (property != null && property.CanWrite)
                 {
                     // 尝试将 value 转换为属性的类型并设置属性值
                     try
                     {
-                        string stringValue = value.ToString();
-                        object convertedValue = Convert.ChangeType(stringValue, property.PropertyType);
-                        property.SetValue(instance, convertedValue);
+                        string? stringValue = value.ToString();
+                        if (stringValue == "{}" && property.PropertyType != typeof(string))
+                        {
+                            // 将 property 设置为其默认值
+                            object? defaultValue = Activator.CreateInstance(property.PropertyType);
+                            property.SetValue(instance, defaultValue);
+                        }
+                        else
+                        {
+                            object? convertedValue = Convert.ChangeType(stringValue, property.PropertyType);
+                            property.SetValue(instance, convertedValue);
+                        }
+                       
                     }
                     catch (Exception ex)
                     {
@@ -94,6 +108,10 @@ namespace DatabaseProject.BusinessLogicLayer.CommunityFeatureBLL
             return instance;
         }
 
+        
+
+        
+
 
         // json拆包并解包1
         public List<T> ParseAndRepackageJsonList(string json)
@@ -101,7 +119,7 @@ namespace DatabaseProject.BusinessLogicLayer.CommunityFeatureBLL
             try
             {
                 // 尝试解析 JSON 数据为 List<Dictionary<string, object>>
-                List<Dictionary<string, object>> rowList = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(json);
+                List<Dictionary<string, object>>? rowList = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(json);
 
                 List<T> result = new List<T>();
 
@@ -155,11 +173,15 @@ namespace DatabaseProject.BusinessLogicLayer.CommunityFeatureBLL
                 foreach (string columnName in columnNames)
                 {
                     // 找到与 columnName 对应的属性
-                    if (propertyDict.TryGetValue(columnName, out PropertyInfo property))
+                    if (propertyDict.TryGetValue(columnName, out PropertyInfo? property))
                     {
-                        // 获取属性值
-                        object propertyValue = property.GetValue(instance);
-                        values.Add(propertyValue);
+                        if (property != null)
+                        {
+                            // 获取属性值
+                            object propertyValue = property.GetValue(instance);
+                            values.Add(propertyValue);
+                        }
+                        
                     }
                     else
                     {
@@ -268,7 +290,6 @@ namespace DatabaseProject.BusinessLogicLayer.CommunityFeatureBLL
         }
 
 
-
         // 任意指定where语句
         public List<T> QueryTableWithWhereBusiness(string whereClause, OracleParameter[] parameters)
         {
@@ -315,9 +336,10 @@ namespace DatabaseProject.BusinessLogicLayer.CommunityFeatureBLL
                     {
                         return new List<Dictionary<string, object>>();
                     }
+                    
 
                     // 解析 JSON 结果
-                    List<Dictionary<string, object>> rowList = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(success.Item2);
+                    List<Dictionary<string, object>>? rowList = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(success.Item2);
                     return rowList ?? new List<Dictionary<string, object>>();// 如果解析为空 则返回空列表
                 }
                 else
@@ -348,7 +370,7 @@ namespace DatabaseProject.BusinessLogicLayer.CommunityFeatureBLL
                     }
 
                     // 解析 JSON 结果
-                    List<Dictionary<string, object>> rowList = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(success.Item2);
+                    List<Dictionary<string, object>>? rowList = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(success.Item2);
                     return rowList ?? new List<Dictionary<string, object>>();// 如果解析为空 则返回空列表
                 }
                 else
