@@ -3,7 +3,7 @@
 import axios from 'axios';
 import { onMounted, ref } from 'vue'
 
-const baseURL = 'http://121.36.200.128:5000/api/';
+const baseURL = 'https://localhost:44343/api/';
 
 const unreviewLostItems = ref([])
 const columns = [
@@ -32,13 +32,16 @@ const tagMapping = {
 };
 
 const categoryMapping = {
-  '1': '物品类别1',
+  '1': '日用品',
   '2': '手表',
 };
 
 const getUnreviewLostItems = async () => {
     const res = await axios.get(baseURL + 'QueryItem', {
-        params: { type: 0 }
+        params: { 
+            type: 0,
+            review: 0
+        }
       });
     unreviewLostItems.value = res.data.map(item => ({
       ...item,
@@ -50,7 +53,7 @@ const getUnreviewLostItems = async () => {
 const pass = async (ITEM_ID: string) => {
     console.log('通过的物品ID:', ITEM_ID);
     //调用接口修改审核状态，修改后重新获取
-    await axios.post(baseURL + '', 
+    await axios.post(baseURL + 'PassItem', 
             JSON.stringify({ 
                 ITEM_ID: ITEM_ID,
                 type: 0
