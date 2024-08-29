@@ -1,222 +1,266 @@
 <script lang="ts" setup>
-import {onMounted, onUnmounted, ref, watchEffect} from 'vue';
+import {onMounted, onUnmounted, onUpdated, ref, nextTick, onActivated} from 'vue';
 import ChatBubble from "@/components/CommunityFeature/chat/ChatBubble.vue";
 import MessageInput from "@/components/CommunityFeature/chat/MessageInput.vue";
+import apiService from './apiService';
 import axios from "axios";
 import {useRoute} from 'vue-router';
-import * as signalR from '@microsoft/signalr';
+import {useAccountStore} from '@/store/account';
 
-axios.defaults.baseURL= import.meta.env.VITE_API_URL;
+const {account, permissions} = useAccountStore();
 
-const route =useRoute();
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
-const conversation_id  = ref(+route.params.conversation_id);
-const current_user_id = ref(+route.query.current_user_id);
+const route = useRoute();
+
+const conversation_id = ref(+route.params.conversation_id);
+const current_user_id = ref(+account.userId);
 
 const other_avatar = ref();
-
 const other_name = ref();
 
 const messages = ref([]);
 
 const isSending = ref(false);
-console.log("cuid是的数据类型是"+typeof current_user_id.value);
 
-async function getMessages(){
-  console.log("getMessages");
-  try{
-    const res = await axios.post(`/api/conversations/${conversation_id.value}`,{
-      "conversation_id":conversation_id.value,
-      "current_user_id":current_user_id.value,
-    });
-    console.log(res);
-    messages.value = res.data.messages;
-    other_name.value = res.data.name;
-    other_avatar.value = res.data.avatar;
-
-
-  }catch (e){
-    console.log(e);
-    alert(`获取聊天历史记录失败，错误信息为：${e}`);
+const getMessages = async () => {
+  try {
+    const response = await apiService.getMessages(conversation_id.value, +current_user_id.value);
+    messages.value = response.messages;
+    other_name.value = response.name;
+    other_avatar.value = response.avatar;
+  } catch (error) {
+    alert("获取消息列表出现错误");
   }
-}
+};
+const beijingTime = new Date(new Date().getTime() + 8 * 3600 * 1000);
+const formattedTime = beijingTime.toISOString().replace('Z', '+08:00');
+
 async function handleSendMessage(message) {
   if (!message.trim()) {
     return; // 如果消息为空，则不发送
   }
   // 创建消息对象
   const newMessage = {
-    id: Date.now().toString(), // 使用当前时间戳作为临时ID
+    id: parseInt(Date.now().toString()), // 使用当前时间戳作为临时ID
     conversation_id: conversation_id.value,
     content: message,
-    type:'text',
-    time: new Date().toISOString(),
-    sender:current_user_id.value,
-    current_user_id: current_user_id.value, // 假设这是用户发送的消息
+    type: 'text',
+    time: formattedTime,
+    sender: +current_user_id.value,
+    current_user_id: +current_user_id.value, // 假设这是用户发送的消息
   };
-  console.log(newMessage);
-  // 在前端立即显示消息（回显）
   displayMessage(newMessage);
 
   try {
     // 发送消息到后台
-    const response = await sendMessageToBackend(newMessage);
+    const response = await apiService.sendMessage(newMessage);
 
     // 如果后台返回了更新后的消息（例如，带有服务器生成的ID），则更新前端显示
-    if (response.data) {
-      updateDisplayedMessage(newMessage.id,response.data.message_id);
+    if (response) {
+      updateDisplayedMessage(newMessage.id, response.message_id);
     }
   } catch (error) {
-    console.error('发送消息到后台失败:', error);
-    // 在UI中显示错误消息
-    displayErrorMessage('消息发送失败，请稍后重试');
+    alert("消息发送失败，请稍后重试");
   }
 }
+
 function displayMessage(message) {
   // 实现显示消息的逻辑
   messages.value.push(message);
 }
 
-async function sendMessageToBackend(message) {
-  // 实现发送消息到后台的逻辑
-  try {
-    const res = await axios.post(`/api/conversations/messages`, message);
-    console.log(res);
-    return res;
-  }catch (e) {
-    console.log(e);
-    alert(`发送消息失败，错误信息为：${e}`);
-  }
-}
 
 // 辅助函数：更新已显示的消息的id
-function updateDisplayedMessage(oldId,newId) {
+function updateDisplayedMessage(oldId, newId) {
   const oldMessage = messages.value.filter(msg => msg.id === oldId).shift();
   oldMessage.id = newId;
 
 }
 
-// 辅助函数：显示错误消息
-function displayErrorMessage(errorMessage) {
-  // 实现显示错误消息的逻辑
-  const errorContainer = document.getElementById('error-container');
-  errorContainer.textContent = errorMessage;
-  errorContainer.style.display = 'block';
-  setTimeout(() => {
-    errorContainer.style.display = 'none';
-  }, 3000);
-}
-
-function isSelf(sender_id){
+function isSelf(sender_id) {
   return sender_id === current_user_id.value;
 }
-async function updateReadStatus(){
-  try{
-    const res = await axios.post(`/api/conversations/${conversation_id.value}/update_read_status`,
-        {conversation_id:conversation_id.value,
-        current_user_id:current_user_id.value,});
-    console.log(res);
-  }catch(e){
-    console.log(e);
+
+async function updateReadStatus() {
+  /*更新消息的读取状态*/
+  try {
+    await apiService.updateReadStatus(conversation_id.value, current_user_id.value);
+  } catch (e) {
     alert(`更新已读状态失败，错误信息为：${e}`);
   }
 }
 
-async function retractMessage(message_id){
-  console.log(message_id);
-  // 处理撤回逻辑
-  try{
-    const res = await axios.post(`/api/messages/${message_id}/retract`,{
-      message_id:+message_id,
-      current_user_id:+current_user_id.value,
-      time:new Date().toISOString(),
-    });
-    console.log(res);
-  }catch (e){
-    console.log(e);
-    alert(`撤回失败，错误信息为：${e}`);
+async function retractMessage(message_id) {
+  /*撤回消息*/
+  // 向后台发送消息处理撤回逻辑
+  try {
+    await apiService.retractMessage(message_id, current_user_id.value);
+  } catch (e) {
+    alert(`撤回失败，请重试`);
   }
-  console.log('撤回消息:', message_id)
-  // 例如,从messages数组中移除该消息
-  messages.value = messages.value.filter(msg => msg.id !== message_id)
+  // 前台移除该消息
+  removeMessage(message_id)
 }
 
 const connection = ref(null);
+const socket = ref(null);
+const connectionStatus = ref('Disconnected');
+const errorStatus = ref('');
 
-const startConnection = async () =>{
-  connection.value = new signalR.HubConnectionBuilder()
-      .withUrl(`/chathub`)
-      .build();
-  try{
-    await connection.value.start();
-    console.log("SignalR Connected. ");
+const connect = () => {
+  socket.value = new WebSocket(`wss://localhost:44343/ws?user_id=${current_user_id.value}`);
 
-    connection.value.on('ReceiveMessage',async (message) => {
-      if (message.data.receiver_user_id === current_user_id) {
-        messages.value.push(message);
-        try {
-          const res = await axios.post(`/api/messages/receive`, {
-            message_id: message.message_id,
-            receiver_in_window: true,
-            sender_user_id: message.sender_user_id,
-          });
+  socket.value.onopen = () => {
+    connectionStatus.value = 'Connected';
+    errorStatus.value = '';
+  };
 
-          console.log(res);
-        } catch (e) {
-          console.error(e);
-          alert(e);
-        }
+  socket.value.onclose = () => {
+    connectionStatus.value = 'Disconnected';
+    setTimeout(connect, 3000);//断连后三秒重连
+  };
 
-      }
+  socket.value.onerror = (error) => {
+    errorStatus.value = `WebSocket Error: ${error.message}`;
+  };
 
-    });
+  socket.value.onmessage = (event) => {
+    receiveMessage(event.data);
+  };
+};
 
+function convertMessageFormat(originalMessage) {
+  //解析接收消息的格式并更改为此组件中使用的message格式
+  const msg = JSON.parse(originalMessage);
+  return {
+    id: msg.Message_ID,
+    conversation_id: conversation_id.value,
+    content: msg.Message_Content,
+    type: msg.Message_Type,
+    time: msg.Send_Time,
+    sender: msg.Sender_User_ID,
+    current_user_id: msg.Receiver_User_ID
+  };
+}
 
-  } catch (e){
-    console.error("SignalR Connection Error: ");
-    console.error(e);
+function removeMessage(message_id: Number) {
+  messages.value = messages.value.filter(msg => msg.id !== message_id)
+}
+
+const receiver_in_window = ref(true);
+const receiveMessage = (message) => {
+  //接收消息
+  let newMessage = convertMessageFormat(message);
+  if (newMessage.type === 'retract') {
+    removeMessage(newMessage.id);
+  } else if (newMessage.type === 'text') {
+    displayMessage(newMessage);
+  }
+  apiService.receiveMessage(newMessage.id,receiver_in_window.value,newMessage.sender);
+};
+
+const disconnect = () => {
+  //断开连接
+  if (socket.value) {
+    socket.value.close();
+    socket.value = null;
+  }
+};
+const checkConnection = () => {
+  //检查连接状态的函数
+  if (socket.value) {
+    switch (socket.value.readyState) {
+      case WebSocket.CONNECTING:
+        connectionStatus.value = 'Connecting...';
+        break;
+      case WebSocket.OPEN:
+        connectionStatus.value = 'Connected';
+        break;
+      case WebSocket.CLOSING:
+        connectionStatus.value = 'Closing...';
+        break;
+      case WebSocket.CLOSED:
+        connectionStatus.value = 'Disconnected';
+        break;
+    }
+  } else {
+    connectionStatus.value = 'No connection';
+  }
+};
+
+const chatContainerRef = ref(null);
+const scrollToBottom = () => {
+  nextTick(() => {
+    if (chatContainerRef.value) {
+      chatContainerRef.value.scrollTop = chatContainerRef.value.scrollHeight
+    }
+  })
+}
+
+const is_following = ref(false);
+const checkFollowingStatus = async ()=>{
+  try {
+    const res = await axios.post("/api/user/follow/status", {
+      target_id: conversation_id.value,
+      current_user_id: current_user_id.value
+    })
+
+    is_following.value=res.data.is_following
+
+  }catch (err){
+    console.error(err)
   }
 
 }
 
-
-onMounted(()=>{
+onMounted(() => {
   updateReadStatus();
   getMessages();
-  //startConnection();
+  scrollToBottom();
+  receiver_in_window.value=true;
+  connect();
+  checkFollowingStatus();
 })
 
-onUnmounted(()=>{
-  if(connection.value){
-    connection.value.stop();
-  }
+onUpdated(() => {
+  scrollToBottom();
+
 })
 
-
+onUnmounted(() => {
+  receiver_in_window.value=false;
+  disconnect();
+})
 
 
 </script>
 
 <template>
-  <div class="chat-container">
+  <div class="chat-container" ref="chatContainerRef">
     <div class="messages-list">
       <ChatBubble
-        v-for="msg in messages"
-        :key="msg.id"
-        :id="msg.id"
-        :content="msg.content"
-        :time="msg.time"
-        :isSelf="isSelf(msg.sender)"
-        :avatar="isSelf(msg.sender) ? '' :other_avatar"
-        :type="msg.type"
-        @retract="retractMessage"
+          v-for="msg in messages"
+          :key="msg.id"
+          :message_id="msg.id"
+          :content="msg.content"
+          :time="msg.time"
+          :isSelf="isSelf(msg.sender)"
+          :message_sender_id="msg.sender"
+          :avatar="isSelf(msg.sender) ? '' :other_avatar"
+          :type="msg.type"
+          :user_name="other_name"
+          v-model:is_following="is_following"
+          @follow="checkFollowingStatus"
+          @retract="retractMessage"
       />
     </div>
+    <button @click="checkConnection">检查连接</button>
 
     <MessageInput
-      :is-sending="isSending"
-      @send-message="handleSendMessage"
-      class="message-input"
+        :is-sending="isSending"
+        @send-message="handleSendMessage"
+        class="message-input"
     />
   </div>
 </template>
@@ -236,7 +280,7 @@ onUnmounted(()=>{
   margin-bottom: 20px;
 }
 
-.message-input{
+.message-input {
 
   position: absolute;
   bottom: 0;

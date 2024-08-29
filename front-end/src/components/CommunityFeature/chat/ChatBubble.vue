@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import {  computed ,ref, onMounted,onUnmounted} from 'vue'
 import { useTimeFormat } from './useTimeFormat';
+import followButton from '@/components/CommunityFeature/follow/followButton.vue'
 const props = defineProps({
   content: {//聊天内容字符串
     type: String,
@@ -22,19 +23,30 @@ const props = defineProps({
     type: String,
     default: "text"
   },
-  id:{
-    type: String,
+  message_id:{
+    type: Number,
     required:true
   },
+  user_name:{
+    type: String,
+    default:''
+  },
+  message_sender_id:{
+    type: Number,
+    required:true
+  },
+  is_following:{
+    type:Boolean,
+    required:true
+  }
 
 });
-const emit = defineEmits(['retract']);
+const emit = defineEmits(['retract','follow']);
 const { formattedTime } = useTimeFormat(props.time);
 const showRetract = ref(false); // 是否显示撤回按钮
 const retractMessage = (()=>{
-  emit('retract',props.id);
+  emit('retract',props.message_id);
 });
-
 const toggleRetract = ()=>{
   showRetract.value=!showRetract.value;
 };
@@ -56,11 +68,17 @@ const isWithinFiveMinutes = computed(() => {
   return currentTime.value - messageTime <= fiveMinutesInMs;
 });
 
+const showUserInfo = ref(false);
+const toggleUserInfo = () => {
+  showUserInfo.value = !showUserInfo.value;
+};
+
+
 </script>
 
 <template>
   <div class="chat-bubble" :class="{ 'self': isSelf }">
-    <div class="avatar" v-if="!isSelf">
+    <div class="avatar" v-if="!isSelf" @click="toggleUserInfo" ref="avatarRef">
       <img :src="avatar" alt="User Avatar">
     </div>
     <div class="message-container" @mouseenter="toggleRetract" @mouseleave="toggleRetract">
@@ -69,6 +87,12 @@ const isWithinFiveMinutes = computed(() => {
         <button @click="retractMessage">撤回</button>
       </div>
       <div class="time">{{ formattedTime }}</div>
+    </div>
+    <div v-if="showUserInfo && !isSelf" class="user-info" @mouseleave="toggleUserInfo">
+      <p><strong>ID:</strong> {{ message_sender_id }}</p>
+      <p><strong>用户名:</strong> {{ user_name }}</p>
+      <followButton class="follow-button" :user_id="message_sender_id" :initial-follow-state="is_following" ></followButton>
+
     </div>
   </div>
 </template>
@@ -156,5 +180,17 @@ button:hover {
 
 button:active {
   background-color: #004085;
+}
+
+.user-info {
+  position: relative;
+  left: 50px;
+  top: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  z-index: 10;
 }
 </style>

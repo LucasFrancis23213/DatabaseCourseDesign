@@ -171,6 +171,7 @@ export const useMenuStore = defineStore('menu', () => {
     addMenu,
     updateMenu,
     removeMenu,
-    clearMenu
+    clearMenu,
   };
+  
 });

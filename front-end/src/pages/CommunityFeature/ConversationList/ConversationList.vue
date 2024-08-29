@@ -1,12 +1,23 @@
 <template>
   <div class="conversation-list">
     <h1>用户列表</h1>
-    <div v-for="conversation in conversations"
-         :key="conversation.id"
-         class="conversation-item"
-         @click="navigateToConversation(conversation.id,current_user_id)"
+    <a-input
+      v-model:value="userId"
+      placeholder="想要建立会话的用户id"
+      @pressEnter="navigateToConversation(userId, currentUserId)"
     >
-      <img :src="conversation.avatar" :alt="conversation.name" class="avatar">
+      <template #suffix>
+        <a-button type="primary" @click="navigateToConversation(userId, currentUserId)">确定</a-button>
+      </template>
+    </a-input>
+    <CreateConversationBtn :target-id="303" />
+    <div
+      v-for="conversation in conversations"
+      :key="conversation.id"
+      class="conversation-item"
+      @click="navigateToConversation(conversation.id, currentUserId)"
+    >
+      <a-avatar :src="conversation.avatar" :alt="conversation.name" class="avatar" />
       <div class="conversation-details">
         <div class="name-and-time">
           <span class="name">{{ conversation.name }}</span>
@@ -14,73 +25,67 @@
         </div>
         <div class="message">{{ conversation.last_message }}</div>
       </div>
-      <div v-if="conversation.unread_count > 0" class="unread-badge">
-        {{ conversation.unread_count }}
-      </div>
+      <a-badge
+        v-if="conversation.unread_count > 0"
+        :count="conversation.unread_count"
+        class="unread-badge"
+      />
     </div>
   </div>
 </template>
 
 <script setup>
-
-import {onMounted, ref} from "vue";
-import {useRouter} from "vue-router";
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { message } from 'ant-design-vue';
 import axios from 'axios';
+import { useAccountStore } from '@/store/account';
+import CreateConversationBtn from '@/components/CommunityFeature/chat/CreateConversationBtn.vue';
+
+const { account } = useAccountStore();
+const router = useRouter();
+
+const conversations = ref([]);
+const userId = ref('');
+const currentUserId = ref(account.userId);
+
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
-let conversations = ref([]);
-const router = useRouter();
-let current_user_id = ref(12345);
-async function getConversations() {
-  console.log("getConversations");
+const getConversations = async () => {
   try {
-    const res = await axios.post(`/api/conversations`,{current_user_id:current_user_id.value})
-    console.log(res);
+    const res = await axios.post('/api/conversations', { current_user_id: currentUserId.value });
     conversations.value = res.data.conversations;
-    //console.log("conversations are " + conversations);
   } catch (e) {
-    console.log(e);
-    alert(`获取消息列表失败，错误信息为：${e}`);
+    console.error(e);
+    message.error(`获取消息列表失败，错误信息为：${e.message}`);
   }
-}
+};
 
-onMounted(()=>{
-  getConversations();
-})
+onMounted(getConversations);
 
 const formatTime = (timeString) => {
-  const date = new Date(timeString)
-  const now = new Date()
-  const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24))
+  const date = new Date(timeString);
+  const now = new Date();
+  const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
 
   if (diffDays === 0) {
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   } else if (diffDays === 1) {
-    return '昨天'
+    return '昨天';
   } else if (diffDays < 7) {
-    return ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][date.getDay()]
+    return ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][date.getDay()];
   } else {
-    return date.toLocaleDateString()
+    return date.toLocaleDateString();
   }
-}
+};
 
-console.log("cuid是的数据类型是"+typeof current_user_id.value);
-
-const navigateToConversation = (conversation_id,current_user_id) => {
-  console.log( conversation_id,current_user_id);
-  console.log( typeof conversation_id,typeof current_user_id);
+const navigateToConversation = (conversationId, currentUserId) => {
   router.push({
-    name: "聊天",
-    params: {
-      "conversation_id": conversation_id ,
-
-    },
-    // 如果你想传递额外的数据，可以使用 query 参数
-    query: { "current_user_id":current_user_id, }
-  })
-}
-
-
+    name: '聊天',
+    params: { conversation_id: conversationId },
+    query: { current_user_id: currentUserId },
+  });
+};
 </script>
 
 <style scoped>
@@ -105,9 +110,6 @@ h1 {
 }
 
 .avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
   margin-right: 15px;
 }
 
@@ -142,15 +144,6 @@ h1 {
 }
 
 .unread-badge {
-  background-color: #ff4136;
-  color: white;
-  border-radius: 50%;
-  min-width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.8em;
   position: absolute;
   top: 15px;
   right: 15px;

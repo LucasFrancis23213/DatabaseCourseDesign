@@ -12,7 +12,10 @@
         <div class="info flex items-center">
           <img class="w-20 rounded-lg" src="@/assets/avatar/face-1.jpg" />
           <div class="flex flex-col justify-around ml-4">
-          <span class="text-title text-xl font-bold">{{ userInfo.username }}</span>
+            <div style="display: flex; align-items: center;">
+              <span class="text-title text-xl font-bold">{{ userInfo.username }}</span>
+              <EditFilled @click="edit" class="text-subtext hover:text-primary cursor-pointer" style="margin-left:10px" />
+            </div>
           <span class="text-subtext font-semibold">ID: {{ userInfo.userId }}</span>
           <!-- 实名认证按钮 -->
           <a-button @click="isAuthModalVisible = true" type="primary" class="mt-2">实名认证</a-button>
@@ -59,13 +62,35 @@
     是否注销账号: {{ accountStore.account.userName }}?
   </template>
   </a-modal>
-
+  <a-modal
+    v-model:visible="isEditModalVisible"
+    title="编辑个人信息"
+    ok-text="确认"
+    cancel-text="取消"
+    @ok="confirmEdit"
+    @cancel="cancelEdit"
+    style="max-width: 400px;"
+  >
+  <a-form :model="editRecord" :labelCol="{ span: 8 }" :wrapperCol="{ span: 12 }">
+    <a-form-item label="用户ID" name="userID">
+      <span>{{ editRecord.userID }}</span>
+    </a-form-item>
+    <a-form-item label="用户名" name="userName">
+      <a-input v-model:value="editRecord.userName" :placeholder="userInfo.username"/>
+    </a-form-item>
+    <a-form-item label="绑定号码" name="contact">
+      <a-input v-model:value="editRecord.contact" :placeholder="userInfo.contact" />
+    </a-form-item>
+  </a-form>
+  </a-modal>
   <MyFind />
   <MySearch />
 </template>
 
 <script lang="ts" setup>
 import { ref, computed, onMounted } from 'vue';
+import { message } from 'ant-design-vue';
+import axios from 'axios';
 import { useAccountStore } from '@/store/account'; // 确保正确导入你的 store
 import Conversation from './Conversation.vue';
 import PlatformSetting from './PlatformSetting.vue';
@@ -82,11 +107,13 @@ const realName = ref('');
 const idCard = ref('');
 const isAuthModalVisible = ref(false); // 控制实名认证模态框显示
 const isDeleteModalVisible = ref(false); // 控制注销模态框显示
+const isEditModalVisible = ref(false); //控制编辑信息模态框显示
 
 // 访问 userInfo 数据
 const userInfo = computed(() => ({
   username: accountStore.account.userName,
-  userId: accountStore.account.userId
+  userId: accountStore.account.userId,
+  contact:accountStore.account.contact
 }));
 
 // 实名认证提交逻辑
@@ -101,6 +128,50 @@ const deleteUser = () => {
   accountStore.deleteUser();
   router.push('/home');
 };
+
+const editRecord = ref({
+  userID: '',
+  userName: '',
+  password:null,
+  contact:''
+});
+
+function edit() {
+  editRecord.value = {
+    userID: userInfo.value.userId,
+    userName: '',
+    password:null,
+    contact:''
+  };
+  isEditModalVisible.value = true;
+}
+
+function confirmEdit() {
+  let url = `https://localhost:44343/api/UserManagement/UpdateUserInfo`;
+
+  // 确保 editRecord 解构并传递到 API
+  axios.put(url, editRecord.value)
+    .then(() => {
+      message.success('编辑成功！');
+      accountStore.account.userName=editRecord.value.userName;
+      accountStore.profile();
+      isEditModalVisible.value = false;
+    })
+    .catch(error => {
+      message.error('编辑失败，请重试');
+      console.error('Error updating transaction:', error);
+    });
+}
+
+function cancelEdit() {
+  editRecord.value = {
+    userID: '',
+    userName: '',
+    password:null,
+    contact:''
+  };
+  isEditModalVisible.value = false;
+}
 </script>
 
 <style lang="less" scoped>
@@ -128,4 +199,11 @@ const deleteUser = () => {
       }
     }
   }
+
+  .read-the-docs {
+  color: #888;
+}
+.second-text {
+  color: #e60707;
+}
 </style>
