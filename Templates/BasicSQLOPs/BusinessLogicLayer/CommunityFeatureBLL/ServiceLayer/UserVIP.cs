@@ -35,24 +35,17 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
         {
             try
             {
-                var condition = new Dictionary<string, object> { { "user_id", userId }, { "status", "Active" } };
-                var vipMember = VIP_MembersBusiness.QueryBusiness(condition, "AND").FirstOrDefault();
-                if (vipMember != null)
+                var vip = GetVIPInfo(userId).FirstOrDefault();
+
+                if (vip != null && vip.Status == "Active")
                 {
-                    if(vipMember.VIP_End_Date < DateTime.Now)
-                    {
-                        // 更新状态为“逾期”
-                        var updateParams = new Dictionary<string, object> { { "status", "Inactive" } };
-                        VIP_MembersBusiness.UpdateBusiness(updateParams, condition);
-                        return -1;
-                    }
-                    else
-                    {
-                        return vipMember.VIP_Member_ID;
-                    }
-                    
+                    return vip.VIP_Member_ID;
                 }
-                return -1;
+                else
+                {
+                    return -1;
+                }
+                
                 
             }
             catch (Exception ex)
@@ -168,7 +161,8 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
                 };
 
                 // 查询数据库获取VIP信息
-                var vipInfoList = VIP_MembersBusiness.QueryTableWithWhereBusiness(whereClause, parameters);
+                List<VIP_Members> vipInfoList = VIP_MembersBusiness.QueryTableWithWhereBusiness(whereClause, parameters);
+                
                 return vipInfoList;
             }
             catch (Exception ex)
