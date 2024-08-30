@@ -109,7 +109,7 @@ const connectionStatus = ref('Disconnected');
 const errorStatus = ref('');
 
 const connect = () => {
-  socket.value = new WebSocket(`wss://localhost:44343/ws?user_id=${current_user_id.value}`);
+  socket.value = new WebSocket(`wss://121.36.200.128:5174/ws?user_id=${current_user_id.value}`);
 
   socket.value.onopen = () => {
     connectionStatus.value = 'Connected';
@@ -118,7 +118,7 @@ const connect = () => {
 
   socket.value.onclose = () => {
     connectionStatus.value = 'Disconnected';
-    setTimeout(connect, 3000);//断连后三秒重连
+    //setTimeout(connect, 3000);//断连后三秒重连
   };
 
   socket.value.onerror = (error) => {
@@ -187,6 +187,7 @@ const checkConnection = () => {
   } else {
     connectionStatus.value = 'No connection';
   }
+  console.log(connectionStatus.value);
 };
 
 const chatContainerRef = ref(null);
