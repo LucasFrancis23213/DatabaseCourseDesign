@@ -31,9 +31,7 @@ namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
             var user = users.FirstOrDefault(u => u.Is_Deleted == 0);
 
             if (user is null)
-            {
-                return Tuple.Create(false, "User表没有符合要求的元素");
-            }
+                return Tuple.Create(false, "Users表没有符合要求的元素");
 
             return user.Password == PasswordEncryptor.EncryptPassword(Password)
                 ? Tuple.Create(true, "用户名与密码匹配，登录成功")

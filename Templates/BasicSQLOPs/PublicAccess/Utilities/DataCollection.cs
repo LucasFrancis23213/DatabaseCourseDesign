@@ -337,10 +337,8 @@ namespace SQLOperation.PublicAccess.Utilities
 
     public class Auth_Info
     {
-        public int User_ID;
-        public string Auth_Status;
-        public DateTime Auth_Date;
-        public string Status;
+        public int User_ID { get; set; }
+        public DateTime Auth_Date { get; set; }
     }
 
     public class System_Logs

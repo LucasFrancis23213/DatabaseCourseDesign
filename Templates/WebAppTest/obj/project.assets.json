@@ -5581,19 +5581,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\zyn\\.nuget\\packages\\": {}
+    "C:\\Users\\PeiYu Duan\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\同济\\大二下\\数据库\\期末大项目\\DatabaseCourseDesign\\Templates\\WebAppTest\\WebAppTest.csproj",
+      "projectUniqueName": "D:\\database project\\DatabaseCourseDesign\\Templates\\WebAppTest\\WebAppTest.csproj",
       "projectName": "WebAppTest",
-      "projectPath": "D:\\同济\\大二下\\数据库\\期末大项目\\DatabaseCourseDesign\\Templates\\WebAppTest\\WebAppTest.csproj",
-      "packagesPath": "C:\\Users\\zyn\\.nuget\\packages\\",
-      "outputPath": "D:\\同济\\大二下\\数据库\\期末大项目\\DatabaseCourseDesign\\Templates\\WebAppTest\\obj\\",
+      "projectPath": "D:\\database project\\DatabaseCourseDesign\\Templates\\WebAppTest\\WebAppTest.csproj",
+      "packagesPath": "C:\\Users\\PeiYu Duan\\.nuget\\packages\\",
+      "outputPath": "D:\\database project\\DatabaseCourseDesign\\Templates\\WebAppTest\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\zyn\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\PeiYu Duan\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -5608,8 +5608,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\同济\\大二下\\数据库\\期末大项目\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj": {
-              "projectPath": "D:\\同济\\大二下\\数据库\\期末大项目\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj"
+            "D:\\database project\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj": {
+              "projectPath": "D:\\database project\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj"
             }
           }
         }
@@ -5669,7 +5669,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

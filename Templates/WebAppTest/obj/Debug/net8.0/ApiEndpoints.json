@@ -1005,32 +1005,6 @@
   },
   {
     "ContainingType": "WebAppTest.APITemplate.SQLOpsController",
-    "Method": "Insert",
-    "RelativePath": "api/SQLOps/Insert",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "auth_info",
-        "Type": "System.Object",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Boolean",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "WebAppTest.APITemplate.SQLOpsController",
     "Method": "Query",
     "RelativePath": "api/SQLOps/Query",
     "HttpMethod": "GET",
@@ -1316,6 +1290,22 @@
   },
   {
     "ContainingType": "WebAppTest.APILayer.ManagementFeatureAPI.UserManagementController",
+    "Method": "DeleteAuthInfo",
+    "RelativePath": "api/UserManagement/DeleteAuthInfo",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "UserID",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebAppTest.APILayer.ManagementFeatureAPI.UserManagementController",
     "Method": "DeleteUser",
     "RelativePath": "api/UserManagement/DeleteUser",
     "HttpMethod": "DELETE",
@@ -1326,6 +1316,38 @@
         "Name": "UserID",
         "Type": "System.Int32",
         "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebAppTest.APILayer.ManagementFeatureAPI.UserManagementController",
+    "Method": "GetAuthInfo",
+    "RelativePath": "api/UserManagement/GetAuthInfo",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "UserID",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "WebAppTest.APILayer.ManagementFeatureAPI.UserManagementController",
+    "Method": "NewUserAuthed",
+    "RelativePath": "api/UserManagement/NewUserAuthed",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "NewAuth",
+        "Type": "SQLOperation.PublicAccess.Utilities.Auth_Info",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []

@@ -1,7 +1,7 @@
-﻿using SQLOperation.DataAccessLayer.ManagementFeatureDAL;
+﻿using Newtonsoft.Json;
+using SQLOperation.DataAccessLayer.ManagementFeatureDAL;
 using SQLOperation.PublicAccess.Utilities;
 using SQLOperation.PublicAccess.Utilities.ManagementFeatureUtil;
-using System.Text.Json;
 
 namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
 {
@@ -15,12 +15,15 @@ namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
 
         public Tuple<bool, string> GetInfo(int? UserID, string? UserName, bool IsAdmin = false)
         {
+            if (!IsAdmin && UserID is null && UserName is null)
+                return new Tuple<bool, string>(false, "未找到用户");
+
             Tuple<bool, string> QueryResult = UserOperatorDAL.GetUserInfo(UserID, UserName);
 
             if (!QueryResult.Item1)
                 return new Tuple<bool, string>(false, QueryResult.Item2);
 
-            var users = JsonSerializer.Deserialize<List<Users>>(QueryResult.Item2);
+            var users = JsonConvert.DeserializeObject<List<Users>>(QueryResult.Item2);
 
             if (users == null || users.Count <= 0)
                 return new Tuple<bool, string>(false, "无法将Users类型转换为Json类型");
@@ -41,7 +44,7 @@ namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
                 });
             }
 
-            return new Tuple<bool, string>(true, JsonSerializer.Serialize(Resultlist));
+            return new Tuple<bool, string>(true, JsonConvert.SerializeObject(Resultlist));
         }
     }
 }

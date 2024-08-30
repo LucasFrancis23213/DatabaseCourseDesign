@@ -237,6 +237,7 @@ D:\同济\大二下\数据库\期末大项目\DatabaseCourseDesign\Templates\Web
 D:\同济\大二下\数据库\期末大项目\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\Oracle.ManagedDataAccess.dll
 D:\同济\大二下\数据库\期末大项目\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\Renci.SshNet.Async.dll
 D:\同济\大二下\数据库\期末大项目\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\Renci.SshNet.dll
+D:\同济\大二下\数据库\期末大项目\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\SshNet.Security.Cryptography.dll
 D:\同济\大二下\数据库\期末大项目\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
 D:\同济\大二下\数据库\期末大项目\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\同济\大二下\数据库\期末大项目\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -244,6 +245,7 @@ D:\同济\大二下\数据库\期末大项目\DatabaseCourseDesign\Templates\Web
 D:\同济\大二下\数据库\期末大项目\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\System.Diagnostics.PerformanceCounter.dll
 D:\同济\大二下\数据库\期末大项目\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\System.DirectoryServices.Protocols.dll
 D:\同济\大二下\数据库\期末大项目\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
+D:\同济\大二下\数据库\期末大项目\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\System.Xml.XPath.XmlDocument.dll
 D:\同济\大二下\数据库\期末大项目\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.PerformanceCounter.dll
 D:\同济\大二下\数据库\期末大项目\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\runtimes\linux\lib\net8.0\System.DirectoryServices.Protocols.dll
 D:\同济\大二下\数据库\期末大项目\DatabaseCourseDesign\Templates\WebAppTest\bin\Debug\net8.0\runtimes\osx\lib\net8.0\System.DirectoryServices.Protocols.dll
