@@ -57,7 +57,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
                 catch (Exception ex)
                 {
                     transaction.Rollback();
-                    return BadRequest(new { status = "error", message = $"发表评论时发生错误: {ex.Message}" });
+                    return BadRequest(new { status = "error", message = $"{ex.Message}" });
                 }
 
             }
@@ -92,7 +92,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
             }
             catch (Exception ex)
             {
-                return BadRequest(new { status = "error", message = $"删除评论时发生错误: {ex.Message}" });
+                return BadRequest(new { status = "error", message = $"{ex.Message}" });
             }
         }
 
@@ -134,7 +134,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
             }
             catch (Exception ex)
             {
-                return BadRequest(new { status = "error", message = $"查看评论时发生错误: {ex.Message}" });
+                return BadRequest(new { status = "error", message = $"{ex.Message}" });
             }
         }
     }

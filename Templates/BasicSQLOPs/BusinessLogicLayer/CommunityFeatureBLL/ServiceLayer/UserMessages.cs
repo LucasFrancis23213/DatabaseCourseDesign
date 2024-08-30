@@ -35,41 +35,44 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
             {
                 // 发送者 接收者 unread_count 
                 string selectClause = @"
-            
-                m.SENDER_USER_ID AS SENDER_USER_ID, 
-                m.RECEIVER_USER_ID AS RECEIVER_USER_ID, 
-                COUNT(CASE WHEN m.READ_STATUS = 'N' THEN 1 ELSE NULL END) AS UNREAD_COUNT, 
-                MAX(m.SEND_TIME) AS LAST_MESSAGE_TIME,
-                 MAX(CASE WHEN m.SEND_TIME = (
-                    SELECT MAX(m2.SEND_TIME)
-                    FROM USER_MESSAGES m2
-                    WHERE m2.SENDER_USER_ID = m.SENDER_USER_ID AND m2.RECEIVER_USER_ID = m.RECEIVER_USER_ID
-                ) THEN TO_CHAR(m.MESSAGE_CONTENT) ELSE NULL END) AS MESSAGE_CONTENT,
-                u.USER_ID AS USER_ID,
-                u.USER_NAME AS USER_NAME
-        ";
+    m.OTHER_USER_ID AS USER_ID,
+    u.USER_NAME AS USER_NAME,
+    COUNT(CASE WHEN m.READ_STATUS = 'N' AND m.RECEIVER_USER_ID = :userId THEN 1 END) AS UNREAD_COUNT,
+    MAX(m.SEND_TIME) AS LAST_MESSAGE_TIME,
+    MAX(CASE 
+        WHEN m.SEND_TIME = (
+            SELECT MAX(m2.SEND_TIME)
+            FROM USER_MESSAGES m2
+            WHERE (m2.SENDER_USER_ID = m.SENDER_USER_ID AND m2.RECEIVER_USER_ID = m.RECEIVER_USER_ID)
+               OR (m2.SENDER_USER_ID = m.RECEIVER_USER_ID AND m2.RECEIVER_USER_ID = m.SENDER_USER_ID)
+        ) THEN TO_CHAR(m.MESSAGE_CONTENT) 
+        ELSE NULL 
+    END) AS MESSAGE_CONTENT
+";
 
                 string fromClause = @"
-            
-                USER_MESSAGES m
-
-            LEFT OUTER JOIN 
-                USERS u
-            ON 
-                u.USER_ID = m.SENDER_USER_ID OR u.USER_ID = m.RECEIVER_USER_ID
-        ";
+    (SELECT 
+        m.*,
+        CASE 
+            WHEN m.SENDER_USER_ID = :userId THEN m.RECEIVER_USER_ID
+            ELSE m.SENDER_USER_ID
+        END AS OTHER_USER_ID
+    FROM USER_MESSAGES m) m
+    LEFT OUTER JOIN 
+        USERS u 
+    ON 
+        u.USER_ID = m.OTHER_USER_ID
+";
 
                 string whereClause = @"
-            
-                u.USER_ID != :userId
-                AND (m.SENDER_USER_ID = :userId OR m.RECEIVER_USER_ID = :userId)
-            GROUP BY 
-                m.SENDER_USER_ID, 
-                m.RECEIVER_USER_ID,
-                u.USER_ID,
-                u.USER_NAME
-        ";
-
+    :userId IN (m.SENDER_USER_ID, m.RECEIVER_USER_ID)
+GROUP BY 
+    m.OTHER_USER_ID,
+    u.USER_NAME
+ORDER BY 
+    UNREAD_COUNT DESC,
+    LAST_MESSAGE_TIME DESC
+";
 
 
 
@@ -83,7 +86,7 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
                 List<Dictionary<string, object>> rowList = UserMessagesBusiness.QueryTableWithSelectBusiness(selectClause, fromClause, whereClause, parameters);
 
                 // 使用字典存储已合并的会话，key为另一个用户的ID，value为Conversation_User_Message对象
-                Dictionary<int, Conversation_User_Message> mergedConversations = new Dictionary<int, Conversation_User_Message>();
+               List<Conversation_User_Message> mergedConversations = new List< Conversation_User_Message>();
 
                 foreach (var row in rowList)
                 {
@@ -91,61 +94,15 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
                     Conversation conversation = UserConversationsBusiness.MapDictionaryToObject(row);
                     Users userInfo = UsersBusiness.MapDictionaryToObject(row);
 
-                    // 确定另一个用户的ID
-                    int otherUserId = userInfo.User_ID;
-
-                    // 如果已经存在相同的会话，则比较消息的时间，保留最近的消息
-                    if (mergedConversations.ContainsKey(otherUserId))
-                    {
-                        var existingConversation = mergedConversations[otherUserId];
-                        if (conversation.Last_Message_Time > existingConversation.Conversation.Last_Message_Time)
-                        {
-                            if (conversation.Receiver_User_ID == userId)
-                            {
-                                // 更新整个会话和消息
-                                existingConversation.Conversation = conversation;
-                            }
-                            else
-                            {
-                                // 只更新最后一条消息
-                                existingConversation.Conversation.Last_Message_Time = conversation.Last_Message_Time;
-                                existingConversation.Conversation.Message_Content = conversation.Message_Content;
-                            }
-                        }
-                        else
-                        {
-                            if (conversation.Receiver_User_ID == userId)
-                            {
-                                // 更新未读消息数
-                                existingConversation.Conversation.Unread_Count = conversation.Unread_Count;
-                            }
-                        }
-                    }
-                    else
-                    {
-
-                        // 否则，直接添加新的会话和消息 接收方不是userId 先放0 
-                        if (conversation.Receiver_User_ID != userId)
-                        {
-                            conversation.Unread_Count = 0;
-                        }
-                        mergedConversations[otherUserId] = new Conversation_User_Message
-                        {
-                            Conversation = conversation,
-                            Users = userInfo
-                        };
-
-
-                    }
-
-
+                    var user_conversation=new Conversation_User_Message {Conversation=conversation,Users=userInfo};
+                    mergedConversations.Add(user_conversation);
+                   
                 }
 
+
+
                 // 将合并后的会话转换为列表，并按 unread_count 从高到低排序，再按最后一条消息时间由近到远排序
-                return mergedConversations.Values
-                    .OrderByDescending(conversation => conversation.Conversation.Unread_Count)
-                    .ThenByDescending(conversation => conversation.Conversation.Last_Message_Time)
-                    .ToList();
+                return mergedConversations;
             }
             catch (Exception ex)
             {

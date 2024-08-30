@@ -82,37 +82,50 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
                     }
 
                     // 查询vip会员信息
-                    var condition = new Dictionary<string, object> { { "user_id", userId }, { "status", "Active" } };
-                    var vipMember = VIP_MembersBusiness.QueryBusiness(condition, "AND").FirstOrDefault();
-
+                    //var condition = new Dictionary<string, object> { { "user_id", userId }, { "status", "Active" } };
+                    var vipMember = GetVIPInfo(userId).FirstOrDefault();
+                    
                     if (vipMember != null)
                     {
-                        if (vipMember.VIP_End_Date >= DateTime.Now)
+                        if (vipMember.Status == "Active")
                         {
-                            // 接着当前活跃时间之后
-                            startTime = vipMember.VIP_End_Date;
-                            endDate = startTime.AddMonths(rechargeTime);
-                            // 更新 VIP 会员信息
-                            var updateParams = new Dictionary<string, object>
+                            if (vipMember.VIP_End_Date >= DateTime.Now)
+                            {
+                                // 接着当前活跃时间之后
+                                startTime = vipMember.VIP_End_Date;
+                                endDate = startTime.AddMonths(rechargeTime);
+                                // 更新 VIP 会员信息
+                                var updateParams = new Dictionary<string, object>
                             {
                                 { "vip_end_date", endDate },
                                 { "status", "Active" }
                             };
-                            var condition_1 = new Dictionary<string, object>
+                                var condition_1 = new Dictionary<string, object>
                             {
                                 { "vip_member_id", vipMember.VIP_Member_ID }
                             };
-                            VIP_MembersBusiness.UpdateBusiness(updateParams, condition_1);
+                                VIP_MembersBusiness.UpdateBusiness(updateParams, condition_1);
 
-                            // 返回订单的基本信息
-                            vipOrder.Order_ID = orderId;
+                                // 返回订单的基本信息
+                                vipOrder.Order_ID = orderId;
 
-                            transaction.Commit();
+                                transaction.Commit();
 
-                            return new Tuple<VIP_Orders, DateTime>(vipOrder, startTime);
+                                return new Tuple<VIP_Orders, DateTime>(vipOrder, startTime);
+                            }
+                            else
+                            {
+                                throw new Exception("请求失败，请刷新重试");
+                            }
                         }
-                       
+                        else
+                        {
+                            throw new Exception("请求失败，账户已冻结，请联系管理员进行处理");
+                        }
+
+
                     }
+                   
                     // 创建新的 VIP 会员
                     var newVipMember = VIP_MembersBusiness.PackageData(0, userId, "Active", startTime, endDate);
                     var vipMemberId = VIP_MembersBusiness.AddBusiness(VIP_MembersList, "vip_member_id", newVipMember);
@@ -133,7 +146,7 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
                 {
                     transaction.Rollback();
                     Console.WriteLine($"用户充值VIP时发生错误: {ex.Message}");
-                    throw new ApplicationException("用户充值VIP时发生错误，请稍后再试。", ex);
+                    throw new ApplicationException($"用户充值VIP时发生错误：{ex.Message}");
                 }
             }
         }
