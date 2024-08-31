@@ -7,7 +7,7 @@ const messageRoute:RouteRecordRaw[] = [
     props:true,
     meta: {
       renderMenu: false,
-      cacheable: true,
+      cacheable: false,
     },
     component:() =>import('@/pages/CommunityFeature/chat')
   },
@@ -17,7 +17,7 @@ const messageRoute:RouteRecordRaw[] = [
     props:true,
     meta: {
       renderMenu: true,
-      cacheable: true,
+      cacheable: false,
     },
     component:() =>import('@/pages/CommunityFeature/ConversationList')
   },
