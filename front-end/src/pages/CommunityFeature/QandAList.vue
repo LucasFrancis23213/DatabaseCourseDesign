@@ -6,9 +6,16 @@
 
 <script lang="ts" setup>
 import QuestionsList from '../../components/CommunityFeature/QandAList.vue';
+import { useAccountStore } from '@/store/account';
+const {account,permissions} = useAccountStore();
+// 示例用户数据
+let currentUser = {
+    id: account.userId,
+    name: account.userName,
+    avatar: 'src/assets/avatar/face-2.jpg'
+};
 
 const itemId = '123'; // 示例项目ID
-const currentUser = { id: 1, name: 'John Doe', avatar: 'src/assets/avatar/face-2.jpg' }; // 示例用户数据
 </script>
 
 <style scoped>
