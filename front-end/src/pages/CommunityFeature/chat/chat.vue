@@ -129,7 +129,7 @@ const removeMessage = (message_id: number) => {
 };
 
 const connect = () => {
-  socket.value = new WebSocket(`wss://121.36.200.128:5174/ws?user_id=${current_user_id.value}`);
+  socket.value = new WebSocket(`ws://121.36.200.128:5174/ws?user_id=${current_user_id.value}`);
 
   socket.value.onopen = () => {
     connectionStatus.value = 'Connected';
