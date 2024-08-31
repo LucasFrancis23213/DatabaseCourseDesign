@@ -29,6 +29,7 @@
 <script setup>
 import {ref, computed} from 'vue';
 import axios from "axios";
+import {message} from "ant-design-vue";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 const props = defineProps(['user_id']);
@@ -47,12 +48,19 @@ const isFormValid = computed(() => {
   return vipData.value.vip_end_time && 1;
 });
 
+function validateTime() {
+  return vipData.value.vip_end_time > vipData.value.vip_start_time;
+}
+
 const submitVip = async () => {
   if (!isFormValid.value) {
     alert('请填写所有必填字段');
     return;
   }
-
+  if (!validateTime()) {
+      message.error('vip结束时间必须晚于开始时间');
+      return;
+    }
   isSubmitting.value = true;
   try {
     vipData.value.vip_start_time = new Date().toISOString();
@@ -63,10 +71,10 @@ const submitVip = async () => {
     console.log(res);
     emit('vipAdded');
     resetForm();
-    alert('VIP信息添加成功！');
+    message.success('VIP信息添加成功！');
   } catch (error) {
-    console.error('添加VIP失败:', error);
-    alert('添加VIP失败，请重试。');
+    //console.error('添加VIP失败:', error);
+    alert('添加VIP失败，请重试或者检查该用户是否已有vip');
   } finally {
     isSubmitting.value = false;
   }

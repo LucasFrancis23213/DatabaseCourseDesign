@@ -110,6 +110,7 @@
 <script setup>
 import {onMounted, ref} from 'vue';
 import axios from "axios";
+import {message} from "ant-design-vue";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
@@ -175,6 +176,10 @@ async function saveEdit() {
       alert("请选择上传图片或输入url");
       return;
     }
+    if (!validateTime()) {
+      message.error('广告结束时间必须晚于开始时间');
+      return;
+    }
     // 创建一个对象来存储被修改的参数
     const changedParams = {};
 
@@ -215,6 +220,9 @@ async function saveEdit() {
 
 function cancelEdit() {
   isEditing.value = false;
+}
+function validateTime() {
+  return editedAd.value.end_time > editedAd.value.start_time;
 }
 
 async function deleteAd() {

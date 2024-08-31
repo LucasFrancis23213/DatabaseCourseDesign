@@ -1,9 +1,10 @@
 import apiService from "@/pages/CommunityFeature/chat/apiService";
 const system_user_id = import.meta.env.VITE_SYSTEM_USER_ID
-const beijingTime = new Date(new Date().getTime() + 8 * 3600 * 1000);
-const formattedTime = beijingTime.toISOString().replace('Z', '+08:00');
+
 
 async function sendSystemMsg(targetId:number,content:string,build_chat_user_id:number,sender_sys_user_id=system_user_id){
+    const beijingTime = new Date(new Date().getTime() + 8 * 3600 * 1000);
+    const formattedTime = beijingTime.toISOString().replace('Z', '+08:00');
     const sysMsg={
         id: +parseInt(Date.now().toString()), // 使用当前时间戳作为临时ID
         conversation_id: targetId,

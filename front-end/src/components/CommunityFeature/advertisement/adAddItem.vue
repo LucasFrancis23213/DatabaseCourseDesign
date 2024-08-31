@@ -25,7 +25,7 @@
       </div>
       <div v-if="imageInputType === 'url'" class="form-group">
         <label for="ad_picture">广告图片URL</label>
-        <a-input id="ad_picture" v-model="adData.ad_picture" placeholder="请输入图片网络URL"/>
+        <input id="ad_picture" v-model="adData.ad_picture" placeholder="请输入图片网络URL">
       </div>
       <div v-if="imageInputType === 'upload'" class="form-group">
         <label>广告图片上传</label>
@@ -66,6 +66,7 @@
 <script setup>
 import {ref} from 'vue';
 import axios from "axios";
+import {message} from "ant-design-vue";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
@@ -82,18 +83,26 @@ const adData = ref({
   end_time: ''
 });
 
+function validateTime() {
+  return adData.value.end_time > adData.value.start_time;
+}
+
 const submitAd = async () => {
   try {
     if (imageInputType.value === "upload") {
       if (!await uploadAdImage()) {
-        alert("请选择上传图片");
+        message.error("请选择上传图片");
         return;
       }
     } else if (imageInputType.value === "") {
-      alert("请选择上传图片或输入url");
+      message.error("请选择上传图片或输入url");
       return;
     }
-
+    if (!validateTime()) {
+      message.error('广告结束时间必须晚于开始时间');
+      return;
+    }
+    console.log(adData.value);
     const res = await axios.post('/api/advertisement/AddAdvertisement', adData.value);
     console.log(res);
     emit('adAdded');
@@ -105,10 +114,10 @@ const submitAd = async () => {
       start_time: '',
       end_time: ''
     };
-    alert('广告添加成功！');
+    //alert('广告添加成功！');
+    message.success('广告添加成功！')
   } catch (error) {
-    console.error('添加广告失败:', error);
-    alert('添加广告失败，请重试。');
+    message.error('添加广告失败，请重试。')
   }
 };
 
