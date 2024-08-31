@@ -38,6 +38,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from "axios";
+import {message} from "ant-design-vue";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
@@ -72,6 +73,10 @@ function editVip() {
   editedVip.value = {...vipInfo.value};
 }
 
+function validateTime() {
+  return editedVip.value.vip_end_time > editedVip.value.vip_start_time;
+}
+
 async function saveEdit() {
   try {
     const changedParams = {};
@@ -86,7 +91,10 @@ async function saveEdit() {
       isEditing.value = false;
       return;
     }
-
+    if (!validateTime()) {
+      message.error('vip结束时间必须晚于开始时间');
+      return;
+    }
     const response = await axios.put('/api/vip/UpdateVipMember', {
       user_id: props.user_id,
       vip_member_id: vipInfo.value.vip_member_id,
