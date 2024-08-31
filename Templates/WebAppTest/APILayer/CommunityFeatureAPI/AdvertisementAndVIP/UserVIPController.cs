@@ -153,11 +153,16 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
                 {
                     return BadRequest(new { status = "error", message = "Missing required fields." });
                 }
-
+                
                 int userId = request["user_id"].GetInt32();
                 DateTime vipStartDate = request["vip_start_time"].GetDateTime();
                 DateTime vipEndDate = request["vip_end_time"].GetDateTime();
                 string vipStatus = ControllerHelper.GetSafeString(request, "vip_status");
+
+                if (vipStartDate >= vipEndDate)
+                {
+                    throw new Exception("非法时间错误");
+                }
 
                 if (userId <= 0 || string.IsNullOrEmpty(vipStatus))
                 {

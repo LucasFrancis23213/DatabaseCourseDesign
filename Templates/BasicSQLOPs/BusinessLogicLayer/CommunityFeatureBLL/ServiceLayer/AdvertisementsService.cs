@@ -52,7 +52,14 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
                         a.END_TIME AS END_TIME,
                         a.CLICK_COUNT AS CLICK_COUNT,
                         a.SHOW_COUNT AS SHOW_COUNT,
-                        CASE WHEN a.SHOW_COUNT > 0 THEN a.CLICK_COUNT / a.SHOW_COUNT ELSE 0 END AS CLICK_RATE";  // 计算点击率
+                        CAST(
+                            CASE 
+                                WHEN a.SHOW_COUNT > 0 
+                                THEN CAST(a.CLICK_COUNT AS DECIMAL(10, 2)) / CAST(a.SHOW_COUNT AS DECIMAL(10, 2)) 
+                                ELSE 0 
+                            END 
+                        AS DECIMAL(10, 2)) AS CLICK_RATE
+                        ";  
 
                     var fromClause = "ADVERTISEMENTS a";
 

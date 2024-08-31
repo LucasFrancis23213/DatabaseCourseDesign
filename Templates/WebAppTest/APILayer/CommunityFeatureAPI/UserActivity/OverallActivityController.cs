@@ -50,7 +50,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
             catch (Exception ex)
             {
                 Console.WriteLine($"获取整体活跃度时出错：{ex.Message}");
-                return StatusCode(500, $"内部服务器错误：{ex.Message}");
+                return BadRequest(new { status = "error", message = $"{ex.Message}" });
             }
         }
 
@@ -80,7 +80,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
             catch (Exception ex)
             {
                 Console.WriteLine($"获取所有用户整体活跃度时出错：{ex.Message}");
-                return StatusCode(500, $"内部服务器错误：{ex.Message}");
+                return BadRequest(new { status = "error", message = $"{ex.Message}" });
             }
         }
     }

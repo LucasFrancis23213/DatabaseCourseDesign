@@ -35,43 +35,52 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
             {
                 // 发送者 接收者 unread_count 
                 string selectClause = @"
-    m.OTHER_USER_ID AS USER_ID,
-    u.USER_NAME AS USER_NAME,
-    COUNT(CASE WHEN m.READ_STATUS = 'N' AND m.RECEIVER_USER_ID = :userId THEN 1 END) AS UNREAD_COUNT,
-    MAX(m.SEND_TIME) AS LAST_MESSAGE_TIME,
-    MAX(CASE 
-        WHEN m.SEND_TIME = (
-            SELECT MAX(m2.SEND_TIME)
-            FROM USER_MESSAGES m2
-            WHERE (m2.SENDER_USER_ID = m.SENDER_USER_ID AND m2.RECEIVER_USER_ID = m.RECEIVER_USER_ID)
-               OR (m2.SENDER_USER_ID = m.RECEIVER_USER_ID AND m2.RECEIVER_USER_ID = m.SENDER_USER_ID)
-        ) THEN TO_CHAR(m.MESSAGE_CONTENT) 
-        ELSE NULL 
-    END) AS MESSAGE_CONTENT
-";
+                conversations.OTHER_USER_ID AS USER_ID,
+                users.USER_NAME AS USER_NAME,
+                conversations.UNREAD_COUNT,
+                conversations.LAST_MESSAGE_TIME,
+                conversations.MESSAGE_CONTENT
+            ";
 
                 string fromClause = @"
-    (SELECT 
-        m.*,
-        CASE 
-            WHEN m.SENDER_USER_ID = :userId THEN m.RECEIVER_USER_ID
-            ELSE m.SENDER_USER_ID
-        END AS OTHER_USER_ID
-    FROM USER_MESSAGES m) m
-    LEFT OUTER JOIN 
-        USERS u 
-    ON 
-        u.USER_ID = m.OTHER_USER_ID
+    (
+        SELECT 
+            CASE 
+                WHEN m.SENDER_USER_ID = :userId THEN m.RECEIVER_USER_ID
+                ELSE m.SENDER_USER_ID
+            END AS OTHER_USER_ID,
+            COUNT(CASE WHEN m.READ_STATUS = 'N' AND m.RECEIVER_USER_ID = :userId THEN 1 END) AS UNREAD_COUNT,
+            MAX(m.SEND_TIME) AS LAST_MESSAGE_TIME,
+            MAX(CASE 
+                WHEN m.SEND_TIME = (
+                    SELECT MAX(m2.SEND_TIME)
+                    FROM USER_MESSAGES m2
+                    WHERE (m2.SENDER_USER_ID = m.SENDER_USER_ID AND m2.RECEIVER_USER_ID = m.RECEIVER_USER_ID)
+                       OR (m2.SENDER_USER_ID = m.RECEIVER_USER_ID AND m2.RECEIVER_USER_ID = m.SENDER_USER_ID)
+                ) THEN TO_CHAR(m.MESSAGE_CONTENT) 
+                ELSE NULL 
+            END) AS MESSAGE_CONTENT
+        FROM 
+            USER_MESSAGES m
+        WHERE 
+            :userId IN (m.SENDER_USER_ID, m.RECEIVER_USER_ID)
+        GROUP BY 
+            CASE 
+                WHEN m.SENDER_USER_ID = :userId THEN m.RECEIVER_USER_ID
+                ELSE m.SENDER_USER_ID
+            END
+    ) conversations
+LEFT OUTER JOIN 
+    USERS users 
+ON 
+    users.USER_ID = conversations.OTHER_USER_ID
 ";
 
                 string whereClause = @"
-    :userId IN (m.SENDER_USER_ID, m.RECEIVER_USER_ID)
-GROUP BY 
-    m.OTHER_USER_ID,
-    u.USER_NAME
-ORDER BY 
-    UNREAD_COUNT DESC,
-    LAST_MESSAGE_TIME DESC
+                    1=1
+                ORDER BY 
+                    conversations.UNREAD_COUNT DESC,
+                    conversations.LAST_MESSAGE_TIME DESC
 ";
 
 
