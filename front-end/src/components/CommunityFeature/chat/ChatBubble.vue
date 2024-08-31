@@ -2,6 +2,7 @@
 import {  computed ,ref, onMounted,onUnmounted} from 'vue'
 import { useTimeFormat } from './useTimeFormat';
 import followButton from '@/components/CommunityFeature/follow/followButton.vue'
+import CreateConversationBtn from "@/components/CommunityFeature/chat/CreateConversationBtn.vue";
 const props = defineProps({
   content: {//聊天内容字符串
     type: String,
@@ -73,6 +74,27 @@ const toggleUserInfo = () => {
   showUserInfo.value = !showUserInfo.value;
 };
 
+const isSystemMsg=computed(() => {
+  return props.message_sender_id === +import.meta.env.VITE_SYSTEM_USER_ID
+});
+
+const Content = computed(()=>{
+  if(isSystemMsg.value) {
+    return JSON.parse(props.content).content;
+  }
+  else
+    return props.content;
+})
+
+const build_chat_user_id = computed(()=>{
+  if(isSystemMsg.value){
+    return JSON.parse(props.content).build_chat_user_id;
+  }
+  else
+    return undefined;
+});
+
+
 
 </script>
 
@@ -82,11 +104,14 @@ const toggleUserInfo = () => {
       <img :src="avatar" alt="User Avatar">
     </div>
     <div class="message-container" @mouseenter="toggleRetract" @mouseleave="toggleRetract">
-      <div class="message"  >{{ content }}</div>
+      <div class="message"  >{{ Content }}</div>
+
+
       <div v-if="showRetract && props.isSelf && isWithinFiveMinutes" class="retract-action">
         <button @click="retractMessage">撤回</button>
       </div>
       <div class="time">{{ formattedTime }}</div>
+      <CreateConversationBtn v-if="isSystemMsg&&!isSelf" :target-id="build_chat_user_id" ></CreateConversationBtn>
     </div>
     <div v-if="showUserInfo && !isSelf" class="user-info" @mouseleave="toggleUserInfo">
       <p><strong>ID:</strong> {{ message_sender_id }}</p>

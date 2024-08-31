@@ -7,9 +7,37 @@
         <input id="ad_content" v-model="adData.ad_content" placeholder="请输入广告内容" required>
       </div>
       <div class="form-group">
-        <label for="ad_picture">广告图片URL</label>
-        <input id="ad_picture" v-model="adData.ad_picture" placeholder="请输入图片URL" required>
+        <label>广告图片</label>
+        <div class="toggle-buttons">
+          <a-button
+              @click="toggleImageInput('url')"
+              :class="{ active: imageInputType === 'url' }"
+          >
+            输入URL
+          </a-button>
+          <a-button
+              @click="toggleImageInput('upload')"
+              :class="{ active: imageInputType === 'upload' }"
+          >
+            上传图片
+          </a-button>
+        </div>
       </div>
+      <div v-if="imageInputType === 'url'" class="form-group">
+        <label for="ad_picture">广告图片URL</label>
+        <a-input id="ad_picture" v-model="adData.ad_picture" placeholder="请输入图片网络URL"/>
+      </div>
+      <div v-if="imageInputType === 'upload'" class="form-group">
+        <label>广告图片上传</label>
+        <a-input
+            type="file"
+            ref="fileInput"
+            accept="image/*"
+            placeholder="请选择图片"
+            @change="handleFileChange"
+        />
+      </div>
+
       <div class="form-group">
         <label for="ad_url">广告链接</label>
         <input id="ad_url" v-model="adData.ad_url" placeholder="请输入广告链接" required>
@@ -36,12 +64,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import {ref} from 'vue';
 import axios from "axios";
+
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
 const emit = defineEmits(['adAdded']);
-
+const imageInputType = ref('');
+const fileInput = ref(null);
+const selectedFile = ref(null);
 const adData = ref({
   ad_content: '',
   ad_picture: '',
@@ -53,6 +84,16 @@ const adData = ref({
 
 const submitAd = async () => {
   try {
+    if (imageInputType.value === "upload") {
+      if (!await uploadAdImage()) {
+        alert("请选择上传图片");
+        return;
+      }
+    } else if (imageInputType.value === "") {
+      alert("请选择上传图片或输入url");
+      return;
+    }
+
     const res = await axios.post('/api/advertisement/AddAdvertisement', adData.value);
     console.log(res);
     emit('adAdded');
@@ -70,6 +111,43 @@ const submitAd = async () => {
     alert('添加广告失败，请重试。');
   }
 };
+
+function toggleImageInput(type) {
+  imageInputType.value = type;
+  if (type === 'url') {
+    selectedFile.value = null;
+    if (fileInput.value) {
+      fileInput.value.value = '';
+    }
+  } else {
+    adData.ad_picture = '';
+  }
+}
+
+function handleFileChange(event) {
+  selectedFile.value = event.target.files[0];
+}
+
+const uploadAdImage = async () => {
+  if (!selectedFile.value) {
+    return 0;
+  }
+
+  const formData = new FormData();
+  formData.append('file', selectedFile.value);
+  try {
+    const response = await axios.post('/api/AdPicUpload/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    adData.value.ad_picture = response.data.url;
+    console.log('Upload successful:', adData.value.ad_picture);
+  } catch (error) {
+    console.error('Upload failed:', error);
+  }
+  return 1;
+}
 </script>
 
 <style scoped>

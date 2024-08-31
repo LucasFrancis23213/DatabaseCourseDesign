@@ -59,7 +59,7 @@ const messageRoute:RouteRecordRaw[] = [
       renderMenu: true,
       cacheable: true,
     },
-    component:() =>import('@/pages/admin_CommunityFeature/vip/vipTest.vue')
+    component:() =>import('@/pages/admin_CommunityFeature/vip/adminVip.vue')
   },
     {
     path:'/follow',
@@ -80,6 +80,16 @@ const messageRoute:RouteRecordRaw[] = [
       cacheable: true,
     },
     component:() =>import('@/components/CommunityFeature/follow/fansList.vue')
+  },
+    {
+    path:'/sendSysMsg',
+    name:'发送系统消息(test)',
+    props:true,
+    meta: {
+      renderMenu: true,
+      cacheable: true,
+    },
+    component:() =>import('@/pages/admin_CommunityFeature/sysMsgSend/sysMsgSend.vue')
   },
 ]
 
