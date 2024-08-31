@@ -1,4 +1,5 @@
-<<<<<<< HEAD
+> LiTong
+
 # 第一周开发总结
 
 在本周的开发过程中，我们主要实现了用户信息传递功能模块和用户问答模块以及用户关系模块
@@ -515,12 +516,15 @@
   - 发送消息到 WebSocket 连接。
 
 =======
+
+> LiZihao
+
 # 第一周开发总结
 
 lzh: 实现了用户问答模块的前端
 - 样式效果在google浏览器中如图
-  - ![问答列表样式效果1](images/问答列表样式效果1.png)
-  - ![问答列表样式效果2](images/问答列表样式效果2.png)
+  - ![问答列表样式效果1](./assets/问答列表样式效果1.png)
+  - ![问答列表样式效果2](./assets/问答列表样式效果2.png)
 - 功能简述：
   - 问题列表展示(包括个人信息与发表时间)和提交问题
   - 对问题回答列表展示和提交回答
@@ -530,10 +534,178 @@ lzh: 实现了用户问答模块的前端
 
 lzh: 实现了用户评论模块的前端、用户活跃度模块的前端
 - 样式效果(edge浏览器):
-  - ![评论列表样式效果](images/评论列表.png)
-  - ![活跃度展示样式效果](images/活跃度展示.png)
+  - ![评论列表](./assets/评论列表.png)
+  - ![活跃度展示](./assets/活跃度展示.png)
 - 功能简述：
   - 评论列表展示(包括个人信息与发表时间)和提交评论
   - 对自己发表的评论进行撤回
   - 近期活跃度展示并对近期活跃行为列表展示
->>>>>>> LiZiHao
+
+> HanJingxiao
+
+# 第一周开发总结
+
+## 1. 聊天界面开发
+
+### 组件说明
+
+- 父组件：chat.vue（主要聊天界面）：父组件中实现了与后端交互的主要API，集成在apiService.ts文件中
+- 子组件：ChatBubble.vue、CreateConversationBtn.vue、MessageInput.vue
+
+### 功能说明
+
+- 实现了基本的聊天界面布局
+- 添加了消息输入框和发送按钮
+- 实现了消息气泡的样式和布局
+- 添加了简单的动画效果，提升用户体验
+- 添加表情符号的输入
+- 实现已读状态的更新
+- 撤回消息功能开发
+
+### 问题
+
+- 实时聊天功能待开发
+- 消息更新机制需要更新
+
+## 2. 消息列表功能
+
+### 组件说明
+
+- ConversationList.vue
+
+### 功能说明
+
+- 设计并实现了消息列表组件
+- 实现了未读消息的提醒
+
+# 第二周开发总结
+
+## 1. 广告功能开发
+
+### 组件说明
+
+- 普通广告呈现：adItem.vue
+- 管理广告界面：adAddItem.vue、adDetailsItem.vue、adList.vue、adminAd.vue
+
+### 功能说明
+
+- 实现广告的展示机制，包括vip用户的判断以禁止呈现广告
+- 实现广告点击跳转
+- 实现查看广告列表的查看、详细信息的查看
+- 实现新增广告功能
+- 实现修改和删除广告功能
+
+### 使用说明
+
+- 普通广告呈现将呈现在社区中
+	使用方式：
+
+	~~~vue
+	<script setup lang="ts">
+	import advertisement from "@/pages/CommunityFeature/advertisement/advertisement.vue";
+	</script>
+	<template>
+	<advertisement></advertisement>
+	</template>
+	~~~
+
+## 2. VIP功能开发
+
+### 组件说明
+
+- 普通用户使用：vipRechargeItem.vue
+- 管理vip使用：adminVip.vue、vipAddItem.vue、vipDetails.vue、vipList.vue
+
+### 功能说明
+
+- 实现vip查询功能
+- 实现vip充值功能
+- 实现管理vip功能：查询、修改、删除、新增
+
+### 使用说明
+
+- 在管理界面可以对每个用户的VIP进行管理
+	使用方式：
+
+	~~~vue
+	<script setup lang="ts">
+	import vipAddItem from '@/components/CommunityFeature/vip/vipAddItem.vue'
+	
+	import vipDetails from '@/components/CommunityFeature/vip/vipDetails.vue'
+	
+	</script>
+	
+	<template>
+	  <vipAddItem :user_id="填入相应的用户ID"></vipAddItem>
+	  <vipDetails :user_id='填入相应的用户ID'></vipDetails>
+	</template>
+	
+	~~~
+
+### 问题
+
+- 在合并时可能存在格式和界面呈现上的问题
+
+# 第三周开发总结
+
+## 1. 关注功能开发
+
+### 组件说明
+
+- followButton.vue、followList.vue、fansList.vue
+
+### 功能说明
+
+- 关注按钮的开发，可用于各个需要使用的地方，若已关注，则点击后取关
+- 关注列表查看，可取关
+- 粉丝列表查看
+- 在用户聊天界面中点击头像查看详细信息，可以进行关注/取关操作
+
+### 使用说明
+
+- 关注按钮的使用
+	使用方式：
+
+	~~~vue
+	<script lang="ts" setup>
+	import followButton from '@/components/CommunityFeature/follow/followButton.vue'
+	</script>
+	<template>
+	    <followButton :user_id="关注/取关对象的ID" :initial-follow-state="false" ></followButton>
+	</template>
+	~~~
+
+# 第四周开发总结
+
+## 1. 聊天功能完善
+
+### 功能说明
+
+- 利用webSocket技术实现实时聊天功能，本地测试已通过，同时实现撤回功能的实时化。
+- 系统消息发送的开发，需设置一个新用户，将其设置为系统用户
+- 实现系统消息开发的跳转功能，可以跳转到其他聊天界面
+
+### 使用说明
+
+- 系统消息发送功能
+	使用方式：（可以参考front-end/src/pages/admin_CommunityFeature/sysMsgSend/sysMsgSend.vue）
+
+	~~~vue
+	<script setup lang="ts">
+	import sendSystemMsg from "@/pages/CommunityFeature/chat/systemMsgSend";
+	</script>
+	    <a-button @click="sendSystemMsg(userId,sysMsgContent,37)">发送</a-button>
+	//第一参数为需要通知的用户ID，第二参数为通知的消息，第三参数为被通知用户需要建立聊天的用户ID
+	~~~
+
+### 问题
+
+- 远程测试实时聊天功能失败，需要重新设置
+- 需设置一个新用户，将其设置为系统用户
+
+## 2. 广告图片上传功能完善
+
+### 功能说明
+
+- 利用其他服务器来存储图片
+- 用户可选择上传本地图片（新）或者上传网络图片资源的URL
