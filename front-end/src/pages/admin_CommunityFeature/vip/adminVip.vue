@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import vipAddItem from '@/components/CommunityFeature/vip/vipAddItem.vue'
-import vipList from '@/components/CommunityFeature/vip/vipList.vue'
 import vipDetails from '@/components/CommunityFeature/vip/vipDetails.vue'
 import {ref} from "vue";
 
-const user_id = ref(
-  123,
-);
+import {useAccountStore} from '@/store/account';
+const {account, permissions} = useAccountStore();
+const user_id = ref(account.userId);
 </script>
 
 <template>
-  <vipAddItem></vipAddItem>
+  <vipAddItem :user_id="user_id"></vipAddItem>
   <vipDetails :user_id='user_id'></vipDetails>
 </template>
 

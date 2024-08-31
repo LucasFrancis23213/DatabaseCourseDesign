@@ -31,9 +31,9 @@ import {ref, computed} from 'vue';
 import axios from "axios";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
-
+const props = defineProps(['user_id']);
 const emit = defineEmits(['vipAdded']);
-const user_id = ref(123);
+
 
 const vipData = ref({
   vip_start_time: '',
@@ -57,7 +57,7 @@ const submitVip = async () => {
   try {
     vipData.value.vip_start_time = new Date().toISOString();
     const res = await axios.post('/api/vip/AddVIPMember', {
-      user_id: user_id.value,
+      user_id: props.user_id,
       ...vipData.value
     });
     console.log(res);
