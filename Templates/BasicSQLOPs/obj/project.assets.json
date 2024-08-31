@@ -6019,19 +6019,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\PeiYu Duan\\.nuget\\packages\\": {}
+    "C:\\Users\\zyn\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\database project\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
+      "projectUniqueName": "D:\\desktop\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
       "projectName": "SQLOperation",
-      "projectPath": "D:\\database project\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
-      "packagesPath": "C:\\Users\\PeiYu Duan\\.nuget\\packages\\",
-      "outputPath": "D:\\database project\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\obj\\",
+      "projectPath": "D:\\desktop\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
+      "packagesPath": "C:\\Users\\zyn\\.nuget\\packages\\",
+      "outputPath": "D:\\desktop\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\PeiYu Duan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\zyn\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -6092,7 +6092,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

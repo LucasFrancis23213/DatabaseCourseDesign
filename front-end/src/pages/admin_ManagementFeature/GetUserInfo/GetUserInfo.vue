@@ -1,5 +1,5 @@
 <template>
-  <span class="text-title font-bold">输入用户ID或用户名以查询：<br></span>
+  <span class="text-title font-bold">输入用户ID或用户名以查询，直接查询获取全部用户：<br></span>
   <div style="display: flex; align-items: center; margin-top:10px; gap:20px; margin-right:500px;">
     <a-input v-model:value="filters.userID" placeholder="用户ID" style="flex-grow: 1;">
         <template #prefix>
@@ -50,10 +50,6 @@ const data = ref([]);
 
 const applyFilters = async () => {
   let query = '';
-  if(!filters.value.userID && !filters.value.userName){
-    message.error('请至少填写一个查询条件');
-    return; 
-  }
   if (filters.value.userID) {
     query += `UserID=${filters.value.userID}&`;
   }
