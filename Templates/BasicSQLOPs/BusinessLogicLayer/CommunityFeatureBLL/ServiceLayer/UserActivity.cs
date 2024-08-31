@@ -207,35 +207,28 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
                 // 如果活动类型是登录，先检查当天是否已有相同类型的活跃行为
                 if (activityType == "登录")
                 {
-                    Dictionary<string, object> condition = new Dictionary<string, object>
-                         {
-                             { "USER_ID", userId },
-                             { "ACTIVITY_TYPE", activityType },
-                         };
+                    string whereClause = "USER_ID = :userId AND ACTIVITY_TYPE = '登录' AND TRUNC(DATETIME) = TRUNC(:datetime)";
 
-                    var existingActivities = UserActivitiesBusiness.QueryBusiness(condition, "AND");
-
-                    // 检查是否有活动记录
-                    if (existingActivities != null && existingActivities.Count > 0)
+                    OracleParameter[] parameters = new OracleParameter[]
                     {
-                        // 获取当天的日期部分
-                        DateTime targetDate = datetime.Date;
+                         new OracleParameter("userId", userId),
+                         new OracleParameter("datetime", datetime)
+                    };
 
-                        // 筛选当天的条目
-                        var activitiesOnTargetDate = existingActivities
-                            .Where(activity => activity.DateTime.Date == targetDate)
-                            .ToList();
+                    // 查询数据库以检查当天是否已有登录行为
+                    var result = UserActivitiesBusiness.QueryTableWithWhereBusiness(whereClause, parameters);
 
-                        if (activitiesOnTargetDate.Count > 0)
-                        {
-                            Console.WriteLine($"用户 {userId} 在 {targetDate} 已有登录活动，不重复添加。");
-                            return 0; // 已存在，不重复添加
-                        }
+                    if (result.Count > 0)
+                    {
+                        // 如果已存在同一天的登录记录，则不插入并返回
+                        Console.WriteLine("当天已存在登录记录，不允许重复登录记录。");
+                        return 0;
                     }
                 }
 
+                // 插入新的活动记录
                 return AddActivity(userId, activityType, score, datetime);
-                
+
             }
             catch (Exception ex)
             {
