@@ -189,7 +189,6 @@ async function saveEdit() {
         changedParams[key] = editedAd.value[key];
       }
     }
-
     // 如果没有修改任何参数，则不发送请求
     if (Object.keys(changedParams).length === 0) {
       alert('没有修改任何内容');

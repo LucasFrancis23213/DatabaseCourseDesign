@@ -129,7 +129,7 @@ const removeMessage = (message_id: number) => {
 };
 
 const connect = () => {
-  socket.value = new WebSocket(`ws://121.36.200.128:5174/ws?user_id=${current_user_id.value}`);
+  socket.value = new WebSocket(`ws://121.36.200.128:5001/ws?user_id=${current_user_id.value}`);
 
   socket.value.onopen = () => {
     connectionStatus.value = 'Connected';
@@ -245,7 +245,7 @@ onUnmounted(() => {
 
 <style scoped>
 .chat-container {
-  height: 100vh;
+  height: calc(100vh - 225px);
   display: flex;
   flex-direction: column;
 }
@@ -268,6 +268,8 @@ onUnmounted(() => {
 }
 
 .message-input {
+  bottom: 50px;
+  margin-right: 3vw;
   width: 100%;
 }
 </style>

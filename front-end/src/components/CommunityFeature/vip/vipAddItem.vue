@@ -13,11 +13,11 @@
       </div>
       <div class="form-group">
         <label for="vip_status">vip状态</label>
-        <select id="vip_status" v-model="vipData.vip_status" required>
-          <option value="Active">有效</option>
-          <option value="Inactive">无效</option>
-          <option value="Cancelled">取消</option>
-        </select>
+        <Select id="vip_status" v-model="vipData.vip_status" required>
+          <Select.Option value="Active">有效</Select.Option>
+          <Select.Option value="Inactive">无效</Select.Option>
+          <Select.Option value="Cancelled">取消</Select.Option>
+        </Select>
       </div>
       <button type="submit" class="submit-btn" :disabled="isSubmitting">
         {{ isSubmitting ? '添加中...' : '添加VIP信息' }}
@@ -30,6 +30,7 @@
 import {ref, computed} from 'vue';
 import axios from "axios";
 import {message} from "ant-design-vue";
+import {Select} from "ant-design-vue";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 const props = defineProps(['user_id']);
@@ -39,7 +40,7 @@ const emit = defineEmits(['vipAdded']);
 const vipData = ref({
   vip_start_time: '',
   vip_end_time: '',
-  vip_status:''
+  vip_status:'Active'
 });
 
 const isSubmitting = ref(false);
@@ -91,7 +92,6 @@ const resetForm = () => {
 
 <style scoped>
 .add-vip-form {
-  max-width: 500px;
   margin: 0 auto;
   padding: 20px;
   background-color: #f9f9f9;

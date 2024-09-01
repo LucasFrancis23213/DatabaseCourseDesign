@@ -161,7 +161,6 @@ onMounted(() => {
 <style scoped>
 .vip-details {
   width: 100%;
-  max-width: 800px;
   margin: 20px auto;
   background-color: #ffffff;
   padding: 30px;

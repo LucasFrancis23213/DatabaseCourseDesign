@@ -131,7 +131,6 @@ onMounted(async () => {
 }
 
 .ad-list-container {
-  max-width: 800px;
   margin: 0 auto;
   padding: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
