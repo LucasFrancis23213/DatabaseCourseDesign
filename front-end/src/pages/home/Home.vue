@@ -11,19 +11,23 @@
   <div class="home text-center flex flex-col justify-center">
     <div class="transform w-full">
       <div class="tracking-wide slogan text-[3.5rem] xl:text-[5.25rem] font-extralight">
-        <span class="font-semibold">Develop faster.</span> Custom easier.
+        <span class="font-semibold">寻觅有道</span>
       </div>
       <p class="text-subtext text-[1.5rem] xl:text-[1.75rem] font-extralight tracking-wide">
-        The most-loved Vue3 Framework in github.com and gitee.com
+        基于vue的遗失物品寻找平台
       </p>
       <button
         @click="signIn"
         class="bg-primary-300 hover:bg-primary-400 cursor-pointer mt-lg shadow border-0 outline-none text-xl px-[64px] py-lg rounded-sm"
       >
-        Sign In and Start Preview
+        开始使用
         <br />
-        <div class="text-base text-subtext"><GithubFilled /> @iczer</div>
+        <div class="text-base text-subtext"><GithubFilled /> @DatabaseCourseDesign
+        </div>
       </button>
+      <br />
+      <br />
+      <div class="inline-block text-gray-200 text-xl mr-lg">同济大学软件学院 2022级 数据库课程设计</div>
       <br />
       <div class="inline-block text-gray-200 text-xl mr-lg">Powered by:</div>
       <div class="powered-by-list inline-flex mt-xl text-subtext">
@@ -44,7 +48,8 @@
           vitejs
         </a>
       </div>
-    </div>
+    </div> 
+
   </div>
 </template>
 <style scoped lang="less">

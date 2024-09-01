@@ -91,7 +91,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/PublishSearchNotice',
-    name: 'PublishSearchNotice',
+    name: '寻物启事',
     meta: {
       renderMenu: true,
     },
@@ -99,7 +99,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/PublishUnclaimedItem',
-    name: 'PublishUnclaimedItem',
+    name: '无主物品',
     meta: {
       renderMenu: true,
     },
@@ -107,7 +107,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/Review',
-    name: 'Review',
+    name: '审核中心',
     meta: {
       renderMenu: true,
     },
@@ -115,7 +115,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/Personal',
-    name: 'Personal',
+    name: '个人中心',
     meta: {
       renderMenu: true,
     },
