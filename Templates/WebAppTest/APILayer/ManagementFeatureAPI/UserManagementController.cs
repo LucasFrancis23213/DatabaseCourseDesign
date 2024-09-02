@@ -14,6 +14,9 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
         private readonly RegisterBLL _registerBLL;
         private readonly DeleteUserBLL _deleteUserBLL;
         private readonly UserLoginBLL _userLoginBLL;
+        private readonly UserAuthBLL _userAuthBLL;
+        private readonly DeleteAuthInfoBLL _deleteAuthInfoBLL;
+        private readonly GetAuthInfoBLL _getAuthInfoBLL;
 
         public UserManagementController()
         {
@@ -22,6 +25,9 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
             _registerBLL = new RegisterBLL();
             _deleteUserBLL = new DeleteUserBLL();
             _userLoginBLL = new UserLoginBLL();
+            _userAuthBLL = new UserAuthBLL();
+            _deleteAuthInfoBLL = new DeleteAuthInfoBLL();
+            _getAuthInfoBLL = new GetAuthInfoBLL();
         }
 
         [HttpGet("UserGetUserInfo")]
@@ -128,6 +134,49 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
                     "Users表没有符合要求的元素" => NotFound(result.Item2),
                     _ => BadRequest(result.Item2),
                 };
+            }
+        }
+
+        [HttpPost("NewUserAuthed")]
+        public IActionResult NewUserAuthed([FromBody] Auth_Info NewAuth)
+        {
+            var result = _userAuthBLL.NewUserAuthed(NewAuth);
+            if (result.Item1)
+            {
+                return Ok(result.Item2);
+            }
+            else
+            {
+                return BadRequest(result.Item2);
+            }
+        }
+
+        // 此接口调用后不保证有实际删除操作，但是保证操作之后数据库中不再存在传入用户的认证
+        [HttpDelete("DeleteAuthInfo")]
+        public IActionResult DeleteAuthInfo(int UserID)
+        {
+            var result = _deleteAuthInfoBLL.DeleteAuthInfo(UserID);
+            if (result.Item1)
+            {
+                return Ok(result.Item2);
+            }
+            else
+            {
+                return BadRequest(result.Item2);
+            }
+        }
+
+        [HttpGet("GetAuthInfo")]
+        public IActionResult GetAuthInfo(int? UserID)
+        {
+            var result = _getAuthInfoBLL.GetAuthInfo(UserID);
+            if (result.Item1)
+            {
+                return Ok(result.Item2);
+            }
+            else
+            {
+                return BadRequest(result.Item2);
             }
         }
     }
