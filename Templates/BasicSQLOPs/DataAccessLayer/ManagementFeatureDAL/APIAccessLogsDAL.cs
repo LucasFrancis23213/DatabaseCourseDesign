@@ -1,4 +1,4 @@
-﻿using Oracle.ManagedDataAccess.Client;
+using Oracle.ManagedDataAccess.Client;
 using SQLOperation.PublicAccess.Utilities;
 using SQLOperation.PublicAccess.Utilities.ManagementFeatureUtil;
 

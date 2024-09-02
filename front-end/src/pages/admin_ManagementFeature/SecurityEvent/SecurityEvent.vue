@@ -56,7 +56,12 @@
   import { ref, onMounted, computed } from 'vue';
   import axios from 'axios';
   import { HourglassOutlined } from '@ant-design/icons-vue';
-  axios.defaults.baseURL = import.meta.env.VITE_API_URL;
+  
+  const options = ref([
+    { value: 'Open', label: 'Open' },
+    { value: 'Closed', label: 'Closed' },
+    { value: '', label: 'all' }
+  ]);
   
   const columns = [
     { title: '事件ID', dataIndex: 'Event_ID' },
@@ -82,7 +87,7 @@
   
   onMounted(async () => {
     try {
-      const response = await axios.get('/api/LogsQuery/SecurityEvents');
+      const response = await axios.get('https://localhost:44343/api/GetSecurityEvents');
       data.value = response.data;
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -122,7 +127,7 @@
       query = query.slice(0, -1);
     }
     try {
-      const response = await axios.get(`/api/LogsQuery/SecurityEvents?${query}`);
+      const response = await axios.get(`https://localhost:44343/api/GetSecurityEvents?${query}`);
       data.value = response.data;
     } catch (error) {
       console.error('Error fetching data:', error);

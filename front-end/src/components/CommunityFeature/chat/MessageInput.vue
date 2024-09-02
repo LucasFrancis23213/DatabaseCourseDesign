@@ -124,7 +124,7 @@ function addEmoji(emoji: string) {
 }
 
 .emoji-panel {
-  position: absolute;
+  position: relative;
   bottom: 100%;
   left: 0;
   background-color: white;

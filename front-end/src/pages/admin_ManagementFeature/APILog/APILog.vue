@@ -61,7 +61,12 @@
   import { ref, onMounted, computed } from 'vue';
   import axios from 'axios';
   import { HourglassOutlined } from '@ant-design/icons-vue';
-  axios.defaults.baseURL = import.meta.env.VITE_API_URL;
+  
+  const options = ref([
+    { value: 'success', label: '成功' },
+    { value: 'failure', label: '失败' },
+    { value: '', label: '全部' }
+  ]);
   
   const columns = [
     { title: '访问ID', dataIndex: 'Access_ID' },
@@ -88,7 +93,7 @@
   
   onMounted(async () => {
     try {
-      const response = await axios.get('/api/LogsQuery/APILogs');
+      const response = await axios.get('https://localhost:44343/api/GetAPILogs');
       data.value = response.data;
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -131,7 +136,7 @@
       query = query.slice(0, -1);
     }
     try {
-      const response = await axios.get(`/api/LogsQuery/APILogs?${query}`);
+      const response = await axios.get(`https://localhost:44343/api/GetAPILogs?${query}`);
       data.value = response.data;
     } catch (error) {
       console.error('Error fetching data:', error);

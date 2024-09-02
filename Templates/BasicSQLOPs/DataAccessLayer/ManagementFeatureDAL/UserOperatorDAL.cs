@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Oracle.ManagedDataAccess.Client;
 using SQLOperation.PublicAccess.Utilities;
 
@@ -46,6 +46,13 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
             return DoQuery(DeleteUserGenerator(UserID));
         }
 
+        /// <summary>
+        /// Inserts a new user.
+        /// </summary>
+        /// <param name="UserName">The username of the new user.</param>
+        /// <param name="Password">The password of the new user.</param>
+        /// <param name="Contact">The contact information of the new user.</param>
+        /// <returns>A tuple containing a boolean indicating success and the result of the insertion as a string.</returns>
         /// <summary>
         /// Inserts a new user.
         /// </summary>
@@ -211,6 +218,8 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
 
         private Func<Tuple<bool, string>> InsertUserGenerator(string UserName, string Password, string Contact)
         {
+            return () =>
+            {
             return () =>
             {
                 List<string> ColumnNames = ["User_Name", "Password_", "Contact"];

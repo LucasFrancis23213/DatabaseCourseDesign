@@ -54,11 +54,38 @@
         <label for="ad_url">广告链接:</label>
         <input id="ad_url" v-model="editedAd.ad_url" placeholder="请输入广告链接">
       </div>
-
       <div class="form-group">
-        <label for="ad_picture">广告图片:</label>
+        <label>广告图片</label>
+        <div class="toggle-buttons">
+          <a-button
+              @click="toggleImageInput('url')"
+              :class="{ active: imageInputType === 'url' }"
+          >
+            输入URL
+          </a-button>
+          <a-button
+              @click="toggleImageInput('upload')"
+              :class="{ active: imageInputType === 'upload' }"
+          >
+            上传图片
+          </a-button>
+        </div>
+      </div>
+      <div v-if="imageInputType === 'url'" class="form-group">
+        <label for="ad_picture">广告图片URL</label>
         <input id="ad_picture" v-model="editedAd.ad_picture" placeholder="请输入广告图片URL">
       </div>
+      <div v-if="imageInputType === 'upload'" class="form-group">
+        <label>广告图片上传</label>
+        <a-input
+            type="file"
+            ref="fileInput"
+            accept="image/*"
+            placeholder="请选择图片"
+            @change="handleFileChange"
+        />
+      </div>
+
 
       <div class="form-group">
         <label for="ad_type">广告类型:</label>
@@ -83,6 +110,7 @@
 <script setup>
 import {onMounted, ref} from 'vue';
 import axios from "axios";
+import {message} from "ant-design-vue";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
@@ -117,9 +145,41 @@ function editAd() {
   isEditing.value = true;
   editedAd.value = {...props.ad};
 }
+const uploadAdImage = async () => {
+  if (!selectedFile.value) {
+    return 0;
+  }
 
+  const formData = new FormData();
+  formData.append('file', selectedFile.value);
+  try {
+    const response = await axios.post('/api/AdPicUpload/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    editedAd.value.ad_picture = response.data.url;
+    console.log('Upload successful:', editedAd.value.ad_picture);
+  } catch (error) {
+    console.error('Upload failed:', error);
+  }
+  return 1;
+}
 async function saveEdit() {
   try {
+    if (imageInputType.value === "upload") {
+      if (!await uploadAdImage()) {
+        alert("请选择上传图片");
+        return;
+      }
+    } else if (imageInputType.value === "") {
+      alert("请选择上传图片或输入url");
+      return;
+    }
+    if (!validateTime()) {
+      message.error('广告结束时间必须晚于开始时间');
+      return;
+    }
     // 创建一个对象来存储被修改的参数
     const changedParams = {};
 
@@ -129,7 +189,6 @@ async function saveEdit() {
         changedParams[key] = editedAd.value[key];
       }
     }
-
     // 如果没有修改任何参数，则不发送请求
     if (Object.keys(changedParams).length === 0) {
       alert('没有修改任何内容');
@@ -160,6 +219,9 @@ async function saveEdit() {
 
 function cancelEdit() {
   isEditing.value = false;
+}
+function validateTime() {
+  return editedAd.value.end_time > editedAd.value.start_time;
 }
 
 async function deleteAd() {
@@ -203,6 +265,24 @@ async function getEntireAdInfo() {
 onMounted(() => {
   getEntireAdInfo();
 })
+
+const imageInputType = ref('url');
+const fileInput = ref(null);
+const selectedFile = ref(null);
+function toggleImageInput(type) {
+  imageInputType.value = type;
+  if (type === 'url') {
+    selectedFile.value = null;
+    if (fileInput.value) {
+      fileInput.value.value = '';
+    }
+  } else {
+    editedAd.ad_picture = props.ad.ad_picture;
+  }
+}
+function handleFileChange(event) {
+  selectedFile.value = event.target.files[0];
+}
 </script>
 
 <style scoped>
@@ -300,6 +380,7 @@ onMounted(() => {
 .table-container {
   overflow-x: auto;
 }
+
 .table-container {
   overflow-x: auto;
 }
@@ -340,6 +421,7 @@ onMounted(() => {
   background-color: #f5f5f5;
   transition: background-color 0.3s ease;
 }
+
 table {
   width: 100%;
   border-collapse: collapse;

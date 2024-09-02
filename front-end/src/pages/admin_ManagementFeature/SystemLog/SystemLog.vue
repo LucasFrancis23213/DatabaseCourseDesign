@@ -28,7 +28,7 @@
 </div>
 <br>
 <div class="table w-full">
-  <a-table :columns="columns" :dataSource="sortedData" rowKey="System_Log_ID" />
+  <a-table :columns="columns" :dataSource="sortedData" rowKey="Activity_Log_ID" />
 </div>
 <br>
 <div style="display: flex; justify-content: flex-end;">
@@ -41,7 +41,6 @@
 <script lang="ts" setup>
   import { ref, onMounted, computed } from 'vue';
   import axios from 'axios';
-  axios.defaults.baseURL = import.meta.env.VITE_API_URL;
   
   const options = ref([
   { value: '', label: '操作类型(all)' }
@@ -68,7 +67,7 @@ const filters = ref({
 
   onMounted(async () => {
   try {
-    const response = await axios.get('/api/LogsQuery/SystemLogs');
+    const response = await axios.get('https://localhost:44343/api/GetSystemLogs');
     data.value = response.data;
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -102,7 +101,7 @@ const applyFilters = async () => {
     query = query.slice(0, -1);
   }
   try {
-    const response = await axios.get(`/api/LogsQuery/SystemLogs?${query}`);
+    const response = await axios.get(`https://localhost:44343/api/GetSystemLogs?${query}`);
     data.value = response.data;
   } catch (error) {
     console.error('Error fetching data:', error);
