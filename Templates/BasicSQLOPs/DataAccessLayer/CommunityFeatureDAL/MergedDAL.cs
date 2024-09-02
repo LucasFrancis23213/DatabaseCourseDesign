@@ -81,6 +81,7 @@ namespace DatabaseProject.DataAccessLayer.CommunityFeatureDAL
                     }
 
                 }
+                
                 catch (Exception ex)
                 {
                     string errorReason = $"插入报错：{ex}";
