@@ -46,13 +46,12 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
                     var userConversation = conversation.Conversation;
                     var userInfo = conversation.Users;
                    
-                    // 根据会话中的 user1_id 和 user2_id 确定对方用户的 ID
-                    int otherUserId = currentUserId == userConversation.Sender_User_ID? userConversation.Receiver_User_ID : userConversation.Sender_User_ID;
+                   
 
                     // 构建会话对象
                     var conversationObject = new
                     {
-                        id = otherUserId,
+                        id = userInfo.User_ID,
                         name = userInfo != null ? userInfo.User_Name : "",
                         avatar = "",
                         last_message = userConversation.Message_Content!= null ? userConversation.Message_Content : "", // 如果有最后一条消息则显示消息内容，否则为空字符串

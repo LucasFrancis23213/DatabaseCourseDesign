@@ -53,7 +53,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
             }
             catch (Exception ex)
             {
-                return BadRequest(new { status = "error", message = $"获取近期活跃行为时发生错误: {ex.Message}" });
+                return BadRequest(new { status = "error", message = $" {ex.Message}" });
             }
         }
 
@@ -80,7 +80,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
             }
             catch (Exception ex)
             {
-                return BadRequest(new { status = "error", message = $"新增活跃行为时发生错误: {ex.Message}" });
+                return BadRequest(new { status = "error", message = $" {ex.Message}" });
             }
         }
 
@@ -107,7 +107,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
             }
             catch (Exception ex)
             {
-                return BadRequest(new { status = "error", message = $"修改活跃行为时发生错误: {ex.Message}" });
+                return BadRequest(new { status = "error", message = $"{ex.Message}" });
             }
         }
 
@@ -130,7 +130,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
             }
             catch (Exception ex)
             {
-                return BadRequest(new { status = "error", message = $"删除活跃行为时发生错误: {ex.Message}" });
+                return BadRequest(new { status = "error", message = $"{ex.Message}" });
             }
         }
 
@@ -140,8 +140,8 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
             try
             {
                 // 从 Dictionary 中提取数据
-                if (!request.TryGetValue("userId", out JsonElement userIdElement) ||
-                    !request.TryGetValue("activityType", out JsonElement activityTypeElement) ||
+                if (!request.TryGetValue("user_id", out JsonElement userIdElement) ||
+                    !request.TryGetValue("activity_type", out JsonElement activityTypeElement) ||
                     !request.TryGetValue("datetime", out JsonElement datetimeElement))
                 {
                     return BadRequest("请求中缺少必要的字段。");
@@ -158,7 +158,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"新增用户活跃度时发生错误：{ex.Message}");
+                return StatusCode(500, $"{ex.Message}");
             }
         }
 
