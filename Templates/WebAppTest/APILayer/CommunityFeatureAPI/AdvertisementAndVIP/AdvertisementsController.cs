@@ -127,6 +127,11 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
                 DateTime startTime = request["start_time"].GetDateTime();
                 DateTime endTime = request["end_time"].GetDateTime();
 
+                if (startTime >= endTime)
+                {
+                    throw new Exception("非法时间错误");
+                }
+
                 int adId = advertisementsService.AddAdvertisement(content, picture, url, type, startTime, endTime);
 
                 return Ok(new { status = "success", ad_id = adId });
@@ -255,7 +260,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
 
                 int adId = requestBody["ad_id"].GetInt32();
                 var adDetails = advertisementsService.GetAdDetails(adId);
-                var adClickDetails = advertisementsService. GetAdClickDetails(adId);
+                var adClickDetails = advertisementsService.GetAdClickDetails(adId);
                 return Ok(new
                 {
                     status = "success",

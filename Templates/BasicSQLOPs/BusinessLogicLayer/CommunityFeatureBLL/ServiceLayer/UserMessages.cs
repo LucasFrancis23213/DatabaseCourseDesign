@@ -11,20 +11,20 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
     {
         private CommunityFeatureBusiness<User_Messages> UserMessagesBusiness;
         private CommunityFeatureBusiness<Conversation> UserConversationsBusiness;
-        
-        private CommunityFeatureBusiness<Users> UsersBusiness;
-        
 
-        private List<string> userMessagesList = new List<string> { "message_content", "read_status", "send_time", "message_type", "sender_user_id","receiver_user_id" };
-        private List<string> userConversationList = new List<string> { "user1_id","user2_id","last_message_id","unread_count" };
+        private CommunityFeatureBusiness<Users> UsersBusiness;
+
+
+        private List<string> userMessagesList = new List<string> { "message_content", "read_status", "send_time", "message_type", "sender_user_id", "receiver_user_id" };
+        private List<string> userConversationList = new List<string> { "user1_id", "user2_id", "last_message_id", "unread_count" };
 
         // 构造函数
         public UserMessages(Connection connection)
         {
             UserMessagesBusiness = new CommunityFeatureBusiness<User_Messages>(connection);
             UserConversationsBusiness = new CommunityFeatureBusiness<Conversation>(connection);
-            UsersBusiness=new CommunityFeatureBusiness<Users>(connection);
-           
+            UsersBusiness = new CommunityFeatureBusiness<Users>(connection);
+
         }
 
 
@@ -35,43 +35,52 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
             {
                 // 发送者 接收者 unread_count 
                 string selectClause = @"
-    m.OTHER_USER_ID AS USER_ID,
-    u.USER_NAME AS USER_NAME,
-    COUNT(CASE WHEN m.READ_STATUS = 'N' AND m.RECEIVER_USER_ID = :userId THEN 1 END) AS UNREAD_COUNT,
-    MAX(m.SEND_TIME) AS LAST_MESSAGE_TIME,
-    MAX(CASE 
-        WHEN m.SEND_TIME = (
-            SELECT MAX(m2.SEND_TIME)
-            FROM USER_MESSAGES m2
-            WHERE (m2.SENDER_USER_ID = m.SENDER_USER_ID AND m2.RECEIVER_USER_ID = m.RECEIVER_USER_ID)
-               OR (m2.SENDER_USER_ID = m.RECEIVER_USER_ID AND m2.RECEIVER_USER_ID = m.SENDER_USER_ID)
-        ) THEN TO_CHAR(m.MESSAGE_CONTENT) 
-        ELSE NULL 
-    END) AS MESSAGE_CONTENT
-";
+                conversations.OTHER_USER_ID AS USER_ID,
+                users.USER_NAME AS USER_NAME,
+                conversations.UNREAD_COUNT,
+                conversations.LAST_MESSAGE_TIME,
+                conversations.MESSAGE_CONTENT
+            ";
 
                 string fromClause = @"
-    (SELECT 
-        m.*,
-        CASE 
-            WHEN m.SENDER_USER_ID = :userId THEN m.RECEIVER_USER_ID
-            ELSE m.SENDER_USER_ID
-        END AS OTHER_USER_ID
-    FROM USER_MESSAGES m) m
-    LEFT OUTER JOIN 
-        USERS u 
-    ON 
-        u.USER_ID = m.OTHER_USER_ID
+    (
+        SELECT 
+            CASE 
+                WHEN m.SENDER_USER_ID = :userId THEN m.RECEIVER_USER_ID
+                ELSE m.SENDER_USER_ID
+            END AS OTHER_USER_ID,
+            COUNT(CASE WHEN m.READ_STATUS = 'N' AND m.RECEIVER_USER_ID = :userId THEN 1 END) AS UNREAD_COUNT,
+            MAX(m.SEND_TIME) AS LAST_MESSAGE_TIME,
+            MAX(CASE 
+                WHEN m.SEND_TIME = (
+                    SELECT MAX(m2.SEND_TIME)
+                    FROM USER_MESSAGES m2
+                    WHERE (m2.SENDER_USER_ID = m.SENDER_USER_ID AND m2.RECEIVER_USER_ID = m.RECEIVER_USER_ID)
+                       OR (m2.SENDER_USER_ID = m.RECEIVER_USER_ID AND m2.RECEIVER_USER_ID = m.SENDER_USER_ID)
+                ) THEN TO_CHAR(m.MESSAGE_CONTENT) 
+                ELSE NULL 
+            END) AS MESSAGE_CONTENT
+        FROM 
+            USER_MESSAGES m
+        WHERE 
+            :userId IN (m.SENDER_USER_ID, m.RECEIVER_USER_ID)
+        GROUP BY 
+            CASE 
+                WHEN m.SENDER_USER_ID = :userId THEN m.RECEIVER_USER_ID
+                ELSE m.SENDER_USER_ID
+            END
+    ) conversations
+LEFT OUTER JOIN 
+    USERS users 
+ON 
+    users.USER_ID = conversations.OTHER_USER_ID
 ";
 
                 string whereClause = @"
-    :userId IN (m.SENDER_USER_ID, m.RECEIVER_USER_ID)
-GROUP BY 
-    m.OTHER_USER_ID,
-    u.USER_NAME
-ORDER BY 
-    UNREAD_COUNT DESC,
-    LAST_MESSAGE_TIME DESC
+                    1=1
+                ORDER BY 
+                    conversations.UNREAD_COUNT DESC,
+                    conversations.LAST_MESSAGE_TIME DESC
 ";
 
 
@@ -86,7 +95,7 @@ ORDER BY
                 List<Dictionary<string, object>> rowList = UserMessagesBusiness.QueryTableWithSelectBusiness(selectClause, fromClause, whereClause, parameters);
 
                 // 使用字典存储已合并的会话，key为另一个用户的ID，value为Conversation_User_Message对象
-               List<Conversation_User_Message> mergedConversations = new List< Conversation_User_Message>();
+                List<Conversation_User_Message> mergedConversations = new List<Conversation_User_Message>();
 
                 foreach (var row in rowList)
                 {
@@ -94,9 +103,9 @@ ORDER BY
                     Conversation conversation = UserConversationsBusiness.MapDictionaryToObject(row);
                     Users userInfo = UsersBusiness.MapDictionaryToObject(row);
 
-                    var user_conversation=new Conversation_User_Message {Conversation=conversation,Users=userInfo};
+                    var user_conversation = new Conversation_User_Message { Conversation = conversation, Users = userInfo };
                     mergedConversations.Add(user_conversation);
-                   
+
                 }
 
 
@@ -121,7 +130,7 @@ ORDER BY
                 {
                     {"user_id",userId }
                 };
-                var result = UsersBusiness.QueryBusiness(condition,"AND");
+                var result = UsersBusiness.QueryBusiness(condition, "AND");
 
                 if (result.Count() > 0)
                 {
@@ -150,10 +159,10 @@ ORDER BY
                     };
 
                 // 调用查询方法
-                List<User_Messages> messages = UserMessagesBusiness.QueryBusiness(condition,"AND");
+                List<User_Messages> messages = UserMessagesBusiness.QueryBusiness(condition, "AND");
 
                 // 如果查询到消息，则返回第一条消息（假设消息ID是唯一的）
-                if(messages!=null&& messages.Count() > 0)
+                if (messages != null && messages.Count() > 0)
                 {
                     return messages.First();
                 }
@@ -212,7 +221,7 @@ ORDER BY
                 };
 
                 // 调用更新方法
-                int updateRows=UserMessagesBusiness.UpdateBusiness(new Dictionary<string, object> { { "read_status", "Y" } },condition);
+                int updateRows = UserMessagesBusiness.UpdateBusiness(new Dictionary<string, object> { { "read_status", "Y" } }, condition);
                 return true;
             }
             catch (Exception ex)
@@ -234,7 +243,7 @@ ORDER BY
                 };
 
                 // 调用更新方法，将消息的阅读状态更新为已读
-                int updateRows=UserMessagesBusiness.UpdateBusiness(new Dictionary<string, object> { { "read_status", "Y" } },condition);
+                int updateRows = UserMessagesBusiness.UpdateBusiness(new Dictionary<string, object> { { "read_status", "Y" } }, condition);
                 return true;
             }
             catch (Exception ex)
@@ -246,15 +255,15 @@ ORDER BY
 
 
         //输入当前用户ID 接收用户ID 消息内容和消息类型 发送消息
-        public User_Messages SendMessage(int senderUserId, int receiverUserId, string messageContent, string messageType,DateTime time)
+        public User_Messages SendMessage(int senderUserId, int receiverUserId, string messageContent, string messageType, DateTime time)
         {
             try
             {
-                User_Messages message = UserMessagesBusiness.PackageData(0,messageContent,"N",time,messageType,senderUserId,receiverUserId);
+                User_Messages message = UserMessagesBusiness.PackageData(0, messageContent, "N", time, messageType, senderUserId, receiverUserId);
 
                 int messageId = UserMessagesBusiness.AddBusiness(userMessagesList, "message_id", message);
 
-                message.Message_ID= messageId;
+                message.Message_ID = messageId;
 
                 return message;
             }
@@ -266,11 +275,11 @@ ORDER BY
         }
 
         //根据用户ID和对应的消息ID撤回消息    待优化
-        public User_Messages WithdrawMessage(int messageId, int userId,DateTime time)
+        public User_Messages WithdrawMessage(int messageId, int userId, DateTime time)
         {
             try
             {
-                
+
                 Dictionary<string, object> condition = new Dictionary<string, object>
                 {
                     { "message_id", messageId },
@@ -278,10 +287,10 @@ ORDER BY
                 };
 
                 var result = UserMessagesBusiness.QueryBusiness(condition, "AND");
-                var message= result.FirstOrDefault();
-                
+                var message = result.FirstOrDefault();
+
                 // 已经被撤回的消息不能再被撤回
-                if (message == null||message.Message_Type=="retract")
+                if (message == null || message.Message_Type == "retract")
                 {
                     throw new Exception("指定消息不存在");
                 }
@@ -295,7 +304,7 @@ ORDER BY
                 {
                     {"message_id",messageId }
                 };
-                
+
                 bool deleteRow = UserMessagesBusiness.RemoveBusiness(deleteColumns);
                 // 如果成功撤回
                 if (deleteRow)
@@ -303,7 +312,7 @@ ORDER BY
                     message.Message_Content = "撤回了一条消息";
                     message.Message_Type = "retract";
                     message.Read_Status = "Y";
-                    
+
                     return message;
                 }
                 else

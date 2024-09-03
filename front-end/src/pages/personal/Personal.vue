@@ -1,11 +1,6 @@
 <template>
   <div class="personal">
     <div class="banner w-full rounded-xl p-base items-baseline">
-      <a-breadcrumb class="navi">
-        <a-breadcrumb-item class="text-text-inverse">Home</a-breadcrumb-item>
-        <a-breadcrumb-item>Personal</a-breadcrumb-item>
-      </a-breadcrumb>
-      <div class="mt-0.5 text-text-inverse text-xl font-semibold">Overview</div>
       <div
         class="profile flex items-center justify-between p-base bg-container rounded-2xl absolute -bottom-16 left-6 shadow-lg"
       >
@@ -25,11 +20,22 @@
           </div>
         </div>
       </div>
+      
     </div>
-    <div class="mt-24 flex justify-evenly">
-      <PlatformSetting class="flex-1" />
+  <div>
+  </div>
+  <div class="mt-24 flex justify-center w-full">
+    <div class="w-full px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">
+      <activity-point :current_user="currentUser" class="w-full" />
+      <PlatformSetting class="w-full h-full" />
+      <div class="flex flex-col gap-4 lg:gap-8">
+        <followList class="w-full h-[262px]" />
+        <fansList class="w-full h-[262px]" />
+      </div>
     </div>
   </div>
+  </div>
+  <br>
   <!-- 实名认证模态框 -->
   <a-modal
     title="实名认证"
@@ -92,6 +98,7 @@
     </a-form-item>
   </a-form>
   </a-modal>
+
   <MyFind />
   <MySearch />
 </template>
@@ -108,6 +115,8 @@ import Projects from './Projects.vue';
 import { useRouter } from 'vue-router';
 import MyFind from './MyFind.vue';
 import MySearch from './MySearch.vue';
+import followList from "@/components/CommunityFeature/follow/followList.vue";
+import fansList from "@/components/CommunityFeature/follow/fansList.vue";
 
 const select = ref('overview');
 const accountStore = useAccountStore();
@@ -123,6 +132,13 @@ const isConfirmationValid = computed(() => {
   return confirmationText.value === '我确认完全理解并同意永久删除我的账号及所有数据，此操作不可撤销';
 });
 
+import ActivityPoint from '../../components/CommunityFeature/ActivityPoint.vue';
+const {account,permissions} = useAccountStore();
+let currentUser = {
+    id: account.userId,
+    name: account.userName,
+    avatar: 'src/assets/avatar/face-2.jpg'
+};
 
 // 访问 userInfo 数据
 const userInfo = computed(() => ({
@@ -198,6 +214,7 @@ function cancelEdit() {
   };
   isEditModalVisible.value = false;
 }
+
 </script>
 
 <style lang="less" scoped>
@@ -232,4 +249,5 @@ function cancelEdit() {
 .second-text {
   color: #e60707;
 }
+
 </style>

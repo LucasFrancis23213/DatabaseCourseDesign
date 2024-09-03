@@ -106,6 +106,14 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/pages/publishUnclaimedItem')
   },
   {
+    path: '/ReturnCenter',
+    name: '归还&认领中心',
+    meta: {
+      renderMenu: true,
+    },
+    component: () => import('@/pages/returnCenter')
+  },
+  {
     path: '/Review',
     name: '审核中心',
     meta: {
