@@ -105,7 +105,6 @@ export const useAccountStore = defineStore('account', {
       }
     },
     async closeApp() {
-    async closeApp() {
       return new Promise<boolean>((resolve) => {
         localStorage.removeItem('stepin-menu');
         http.removeAuthorization();
@@ -144,7 +143,6 @@ export const useAccountStore = defineStore('account', {
           console.error('Failed to fetch user info:', error);
           return { account: this};
         } finally {
-          setAuthLoading(false); 
           setAuthLoading(false); 
         }
       }

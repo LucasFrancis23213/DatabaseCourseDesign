@@ -1,10 +1,7 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json;
 using Oracle.ManagedDataAccess.Client;
 using SQLOperation.PublicAccess.Utilities;
-using SQLOperation.PublicAccess.Utilities;
 using System.Data;
-using SQLOperation.PublicAccess.Utilities.ManagementFeatureUtil;
 using SQLOperation.PublicAccess.Utilities.ManagementFeatureUtil;
 
 namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
