@@ -36,6 +36,18 @@
     '2': '手表',
   };
 
+
+  const tagMapping = {
+  1: '贵重物品',
+  2: '私人用品',
+  3: '医疗用品'
+};
+
+  const categoryMapping = {
+    '1': '日用品',
+    '2': '手表',
+  };
+
   const formModel = ref<FormInstance>();
 
   const submit = () => {

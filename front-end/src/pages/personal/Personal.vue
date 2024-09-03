@@ -101,6 +101,29 @@
 
   <MyFind />
   <MySearch />
+  <a-modal
+    v-model:visible="isEditModalVisible"
+    title="编辑个人信息"
+    ok-text="确认"
+    cancel-text="取消"
+    @ok="confirmEdit"
+    @cancel="cancelEdit"
+    style="max-width: 400px;"
+  >
+  <a-form :model="editRecord" :labelCol="{ span: 8 }" :wrapperCol="{ span: 12 }">
+    <a-form-item label="用户ID" name="userID">
+      <span>{{ editRecord.userID }}</span>
+    </a-form-item>
+    <a-form-item label="用户名" name="userName">
+      <a-input v-model:value="editRecord.userName" :placeholder="userInfo.username"/>
+    </a-form-item>
+    <a-form-item label="绑定号码" name="contact">
+      <a-input v-model:value="editRecord.contact" :placeholder="userInfo.contact" />
+    </a-form-item>
+  </a-form>
+  </a-modal>
+  <MyFind />
+  <MySearch />
 </template>
 
 <script lang="ts" setup>

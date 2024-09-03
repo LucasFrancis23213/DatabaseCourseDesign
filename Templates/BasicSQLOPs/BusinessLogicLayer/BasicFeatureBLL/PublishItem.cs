@@ -1,4 +1,4 @@
-﻿using SQLOperation.PublicAccess.Templates.SQLManager;
+using SQLOperation.PublicAccess.Templates.SQLManager;
 using SQLOperation.PublicAccess.Utilities;
 using SQLOperation.PublicAccess.Templates.TemplateInterfaceManager;
 using System;

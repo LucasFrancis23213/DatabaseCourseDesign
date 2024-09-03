@@ -1,4 +1,4 @@
-﻿using Oracle.ManagedDataAccess.Client;
+using Oracle.ManagedDataAccess.Client;
 using SQLOperation.PublicAccess.InterfaceManager.BasicFeatureInterface;
 using SQLOperation.PublicAccess.Templates.SQLManager;
 using SQLOperation.PublicAccess.Utilities;
