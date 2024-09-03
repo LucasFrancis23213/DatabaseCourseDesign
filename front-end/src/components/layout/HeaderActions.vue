@@ -47,32 +47,11 @@
   ]);
 </script>
 <template>
-  <StepinHeaderAction>
-    <a-input placeholder="开始搜索...">
-      <template #prefix>
-        <search-outlined />
-      </template>
-    </a-input>
-  </StepinHeaderAction>
+
   <StepinHeaderAction>
     <DayNightSwitch />
   </StepinHeaderAction>
-  <StepinHeaderAction>
-    <div class="action-item setting" @click="$emit('showSetting')">
-      <SettingOutlined />
-    </div>
-  </StepinHeaderAction>
   
-  <a-popover placement="bottomRight">
-    <StepinHeaderAction>
-      <div class="action-item notice">
-        <BellOutlined />
-      </div>
-    </StepinHeaderAction>
-    <template #content>
-      <Notice :data-source="noticeList" />
-    </template>
-  </a-popover>
 
   <StepinHeaderAction>
     <Fullscreen class="-mx-xs -my-sm h-[56px] px-xs py-sm flex items-center" target=".stepin-layout" />

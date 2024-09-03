@@ -3,6 +3,8 @@ import { LogoutOutlined } from '@ant-design/icons-vue';
 import { onMounted, ref } from 'vue';
 import { ThemeProvider, alert } from 'stepin';
 import { Popover } from 'ant-design-vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 interface NavItem {
   title: string;
@@ -27,6 +29,9 @@ const handleNavClick = (nav: NavItem) => {
     window.location.href = nav.link;
   }
 };
+function navigateToLogin() {
+      router.push('/login');
+    }
 </script>
 
 <template>
@@ -34,7 +39,7 @@ const handleNavClick = (nav: NavItem) => {
     <div class="front-view flex flex-col">
       <div class="text-text flex-1">
         <div class="front-header flex items-baseline py-md px-xl">
-          <router-link to="/home" class="text-xxl text-text hover:text-text">
+          <router-link to="/home" class="text-xxl slogan font-semibold text-text hover:text-text">
             <img src="@/assets/logos.png" alt="Logo" />
             寻觅有道
           </router-link>
@@ -43,7 +48,7 @@ const handleNavClick = (nav: NavItem) => {
             class="front-navigation mx-xl flex overflow-hidden items-center text-lg overflow-ellipsis whitespace-nowrap"
           >
             <div
-              class="front-nav-item flex items-center cursor-pointer mx-base"
+              class="front-nav-item flex items-center slogan cursor-pointer mx-base"
               v-for="nav in navList"
               :key="nav.title"
               @click="handleNavClick(nav)"
@@ -53,16 +58,17 @@ const handleNavClick = (nav: NavItem) => {
           </div>
           <div>
             <router-link
-              to="/login"
-              class="h-[46px] border-transparent hover:text-text hover:border-transparent text-lg text-text"
+              to="/signup"
+              class="h-[46px] border-transparent hover:text-text slogan hover:border-transparent text-lg text-text"
             >
-              <LogoutOutlined class="mr-xs" />
-              Sign In
+              <LogoutOutlined class="mr-xs slogan" />
+              注册
             </router-link>
             <a-button
               class="ml-md px-lg border-text hover:border-text hover:bg-text border-2 h-[46px] hover:text-bg-container"
               size="large"
-              >Get Started</a-button
+              @click="navigateToLogin"
+              >登录</a-button
             >
           </div>
         </div>
@@ -76,6 +82,10 @@ const handleNavClick = (nav: NavItem) => {
 
 <style lang="less" scoped>
 .front-view {
+  background-image: url('@/assets/main-bg.png');  /* 添加背景图片路径 */
+  background-size: cover;  /* 使背景图片覆盖整个区域 */
+  background-position: center;  /* 将背景图片居中显示 */
+  background-repeat: no-repeat;  /* 防止背景图片重复 */
   .front-header {
     .front-nav-item {
       transition: color 0.3s;
@@ -87,6 +97,9 @@ const handleNavClick = (nav: NavItem) => {
   }
   .front-content {
     min-height: calc(100vh - 78px);
+  }
+  .slogan {
+    color: rgb(0, 0, 0); /* 设置颜色为黑色 */
   }
 }
 </style>
