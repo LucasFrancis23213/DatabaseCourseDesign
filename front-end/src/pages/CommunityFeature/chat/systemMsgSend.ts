@@ -7,7 +7,7 @@ async function sendSystemMsg(targetId:number,content:string,build_chat_user_id:n
     const formattedTime = beijingTime.toISOString().replace('Z', '+08:00');
     const sysMsg={
         id: +parseInt(Date.now().toString()), // 使用当前时间戳作为临时ID
-        conversation_id: targetId,
+        conversation_id: +targetId,
         content: JSON.stringify({content:content,build_chat_user_id:build_chat_user_id}),
         type: 'text',
         time: formattedTime,
