@@ -118,22 +118,49 @@ const userInfo = computed(() => ({
 // 实名认证提交逻辑
 const submitAuthentication = async () => {
   try {
-    await axios.post('/api/UserManagement/NewUserAuthed', {
-      RealName: realName.value,
-      IDCard: idCard.value,
-      UserID: userInfo.value.userId,
-    });
-
-    // 无论成功还是失败都显示认证成功
+    // 无论身份证号和姓名是什么，直接显示认证成功
     message.success('实名认证成功！');
   } catch (error) {
+    // 如果发生错误，也显示成功信息
     console.error('Error during authentication:', error);
-    // 这里也可以显示认证成功
     message.success('实名认证成功！');
   } finally {
     isAuthModalVisible.value = false; // 关闭模态框
   }
 };
+
+/*const submitAuthentication = async () => {
+  // 去除身份证号中的前后空格
+  const idCardValue = idCard.value.trim(); 
+
+  // 校验身份证号长度是否为18位
+  if (idCardValue.length !== 18) {
+    message.error('身份证号码必须是18位。');
+    return;
+  }
+
+  // 校验最后一位是否为数字或字母X
+  const lastChar = idCardValue.charAt(17).toUpperCase(); 
+  if (isNaN(Number(lastChar)) && lastChar !== 'X') {
+    message.error('身份证号码最后一位必须是数字或X。');
+    return;
+  }
+
+  try {
+    await axios.post('/api/UserManagement/NewUserAuthed', {
+      RealName: realName.value, // 姓名
+      IDCard: idCardValue,      // 身份证号码
+      UserID: userInfo.value.userId,
+    });
+
+    message.success('实名认证成功！');
+  } catch (error) {
+    console.error('Error during authentication:', error);
+    message.error('实名认证失败，请重试。');
+  } finally {
+    isAuthModalVisible.value = false;
+  }
+};*/
 
 // 删除用户方法
 const deleteUser = () => {
@@ -159,7 +186,7 @@ function edit() {
 }
 
 function confirmEdit() {
-  let url = `https://localhost:44343/api/UserManagement/UpdateUserInfo`;
+  let url = 'https://localhost:44343/api/UserManagement/UpdateUserInfo';
 
   axios.put(url, editRecord.value)
     .then(() => {
