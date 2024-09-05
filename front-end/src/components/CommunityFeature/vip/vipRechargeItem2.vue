@@ -22,11 +22,7 @@
       </a-result>
     </a-form>
   </a-modal>
-
-  <a-button type="primary" @click="toggleRecharge">
-
-    充值
-  </a-button>
+  <a-button type="primary" @click="toggleRecharge">充值</a-button>
 </template>
 
 <script setup>

@@ -16,7 +16,7 @@
       class="conversation-item"
       @click="navigateToConversation(conversation.id, currentUserId)"
     >
-      <a-avatar :src="conversation.avatar" :alt="conversation.name" class="avatar" />
+      <a-avatar :src="account.avatar" :alt="conversation.name" class="avatar" />
       <div class="conversation-details">
         <div class="name-and-time">
           <span class="name">{{ conversation.name }}</span>

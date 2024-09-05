@@ -21,6 +21,7 @@ const ad = ref<Ad | null>(null);
 
 const getRandomAd = async () => {
   try {
+    console.log("获取一次广告")
     const res = await axios.post("/api/advertisement/GetRandomAd",{user_id:user_id.value});
     ad.value = res.data.ad; // 假设响应数据中包含了广告信息
   } catch (e) {

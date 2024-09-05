@@ -14,8 +14,10 @@
           <span class="text-subtext font-semibold">ID: {{ userInfo.userId }}</span>
           <!-- 实名认证按钮 -->
           <div class="flex space-x-4">
+            <vipRecharge class="vip-recharge"></vipRecharge>
             <a-button @click="isAuthModalVisible = true" type="primary" class="mt-2">实名认证</a-button>
             <a-button @click="isDeleteModalVisible = true" type="primary" class="mt-2 bg-red-500 hover:bg-red-600 border-red-500 hover:border-red-600">注销</a-button>
+
           </div>
           </div>
         </div>
@@ -138,6 +140,7 @@ import MyFind from './MyFind.vue';
 import MySearch from './MySearch.vue';
 import followList from "@/components/CommunityFeature/follow/followList.vue";
 import fansList from "@/components/CommunityFeature/follow/fansList.vue";
+import vipRecharge from "@/pages/CommunityFeature/vip/vipRecharge.vue"
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
 const select = ref('overview');
@@ -291,4 +294,8 @@ function cancelEdit() {
   color: #e60707;
 }
 
+.vip-recharge{
+  margin-top: 8px;
+
+}
 </style>

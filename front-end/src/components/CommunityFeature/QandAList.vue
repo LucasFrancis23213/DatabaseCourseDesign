@@ -12,7 +12,8 @@
     </a-form>
     
     <!-- 问题列表 -->
-    <div v-for="(question,qindex) in questionsList" :key="question.id">
+    <div v-for="(question,qindex) in questionsList" :key="question.id" >
+      <div class="posts-List">
       <div class="chat flex items-center cursor-pointer" @click="toggleAnswers(question)">
         <img class="w-16 h-16 rounded-xl" :src="question.user.avatar" />
         <div class="content ml-4 flex-1">
@@ -53,6 +54,8 @@
           </a-button>
         </div>
       </div>
+        </div>
+      <advertisement v-if="Math.random() < 0.5"></advertisement>
     </div>
   </a-card>
 </template>
@@ -64,6 +67,8 @@ import axios from 'axios';
 import { Question,Answer,} from './type';
 import { getBeijingTime,formatTime } from './mytime';
 import followButton from '@/components/CommunityFeature/follow/followButton.vue'
+import advertisement from "@/pages/CommunityFeature/advertisement/advertisement.vue";
+
 
 // 定义从父组件传递的属性
 const props = defineProps({
@@ -188,7 +193,18 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.followButton{
-
+.posts-List{
+  cursor: pointer;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  margin-bottom: 16px;
+  padding: 10px;
+  &:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
 }
 </style>
