@@ -13,17 +13,15 @@ interface NaviGuard {
   before?: NavigationGuard;
   after?: NavigationHookAfter;
 }
-//
-// const loginGuard: NavigationGuard = function (to, from,next) {
+
+// const loginGuard: NavigationGuard = function (to, from) {
 //   const account = useAccountStore();
-//
-//
 // if (!http.checkAuthorization() && !/^\/(login|home|signup)?$/.test(to.fullPath)) {
-//   if (to.matched.some(record => record.meta.requiresAuth === false)) {
-//     // 如果路由被标记为不需要认证，直接允许访问
-//
-//     return next();
-//   }
+//   // if (to.matched.some(record => record.meta.requiresAuth === false)) {
+//   //   // 如果路由被标记为不需要认证，直接允许访问
+//   //
+//   //   return next();
+//   // }
 //     return '/login';
 //   }
 // };
@@ -37,7 +35,8 @@ const loginGuard: NavigationGuard = function (to, from, next) {
       next();
     } else {
       // 需要认证，且当前路径不是登录页，跳转到登录页
-      next('/login');
+      //return '/login';
+       next('/login');
     }
   } else {
     // 其他情况，允许导航继续
@@ -98,6 +97,6 @@ const NotFoundGuard: NaviGuard = {
 };
 
 export default {
-  before: [ProgressGuard.before, ForbiddenGuard.before, loginGuard, NotFoundGuard.before],
+  before: [ProgressGuard.before, ForbiddenGuard.before,loginGuard, NotFoundGuard.before], //,
   after: [ProgressGuard.after],
 };

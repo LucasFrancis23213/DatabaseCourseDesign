@@ -39,7 +39,7 @@ const { setPrimaryColor } = useThemeStore();
 setPrimaryColor({DEFAULT: '#3B82F6'});
 
 const following = ref([])
-const pageSize = ref(10)
+const pageSize = ref(2)
 const currentPage = ref(1)
 
 const onPageChange = (page, size) => {
