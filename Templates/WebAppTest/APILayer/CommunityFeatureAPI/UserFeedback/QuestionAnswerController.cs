@@ -133,7 +133,7 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI
                         {
                             id = a.Item1.User_ID,
                             name = a.Item1.User_Name, // 这里需要从用户信息中获取
-                            avatar = "" // 这里需要从用户信息中获取
+                            avatar = a.Item1.Avatar // 这里需要从用户信息中获取
                         },
                         content = a.Item2.Answer_Content,
                         time = a.Item2.Answer_Date.ToLocalTime()

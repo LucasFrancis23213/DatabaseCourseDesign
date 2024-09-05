@@ -291,7 +291,7 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
                     {
                         user_id = follow.Item1.Followed_User_ID,
                         user_name = follow.Item2.User_Name,
-                        user_avatar = ""
+                        user_avatar = follow.Item2.Avatar,
                     })
                 };
 
@@ -365,7 +365,7 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
                     {
                         user_id = follower.Item1.Follower_User_ID,
                         user_name = follower.Item2.User_Name,
-                        user_avatar = "" // 如果有用户头像的字段，需要从数据库中获取
+                        user_avatar = follower.Item2.Avatar // 如果有用户头像的字段，需要从数据库中获取
                     })
                 };
 
