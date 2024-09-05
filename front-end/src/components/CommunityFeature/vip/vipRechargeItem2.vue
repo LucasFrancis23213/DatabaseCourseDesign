@@ -33,7 +33,6 @@
 
 import {ref, computed, onUnmounted, onMounted} from 'vue';
 import {useAccountStore} from '@/store/account';
-import QRCodeGenerator from "@/components/CommunityFeature/vip/QRCodeGenerator.vue";
 
 const {account, permissions} = useAccountStore();
 
