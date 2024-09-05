@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\desktop\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj": {}
+    "E:\\TJ\\数据库-分支清理用\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj": {}
   },
   "projects": {
-    "D:\\desktop\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj": {
+    "E:\\TJ\\数据库-分支清理用\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\desktop\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
+        "projectUniqueName": "E:\\TJ\\数据库-分支清理用\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
         "projectName": "SQLOperation",
-        "projectPath": "D:\\desktop\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
+        "projectPath": "E:\\TJ\\数据库-分支清理用\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\SQLOperation.csproj",
         "packagesPath": "C:\\Users\\zyn\\.nuget\\packages\\",
-        "outputPath": "D:\\desktop\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\obj\\",
+        "outputPath": "E:\\TJ\\数据库-分支清理用\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\zyn\\AppData\\Roaming\\NuGet\\NuGet.Config",
