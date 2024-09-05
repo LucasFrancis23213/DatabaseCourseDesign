@@ -20,8 +20,8 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
 
         public CommentsController(Connection connection)
         {
-            commentService=new Comments(connection);
-            userActivity=new UserActivity(connection);
+            commentService = new Comments(connection);
+            userActivity = new UserActivity(connection);
             CommentsConnection = connection;
         }
 

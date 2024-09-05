@@ -14,20 +14,16 @@ namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
 
         public Tuple<bool, string> GetSystemLogs(QuerySystemLogsArgs InputArgs)
         {
-            int? UserID = null;
-            int? SystemLogID = null;
-            string? OperationType = InputArgs.OperationType;
-
-            if (InputArgs.UserID > 0)
+            if (InputArgs.UserID <= 0)
             {
-                UserID = InputArgs.UserID;
+                return Tuple.Create(false, "UserID不合法");
             }
-            if (InputArgs.SystemLogID > 0)
+            if (InputArgs.SystemLogID <= 0)
             {
-                SystemLogID = InputArgs.SystemLogID;
+                return new Tuple<bool, string>(false, "SystemLogID不合法");
             }
 
-            return SystemLogsDAL.GetSystemLogs(SystemLogID, OperationType, UserID);
+            return SystemLogsDAL.GetSystemLogs(InputArgs);
         }
     }
 }

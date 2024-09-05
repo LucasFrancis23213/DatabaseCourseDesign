@@ -32,6 +32,9 @@
           <router-link to='/signup'>
           没有账号？立即注册
           </router-link>
+          <router-link to="/reset" class="link-action forget-password-btn" style="margin-left:158px">
+            忘记密码
+          </router-link>
           <br><br>
           <a-button htmlType="submit" class="h-[40px] w-full" type="primary" :loading="loading"> 登录 </a-button>
           <a-divider></a-divider>
@@ -102,4 +105,13 @@
         color: #f00; /* 鼠标悬停时变为红色 */
       }
     }
+
+    .forget-password-btn {
+    color: gray; 
+    transition: color 0.3s; 
+  }
+
+    .forget-password-btn:hover {
+    color: #1890ff; 
+  }
   </style>

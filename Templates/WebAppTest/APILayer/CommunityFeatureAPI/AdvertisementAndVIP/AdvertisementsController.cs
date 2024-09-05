@@ -260,7 +260,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
 
                 int adId = requestBody["ad_id"].GetInt32();
                 var adDetails = advertisementsService.GetAdDetails(adId);
-                var adClickDetails = advertisementsService. GetAdClickDetails(adId);
+                var adClickDetails = advertisementsService.GetAdClickDetails(adId);
                 return Ok(new
                 {
                     status = "success",

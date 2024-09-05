@@ -3,6 +3,9 @@ import {  computed ,ref, onMounted,onUnmounted} from 'vue'
 import { useTimeFormat } from './useTimeFormat';
 import followButton from '@/components/CommunityFeature/follow/followButton.vue'
 import CreateConversationBtn from "@/components/CommunityFeature/chat/CreateConversationBtn.vue";
+import { useAccountStore } from '@/store/account';
+
+const { account } = useAccountStore();
 const props = defineProps({
   content: {//聊天内容字符串
     type: String,
@@ -94,14 +97,14 @@ const build_chat_user_id = computed(()=>{
     return undefined;
 });
 
-
+console.log(account);
 
 </script>
 
 <template>
   <div class="chat-bubble" :class="{ 'self': isSelf }">
     <div class="avatar" v-if="!isSelf" @click="toggleUserInfo" ref="avatarRef">
-      <img :src="avatar" alt="User Avatar">
+      <img :src="account.avatar" alt="User Avatar">
     </div>
     <div class="message-container" @mouseenter="toggleRetract" @mouseleave="toggleRetract">
       <div class="message"  >{{ Content }}</div>

@@ -4,8 +4,12 @@
   import { FormInstance, message } from 'ant-design-vue';
   import axios from 'axios';
   import dayjs from 'dayjs'
+  import { useAccountStore } from '@/store/account';
+  import { generateItemID } from '@/utils/BasicFeature/IDGen';
+  import sendSystemMsg from "@/pages/CommunityFeature/chat/systemMsgSend";
+  const {account} = useAccountStore();
 
-  const baseURL = 'http://121.36.200.128:5000/api/';
+  const baseURL = 'https://localhost:44343/api/';
   
   type onePublish = {
     ITEM_ID?: string;
@@ -19,6 +23,7 @@
     IS_REWARDED?: boolean;
     REWARD_AMOUNT?: string;
     DEADLINE?: string | '无';
+    USER_ID?: string;
   };
 
   const tagMapping = {
@@ -27,39 +32,12 @@
   3: '医疗用品'
 };
 
+  const categoryMapping = {
+    '1': '日用品',
+    '2': '手表',
+  };
+
   const formModel = ref<FormInstance>();
-  
-  // 打乱字符集的函数
-  function shuffle(array: string[]) {
-    let currentIndex = array.length, randomIndex;
-
-    // While there remain elements to shuffle.
-    while (currentIndex !== 0) {
-      // Pick a remaining element.
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-
-      // And swap it with the current element.
-      [array[currentIndex], array[randomIndex]] = [
-        array[randomIndex], array[currentIndex]];
-    }
-
-    return array;
-  }
-
-  function generateItemID() {
-    const charset = '123456789abcdefghijklmnopqrstuvwxyz'.split('');
-    const shuffledCharset = shuffle(charset);
-    let uniqueID = '';
-    
-    // 生成16位ID
-    for (let i = 0; i < 16; i++) {
-      const randomIndex = Math.floor(Math.random() * shuffledCharset.length);
-      uniqueID += shuffledCharset[randomIndex];
-    }
-
-    return uniqueID;
-  }
 
   const submit = () => {
     loading.value = true;
@@ -77,6 +55,7 @@
         }
         
         form.value.ITEM_ID = generateItemID(); // 生成并设置 ITEM_ID
+        form.value.USER_ID = account.userId;
         form.value.CATEGORY_ID = form.value.CATEGORY_ID[0];
         form.value.LOST_DATE = dayjs(form.value.LOST_DATE).format("YYYY-MM-DD HH:mm:ss");
         if (form.value.IS_REWARDED) {
@@ -115,6 +94,7 @@
     { title: '是否悬赏', dataIndex: 'IS_REWARDED' },
     { title: '悬赏金额', dataIndex: 'REWARD_AMOUNT' },
     { title: '截止时间', dataIndex: 'DEADLINE' },
+    { title: '操作', dataIndex: 'RETURN_ITEM'},
   ];
 
   const open = ref<boolean>(false);
@@ -149,15 +129,20 @@
   const publishs = ref([]);
 
   const getPublishs = async () => {
+    console.log(account);
     try {
       const res = await axios.get(baseURL + 'QueryItem', {
-        params: { type: 0 }
+        params: { 
+            type: 0,
+            review: 1
+        }
       });
       
       // 假设返回的数据是一个数组或对象，直接赋值给 publishs
       publishs.value = res.data.map(item => ({
       ...item,
-      TAG_ID: [tagMapping[item.TAG_ID as keyof typeof tagMapping] || '未知']
+      TAG_ID: [tagMapping[item.TAG_ID as keyof typeof tagMapping] || '未知'],
+      CATEGORY_ID: categoryMapping[item.CATEGORY_ID as keyof typeof categoryMapping] || '未知类别'
     }));
       
       console.log('数据获取成功');
@@ -168,6 +153,62 @@
     }
   }
   onMounted(() => getPublishs());
+
+ 
+const returnModel = ref<FormInstance>();
+//点击归还，openClaim变为true显示a-modal
+const openReturn = ref<boolean>(false)
+//提交归还时的加载
+const returnLoading = ref<boolean>(false)
+//归还的是finds数组中索引为claimRow的一行
+const returnRow = ref()
+//归还按钮的点击函数
+const clickReturn = (row) => {
+  returnRow.value = row
+  openReturn.value = true
+}
+//确认归还的点击函数
+const returnItem = async (returnMsg: string, pubUserID: number, claimUserID: number, returnItemID : string) => {
+  returnLoading.value = true;
+  try {
+    await returnModel.value?.validateFields();
+    
+    // 这里应该添加实际的API调用来处理物品归还
+    // 例如:
+    // await axios.post(baseURL + 'ReturnItem', {
+    //   returnMsg,
+    //   pubUserID,
+    //   claimUserID,
+    //   // 其他必要的数据...
+    // });
+    sendSystemMsg(pubUserID, returnMsg, claimUserID);
+    sendSystemMsg(claimUserID, "点击这条消息进入与失主的聊天", pubUserID);
+    var jsonFormData = JSON.stringify({
+      "Process_ID" : generateItemID(),
+      "ITEM_ID": returnItemID,
+      "Publish_User_ID" : pubUserID,
+      "Claimant_User_ID" : claimUserID,
+    });
+    await axios.post(baseURL + 'claim/ReturnItem', jsonFormData, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+    message.success('归还已提交');
+    returnLoading.value = false;
+    openReturn.value = false;
+    await getPublishs(); // 重新获取最新数据
+  } catch (error) {
+    console.error('归还提交失败:', error);
+    message.error('提交失败！');
+    returnLoading.value = false;
+  }
+};
+//填写的留言和上传的图片
+const returnForm = ref({
+  MESSAGE: '',
+  IMAGE_URL: '',
+})
 </script>
 
 <template>
@@ -178,7 +219,7 @@
         <a-input v-model:value="form.ITEM_NAME" :maxlength="20" />
       </a-form-item>
       <a-form-item label="物品类别" name="CATEGORY_ID" has-feedback :rules="[{ required: true, message: '请选择物品类别' }]">
-        <a-cascader v-model:value="form.CATEGORY_ID" :options="[{label: '物品类别1', value: '1',}, {label: '手表', value: '2',},]"/>
+        <a-cascader v-model:value="form.CATEGORY_ID" :options="[{label: '日用品', value: '1',}, {label: '手表', value: '2',},]"/>
       </a-form-item>
       <a-form-item label="物品描述" name="DESCRIPTION" has-feedback :rules="[{ required: true, message: '请输入物品描述' }]">
         <a-textarea :rows="4" v-model:value="form.DESCRIPTION" :maxlength="100" />
@@ -237,7 +278,7 @@
         </a-button>
       </div>
     </template>
-    <template #bodyCell="{ column, record }">
+    <template #bodyCell="{ column, record, index }">
       <template v-if="column.dataIndex === 'itemNameAndCategory'">
         <div class="text-title font-bold">
           {{ record.ITEM_NAME }}
@@ -267,6 +308,27 @@
           </a-tag>
         </span>
       </template>
+      <template v-else-if="column.dataIndex === 'RETURN_ITEM'">
+        <a-button type="primary" @click="clickReturn(index)">归还</a-button>
+      </template>
     </template>
   </a-table>
+
+  <!-- 归还 -->
+  <a-modal v-model:visible="openReturn" title="归还物品">
+    <template #footer></template>
+    <span style="font-size: medium;">名称：</span><span>{{ publishs[returnRow].ITEM_NAME }}</span><br><br>
+    <span style="font-size: medium;">图片：</span><img style="width: 150px;" :src="publishs[returnRow].IMAGE_URL" /><br><br>
+    <span style="font-size: medium;">遗失地点：</span><span>{{ publishs[returnRow].LOST_LOCATION }}</span><br><br>
+    <span style="font-size: medium;">物品描述：</span><span>{{ publishs[returnRow].DESCRIPTION }}</span><br>
+    <hr>
+    <a-form ref="claimModel" :model="returnForm" :labelCol="{ span: 5 }" :wrapperCol="{ span: 16 }">
+      <a-form-item label="填写留言" name="MESSAGE" has-feedback :rules="[{ required: true, message: '请输入留言' }]">
+        <a-textarea :rows="4" v-model:value="returnForm.MESSAGE" :maxlength="150" />
+      </a-form-item>
+      <a-form-item :wrapper-col="{ offset: 10, span: 16 }">
+        <a-button type="primary" html-type="submit" @click="returnItem(returnForm.MESSAGE, +publishs[returnRow].USER_ID, +account.userId, publishs[returnRow].ITEM_ID)" :loading="returnLoading">确认归还</a-button>
+      </a-form-item>
+    </a-form>
+  </a-modal>
 </template>

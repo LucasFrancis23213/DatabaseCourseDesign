@@ -14,31 +14,25 @@ namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
 
         public Tuple<bool, string> GetAPILogs(QueryAPIAccessLogsArgs InputArgs)
         {
-            string? APIName = InputArgs.APIName;
-            int? AccessorID = null;
-            DateTime? StartTime = null;
-            DateTime? EndTime = null;
-            string? Result = InputArgs.Result;
-            int? AccessID = null;
-
-            if (InputArgs.AccessID > 0)
+            if (InputArgs.AccessID <= 0)
             {
-                AccessID = InputArgs.AccessID;
+                return Tuple.Create(false, "AccessID不合法");
             }
-            if (InputArgs.AccessorID > 0)
+            if (InputArgs.AccessorID < 0)
             {
-                AccessorID = InputArgs.AccessorID;
+                // AccessorID == 0 留给测试用
+                return Tuple.Create(false, "AccessorID不合法");
             }
-            if (InputArgs.StartTime != default)
+            if (InputArgs.StartTime is not null && InputArgs.StartTime is not DateTime)
             {
-                StartTime = InputArgs.StartTime;
+                return Tuple.Create(false, "开始时间不合法");
             }
-            if (InputArgs.EndTime != default)
+            if (InputArgs.EndTime is not null && InputArgs.EndTime is not DateTime)
             {
-                EndTime = InputArgs.EndTime;
+                return Tuple.Create(false, "结束时间不合法");
             }
 
-            return APILogsDAL.GetAPIAccessLogs(AccessID, APIName, Result, AccessorID, StartTime, EndTime);
+            return APILogsDAL.GetLogs(InputArgs);
         }
     }
 }

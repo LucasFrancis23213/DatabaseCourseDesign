@@ -18,6 +18,8 @@ namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
                 return new Tuple<bool, string>(false, "User details are incomplete");
             }
 
+            user.Password = PasswordEncryptor.EncryptPassword(user.Password);
+
             var result = UserOperatorDAL.InsertUser(user.User_Name, user.Password, user.Contact);
 
             return result;

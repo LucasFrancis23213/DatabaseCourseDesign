@@ -17,7 +17,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
 
         public OverallActivityController(Connection connection)
         {
-            userActivityService=new UserActivity(connection);
+            userActivityService = new UserActivity(connection);
         }
 
         // 5. 用户查看整体活跃度 测试成功
@@ -36,7 +36,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
                 var userId = requestData["current_user_id"].GetInt32();
 
                 // 调用服务层方法获取整体活跃度
-                var overallScore =userActivityService.ViewOverallScore(userId);
+                var overallScore = userActivityService.ViewOverallScore(userId);
 
                 // 构建响应对象
                 var response = new
@@ -85,7 +85,6 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
         }
     }
 }
-
 
 
 

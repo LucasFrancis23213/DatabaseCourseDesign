@@ -1,4 +1,4 @@
-﻿using Oracle.ManagedDataAccess.Client;
+using Oracle.ManagedDataAccess.Client;
 using SQLOperation.PublicAccess.InterfaceManager.BasicFeatureInterface;
 using SQLOperation.PublicAccess.Templates.SQLManager;
 using SQLOperation.PublicAccess.Utilities;
@@ -18,7 +18,7 @@ using System.Reflection.PortableExecutable;
 namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
 {
     
-    internal class ItemMatch:IItemMatch
+    public class ItemMatch:IItemMatch
     {
         private Connection conn;
         private OracleConnection OracleConnection;
@@ -38,6 +38,7 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                 "Claimant_User_ID",
                 "Status",
                 "Application_Date",
+                "Publish_User_ID",
             };
             var values = new List<object>
             {
@@ -46,6 +47,7 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                 item.Claimant_User_ID,
                 item.Status,
                 item.Application_Date,
+                item.Publish_User_ID,
             };
             BasicSQLOps basic = new BasicSQLOps(conn);
             var result = basic.InsertOperation("Item_Claim_Processes", Names, values);
@@ -59,6 +61,7 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                 return new Tuple<bool, string>(false, errorReason);
             }
         }
+
         //增加一条匹配记录
         private Tuple<bool, string> MatchRecordBasic(Match_Records item)
         {
@@ -402,7 +405,7 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
             }
         }
         //更新一条记录状态（item_state_history）
-        static Item_Status_History GetLatestRecord(OracleConnection conn, int itemId)
+        static Item_Status_History GetLatestRecord(OracleConnection conn, string itemId)
         {
             string query = @"
             SELECT History_ID, Change_Date, Item_ID, Preview_Status, New_Status
@@ -421,9 +424,9 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                     {
                         return new Item_Status_History
                         {
-                            History_ID = reader.GetInt32(0),
+                            History_ID = reader.GetInt32(0).ToString(),
                             Change_Date = reader.GetDateTime(1),
-                            Item_ID = reader.GetInt32(2),
+                            Item_ID = reader.GetInt32(2).ToString(),
                             Preview_Status = reader.GetString(3),
                             New_Status = reader.GetString(4)
                         };
@@ -434,7 +437,7 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
             return null;
         }
         //看似是个update 实则还是插入新纪录
-        public Tuple<bool, string> UpdateHistory(OracleConnection conn, int itemId,int historyId, string newStatus)
+        public Tuple<bool, string> UpdateHistory(OracleConnection conn, string itemId,string historyId, string newStatus)
         {
             
             Item_Status_History latestRecord = GetLatestRecord(conn, itemId);
