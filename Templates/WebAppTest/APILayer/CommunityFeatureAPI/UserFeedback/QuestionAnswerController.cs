@@ -67,7 +67,7 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI
                             id = question.Item1.User_ID, // 用户ID
                                                          // 待定 暂时没有获取用户名和用户头像的方法
                             name = question.Item1.User_Name, // 用户名
-                            avatar = "" // 用户头像URL
+                            avatar = question.Item1.Avatar, // 用户头像URL
                         },
                         content = question.Item2.Question_Content, // 问题内容
                         time = question.Item2.Question_Time.ToLocalTime(), // 提出问题时间
@@ -78,7 +78,7 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI
                             {
                                 id = a.Item1.User_ID,
                                 name = a.Item1.User_Name, // 这里需要从用户信息中获取
-                                avatar = "" // 这里需要从用户信息中获取
+                                avatar = question.Item1.Avatar, // 这里需要从用户信息中获取
                             },
                             content = a.Item2.Answer_Content, // 回答内容
                             time = a.Item2.Answer_Date.ToLocalTime() // 回答时间

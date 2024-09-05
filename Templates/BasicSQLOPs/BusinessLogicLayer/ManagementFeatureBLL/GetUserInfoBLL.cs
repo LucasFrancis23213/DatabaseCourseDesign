@@ -40,7 +40,8 @@ namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
                     UserName = user.User_Name,
                     UserID = user.User_ID,
                     Contact = user.Contact,
-                    IsDeleted = user.Is_Deleted
+                    IsDeleted = user.Is_Deleted,
+                    Avatar = user.Avatar,
                 });
             }
 

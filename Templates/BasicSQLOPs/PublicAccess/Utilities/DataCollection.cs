@@ -181,11 +181,12 @@ namespace SQLOperation.PublicAccess.Utilities
 
     public class Item_Claim_Processes
     {
-        public int Process_ID;
+        public string Process_ID;
         public string Item_ID;
         public int Claimant_User_ID;
         public string Status;
         public DateTime Application_Date;// 原来是int
+        public int Publish_User_ID;
     }
 
     public class Match_Records
@@ -328,6 +329,9 @@ namespace SQLOperation.PublicAccess.Utilities
 
         [JsonPropertyName("IS_DELETED")]
         public int Is_Deleted { get; set; }
+
+        [JsonPropertyName("AVATAR")]
+        public string Avatar { get; set; }
     }
 
     public class User_Subscriptions

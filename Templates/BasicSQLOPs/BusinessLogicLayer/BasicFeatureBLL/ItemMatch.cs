@@ -38,6 +38,7 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                 "Claimant_User_ID",
                 "Status",
                 "Application_Date",
+                "Publish_User_ID",
             };
             var values = new List<object>
             {
@@ -46,6 +47,7 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                 item.Claimant_User_ID,
                 item.Status,
                 item.Application_Date,
+                item.Publish_User_ID,
             };
             BasicSQLOps basic = new BasicSQLOps(conn);
             var result = basic.InsertOperation("Item_Claim_Processes", Names, values);
@@ -59,6 +61,7 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                 return new Tuple<bool, string>(false, errorReason);
             }
         }
+
         //增加一条匹配记录
         private Tuple<bool, string> MatchRecordBasic(Match_Records item)
         {

@@ -28,6 +28,7 @@ export interface Account {
   userName: string;
   userId:string;
   contact:string;
+  avatar:string;
 }
 export type TokenResult = {
   token: string;
@@ -40,6 +41,7 @@ export const useAccountStore = defineStore('account', {
       userName: '',
       userId: '',
       contact: '',
+      avatar: '',
     } as Account,
     permissions: [],
     role: '',
@@ -137,6 +139,7 @@ export const useAccountStore = defineStore('account', {
             this.account.userName = response.data[0].UserName;
             this.account.userId = response.data[0].UserID;
             this.account.contact = response.data[0].Contact;
+            this.account.avatar = response.data[0].Avatar;
             return { success: true, message: "用户信息加载成功", account: this};
           } 
         } catch (error) {

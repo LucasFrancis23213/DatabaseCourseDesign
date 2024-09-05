@@ -11,7 +11,7 @@ using SQLOperation.PublicAccess.InterfaceManager.BasicFeatureInterface;
 namespace WebAppTest.APILayer.BasicFeatureAPI
 {
     [ApiController]
-    public class ItemMatchCotroller : ControllerBase
+    public class ItemMatchController : ControllerBase
     {
         //private Connection conn;
         //private OracleConnection OracleConnection;
@@ -35,7 +35,7 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                 try
                 {
                     //由于前端传入的数据涉及多张表，此处手动解析
-                    ItemClaimProcessObj.Process_ID = (int)(TmpJson["PROCESS_ID"]);
+                    ItemClaimProcessObj.Process_ID = (TmpJson["PROCESS_ID"]).ToString();
                     ItemClaimProcessObj.Item_ID = TmpJson["ITEM_ID"].ToString();
                     ItemClaimProcessObj.Claimant_User_ID = (int)(TmpJson["CLAIMANT_USER_ID"]);
                     ItemClaimProcessObj.Status = TmpJson["STATUS"].ToString();

@@ -131,6 +131,7 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
                             Password = reader.GetString(2),
                             Contact = reader.GetString(3),
                             Is_Deleted = reader.GetInt32(4),
+                            Avatar = reader.GetString(5),
                         });
                     }
                     string jsonResult = JsonConvert.SerializeObject(result);

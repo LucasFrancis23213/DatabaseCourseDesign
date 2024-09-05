@@ -18,8 +18,4 @@
     <ProjectReference Include="..\BasicSQLOPs\SQLOperation.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="APILayer\BasicFeatureAPI\" />
-  </ItemGroup>
-
 </Project>
