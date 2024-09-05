@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\2023Spring\\DatabaseCourseDesign\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{19588491-4131-4067-BAC4-320A0C53011B}|Templates\\WebAppTest\\WebAppTest.csproj|d:\\2023spring\\databasecoursedesign\\templates\\webapptest\\apitemplate\\sqlopscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{19588491-4131-4067-BAC4-320A0C53011B}|Templates\\WebAppTest\\WebAppTest.csproj|solutionrelative:templates\\webapptest\\apitemplate\\sqlopscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{267F59D7-51EC-41DE-A08A-237C5A5EC18C}|Templates\\BasicSQLOPs\\SQLOperation.csproj|d:\\2023spring\\databasecoursedesign\\templates\\basicsqlops\\businesslogiclayer\\managementfeaturebll\\deleteuserbll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{267F59D7-51EC-41DE-A08A-237C5A5EC18C}|Templates\\BasicSQLOPs\\SQLOperation.csproj|solutionrelative:templates\\basicsqlops\\businesslogiclayer\\managementfeaturebll\\deleteuserbll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -14,24 +18,37 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "SQLOpsController.cs",
+              "DocumentMoniker": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\WebAppTest\\APITemplate\\SQLOpsController.cs",
+              "RelativeDocumentMoniker": "Templates\\WebAppTest\\APITemplate\\SQLOpsController.cs",
+              "ToolTip": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\WebAppTest\\APITemplate\\SQLOpsController.cs",
+              "RelativeToolTip": "Templates\\WebAppTest\\APITemplate\\SQLOpsController.cs",
+              "ViewState": "AQIAAJYAAAAAAAAAAAAqwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-02T13:50:38.679Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "DeleteUserBLL.cs",
               "DocumentMoniker": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\BusinessLogicLayer\\ManagementFeatureBLL\\DeleteUserBLL.cs",
               "RelativeDocumentMoniker": "Templates\\BasicSQLOPs\\BusinessLogicLayer\\ManagementFeatureBLL\\DeleteUserBLL.cs",
               "ToolTip": "D:\\2023Spring\\DatabaseCourseDesign\\Templates\\BasicSQLOPs\\BusinessLogicLayer\\ManagementFeatureBLL\\DeleteUserBLL.cs",
               "RelativeToolTip": "Templates\\BasicSQLOPs\\BusinessLogicLayer\\ManagementFeatureBLL\\DeleteUserBLL.cs",
-              "ViewState": "AQIAAAgAAAAAAAAAAAAAwAAAAAAAAAAA",
+              "ViewState": "AQIAAAgAAAAAAAAAAAAAwBcAAAAkAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-02T13:38:59.893Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
             }
           ]
         }
