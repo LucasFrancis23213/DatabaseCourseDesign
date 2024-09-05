@@ -10,7 +10,8 @@
           <span> {{ option.months }}个月</span>
         </a-radio-button>
       </a-radio-group>
-      <a-button type="primary" block @click="recharge" :loading="isLoading">立即充值</a-button>
+      <a-button type="primary" block @click="generateQRCode" :loading="isLoading">立即充值</a-button>
+      <qrcode-vue v-if="needQRCode" class="qrcode mx-auto" :value="qrCodeUrl" :size="200" level="H"></qrcode-vue>
       <a-alert v-if="errorMessage" message={errorMessage} type="error" show-icon/>
       <a-result v-if="rechargeResult" status="success" title="充值成功">
         <template #extra>
@@ -30,16 +31,18 @@
 
 <script setup>
 
-import {ref, computed} from 'vue';
+import {ref, computed, onUnmounted, onMounted} from 'vue';
 import {useAccountStore} from '@/store/account';
+import QRCodeGenerator from "@/components/CommunityFeature/vip/QRCodeGenerator.vue";
 
 const {account, permissions} = useAccountStore();
 
 import {message} from 'ant-design-vue';
 import axios from 'axios'
+import QrcodeVue from "qrcode.vue";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
-
+const qrCodeUrl = ref(`${axios.defaults.baseURL}/api/`)
 
 const rechargeOptions = [
   {id: 1, name: '月度VIP', price: 30, months: 1},
@@ -52,10 +55,71 @@ const isLoading = ref(false);
 const errorMessage = ref('');
 const rechargeResult = ref(null);
 const isRecharged = ref(false);
-
+const needQRCode =ref(false);
+const rechargeId = ref('');
 const toggleRecharge = () => {
   isRecharged.value = !isRecharged.value;
 }
+
+const toggleNeedQRcode =()=>{
+  needQRCode.value=!needQRCode.value;
+}
+const generateQRCode=()=>{
+  toggleNeedQRcode();
+  const selected = rechargeOptions.find(option => option.id === selectedOption.value);
+  rechargeId.value= 'recharge_'+account.userId + Date.now();
+
+  qrCodeUrl.value=`localhost:5173/#/recharge/${rechargeId.value}`
+  console.log(qrCodeUrl.value)
+  //setupWebSocket();
+  ws.value.send(JSON.stringify({ type: 'start_monitoring', rechargeId: rechargeId.value, userId:+account.userId}));
+}
+const ws=ref();
+const setupWebSocket = () => {
+  ws.value = new WebSocket(`wss://localhost:44343/rechargews?user_id=${account.userId}`);
+
+  ws.value.onopen = () => {
+    console.log('WebSocket连接已建立');
+    //ws.value.send({ type: 'start_monitoring', rechargeId: +rechargeId.value, userId:+account.userId});
+  };
+
+  ws.value.onmessage = (event) => {
+    console.log(event)
+    console.log(event.data)
+    if (event.data === 'Recharge Success') {
+      //rechargeStatus.value = '充值成功！余额已更新';
+      // 这里可以添加更新用户余额的逻辑
+    }
+    recharge();
+    disconnection();
+    toggleNeedQRcode();
+  };
+
+  ws.value.onerror = (error) => {
+    console.error('WebSocket错误:', error);
+    //rechargeStatus.value = '连接错误，请稍后重试';
+    disconnection();
+  };
+
+  ws.value.onclose = (e) => {
+    console.log(e)
+    console.log('WebSocket连接已关闭');
+  };
+};
+
+const disconnection =()=>{
+  if (ws.value) {
+    ws.value.close();
+    ws.value = null;
+  }
+}
+
+onMounted(()=>{
+  setupWebSocket()
+})
+onUnmounted(()=>{
+  disconnection()
+})
 const recharge = async () => {
   try {
 
@@ -124,5 +188,10 @@ const recharge = async () => {
   top: 5px;
   right: 5px;
   font-size: 16px;
+}
+
+.qrcode{
+  display: flex;
+  margin-top: 10px;
 }
 </style>

@@ -91,6 +91,17 @@ const messageRoute:RouteRecordRaw[] = [
     },
     component:() =>import('@/pages/admin_CommunityFeature/sysMsgSend/sysMsgSend.vue')
   },
+    {
+    path:'/recharge/:recharge_id',
+    name:'充值确认',
+    props:true,
+    meta: {
+      renderMenu: false,
+      cacheable: false,
+      requiresAuth: false,
+    },
+    component:() =>import('@/pages/CommunityFeature/vipRechargeConfirm.vue')
+  },
 ]
 
 export default messageRoute;
