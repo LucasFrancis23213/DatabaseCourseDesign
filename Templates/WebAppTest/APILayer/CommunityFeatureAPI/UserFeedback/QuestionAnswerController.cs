@@ -100,7 +100,7 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
             catch (Exception ex)
             {
                 Console.WriteLine($"获取问题时出错：{ex.Message}");
-                return StatusCode(500, $"内部服务器错误：{ex.Message}");
+                return BadRequest(new { status = "error", message = $"{ex.Message}" });
 
             }
 
@@ -144,7 +144,7 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
             catch (Exception ex)
             {
                 Console.WriteLine($"获取答案时出错：{ex.Message}");
-                return StatusCode(500, $"内部服务器错误：{ex.Message}");
+                return BadRequest(new { status = "error", message = $"{ex.Message}" });
 
             }
         }
@@ -194,7 +194,7 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
                 {
                     transaction.Rollback();
                     Console.WriteLine($"发布问题时出错: {ex.Message}");
-                    return StatusCode(500, $"服务器内部错误: {ex.Message}");
+                    return BadRequest(new { status = "error", message = $"{ex.Message}" });
 
                 }
 
@@ -247,7 +247,7 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
             catch (Exception ex)
             {
                 Console.WriteLine($"撤回问题时出错: {ex.Message}");
-                return StatusCode(500, $"内部服务器错误: {ex.Message}");
+                return BadRequest(new { status = "error", message = $"{ex.Message}" });
 
             }
         }
@@ -304,7 +304,7 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
                 {
                     transaction.Rollback();
                     Console.WriteLine($"发布答案时出错: {ex.Message}");
-                    return StatusCode(500, $"内部服务器错误: {ex.Message}");
+                    return BadRequest(new { status = "error", message = $"{ex.Message}" });
 
                 }
             }
@@ -353,7 +353,7 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
             catch (Exception ex)
             {
                 Console.WriteLine($"撤回答案时发生错误: {ex.Message}");
-                return StatusCode(500, $"内部服务器错误: {ex.Message}");
+                return BadRequest(new { status = "error", message = $"{ex.Message}" });
 
             }
         }

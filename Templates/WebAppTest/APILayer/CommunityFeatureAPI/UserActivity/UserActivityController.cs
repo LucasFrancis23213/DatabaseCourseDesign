@@ -158,7 +158,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"{ex.Message}");
+                return BadRequest(new { status = "error", message = $"{ex.Message}" });
             }
         }
 

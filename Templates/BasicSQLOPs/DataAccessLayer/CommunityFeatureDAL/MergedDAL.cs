@@ -531,7 +531,17 @@ namespace DatabaseProject.DataAccessLayer.CommunityFeatureDAL
                                 Dictionary<string, object> SingleMatch = new Dictionary<string, object>();
                                 foreach (string name in columnNames)
                                 {
-                                    SingleMatch[name] = reader[name];
+                                    object value = reader[name];
+
+                                    // 检查 DBNull 和正确的类型转换
+                                    if (value == DBNull.Value)
+                                    {
+                                        SingleMatch[name] = null;
+                                    }
+                                    else
+                                    {
+                                        SingleMatch[name] = value;
+                                    }
                                 }
                                 RowList.Add(SingleMatch);
                             }

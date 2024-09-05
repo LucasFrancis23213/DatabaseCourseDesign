@@ -2,6 +2,7 @@
 using SQLOperation.PublicAccess.Templates.SQLManager;
 using DatabaseProject.APILayer.CommunityFeatureAPI;
 using System.Net;
+using WebAppTest.APILayer.CommunityFeatureAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,7 @@ builder.Services.AddControllers();
 // 配置 Kestrel 只使用 HTTP
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
-    serverOptions.Listen(IPAddress.Any, 5174);  // 使用端口 5174
+    serverOptions.Listen(IPAddress.Any, 5001);  // 使用端口 5001
 });
 
 // 了解更多关于配置 Swagger/OpenAPI 的信息
@@ -38,6 +39,8 @@ builder.Services.AddCors(options =>
 
 // 注册 WebSocketService
 builder.Services.AddSingleton<WebSocketService>();
+// 注册 `RechargeWebsocketService`
+builder.Services.AddSingleton<RechargeWebsocketService>();
 
 var app = builder.Build();
 
@@ -58,6 +61,7 @@ app.UseRouting();
 app.UseWebSockets();
 
 // 自定义中间件处理 WebSocket 连接
+// 自定义中间件处理 WebSocket 连接
 app.Use(async (context, next) =>
 {
     if (context.Request.Path == "/ws")
@@ -65,11 +69,18 @@ app.Use(async (context, next) =>
         var webSocketService = context.RequestServices.GetRequiredService<WebSocketService>();
         await webSocketService.HandleConnection(context);
     }
+    else if (context.Request.Path == "/rechargews")
+    {
+        var rechargeWebSocketService = context.RequestServices.GetRequiredService<RechargeWebsocketService>();
+        // 这里假设你已经有方法来直接处理 HttpContext
+        await rechargeWebSocketService.HandleConnection(context);
+    }
     else
     {
         await next();
     }
 });
+
 
 app.UseAuthorization();
 app.MapControllers();
