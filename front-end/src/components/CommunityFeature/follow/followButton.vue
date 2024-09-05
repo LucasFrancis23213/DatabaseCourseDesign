@@ -1,10 +1,11 @@
 <template>
-  <button
+  <a-button
       @click="toggleFollow"
       :class="{ 'followed': isFollowed }"
+      class="text-sm font-semibold"
   >
     {{ buttonText }}
-  </button>
+  </a-button>
 </template>
 
 <script setup>

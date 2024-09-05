@@ -16,7 +16,11 @@
       <div class="chat flex items-center cursor-pointer" @click="toggleAnswers(question)">
         <img class="w-16 h-16 rounded-xl" :src="question.user.avatar" />
         <div class="content ml-4 flex-1">
-          <div class="name text-lg font-semibold">{{ question.user.name }}</div>
+          <div class="name text-lg font-semibold">{{ question.user.name }}
+            <followButton v-if="question.user.id !== current_user.id" :user_id="question.user.id" :initial-follow-state="false"
+                          ></followButton>
+          </div>
+
           <div class="message text-base">{{ question.content }}</div>
           <div class="time text-sm text-gray-500">{{ formatTime(question.time) }}</div>
           <a-button v-if="question.user.id === current_user.id" class="text-sm font-semibold" type="link" @click="deleteQuestion(question.id)">
@@ -36,7 +40,11 @@
         <div v-for="(answer,aindex) in question.answers" :key="answer.id" class="chat flex items-center mb-4">
           <img class="w-12 h-12 rounded-full" :src="answer.user.avatar" />
           <div class="ml-4">
-            <div class="name text-sm font-semibold">{{ answer.user.name }}</div>
+            <div class="name text-sm font-semibold">{{ answer.user.name }}
+            <followButton v-if="answer.user.id !== current_user.id"
+                          :user_id="answer.user.id"
+                          :initial-follow-state="false"
+                          ></followButton></div>
             <div class="message text-base">{{ answer.content }}</div>
             <div class="time text-xs text-gray-500">{{ formatTime(answer.time) }}</div>
           </div>
@@ -55,7 +63,7 @@ import axios from 'axios';
 
 import { Question,Answer,} from './type';
 import { getBeijingTime,formatTime } from './mytime';
-
+import followButton from '@/components/CommunityFeature/follow/followButton.vue'
 
 // 定义从父组件传递的属性
 const props = defineProps({
@@ -180,5 +188,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.followButton{
 
+}
 </style>
