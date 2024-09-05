@@ -157,6 +157,7 @@ const fetchAnswers = async (question:Question) => {
     const response = await axios.post(`/api/questions/${question.id}/answers`, { question_id:question.id });
     if (response.data.status === 'success') {
       question.answers = response.data.answers;
+      console.log(question.answers)
     }
   } catch (error) {
     console.error('Error fetching answers:', error);
