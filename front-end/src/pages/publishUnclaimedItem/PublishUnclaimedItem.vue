@@ -11,7 +11,7 @@ import { generateItemID } from '@/utils/BasicFeature/IDGen';
 import sendSystemMsg from "@/pages/CommunityFeature/chat/systemMsgSend";
 const {account, permissions} = useAccountStore();
 
-const baseURL = 'https://localhost:44343/api/';
+const baseURL = 'http://121.36.200.128:5001/api/';
 
 type oneFind = {
   ITEM_ID?: string;
@@ -42,7 +42,7 @@ const submit = () => {
       if (selectedFile.value) {
         const formData = new FormData();
         formData.append('file', selectedFile.value);
-        const res = await axios.post(baseURL + 'ItemPicUpload/upload?type=Found', formData, {
+        const res = await axios.post(baseURL + 'ItemPicUpload/uploadLocal?type=Found', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -214,11 +214,11 @@ const claimForm = ref({
         <a-date-picker v-model:value="form.FOUND_DATE" show-time />
       </a-form-item>
       <a-form-item label="物品标签" name="TAG_ID" has-feedback :rules="[{ required: true, message: '请选择物品标签' }]">
-        <a-checkbox-group v-model:value="form.TAG_ID">
-          <a-checkbox value="1">贵重物品</a-checkbox>
-          <a-checkbox value="2">私人用品</a-checkbox>
-          <a-checkbox value="3">医疗用品</a-checkbox>
-        </a-checkbox-group>
+        <a-radio-group v-model:value="form.TAG_ID">
+          <a-radio value="1">贵重物品</a-radio>
+          <a-radio value="2">私人用品</a-radio>
+          <a-radio value="3">医疗用品</a-radio>
+        </a-radio-group>
       </a-form-item>
       <a-form-item label="物品图片" name="IMAGE_URL" has-feedback :rules="[{ required: true, message: '请上传物品图片' }]">
         <a-upload :show-upload-list="false" :beforeUpload="(file: File) => extractImg(file)">
@@ -238,44 +238,49 @@ const claimForm = ref({
     </a-form>
   </a-modal>
 
-  <!-- 无主物品 -->
-  <a-table :columns="columns" :dataSource="finds">
-    <template #title>
-      <div class="flex justify-between pr-4">
-        <h4>无主物品</h4>
-        <a-button type="primary" @click="addNew">
-          <template #icon>
-            <PlusOutlined />
+  <!-- 无主物品卡片列表 -->
+  <div class="found-items-container">
+    <div class="header-actions">
+      <h4>无主物品</h4>
+      <a-button type="primary" @click="addNew">
+        <template #icon>
+          <PlusOutlined />
+        </template>
+        发布
+      </a-button>
+    </div>
+
+    <a-row :gutter="[16, 16]">
+      <a-col :span="8" v-for="(item, index) in finds" :key="item.ITEM_ID">
+        <a-card hoverable>
+          <template #cover>
+            <img :alt="item.ITEM_NAME" :src="item.IMAGE_URL" style="height: 200px; object-fit: cover;" />
           </template>
-          发布
-        </a-button>
-      </div>
-    </template>
-    <template #bodyCell="{ column, record, index }">
-      <template v-if="column.dataIndex === 'itemNameAndCategory'">
-        <div class="text-title font-bold">
-          {{ record.ITEM_NAME }}
-        </div>
-        <div class="text-subtext">
-          {{ record.CATEGORY_ID }}
-        </div>
-      </template>
-      <template v-else-if="column.dataIndex === 'IMAGE_URL'">
-        <img class="w-12 rounded" :src="record.IMAGE_URL" />
-      </template>
-      <template v-else-if="column.dataIndex === 'TAG_ID'">
-        <span>
-          <a-tag v-for="tag in record.TAG_ID" :key="tag"
-            :color="tag === '贵重物品' ? 'volcano' : tag.length > 4 ? 'geekblue' : 'green'">
-            {{ tag.toUpperCase() }}
-          </a-tag>
-        </span>
-      </template>
-      <template v-else-if="column.dataIndex === 'CLAIM'">
-        <a-button type="primary" @click="claim(index)">认领</a-button>
-      </template>
-    </template>
-  </a-table>
+          <a-card-meta :title="item.ITEM_NAME">
+            <template #description>
+              <p>类别: {{ item.CATEGORY_ID }}</p>
+              <p>描述: {{ item.DESCRIPTION }}</p>
+              <p>发现地点: {{ item.FOUND_LOCATION }}</p>
+              <p>发现时间: {{ item.FOUND_DATE }}</p>
+              <p>
+                标签: 
+                <a-tag
+                  v-for="tag in item.TAG_ID"
+                  :key="tag"
+                  :color="tag === '贵重物品' ? 'volcano' : tag.length > 4 ? 'geekblue' : 'green'"
+                >
+                  {{ tag }}
+                </a-tag>
+              </p>
+            </template>
+          </a-card-meta>
+          <template #actions>
+            <a-button type="primary" @click="claim(index)">认领</a-button>
+          </template>
+        </a-card>
+      </a-col>
+    </a-row>
+  </div>
 
   <!-- 认领 -->
   <a-modal v-model:visible="openClaim" title="认领物品">
@@ -295,3 +300,19 @@ const claimForm = ref({
     </a-form>
   </a-modal>
 </template>
+<style scoped>
+.found-items-container {
+  padding: 20px;
+}
+
+.header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.ant-card-cover img {
+  border-radius: 8px 8px 0 0;
+}
+</style>

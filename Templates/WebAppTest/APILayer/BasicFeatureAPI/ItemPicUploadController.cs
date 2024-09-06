@@ -16,7 +16,7 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
         private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly string _RemoteHost = "121.36.200.128";
         private readonly string _UserName = "root";
-        private readonly string _RemoteBasePath = "/DB_data";
+        private readonly string _RemoteBasePath = "/www/wwwroot/picUpload";
 
         public ItemPicUploadController(IWebHostEnvironment hostingEnvironment)
         {
@@ -114,7 +114,7 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                 await file.CopyToAsync(fileStream);
             }
 
-            var FileUrl = $"/DB_data/{FolderName}/{FileName}";
+            var FileUrl = $"http://121.36.200.128:5600/{FolderName}/{FileName}";
 
             return Ok(new { url = FileUrl });
         }

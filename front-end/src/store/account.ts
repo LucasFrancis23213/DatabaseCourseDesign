@@ -50,6 +50,7 @@ export const useAccountStore = defineStore('account', {
   actions: {
     async login(username, password) {
       this.username = username;
+      //useMenuStore().clearMenu();
       const queryParams = new URLSearchParams({ UserName: username, Password: password }).toString();
       try {
         console.log("ready to post request to server");

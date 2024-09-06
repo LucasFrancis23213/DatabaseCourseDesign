@@ -26,37 +26,7 @@
   useUnbounded();
 
   const { account } = useAccountStore();
-
-  const statisticList = reactive([
-    {
-      title: '今日销售额',
-      value: '￥53,000',
-      change: '+31%',
-      icon: 'dollar-circle-filled',
-      iconClass: 'text-blue-100',
-    },
-    {
-      title: '今日新增用户',
-      value: '138',
-      change: '+23%',
-      icon: 'usergroup-add-outlined',
-      iconClass: 'text-purple-100',
-    },
-    {
-      title: '今日新增客户',
-      value: '￥5000',
-      change: '30%',
-      icon: 'heart-filled',
-      iconClass: 'text-primary-100',
-    },
-    {
-      title: '今日订单量',
-      value: '3200',
-      change: '-11%',
-      icon: 'shopping-filled',
-      iconClass: 'text-green-100',
-    },
-  ]);
+  
 </script>
 
 <style scoped lang="less">

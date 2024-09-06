@@ -30,50 +30,51 @@
 </template>
 
 <script lang="ts" setup>
-  import { reactive, ref, onMounted, onBeforeUnmount } from 'vue';
-  import { useRouter } from 'vue-router';
-  import { useAccountStore, useMenuStore, useSettingStore, storeToRefs } from '@/store';
-  import avatar from '@/assets/avatar.png';
-  import { PageFooter, HeaderActions } from '@/components/layout';
-  import Setting from './components/setting';
-  import { configTheme, themeList } from '@/theme';
-  import { ThemeProvider } from 'stepin';
-  import { useAuthStore } from '@/plugins';
-  import { computed } from 'vue';
+import { reactive, ref, onMounted, onBeforeUnmount } from 'vue';
+import { useRouter } from 'vue-router';
+import { useAccountStore, useMenuStore, useSettingStore, storeToRefs } from '@/store';
+import avatar from '@/assets/avatar.png';
+import { PageFooter, HeaderActions } from '@/components/layout';
+import Setting from './components/setting';
+import { configTheme, themeList } from '@/theme';
+import { ThemeProvider } from 'stepin';
+import { useAuthStore } from '@/plugins';
+import { computed } from 'vue';
 
-  const { logout, account, permissions, closeApp} = useAccountStore();
-  const showSetting = ref(false);
-  const router = useRouter();
+const { logout, account, permissions, closeApp } = useAccountStore();
+const showSetting = ref(false);
+const router = useRouter();
 
-  const { navigation, useTabs, theme, contentClass } = storeToRefs(useSettingStore());
-  const themeConfig = computed(() => themeList.find((item) => item.key === theme.value)?.config ?? {});
+const { navigation, useTabs, theme, contentClass } = storeToRefs(useSettingStore());
+const themeConfig = computed(() => themeList.find((item) => item.key === theme.value)?.config ?? {});
 
-  const user = reactive({
-    get name() {
-      return account.userName;
+const user = reactive({
+  get name() {
+    return account.userName;
+  },
+  avatar: avatar,
+  menuList: [
+    { title: '个人中心', key: 'personal', icon: 'UserOutlined', onClick: () => router.push('./Personal') },
+    { title: '设置', key: 'setting', icon: 'SettingOutlined', onClick: () => (showSetting.value = true) },
+    { type: 'divider' },
+    {
+      title: '退出登录',
+      key: 'logout',
+      icon: 'LogoutOutlined',
+      onClick: () => logout().then(() => router.push('/home')),
     },
-    avatar: avatar,
-    menuList: [
-      { title: '个人中心', key: 'personal', icon: 'UserOutlined', onClick: () => router.push('./Personal') },
-      { title: '设置', key: 'setting', icon: 'SettingOutlined', onClick: () => (showSetting.value = true) },
-      { type: 'divider' },
-      {
-        title: '退出登录',
-        key: 'logout',
-        icon: 'LogoutOutlined',
-        onClick: () => logout().then(() => router.push('/home')),
-      },
-    ],
-  });
+  ],
+});
 
-  if(user.name!==''){
-    useMenuStore().getMenuList();
-    useAuthStore().setAuthorities(permissions);
-  }
+if (user.name !== '') {
+  useMenuStore().getMenuList();
+  useAuthStore().setAuthorities(permissions);
+}
 
-  function getPopupContainer() {
-    return document.querySelector('.stepin-layout');
-  }
+function getPopupContainer() {
+  return document.querySelector('.stepin-layout');
+}
+
 </script>
 
 <style lang="less">

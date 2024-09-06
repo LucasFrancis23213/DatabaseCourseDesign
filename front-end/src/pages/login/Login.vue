@@ -11,12 +11,9 @@
   const router = useRouter();
   const {permissions} = useAccountStore();
   function onLoginSuccess() {
-    if(permissions.includes('admin'))
-      router.push('/admin');
-    else
-      router.push('/workplace');
-  }
+  router.push('/Personal');}
 </script>
+
 <style scoped lang="less">
   .login {
     min-height: max(100vh, 720px);

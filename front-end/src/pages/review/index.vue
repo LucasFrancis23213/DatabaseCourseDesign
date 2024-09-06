@@ -14,12 +14,4 @@ import reviewUserPreference from './components/reviewUserPreference.vue'
     <reviewSearchNotice />
     <hr>
     <reviewUnclaimedItem />
-    <hr>
-    <reviewUserPreference />
-    <hr>
-    <reviewReturnItem />
-    <hr>
-    <reviewEnterOldMarket />
-    <hr>
-    <reviewOldMarketPurchase />
 </template>

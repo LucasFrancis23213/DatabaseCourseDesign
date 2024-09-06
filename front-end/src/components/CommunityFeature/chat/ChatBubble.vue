@@ -66,6 +66,8 @@ onMounted(() => {
   });
 });
 
+const displayAvatar = computed(() => props.avatar || account.avatar);
+
 const isWithinFiveMinutes = computed(() => {
   const messageTime = new Date(props.time).getTime();
   const fiveMinutesInMs = 5 * 60 * 1000;
@@ -104,7 +106,7 @@ const build_chat_user_id = computed(()=>{
 <template>
   <div class="chat-bubble" :class="{ 'self': isSelf }">
     <div class="avatar" @click="toggleUserInfo" ref="avatarRef">
-      <img :src="account.avatar" alt="User Avatar">
+      <img :src="displayAvatar" alt="User Avatar">
     </div>
     <div class="message-container" @mouseenter="toggleRetract" @mouseleave="toggleRetract">
       <div class="message"  >{{ Content }}</div>

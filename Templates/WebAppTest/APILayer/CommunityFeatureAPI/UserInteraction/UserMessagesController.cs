@@ -53,7 +53,7 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
                     {
                         id = userInfo.User_ID,
                         name = userInfo != null ? userInfo.User_Name : "",
-                        avatar = "",
+                        avatar = userInfo != null ? userInfo.Avatar : "",
                         last_message = userConversation.Message_Content!= null ? userConversation.Message_Content : "", // 如果有最后一条消息则显示消息内容，否则为空字符串
                         last_message_time = userConversation.Last_Message_Time , // 如果有最后一条消息则显示发送时间，否则为 null
                         unread_count = userConversation.Unread_Count, // 获取未读消息数
@@ -98,7 +98,7 @@ namespace WebApplication1.APILayer.CommunityFeatureAPI
                     status = "success",
                     conversation_id = conversation_id,
                     name = userInfo.User_Name,
-                    avatar="",
+                    avatar=userInfo.Avatar,
                     messages = conversationMessages.Select(m => new
                     {
                         id = m.Message_ID,

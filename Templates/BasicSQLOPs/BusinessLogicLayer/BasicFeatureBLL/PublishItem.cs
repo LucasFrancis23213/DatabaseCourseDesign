@@ -119,7 +119,9 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                 "Found_Date",
                 "User_ID",
                 "Match_Status",
-               " Review_Status",
+                "Review_Status",
+                "Image_URL",
+                "Tag_ID",
             };
             var values = new List<object>
             {
@@ -131,10 +133,12 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                 item.Found_Date,
                 item.User_ID,
                 item.Match_Status,
-                item.Review_Status
+                item.Review_Status,
+                item.Image_URL,
+                item.Tag_ID,
             };
             BasicSQLOps basic = new BasicSQLOps(conn);
-            var result = basic.InsertOperation("Found_Item", Names, values);
+            var result = basic.InsertOperation("Found_Items", Names, values);
             bool isSuccess = result.Item1; // 获取是否成功插入
             string errorReason = result.Item2; // 获取出错误原因
             if (isSuccess)

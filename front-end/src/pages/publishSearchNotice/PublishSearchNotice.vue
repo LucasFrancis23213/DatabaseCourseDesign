@@ -46,7 +46,7 @@
         if (selectedFile.value) {
           const formData = new FormData();
           formData.append('file', selectedFile.value);
-          const res = await axios.post(baseURL + 'ItemPicUpload/upload?type=Lost', formData, {
+          const res = await axios.post(baseURL + 'ItemPicUpload/uploadLocal?type=Lost', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
@@ -265,54 +265,59 @@ const returnForm = ref({
     </a-form>
   </a-modal>
  
-  <!-- 寻物启事 -->
-  <a-table :columns="columns" :dataSource="publishs" >
-    <template #title>
-      <div class="flex justify-between pr-4">
-        <h4>寻物启事</h4>
-        <a-button type="primary" @click="addNew" >
-          <template #icon>
-            <PlusOutlined />
+  <!-- 寻物启事卡片列表 -->
+  <div class="lost-items-container">
+    <div class="header-actions">
+      <h4>寻物启事</h4>
+      <a-button type="primary" @click="addNew">
+        <template #icon>
+          <PlusOutlined />
+        </template>
+        发布
+      </a-button>
+    </div>
+
+    <a-row :gutter="[16, 16]">
+      <a-col :span="8" v-for="(item, index) in publishs" :key="item.ITEM_ID">
+        <a-card hoverable>
+          <template #cover>
+            <img :alt="item.ITEM_NAME" :src="item.IMAGE_URL" style="height: 200px; object-fit: cover;" />
           </template>
-          发布
-        </a-button>
-      </div>
-    </template>
-    <template #bodyCell="{ column, record, index }">
-      <template v-if="column.dataIndex === 'itemNameAndCategory'">
-        <div class="text-title font-bold">
-          {{ record.ITEM_NAME }}
-        </div>
-        <div class="text-subtext">
-          {{record.CATEGORY_ID}}
-        </div>
-      </template>
-      <template v-else-if="column.dataIndex === 'IMAGE_URL'">
-        <img class="w-12 rounded" :src="record.IMAGE_URL" />
-      </template>
-      <template v-else-if="column.dataIndex === 'IS_REWARDED'">
-        <a-badge class="text-subtext" :color="'green'">
-          <template #text>
-            <span class="text-subtext">{{ IS_REWARDEDDict[Number(record.IS_REWARDED) as IS_REWARDED] }}</span>
+          <a-card-meta :title="item.ITEM_NAME">
+            <template #description>
+              <p>类别: {{ item.CATEGORY_ID }}</p>
+              <p>描述: {{ item.DESCRIPTION }}</p>
+              <p>丢失地点: {{ item.LOST_LOCATION }}</p>
+              <p>丢失时间: {{ item.LOST_DATE }}</p>
+              <p>
+                标签: 
+                <a-tag
+                  v-for="tag in item.TAG_ID"
+                  :key="tag"
+                  :color="tag === '贵重物品' ? 'volcano' : tag.length > 4 ? 'geekblue' : 'green'"
+                >
+                  {{ tag }}
+                </a-tag>
+              </p>
+              <p>
+                悬赏状态: 
+                <a-badge :color="'green'">
+                  <template #text>
+                    <span>{{ IS_REWARDEDDict[Number(item.IS_REWARDED) as IS_REWARDED] }}</span>
+                  </template>
+                </a-badge>
+              </p>
+              <p v-if="item.IS_REWARDED">悬赏金额: ￥{{ item.REWARD_AMOUNT }}</p>
+              <p v-if="item.IS_REWARDED">截止时间: {{ item.DEADLINE }}</p>
+            </template>
+          </a-card-meta>
+          <template #actions>
+            <a-button type="primary" @click="clickReturn(index)">归还</a-button>
           </template>
-        </a-badge>
-      </template>
-      <template v-else-if="column.dataIndex === 'TAG_ID'">
-        <span>
-          <a-tag
-            v-for="tag in record.TAG_ID"
-            :key="tag"
-            :color="tag === '贵重物品' ? 'volcano' : tag.length > 4 ? 'geekblue' : 'green'"
-            >
-              {{ tag }}
-          </a-tag>
-        </span>
-      </template>
-      <template v-else-if="column.dataIndex === 'RETURN_ITEM'">
-        <a-button type="primary" @click="clickReturn(index)">归还</a-button>
-      </template>
-    </template>
-  </a-table>
+        </a-card>
+      </a-col>
+    </a-row>
+  </div>
 
   <!-- 归还 -->
   <a-modal v-model:visible="openReturn" title="归还物品">
@@ -332,3 +337,19 @@ const returnForm = ref({
     </a-form>
   </a-modal>
 </template>
+<style scoped>
+.lost-items-container {
+  padding: 20px;
+}
+
+.header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.ant-card-cover img {
+  border-radius: 8px 8px 0 0;
+}
+</style>

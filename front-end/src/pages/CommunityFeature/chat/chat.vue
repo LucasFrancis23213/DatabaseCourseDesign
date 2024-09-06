@@ -39,6 +39,7 @@ import ChatBubble from '@/components/CommunityFeature/chat/ChatBubble.vue';
 import MessageInput from '@/components/CommunityFeature/chat/MessageInput.vue';
 import apiService from './apiService';
 import { useAccountStore } from '@/store/account';
+import { log } from 'console';
 
 const { account } = useAccountStore();
 const route = useRoute();
@@ -60,9 +61,11 @@ const connectionStatus = ref('Disconnected');
 const getMessages = async () => {
   try {
     const response = await apiService.getMessages(conversation_id.value, current_user_id.value);
+    console.log(response);
     messages.value = response.messages;
     other_name.value = response.name;
     other_avatar.value = response.avatar;
+    
   } catch (error) {
     message.error('获取消息列表出现错误');
   }

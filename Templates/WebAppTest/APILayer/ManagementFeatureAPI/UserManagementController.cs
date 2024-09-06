@@ -132,7 +132,9 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
                 {
                     "用户名与密码不匹配" => Unauthorized(result.Item2),
                     "Users表没有符合要求的元素" => NotFound(result.Item2),
+                    "未找到用户" => NotFound(result.Item2),
                     _ => BadRequest(result.Item2),
+                    
                 };
             }
         }

@@ -5,7 +5,7 @@
         class="profile flex items-center justify-between p-base bg-container rounded-2xl absolute -bottom-16 left-6 shadow-lg"
       >
         <div class="info flex items-center">
-          <img class="w-20 rounded-lg" src="@/assets/avatar/face-1.jpg" />
+          <img class="w-20 rounded-lg" :src="account.avatar" />
           <div class="flex flex-col justify-around ml-4">
             <div style="display: flex; align-items: center;">
               <span class="text-title text-xl font-bold">{{ userInfo.username }}</span>

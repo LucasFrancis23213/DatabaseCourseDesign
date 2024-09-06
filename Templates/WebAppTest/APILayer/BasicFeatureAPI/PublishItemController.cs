@@ -39,7 +39,7 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                     LostItemObj.Description = TmpJson["DESCRIPTION"].ToString();
                     LostItemObj.Lost_Location = TmpJson["LOST_LOCATION"].ToString();
                     LostItemObj.Lost_Date = (DateTime)TmpJson["LOST_DATE"];
-                    LostItemObj.User_ID = (int)TmpJson["User_ID"];
+                    LostItemObj.User_ID = (int)TmpJson["USER_ID"];
                     
 
                     LostItemObj.Lost_Status = "LOST";
@@ -109,9 +109,9 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                     FoundItemObj.Found_Date = (DateTime)TmpJson["FOUND_DATE"];
 
                     //FoundItemObj.User_ID = (int)TmpJson["User_ID"];
-                    FoundItemObj.User_ID = (int)TmpJson["User_ID"];
-
-                    FoundItemObj.Match_Status = "Matching";
+                    FoundItemObj.User_ID = (int)TmpJson["USER_ID"];
+                    FoundItemObj.Tag_ID = (int)TmpJson["TAG_ID"];
+                    FoundItemObj.Match_Status = "FINDING";
                     FoundItemObj.Review_Status = 0; // 默认是Pending
                     FoundItemObj.Image_URL = TmpJson["IMAGE_URL"].ToString();
 
