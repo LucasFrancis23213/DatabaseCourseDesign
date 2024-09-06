@@ -97,7 +97,14 @@
     loading.value = true;
     let url = `https://localhost:44343/api/UserManagement/UpdateUserInfo`;
     accountStore.account.userName=form.username;
-    accountStore.profile();
+    const result = await accountStore.profile();
+      if (result.success) {
+        message.success(result.message);
+      } else {
+        message.error(result.message);
+        loading.value = false;
+        return;
+      }
     const resetData = {
       userID: accountStore.account.userId,
       userName: form.username,

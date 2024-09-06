@@ -100,7 +100,7 @@ export const useAccountStore = defineStore('account', {
         } else if (error.request) {
           return { success: false, message: "登录失败：服务器无响应" };
         } else {
-          return { success: false, message: `登录失败：${error.message}` };
+          return { success: false, message: `登录失败` };
         }
       }
     },
@@ -141,7 +141,7 @@ export const useAccountStore = defineStore('account', {
           } 
         } catch (error) {
           console.error('Failed to fetch user info:', error);
-          return { account: this};
+          return { success: false, message: "用户信息错误", account: this};
         } finally {
           setAuthLoading(false); 
         }
