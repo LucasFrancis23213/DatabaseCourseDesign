@@ -15,10 +15,13 @@
     <div v-for="(question,qindex) in questionsList" :key="question.id" >
       <div class="posts-List">
       <div class="chat flex items-center cursor-pointer" @click="toggleAnswers(question)">
-        <img class="w-16 h-16 rounded-xl" :src="question.user.avatar" />
+        <img class="w-16 h-16 rounded-xl" :src="question.user.avatar" @click="toggleShowButton(question)"/>
         <div class="content ml-4 flex-1">
           <div class="name text-lg font-semibold">{{ question.user.name }}
-            <followButton v-if="question.user.id !== current_user.id" :user_id="question.user.id" :initial-follow-state="false"
+            <followButton v-if="question.user.id !== current_user.id && question.showButton"
+                          :user_id="question.user.id"
+                          :initial-follow-state="false"
+                          @mouseleave="toggleShowButton(question)"
                           ></followButton>
           </div>
 
@@ -39,12 +42,13 @@
           </a-form-item>
         </a-form>
         <div v-for="(answer,aindex) in question.answers" :key="answer.id" class="chat flex items-center mb-4">
-          <img class="w-12 h-12 rounded-full" :src="answer.user.avatar" />
+          <img class="w-12 h-12 rounded-full" :src="answer.user.avatar" @click="toggleShowButton(answer)"/>
           <div class="ml-4">
             <div class="name text-sm font-semibold">{{ answer.user.name }}
-            <followButton v-if="answer.user.id !== current_user.id"
+            <followButton v-if="answer.user.id !== current_user.id && answer.showButton"
                           :user_id="answer.user.id"
                           :initial-follow-state="false"
+                          @mouseleave="toggleShowButton(answer)"
                           ></followButton></div>
             <div class="message text-base">{{ answer.content }}</div>
             <div class="time text-xs text-gray-500">{{ formatTime(answer.time) }}</div>
@@ -103,7 +107,8 @@ const fetchQuestions = async () => {
       questionsList.value = response.data.questions.map((question: Question) => ({
         ...question,
         showAnswers: false, // 设置默认值
-        showAnswerInput: false
+        showAnswerInput: false,
+        showButton: false,
       }));
     }
   } catch (error) {
@@ -145,6 +150,7 @@ const submitAnswer = async (question: Question) => {
       newAnswerContent.value = ''; // 重置输入框内容
       question.showAnswerInput = false; // 隐藏输入框
       question.showAnswers = true;
+      question.showButton = false;
     }
     
   } catch (error) {
@@ -157,6 +163,10 @@ const fetchAnswers = async (question:Question) => {
     const response = await axios.post(`/api/questions/${question.id}/answers`, { question_id:question.id });
     if (response.data.status === 'success') {
       question.answers = response.data.answers;
+      question.answers = question.answers.map((answer: Answer) => ({
+        ...answer,
+        showButton: false,
+      }));
       console.log(question.answers)
     }
   } catch (error) {
@@ -186,6 +196,9 @@ const deleteQuestion = async (question_id: number) => {
   }
 };
 
+const toggleShowButton = (post)=>{
+  post.showButton=!post.showButton;
+}
 
 onMounted(() => {
   fetchQuestions();

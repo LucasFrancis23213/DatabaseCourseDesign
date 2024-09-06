@@ -211,7 +211,7 @@ button:active {
 }
 
 .user-info {
-  position: relative;
+  position: absolute;
   left: 50px;
   top: 0;
   background-color: white;
