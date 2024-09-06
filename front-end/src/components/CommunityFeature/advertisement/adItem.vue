@@ -77,8 +77,8 @@ const navigateToAd = async () => {
 }
 
 .ad-image {
-  width: 120px;
-  height: 120px;
+  width: 60px;
+  height: 60px;
   object-fit: cover;
   border-radius: 4px;
 }

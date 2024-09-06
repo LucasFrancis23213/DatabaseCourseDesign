@@ -1,13 +1,13 @@
 import { RouteRecordRaw } from 'vue-router';
 
 const testRoute:RouteRecordRaw[] = [
-  {
-    path: '/Community',
-    name: '社区功能',
-    meta: {
-      renderMenu: true,
-    },
-    children: [
+  // {
+    // path: '/Community',
+    // name: '社区功能',
+    // meta: {
+    //   renderMenu: true,
+    // },
+    // children: [
       {
         path: '/QandAList',
         name: '论坛',
@@ -26,18 +26,18 @@ const testRoute:RouteRecordRaw[] = [
       //   },
       //   component: () => import('@/pages/CommunityFeature/CommentsList.vue'),
       // },
-      {
-        path: '/ActivityPoint',
-        name: '活跃度',
-        props: true,
-        meta: {
-          renderMenu: true,
-        },
-        component: () => import('@/pages/CommunityFeature/ActivityPoint.vue'),
-      },
-    ],
-  },
-  
+      // {
+      //   path: '/ActivityPoint',
+      //   name: '活跃度',
+      //   props: true,
+      //   meta: {
+      //     renderMenu: true,
+      //   },
+      //   component: () => import('@/pages/CommunityFeature/ActivityPoint.vue'),
+      // },
+    // ],
+  // },
+  // }
 ]
 
 export default testRoute;

@@ -27,7 +27,7 @@
 
           <div class="message text-base">{{ question.content }}</div>
           <div class="time text-sm text-gray-500">{{ formatTime(question.time) }}</div>
-          <a-button v-if="question.user.id === current_user.id" class="text-sm font-semibold" type="link" @click="deleteQuestion(question.id)">
+          <a-button v-if="question.user.id === current_user.id" class="text-sm font-semibold" type="link" @click="deleteQuestion($event,question.id)">
             撤回
           </a-button>
         </div>
@@ -59,7 +59,7 @@
         </div>
       </div>
         </div>
-      <advertisement v-if="Math.random() < 0.5"></advertisement>
+      <advertisement v-if="Math.random() < 0.3"></advertisement>
     </div>
   </a-card>
 </template>
@@ -187,7 +187,8 @@ const deleteAnswer = async (question: Question,answer_id: number,aindex: number)
   }
 };
 
-const deleteQuestion = async (question_id: number) => {
+const deleteQuestion = async (event,question_id: number) => {
+  event.stopPropagation(); // 阻止事件冒泡
   try {
     const response = await axios.post(`/api/questions_retract/${question_id}`, { question_id:question_id, current_user_id:current_user.id, time: getBeijingTime() });
     if (response.data.status === 'success') {
