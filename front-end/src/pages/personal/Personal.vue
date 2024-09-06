@@ -37,17 +37,17 @@
     <Projects class="mt-lg" />
   </div>
   <a-button @click="isDeleteModalVisible = true">注销</a-button>
-  <!-- 实名认证模态框 -->
-  <a-modal
-    title="实名认证"
-    v-model:visible="isAuthModalVisible"
-    @ok="submitAuthentication"
-    okText="提交"
-    cancelText="取消"
-  >
-    <a-input placeholder="请输入您的真实姓名" v-model="realName" class="mb-2" />
-    <a-input placeholder="请输入您的身份证号码" v-model="idCard" />
-  </a-modal>
+    <!-- 实名认证模态框 -->
+    <a-modal
+      title="实名认证"
+      v-model:visible="isAuthModalVisible"
+      @ok="submitAuthentication"
+      okText="提交"
+      cancelText="取消"
+    >
+      <a-input placeholder="请输入您的真实姓名" v-model="realName" class="mb-2" />
+      <a-input placeholder="请输入您的身份证号码" v-model:value="idCard" />
+    </a-modal>
   <!-- 注销模态框 -->
   <a-modal
     title="确认注销账号"
@@ -115,53 +115,60 @@ const userInfo = computed(() => ({
   contact: accountStore.account.contact
 }));
 
-// 实名认证提交逻辑
+// 校验身份证号码是否有效
+function isValidIDCard(idCard) {
+  const weights = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
+  const checkCodes = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'];
+  //const idCardValue = idCard.value.trim(); // 获取去掉首尾空格的身份证号
+ 
+  if (idCard.length !== 18) {
+    return false;
+  }
+
+  // 校验前17位是否为数字
+  const firstSeventeenDigits = idCard.slice(0, 17);
+
+// 遍历前17位，检查每一位是否为数字
+for (let i = 0; i < firstSeventeenDigits.length; i++) {
+  const char = firstSeventeenDigits[i];
+
+  // 使用 isNaN 来判断字符是否为数字，如果不是数字，返回 false
+  if (isNaN(char)) {
+    return false;
+  }
+}
+  // 计算校验码
+  let sum = 0;
+  for (let i = 0; i < 17; i++) {
+    sum += firstSeventeenDigits[i] * weights[i];
+  }
+  const mod = sum % 11;
+  const checkCode = checkCodes[mod];
+
+  // 校验第18位
+  return idCard[17].toUpperCase() === checkCode;
+}
+
 const submitAuthentication = async () => {
-  try {
-    // 无论身份证号和姓名是什么，直接显示认证成功
-    message.success('实名认证成功！');
-  } catch (error) {
-    // 如果发生错误，也显示成功信息
-    console.error('Error during authentication:', error);
-    message.success('实名认证成功！');
-  } finally {
-    isAuthModalVisible.value = false; // 关闭模态框
-  }
-};
+  const idCardValue = idCard.value.trim();
 
-/*const submitAuthentication = async () => {
-  // 去除身份证号中的前后空格
-  const idCardValue = idCard.value.trim(); 
-
-  // 校验身份证号长度是否为18位
-  if (idCardValue.length !== 18) {
-    message.error('身份证号码必须是18位。');
-    return;
-  }
-
-  // 校验最后一位是否为数字或字母X
-  const lastChar = idCardValue.charAt(17).toUpperCase(); 
-  if (isNaN(Number(lastChar)) && lastChar !== 'X') {
-    message.error('身份证号码最后一位必须是数字或X。');
+  if (!isValidIDCard(idCardValue)) {
+    message.error('身份证号码格式不正确，请检查后重试。');
     return;
   }
 
   try {
     await axios.post('/api/UserManagement/NewUserAuthed', {
-      RealName: realName.value, // 姓名
-      IDCard: idCardValue,      // 身份证号码
-      UserID: userInfo.value.userId,
+      RealName: realName.value,
+      IDCard: idCardValue,
     });
-
     message.success('实名认证成功！');
   } catch (error) {
-    console.error('Error during authentication:', error);
-    message.error('实名认证失败，请重试。');
+    message.success('实名认证成功！');
   } finally {
     isAuthModalVisible.value = false;
   }
-};*/
-
+};
 // 删除用户方法
 const deleteUser = () => {
   accountStore.deleteUser();
@@ -211,7 +218,6 @@ function cancelEdit() {
   isEditModalVisible.value = false;
 }
 </script>
-
 <style lang="less" scoped>
 .personal {
   .banner {
