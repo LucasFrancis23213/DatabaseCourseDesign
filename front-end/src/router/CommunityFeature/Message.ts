@@ -1,26 +1,26 @@
 import { RouteRecordRaw } from 'vue-router';
 
 const messageRoute:RouteRecordRaw[] = [
-  {
-    path:'/chat/:conversation_id',
-    name:'聊天',
-    props:true,
-    meta: {
-      renderMenu: false,
-      cacheable: false,
-    },
-    component:() =>import('@/pages/CommunityFeature/chat')
-  },
-  {
-    path:'/ConversationList',
-    name:'消息',
-    props:true,
-    meta: {
-      renderMenu: true,
-      cacheable: false,
-    },
-    component:() =>import('@/pages/CommunityFeature/ConversationList')
-  },
+  // {
+  //   path:'/chat/:conversation_id',
+  //   name:'聊天',
+  //   props:true,
+  //   meta: {
+  //     renderMenu: false,
+  //     cacheable: false,
+  //   },
+  //   component:() =>import('@/pages/CommunityFeature/chat')
+  // },
+  // {
+  //   path:'/ConversationList',
+  //   name:'消息',
+  //   props:true,
+  //   meta: {
+  //     renderMenu: true,
+  //     cacheable: false,
+  //   },
+  //   component:() =>import('@/pages/CommunityFeature/ConversationList')
+  // },
   // {
   //   path:'/ad',
   //   name:'广告',
@@ -41,16 +41,16 @@ const messageRoute:RouteRecordRaw[] = [
   //   },
   //   component:() =>import('@/pages/CommunityFeature/vip')
   // },
-    {
-    path:'/adminAd',
-    name:'管理广告',
-    props:true,
-    meta: {
-      renderMenu: true,
-      cacheable: true,
-    },
-    component:() =>import('@/pages/admin_CommunityFeature/ad/adminAd.vue')
-  },
+  //   {
+  //   path:'/adminAd',
+  //   name:'管理广告',
+  //   props:true,
+  //   meta: {
+  //     renderMenu: true,
+  //     cacheable: true,
+  //   },
+  //   component:() =>import('@/pages/admin_CommunityFeature/ad/adminAd.vue')
+  // },
   //   {
   //   path:'/adminvip',
   //   name:'管理vip(test)',
@@ -91,17 +91,7 @@ const messageRoute:RouteRecordRaw[] = [
   //   },
   //   component:() =>import('@/pages/admin_CommunityFeature/sysMsgSend/sysMsgSend.vue')
   // },
-    {
-    path:'/recharge/:recharge_id',
-    name:'充值确认',
-    props:true,
-    meta: {
-      renderMenu: false,
-      cacheable: false,
-      requiresAuth: false,
-    },
-    component:() =>import('@/pages/CommunityFeature/vipRechargeConfirm.vue')
-  },
+
 ]
 
 export default messageRoute;

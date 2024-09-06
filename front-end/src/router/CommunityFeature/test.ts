@@ -8,15 +8,15 @@ const testRoute:RouteRecordRaw[] = [
     //   renderMenu: true,
     // },
     // children: [
-      {
-        path: '/QandAList',
-        name: '论坛',
-        props: true,
-        meta: {
-        renderMenu: true,
-        },
-        component: () => import('@/pages/CommunityFeature/QandAList.vue'),
-      },
+    //   {
+    //     path: '/QandAList',
+    //     name: '论坛',
+    //     props: true,
+    //     meta: {
+    //     renderMenu: true,
+    //     },
+    //     component: () => import('@/pages/CommunityFeature/QandAList.vue'),
+    //   },
       // {
       //   path: '/CommentsList',
       //   name: '聊天区',

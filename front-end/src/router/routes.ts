@@ -130,6 +130,17 @@ const routes: RouteRecordRaw[] = [
     },
     component: () => import('@/pages/personal')
   },
+    {
+    path:'/recharge/:recharge_id',
+    name:'充值确认',
+    props:true,
+    meta: {
+      renderMenu: false,
+      cacheable: false,
+      requiresAuth: false,
+    },
+    component:() =>import('@/pages/CommunityFeature/vipRechargeConfirm.vue')
+  },
 ];
 //Community Feature -- QandAList -- 路由添加
 import testRoute from './CommunityFeature/test';
