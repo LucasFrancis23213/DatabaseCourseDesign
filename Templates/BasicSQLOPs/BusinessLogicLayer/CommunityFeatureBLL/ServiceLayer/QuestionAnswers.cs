@@ -37,7 +37,7 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
                 string fromClause = "QUESTIONS LEFT OUTER JOIN USERS ON QUESTIONS.USER_ID=USERS.USER_ID";
 
                 // 定义 WHERE 子句
-                string whereClause = "ITEM_ID = :itemId";
+                string whereClause = "ITEM_ID = :itemId ORDER BY QUESTION_TIME DESC";
 
                 // 定义参数
                 OracleParameter[] parameters = new OracleParameter[]
@@ -120,7 +120,7 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
                 string fromClause = "ANSWERS LEFT OUTER JOIN USERS ON ANSWERS.USER_ID = USERS.USER_ID";
 
                 // 定义 WHERE 子句
-                string whereClause = "QUESTION_ID = :questionId";
+                string whereClause = "QUESTION_ID = :questionId ORDER BY ANSWER_DATE DESC";
 
                 // 定义参数
                 OracleParameter[] parameters = new OracleParameter[]
