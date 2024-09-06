@@ -18,11 +18,14 @@
         <img class="w-16 h-16 rounded-xl" :src="question.user.avatar" @click="toggleShowButton($event, question)"/>
         <div class="content ml-4 flex-1">
           <div class="name text-lg font-semibold">{{ question.user.name }}
-            <followButton v-if="question.user.id !== current_user.id && question.showButton"
+            <div v-if="question.showButton" @mouseleave="toggleShowButton($event,question)">
+            <followButton v-if="question.user.id !== current_user.id"
                           :user_id="question.user.id"
                           :initial-follow-state="false"
-                          @mouseleave="toggleShowButton($event,question)"
+                          class="btn"
                           ></followButton>
+            <CreateConversationBtn :target-id="question.user.id" button-text="私信" class="btn"></CreateConversationBtn>
+              </div>
           </div>
 
           <div class="message text-base">{{ question.content }}</div>
@@ -45,11 +48,15 @@
           <img class="w-12 h-12 rounded-full" :src="answer.user.avatar" @click="toggleShowButton($event,answer)"/>
           <div class="ml-4">
             <div class="name text-sm font-semibold">{{ answer.user.name }}
-            <followButton v-if="answer.user.id !== current_user.id && answer.showButton"
+              <div v-if="answer.showButton" @mouseleave="toggleShowButton($event,answer)">
+            <followButton v-if="answer.user.id !== current_user.id "
                           :user_id="answer.user.id"
                           :initial-follow-state="false"
-                          @mouseleave="toggleShowButton($event,answer)"
-                          ></followButton></div>
+                          class="btn"
+                          ></followButton>
+                <CreateConversationBtn :target-id="answer.user.id" button-text="私信" class="btn"></CreateConversationBtn>
+              </div>
+              </div>
             <div class="message text-base">{{ answer.content }}</div>
             <div class="time text-xs text-gray-500">{{ formatTime(answer.time) }}</div>
           </div>
@@ -72,7 +79,7 @@ import { Question,Answer,} from './type';
 import { getBeijingTime,formatTime } from './mytime';
 import followButton from '@/components/CommunityFeature/follow/followButton.vue'
 import advertisement from "@/pages/CommunityFeature/advertisement/advertisement.vue";
-
+import CreateConversationBtn from "@/components/CommunityFeature/chat/CreateConversationBtn.vue";
 
 // 定义从父组件传递的属性
 const props = defineProps({
@@ -224,5 +231,8 @@ onMounted(() => {
   &:hover {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
+}
+.btn{
+  margin: 0 2px;
 }
 </style>
