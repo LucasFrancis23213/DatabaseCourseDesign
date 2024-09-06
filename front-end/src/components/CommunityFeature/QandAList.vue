@@ -15,13 +15,13 @@
     <div v-for="(question,qindex) in questionsList" :key="question.id" >
       <div class="posts-List">
       <div class="chat flex items-center cursor-pointer" @click="toggleAnswers(question)">
-        <img class="w-16 h-16 rounded-xl" :src="question.user.avatar" @click="toggleShowButton(question)"/>
+        <img class="w-16 h-16 rounded-xl" :src="question.user.avatar" @click="toggleShowButton($event, question)"/>
         <div class="content ml-4 flex-1">
           <div class="name text-lg font-semibold">{{ question.user.name }}
             <followButton v-if="question.user.id !== current_user.id && question.showButton"
                           :user_id="question.user.id"
                           :initial-follow-state="false"
-                          @mouseleave="toggleShowButton(question)"
+                          @mouseleave="toggleShowButton($event,question)"
                           ></followButton>
           </div>
 
@@ -42,13 +42,13 @@
           </a-form-item>
         </a-form>
         <div v-for="(answer,aindex) in question.answers" :key="answer.id" class="chat flex items-center mb-4">
-          <img class="w-12 h-12 rounded-full" :src="answer.user.avatar" @click="toggleShowButton(answer)"/>
+          <img class="w-12 h-12 rounded-full" :src="answer.user.avatar" @click="toggleShowButton($event,answer)"/>
           <div class="ml-4">
             <div class="name text-sm font-semibold">{{ answer.user.name }}
             <followButton v-if="answer.user.id !== current_user.id && answer.showButton"
                           :user_id="answer.user.id"
                           :initial-follow-state="false"
-                          @mouseleave="toggleShowButton(answer)"
+                          @mouseleave="toggleShowButton($event,answer)"
                           ></followButton></div>
             <div class="message text-base">{{ answer.content }}</div>
             <div class="time text-xs text-gray-500">{{ formatTime(answer.time) }}</div>
@@ -59,7 +59,7 @@
         </div>
       </div>
         </div>
-      <advertisement v-if="Math.random() < 0.3"></advertisement>
+      <advertisement v-if="Math.random() < 0.5"></advertisement>
     </div>
   </a-card>
 </template>
@@ -91,8 +91,11 @@ let newAnswerContent = ref('');             //文本框中输入的回答内容
 axios.defaults.baseURL = import.meta.env.VITE_API_URL; // 替换为你的后端 API 地址
 
 //控制 查看回答 按钮的函数
-const toggleAnswers = (question: Question) => {
+const toggleAnswers = async (question: Question) => {
   question.showAnswers = !question.showAnswers;
+  if(question.showAnswers==true){
+      fetchAnswers(question)
+  }
 };
 
 //控制显示 输入答案的对话框 按钮的函数
@@ -196,8 +199,9 @@ const deleteQuestion = async (question_id: number) => {
   }
 };
 
-const toggleShowButton = (post)=>{
-  post.showButton=!post.showButton;
+const toggleShowButton = (event, post) => {
+  event.stopPropagation(); // 阻止事件冒泡
+  post.showButton = !post.showButton;
 }
 
 onMounted(() => {

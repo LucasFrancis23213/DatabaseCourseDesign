@@ -54,9 +54,9 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI
                 foreach (var question in questions)
                 {
                     // 查询该问题的回答列表
-                    var answers = questionAnswers.GetAnswersByQuestionId(question.Item2.Question_ID);
+                    //var answers = questionAnswers.GetAnswersByQuestionId(question.Item2.Question_ID);
                     // 如果 answers 为空，则将 answers 设置为一个空列表
-                    var answersList = answers ?? new List<Tuple<Users, Answers>>(); // 假设 Answer 是回答对象的类名，根据实际情况修改
+                    //var answersList = answers ?? new List<Tuple<Users, Answers>>(); // 假设 Answer 是回答对象的类名，根据实际情况修改
 
                     // 构建单个问题的对象
                     var questionObj = new
@@ -71,18 +71,18 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI
                         },
                         content = question.Item2.Question_Content, // 问题内容
                         time = question.Item2.Question_Time.ToLocalTime(), // 提出问题时间
-                        answers = answersList.Select(a => new
-                        {
-                            id = a.Item2.Answer_ID, // 回答ID
-                            user = new
-                            {
-                                id = a.Item1.User_ID,
-                                name = a.Item1.User_Name, // 这里需要从用户信息中获取
-                                avatar = question.Item1.Avatar, // 这里需要从用户信息中获取
-                            },
-                            content = a.Item2.Answer_Content, // 回答内容
-                            time = a.Item2.Answer_Date.ToLocalTime() // 回答时间
-                        }).ToList()
+//                        answers = answersList.Select(a => new
+//                        {
+//                            id = a.Item2.Answer_ID, // 回答ID
+//                            user = new
+//                            {
+//                                id = a.Item1.User_ID,
+//                                name = a.Item1.User_Name, // 这里需要从用户信息中获取
+//                                avatar = question.Item1.Avatar, // 这里需要从用户信息中获取
+//                            },
+//                            content = a.Item2.Answer_Content, // 回答内容
+//                            time = a.Item2.Answer_Date.ToLocalTime() // 回答时间
+//                        }).ToList()
                     };
                     // 添加到响应列表中
                     response.Add(questionObj);
