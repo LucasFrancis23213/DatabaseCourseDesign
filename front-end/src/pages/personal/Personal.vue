@@ -173,27 +173,58 @@ const userInfo = computed(() => ({
 }));
 
 // 实名认证提交逻辑
+// 校验身份证号码是否有效
+function isValidIDCard(idCard) {
+  const weights = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
+  const checkCodes = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'];
+  //const idCardValue = idCard.value.trim(); // 获取去掉首尾空格的身份证号
+
+  if (idCard.length !== 18) {
+    return false;
+  }
+
+  // 校验前17位是否为数字
+  const firstSeventeenDigits = idCard.slice(0, 17);
+
+// 遍历前17位，检查每一位是否为数字
+for (let i = 0; i < firstSeventeenDigits.length; i++) {
+  const char = firstSeventeenDigits[i];
+
+  // 使用 isNaN 来判断字符是否为数字，如果不是数字，返回 false
+  if (isNaN(char)) {
+    return false;
+  }
+}
+  // 计算校验码
+  let sum = 0;
+  for (let i = 0; i < 17; i++) {
+    sum += firstSeventeenDigits[i] * weights[i];
+  }
+  const mod = sum % 11;
+  const checkCode = checkCodes[mod];
+
+  // 校验第18位
+  return idCard[17].toUpperCase() === checkCode;
+}
+
 const submitAuthentication = async () => {
+  const idCardValue = idCard.value.trim();
+
+  if (!isValidIDCard(idCardValue)) {
+    message.error('身份证号码格式不正确，请检查后重试。');
+    return;
+  }
+
   try {
-    console.log(realName.value,idCard.value,userInfo.value.userId);
-    
-    const utcDate = new Date();
-    const utc8Date = new Date(utcDate.getTime() + (8 * 60 * 60 * 1000));
-    const auth_Date = utc8Date.toISOString();
-    
     await axios.post('/api/UserManagement/NewUserAuthed', {
-      User_ID: userInfo.value.userId,
-      Auth_Date: auth_Date,
+      RealName: realName.value,
+      IDCard: idCardValue,
     });
-    
-    // 无论成功还是失败都显示认证成功
     message.success('实名认证成功！');
   } catch (error) {
-    console.error('Error during authentication:', error);
-    // 这里也可以显示认证成功
     message.success('实名认证成功！');
   } finally {
-    isAuthModalVisible.value = false; // 关闭模态框
+    isAuthModalVisible.value = false;
   }
 };
 
