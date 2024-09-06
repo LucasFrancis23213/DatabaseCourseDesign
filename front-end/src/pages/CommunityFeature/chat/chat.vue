@@ -18,9 +18,9 @@
       />
     </a-layout-content>
     <a-layout-footer class="message-input-container">
-      <a-button @click="checkConnection" class="connection-check-btn">
-        检查连接
-      </a-button>
+<!--      <a-button @click="checkConnection" class="connection-check-btn">-->
+<!--        检查连接-->
+<!--      </a-button>-->
       <MessageInput
         :is-sending="isSending"
         @send-message="handleSendMessage"
@@ -133,16 +133,19 @@ const connect = () => {
 
   socket.value.onopen = () => {
     connectionStatus.value = 'Connected';
-    message.success('WebSocket 连接成功');
+    //message.success('WebSocket 连接成功');
+    //console.error(`WebSocket 连接成功`)
   };
 
   socket.value.onclose = () => {
     connectionStatus.value = 'Disconnected';
-    message.warning('WebSocket 连接已断开');
+    //message.warning('WebSocket 连接已断开');
+    //console.error('WebSocket 连接已断开')
   };
 
   socket.value.onerror = (error) => {
-    message.error(`WebSocket 错误: ${error.message}`);
+    //message.error(`WebSocket 错误: ${error.message}`);
+    console.error(`WebSocket 错误: ${error.message}`)
   };
 
   socket.value.onmessage = (event) => {
@@ -200,7 +203,7 @@ const checkConnection = () => {
   } else {
     connectionStatus.value = 'No connection';
   }
-  message.info(`当前连接状态: ${connectionStatus.value}`);
+  //message.info(`当前连接状态: ${connectionStatus.value}`);
 };
 
 const scrollToBottom = () => {

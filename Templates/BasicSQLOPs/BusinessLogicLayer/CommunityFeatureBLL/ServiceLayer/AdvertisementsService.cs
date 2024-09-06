@@ -10,15 +10,16 @@ using System.Threading.Tasks;
 
 namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
 {
-    public class AdvertisementsService {
+    public class AdvertisementsService
+    {
 
         private CommunityFeatureBusiness<Advertisements> AdvertisementsBusiness;
         private CommunityFeatureBusiness<Ad_Click_Statistics> Ad_Click_StatisticsBusiness;
         private CommunityFeatureBusiness<Ad_Show_Statistics> Ad_Show_StatisticsBusiness;
 
-        private List<string> AdvertisementsList= new List<string> { "ad_content","ad_picture","ad_url","ad_type","start_time","end_time","click_count","show_count"};
-        private List<string> AdClickStatisticsList = new List<string> { "ad_id","user_id","click_time","ip_address"};
-        private List<string> AdShowStatisticsList = new List<string> {"ad_id","user_id","time" };
+        private List<string> AdvertisementsList = new List<string> { "ad_content", "ad_picture", "ad_url", "ad_type", "start_time", "end_time", "click_count", "show_count" };
+        private List<string> AdClickStatisticsList = new List<string> { "ad_id", "user_id", "click_time", "ip_address" };
+        private List<string> AdShowStatisticsList = new List<string> { "ad_id", "user_id", "time" };
 
         // 构造函数
         public AdvertisementsService(Connection connection)
@@ -36,8 +37,8 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
                 // 随机选择showAd
                 var random = new Random();
                 var showAd = random.Next(0, 2) == 0;
-                Advertisements? advertisement=null;
-                DateTime currentTime= DateTime.Now;
+                Advertisements? advertisement = null;
+                DateTime currentTime = DateTime.Now;
 
                 if (showAd)
                 {
@@ -52,7 +53,14 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
                         a.END_TIME AS END_TIME,
                         a.CLICK_COUNT AS CLICK_COUNT,
                         a.SHOW_COUNT AS SHOW_COUNT,
-                        CASE WHEN a.SHOW_COUNT > 0 THEN a.CLICK_COUNT / a.SHOW_COUNT ELSE 0 END AS CLICK_RATE";  // 计算点击率
+                        CAST(
+                            CASE 
+                                WHEN a.SHOW_COUNT > 0 
+                                THEN CAST(a.CLICK_COUNT AS DECIMAL(10, 2)) / CAST(a.SHOW_COUNT AS DECIMAL(10, 2)) 
+                                ELSE 0 
+                            END 
+                        AS DECIMAL(10, 2)) AS CLICK_RATE
+                        ";
 
                     var fromClause = "ADVERTISEMENTS a";
 
@@ -62,13 +70,13 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
                     // 创建参数
                     var parameters = new[] { new OracleParameter("currentTime", currentTime) };
                     var result = AdvertisementsBusiness.QueryTableWithSelectBusiness(selectClause, fromClause, whereClause, parameters);
-                    
+
 
                     // 获取展示次数最多的广告
                     var topAd = result.FirstOrDefault();
                     if (topAd != null)
                     {
-                        advertisement=AdvertisementsBusiness.MapDictionaryToObject(topAd);
+                        advertisement = AdvertisementsBusiness.MapDictionaryToObject(topAd);
                     }
 
                 }
@@ -77,15 +85,15 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
                     // 随机选择一个广告
                     var whereClause = "END_TIME >= :currentDate AND START_TIME < :currentDate";
                     var parameters = new[] { new OracleParameter("currentDate", currentTime) };
-                    var allAds = AdvertisementsBusiness.QueryTableWithWhereBusiness(whereClause,parameters);
+                    var allAds = AdvertisementsBusiness.QueryTableWithWhereBusiness(whereClause, parameters);
                     if (allAds.Count() > 0)
                     {
-                        advertisement=allAds[random.Next(allAds.Count)];
+                        advertisement = allAds[random.Next(allAds.Count)];
                     }
                 }
 
                 // 有一个广告展示
-                if(advertisement == null)
+                if (advertisement == null)
                 {
                     throw new Exception("当前没有广告");
                 }
@@ -96,21 +104,21 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
                     var currentDate = DateTime.Now;
 
                     // 0占位
-                    var newStats = Ad_Show_StatisticsBusiness.PackageData(0,adId,userId,  currentDate);
+                    var newStats = Ad_Show_StatisticsBusiness.PackageData(0, adId, userId, currentDate);
                     Ad_Show_StatisticsBusiness.AddBusiness(AdShowStatisticsList, "ad_id", newStats);
 
                     return advertisement;
                 }
 
-                
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine($"获取广告时发生错误: {ex.Message}");
                 throw new Exception($"获取广告时发生错误: {ex.Message}");
             }
-           
-   
+
+
         }
 
         // 用户点击广告
@@ -118,19 +126,19 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
         {
             try
             {
-                var click = Ad_Click_StatisticsBusiness.PackageData(0,adId,userId, clickTime, ipAddress);
+                var click = Ad_Click_StatisticsBusiness.PackageData(0, adId, userId, clickTime, ipAddress);
 
-                var result=Ad_Click_StatisticsBusiness.AddBusiness(AdClickStatisticsList, "ad_id", click);
+                var result = Ad_Click_StatisticsBusiness.AddBusiness(AdClickStatisticsList, "ad_id", click);
 
                 // 返回0说明记录失误
                 return result > 0;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine($"记录广告点击时发生错误: {ex.Message}");
                 throw new ApplicationException("记录广告点击时发生错误", ex);
             }
-            
+
         }
 
         // 管理员增加广告 传入ad_content, ad_picture, ad_url, ad_type, start_time, end_time
@@ -138,7 +146,7 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
         {
             try
             {
-                var ad = AdvertisementsBusiness.PackageData(0,content,picture,url,type,startTime,endTime,0,0);
+                var ad = AdvertisementsBusiness.PackageData(0, content, picture, url, type, startTime, endTime, 0, 0);
 
                 var result = AdvertisementsBusiness.AddBusiness(AdvertisementsList, "ad_id", ad);
 
@@ -207,7 +215,7 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
             {
                 Console.WriteLine($"获取广告信息时发生错误: {ex.Message}");
                 throw new Exception($"获取广告信息时发生错误: {ex.Message}");
-                
+
             }
         }
 

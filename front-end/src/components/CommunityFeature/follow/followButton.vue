@@ -1,10 +1,10 @@
 <template>
-  <button
+  <a-button
       @click="toggleFollow"
       :class="{ 'followed': isFollowed }"
   >
     {{ buttonText }}
-  </button>
+  </a-button>
 </template>
 
 <script setup>
@@ -97,13 +97,7 @@ onMounted(()=>{
 </script>
 
 <style scoped>
-button {
-  padding: 8px 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
+
 
 button.followed {
   background-color: #1da1f2;

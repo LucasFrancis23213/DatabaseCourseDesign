@@ -144,7 +144,7 @@ export const useAccountStore = defineStore('account', {
           } 
         } catch (error) {
           console.error('Failed to fetch user info:', error);
-          return { account: this};
+          return { success: false, message: "用户信息错误", account: this};
         } finally {
           setAuthLoading(false); 
         }

@@ -21,7 +21,7 @@ namespace DatabaseProject.DataAccessLayer.CommunityFeatureDAL
 
         }
 
-        
+
 
         // 插入并返回指定列的值
         public Tuple<bool, string> InsertAndGetValue(string tableName, string returnValueColumn, List<string> columnNames, List<object> values)
@@ -36,7 +36,7 @@ namespace DatabaseProject.DataAccessLayer.CommunityFeatureDAL
 
             if (oConn.State == ConnectionState.Open)
             {
-               
+
                 try
                 {
                     // 将所有列名转换为大写
@@ -81,7 +81,7 @@ namespace DatabaseProject.DataAccessLayer.CommunityFeatureDAL
                     }
 
                 }
-                
+
                 catch (Exception ex)
                 {
                     string errorReason = $"插入报错：{ex}";
@@ -312,7 +312,7 @@ namespace DatabaseProject.DataAccessLayer.CommunityFeatureDAL
                 return new Tuple<bool, string>(IsQuerySuccess, ErrorReason);
             }
         }
-        
+
         // 通用查询操作，根据表名和自定义 WHERE 条件查询所有内容
         public Tuple<bool, string> QueryTableWithWhere(string TableName, string whereClause, OracleParameter[] parameters)
         {
@@ -531,7 +531,17 @@ namespace DatabaseProject.DataAccessLayer.CommunityFeatureDAL
                                 Dictionary<string, object> SingleMatch = new Dictionary<string, object>();
                                 foreach (string name in columnNames)
                                 {
-                                    SingleMatch[name] = reader[name];
+                                    object value = reader[name];
+
+                                    // 检查 DBNull 和正确的类型转换
+                                    if (value == DBNull.Value)
+                                    {
+                                        SingleMatch[name] = null;
+                                    }
+                                    else
+                                    {
+                                        SingleMatch[name] = value;
+                                    }
                                 }
                                 RowList.Add(SingleMatch);
                             }
@@ -568,11 +578,10 @@ namespace DatabaseProject.DataAccessLayer.CommunityFeatureDAL
             }
         }
 
-      
-        
+
+
     }
 }
-
 
 
 

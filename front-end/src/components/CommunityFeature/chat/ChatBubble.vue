@@ -97,13 +97,13 @@ const build_chat_user_id = computed(()=>{
     return undefined;
 });
 
-console.log(account);
+//console.log(account);
 
 </script>
 
 <template>
   <div class="chat-bubble" :class="{ 'self': isSelf }">
-    <div class="avatar" v-if="!isSelf" @click="toggleUserInfo" ref="avatarRef">
+    <div class="avatar" @click="toggleUserInfo" ref="avatarRef">
       <img :src="account.avatar" alt="User Avatar">
     </div>
     <div class="message-container" @mouseenter="toggleRetract" @mouseleave="toggleRetract">
@@ -211,7 +211,7 @@ button:active {
 }
 
 .user-info {
-  position: relative;
+  position: absolute;
   left: 50px;
   top: 0;
   background-color: white;
