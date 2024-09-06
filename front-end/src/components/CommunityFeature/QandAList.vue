@@ -59,7 +59,7 @@
         </div>
       </div>
         </div>
-      <advertisement v-if="Math.random() < 0.5"></advertisement>
+      <advertisement v-if="Math.random() < 0.3"></advertisement>
     </div>
   </a-card>
 </template>

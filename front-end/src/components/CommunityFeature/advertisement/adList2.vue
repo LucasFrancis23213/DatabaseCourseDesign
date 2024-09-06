@@ -355,7 +355,7 @@ const save = async (key) => {
       ad_url: row.ad_url
     };
     let response;
-    if (key.startsWith('new-')) {
+    if (key.toString().startsWith('new-')) {
       // 新广告，使用POST请求
       response = await axios.post('/api/advertisement/AddAdvertisement', adData);
     } else {
