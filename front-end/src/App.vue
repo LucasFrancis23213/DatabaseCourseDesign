@@ -2,8 +2,8 @@
   <a-config-provider :getPopupContainer="getPopupContainer">
     <ThemeProvider is-root v-bind="themeConfig" :apply-style="false">
       <stepin-view
-        system-name="Stepin"
-        logo-src="@/assets/vite.svg"
+        system-name="寻觅有道"
+        logo-src="@/assets/logos.png"
         :class="`${contentClass}`"
         :user="user"
         :navMode="navigation"
@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { reactive, ref } from 'vue';
+  import { reactive, ref, onMounted, onBeforeUnmount } from 'vue';
   import { useRouter } from 'vue-router';
   import { useAccountStore, useMenuStore, useSettingStore, storeToRefs } from '@/store';
   import avatar from '@/assets/avatar.png';
@@ -41,7 +41,7 @@
   import { useAuthStore } from '@/plugins';
   import { computed } from 'vue';
 
-  const { logout, account, permissions} = useAccountStore();
+  const { logout, account, permissions, closeApp} = useAccountStore();
   const showSetting = ref(false);
   const router = useRouter();
 

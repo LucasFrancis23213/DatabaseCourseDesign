@@ -8,41 +8,7 @@
           <div class="text-subtext font-bold text-sm">管理员</div>
         </div>
       </div>
-      <div class="flex items-start">
-        <a-statistic class="w-20" :valueStyle="{ fontWeight: 500 }" title="项目" value="8"></a-statistic>
-        <a-statistic class="w-20" :valueStyle="{ fontWeight: 500 }" title="订单" value="23"></a-statistic>
-        <a-statistic class="w-20" :valueStyle="{ fontWeight: 500 }" title="销售额">
-          <template #formatter>
-            <div><span class="text-base">￥</span>2,300</div>
-          </template>
-        </a-statistic>
-      </div>
     </div>
-    <div class="grid grid-cols-12 gap-6">
-      <mini-statistic-card
-        class="card col-span-12 mdx:col-span-6 xlx:col-span-3"
-        v-for="(item, i) in statisticList"
-        :key="i"
-        :title="item.title"
-        :value="item.value"
-      >
-        <template #icon>
-          <component
-            :class="`text-[96px] translate-x-[25%] translate-y-[25%] opacity-75 ${item.iconClass}`"
-            v-bind:is="item.icon"
-          />
-        </template>
-      </mini-statistic-card>
-    </div>
-    <div class="overview grid grid-cols-12 gap-4">
-      <active-users class="col-span-12 xlx:col-span-6 xxlx:col-span-5 drop-shadow-sm" />
-      <sales-overview class="col-span-12 xlx:col-span-6 xxlx:col-span-7 drop-shadow-sm" />
-    </div>
-    <div class="project-list grid grid-cols-12 gap-4">
-      <projects class="col-span-12 xlx:col-span-7 xxlx:col-span-8 drop-shadow-sm" />
-      <order-history class="col-span-12 xlx:col-span-5 xxlx:col-span-4 drop-shadow-sm" />
-    </div>
-    <about-us />
   </div>
 </template>
 

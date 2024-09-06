@@ -46,6 +46,14 @@ const routes: RouteRecordRaw[] = [
         },
         component: () => import('@/pages/signUp'),
       },
+      {
+        path: '/reset',
+        name: '重置密码',
+        meta: {
+          view: 'blank',
+        },
+        component: () => import('@/pages/resetPassword.vue'),
+      },
     ],
   },
   {
@@ -83,21 +91,44 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/PublishSearchNotice',
-    name: 'PublishSearchNotice',
+    name: '寻物启事',
     meta: {
-      renderMenu: false,
+      renderMenu: true,
     },
     component: () => import('@/pages/publishSearchNotice')
   },
   {
     path: '/PublishUnclaimedItem',
-    name: 'PublishUnclaimedItem',
+    name: '无主物品',
     meta: {
-      renderMenu: false,
+      renderMenu: true,
     },
     component: () => import('@/pages/publishUnclaimedItem')
   },
-
+  {
+    path: '/ReturnCenter',
+    name: '归还&认领中心',
+    meta: {
+      renderMenu: true,
+    },
+    component: () => import('@/pages/returnCenter')
+  },
+  {
+    path: '/Review',
+    name: '审核中心',
+    meta: {
+      renderMenu: true,
+    },
+    component: () => import('@/pages/review')
+  },
+  {
+    path: '/Personal',
+    name: '个人中心',
+    meta: {
+      renderMenu: true,
+    },
+    component: () => import('@/pages/personal')
+  },
 ];
 //Community Feature -- QandAList -- 路由添加
 import testRoute from './CommunityFeature/test';

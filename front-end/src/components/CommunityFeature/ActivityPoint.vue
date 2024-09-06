@@ -1,34 +1,29 @@
 <template>
     <a-card class="conversations rounded-xl shadow-lg" :bordered="false">
-        <div class="chat flex items-center">
-            <div class="content ml-3 flex-1">
-                <div class="message text-base text-subtext">
-                    近期活跃度: {{overallScore}}
-                </div>
-            </div>
+      <div class="chat flex items-center">
+        <div class="content ml-3 flex-1">
+          <div class="message text-base text-subtext ">
+            近期活跃度: {{overallScore}}
+          </div>
         </div>
-      <div class="action">
-        <a-button class="text-sm font-semibold" type="link" @click="toggleActicities()">
-          {{ activitiesShow ? '隐藏详细' : '查看详细' }}
-        </a-button>
       </div>
-        <div v-if="activitiesShow" class="activity mt-2 ml-8 p-2 bg-gray-100 rounded-md">
-            <div v-for="(activity,aindex) in activitiesList" :key="activity.id" class="chat flex items-center mb-2">
-                <div class="ml-3">
-                    <div class="type text-sm font-semibold">
-                        活跃行为类型: {{ activity.type }}
-                    </div>
-                    <div class="score text-xs text-subtext">
-                        增加活跃度: {{ activity.score }}
-                    </div>
-                    <div class="time text-xs text-gray-500">
-                        {{ activity.time }}
-                    </div>
-                </div>
+      <div class="activity mt-2 ml-8 p-2 bg-gray-100 rounded-md max-h-[480px] overflow-y-auto">
+        <div v-for="(activity, aindex) in activitiesList" :key="activity.id" class="chat flex items-center mb-2">
+          <div class="ml-3">
+            <div class="type text-sm font-semibold">
+              活跃行为类型: {{ activity.type }}
             </div>
+            <div class="score text-xs text-subtext">
+              增加活跃度: {{ activity.score }}
+            </div>
+            <div class="time text-xs text-gray-500">
+              {{ activity.time }}
+            </div>
+          </div>
         </div>
+      </div>
     </a-card>
-</template>
+  </template>
 
 <script lang="ts" setup>
 import { getBeijingTime,formatTime } from './mytime';

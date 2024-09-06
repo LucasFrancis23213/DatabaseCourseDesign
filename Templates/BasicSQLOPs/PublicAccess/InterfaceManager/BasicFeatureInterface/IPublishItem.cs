@@ -14,7 +14,7 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
         //itemImages:丢失物品图片信息，和lostItems一一对应，对应表Item_Images
         //rewardOffers:悬赏选项选择信息，对应表Reward_offer
         //reward_or_not:是否选择了添加悬赏
-        public Tuple<bool, string> PublishLostItem(List<Lost_Item> lostItems, List<Reward_Offers> rewardOffers, bool reward_or_not);
+        public Tuple<bool, string> PublishLostItem(List<Lost_Item> lostItems, List<Reward_Offers> rewardOffers);
         //发布失物招领
         //foundItems:无主物品基础信息，对应表Found_Item
         //itemImages:无主物品图片信息，和foundItems一一对应，对应表Item_Images
@@ -29,5 +29,10 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
         //type同上
         //index是条件，返回默认是*
         public Tuple<bool, string> QueryItem(int type, Dictionary<string, object> index);
+        //用于物品审核通过之后的更新操作
+        //type同上，itemID是物品ID用于确定是那一条通过了
+        public Tuple<bool, string> ReviewItem(int type,List<string> itemID);
+
+       
     }
 }

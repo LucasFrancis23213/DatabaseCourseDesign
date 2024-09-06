@@ -8,12 +8,12 @@
     }
 
     public class Conversation {
-        public int Sender_User_ID {  get; set; }
-        public int Receiver_User_ID { get; set; }
         public string Message_Content {  get; set; }
         public DateTime Last_Message_Time {  get; set; }
         public int Unread_Count {  get; set; }
     }
+
+    
 
 
 
