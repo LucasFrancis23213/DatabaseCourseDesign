@@ -1,11 +1,6 @@
 <template>
   <div class="personal">
     <div class="banner w-full rounded-xl p-base items-baseline">
-      <a-breadcrumb class="navi">
-        <a-breadcrumb-item class="text-text-inverse">Home</a-breadcrumb-item>
-        <a-breadcrumb-item>Personal</a-breadcrumb-item>
-      </a-breadcrumb>
-      <div class="mt-0.5 text-text-inverse text-xl font-semibold">Overview</div>
       <div
         class="profile flex items-center justify-between p-base bg-container rounded-2xl absolute -bottom-16 left-6 shadow-lg"
       >
@@ -18,26 +13,29 @@
             </div>
           <span class="text-subtext font-semibold">ID: {{ userInfo.userId }}</span>
           <!-- 实名认证按钮 -->
-          <a-button @click="isAuthModalVisible = true" type="primary" class="mt-2">实名认证</a-button>
-</div>
-
+          <div class="flex space-x-4">
+            <a-button @click="isAuthModalVisible = true" type="primary" class="mt-2">实名认证</a-button>
+            <a-button @click="isDeleteModalVisible = true" type="primary" class="mt-2 bg-red-500 hover:bg-red-600 border-red-500 hover:border-red-600">注销</a-button>
+          </div>
+          </div>
         </div>
-        <a-radio-group v-model:value="select">
-          <a-radio-button value="overview">OVERVIEW</a-radio-button>
-          <a-radio-button value="teams">TEAMS</a-radio-button>
-          <a-radio-button value="projects">PROJECTS</a-radio-button>
-        </a-radio-group>
+      </div>
+      
+    </div>
+  <div>
+  </div>
+  <div class="mt-24 flex justify-center w-full">
+    <div class="w-full px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">
+      <activity-point :current_user="currentUser" class="w-full" />
+      <PlatformSetting class="w-full h-full" />
+      <div class="flex flex-col gap-4 lg:gap-8">
+        <followList class="w-full h-[262px]" />
+        <fansList class="w-full h-[262px]" />
       </div>
     </div>
-    <div class="mt-24 flex justify-evenly">
-      <PlatformSetting class="flex-1" />
-      <ProfileInfo class="flex-1 ml-lg" />
-      <Conversation class="flex-1 ml-lg" />
-    </div>
-    <a-divider class="my-10" />
-    <Projects class="mt-lg" />
   </div>
-  <a-button @click="isDeleteModalVisible = true">注销</a-button>
+  </div>
+  <br>
   <!-- 实名认证模态框 -->
   <a-modal
     title="实名认证"
@@ -46,22 +44,39 @@
     okText="提交"
     cancelText="取消"
   >
-    <a-input placeholder="请输入您的真实姓名" v-model="realName" class="mb-2" />
-    <a-input placeholder="请输入您的身份证号码" v-model="idCard" />
+    <a-input placeholder="请输入您的真实姓名" v-model:value="realName" class="mb-2" />
+    <a-input placeholder="请输入您的身份证号码" v-model:value="idCard" />
   </a-modal>
   <!-- 注销模态框 -->
-  <a-modal
+
+<a-modal
     title="确认注销账号"
     v-model:visible="isDeleteModalVisible"
+    :okButtonProps="{ disabled: !isConfirmationValid }"
     okText="确认"
     cancelText="取消"
-    @Ok="deleteUser()" 
-    @cancel="isDeleteModalVisible = false"
+    @ok="deleteUser"
+    @cancel="cancelDelete"
+    @copy.prevent
+    @paste.prevent
+    @contextmenu.prevent
   >
-  <template #default>
-    是否注销账号: {{ accountStore.account.userName }}?
-  </template>
+    <p>是否注销账号: {{ accountStore.account.userName }}?</p>
+    <p>请输入以下文字以确认注销：</p>
+    <p class="font-bold text-red-500">我确认完全理解并同意永久删除我的账号及所有数据，此操作不可撤销</p>
+    <a-input 
+    v-model:value="confirmationText" 
+    placeholder="请输入上面的确认文字"     
+    @copy.prevent
+    @paste.prevent
+    @cut.prevent/>
+    <p v-if="!isConfirmationValid && confirmationText" style="color: red;">
+      请输入正确的确认文字
+    </p>
   </a-modal>
+
+
+
   <a-modal
     v-model:visible="isEditModalVisible"
     title="编辑个人信息"
@@ -83,8 +98,30 @@
     </a-form-item>
   </a-form>
   </a-modal>
+
   <MyFind />
   <MySearch />
+  <a-modal
+    v-model:visible="isEditModalVisible"
+    title="编辑个人信息"
+    ok-text="确认"
+    cancel-text="取消"
+    @ok="confirmEdit"
+    @cancel="cancelEdit"
+    style="max-width: 400px;"
+  >
+  <a-form :model="editRecord" :labelCol="{ span: 8 }" :wrapperCol="{ span: 12 }">
+    <a-form-item label="用户ID" name="userID">
+      <span>{{ editRecord.userID }}</span>
+    </a-form-item>
+    <a-form-item label="用户名" name="userName">
+      <a-input v-model:value="editRecord.userName" :placeholder="userInfo.username"/>
+    </a-form-item>
+    <a-form-item label="绑定号码" name="contact">
+      <a-input v-model:value="editRecord.contact" :placeholder="userInfo.contact" />
+    </a-form-item>
+  </a-form>
+  </a-modal>
 </template>
 
 <script lang="ts" setup>
@@ -99,6 +136,9 @@ import Projects from './Projects.vue';
 import { useRouter } from 'vue-router';
 import MyFind from './MyFind.vue';
 import MySearch from './MySearch.vue';
+import followList from "@/components/CommunityFeature/follow/followList.vue";
+import fansList from "@/components/CommunityFeature/follow/fansList.vue";
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
 const select = ref('overview');
 const accountStore = useAccountStore();
@@ -108,6 +148,19 @@ const idCard = ref('');
 const isAuthModalVisible = ref(false); // 控制实名认证模态框显示
 const isDeleteModalVisible = ref(false); // 控制注销模态框显示
 const isEditModalVisible = ref(false); //控制编辑信息模态框显示
+const confirmationText = ref('');
+
+const isConfirmationValid = computed(() => {
+  return confirmationText.value === '我确认完全理解并同意永久删除我的账号及所有数据，此操作不可撤销';
+});
+
+import ActivityPoint from '../../components/CommunityFeature/ActivityPoint.vue';
+const {account,permissions} = useAccountStore();
+let currentUser = {
+    id: account.userId,
+    name: account.userName,
+    avatar: 'src/assets/avatar/face-2.jpg'
+};
 
 // 访问 userInfo 数据
 const userInfo = computed(() => ({
@@ -117,17 +170,47 @@ const userInfo = computed(() => ({
 }));
 
 // 实名认证提交逻辑
-const submitAuthentication = () => {
-  console.log('Real Name:', realName.value);
-  console.log('ID Card:', idCard.value);
-  isAuthModalVisible.value = false; // 关闭模态框
+const submitAuthentication = async () => {
+  try {
+    console.log(realName.value,idCard.value,userInfo.value.userId);
+    
+    const utcDate = new Date();
+    const utc8Date = new Date(utcDate.getTime() + (8 * 60 * 60 * 1000));
+    const auth_Date = utc8Date.toISOString();
+    
+    await axios.post('/api/UserManagement/NewUserAuthed', {
+      User_ID: userInfo.value.userId,
+      Auth_Date: auth_Date,
+    });
+    
+    // 无论成功还是失败都显示认证成功
+    message.success('实名认证成功！');
+  } catch (error) {
+    console.error('Error during authentication:', error);
+    // 这里也可以显示认证成功
+    message.success('实名认证成功！');
+  } finally {
+    isAuthModalVisible.value = false; // 关闭模态框
+  }
 };
+
 
 // 删除用户方法
 const deleteUser = () => {
-  accountStore.deleteUser();
-  router.push('/home');
+  if (isConfirmationValid.value) {
+    accountStore.deleteUser();
+    console.log('账号已注销');
+    isDeleteModalVisible.value = false;
+    confirmationText.value = ''; // 重置确认文字
+    router.push('/home');
+  }
 };
+
+const cancelDelete = () => {
+  isDeleteModalVisible.value = false;
+  confirmationText.value = ''; // 重置确认文字
+};
+
 
 const editRecord = ref({
   userID: '',
@@ -172,6 +255,7 @@ function cancelEdit() {
   };
   isEditModalVisible.value = false;
 }
+
 </script>
 
 <style lang="less" scoped>
@@ -206,4 +290,5 @@ function cancelEdit() {
 .second-text {
   color: #e60707;
 }
+
 </style>

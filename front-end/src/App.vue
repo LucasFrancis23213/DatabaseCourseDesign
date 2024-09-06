@@ -2,8 +2,8 @@
   <a-config-provider :getPopupContainer="getPopupContainer">
     <ThemeProvider is-root v-bind="themeConfig" :apply-style="false">
       <stepin-view
-        system-name="Stepin"
-        logo-src="@/assets/vite.svg"
+        system-name="寻觅有道"
+        logo-src="@/assets/logos.png"
         :class="`${contentClass}`"
         :user="user"
         :navMode="navigation"

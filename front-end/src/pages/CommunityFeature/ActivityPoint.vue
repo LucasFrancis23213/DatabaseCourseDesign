@@ -5,9 +5,11 @@
 </template>
 <script lang="ts" setup>
 import ActivityPoint from '../../components/CommunityFeature/ActivityPoint.vue';
+import { useAccountStore } from '@/store/account';
+const {account,permissions} = useAccountStore();
 let currentUser = {
-    id: 1,
-    name: 'lzh',
-    avatar: 'src/assets/avatar/face-2.jpg'
+    id: account.userId,
+    name: account.userName,
+    avatar: account.avatar,
 };
 </script>

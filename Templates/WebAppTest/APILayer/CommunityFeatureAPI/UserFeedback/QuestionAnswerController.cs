@@ -9,27 +9,28 @@ using DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature;
 using WebAppTest.APILayer.CommunityFeatureAPI;
 
 
-namespace DatabaseProject.APILayer.CommunityFeatureAPI {
+namespace DatabaseProject.APILayer.CommunityFeatureAPI
+{
 
     [Route("api/")]
     [ApiController]
     public class QuestionAnswerController : ControllerBase
     {
-        private  QuestionAnswers questionAnswers;
+        private QuestionAnswers questionAnswers;
         private UserActivity userActivity;
         private Connection QAConnection;
 
         public QuestionAnswerController(Connection connection)
         {
             questionAnswers = new QuestionAnswers(connection);
-            userActivity= new UserActivity(connection);
+            userActivity = new UserActivity(connection);
             QAConnection = connection;
         }
 
         //1 `/api/questions`
         // 获取问题列表和回答列表
         [HttpPost("questions")]
-        public IActionResult GetQuestions([FromBody] Dictionary<string,JsonElement> requestData)
+        public IActionResult GetQuestions([FromBody] Dictionary<string, JsonElement> requestData)
         {
             try
             {
@@ -55,7 +56,7 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
                     // 查询该问题的回答列表
                     var answers = questionAnswers.GetAnswersByQuestionId(question.Item2.Question_ID);
                     // 如果 answers 为空，则将 answers 设置为一个空列表
-                    var answersList = answers ?? new List<Tuple<Users,Answers>>(); // 假设 Answer 是回答对象的类名，根据实际情况修改
+                    var answersList = answers ?? new List<Tuple<Users, Answers>>(); // 假设 Answer 是回答对象的类名，根据实际情况修改
 
                     // 构建单个问题的对象
                     var questionObj = new
@@ -64,9 +65,9 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
                         user = new
                         {
                             id = question.Item1.User_ID, // 用户ID
-                                                   // 待定 暂时没有获取用户名和用户头像的方法
+                                                         // 待定 暂时没有获取用户名和用户头像的方法
                             name = question.Item1.User_Name, // 用户名
-                            avatar = "" // 用户头像URL
+                            avatar = question.Item1.Avatar, // 用户头像URL
                         },
                         content = question.Item2.Question_Content, // 问题内容
                         time = question.Item2.Question_Time.ToLocalTime(), // 提出问题时间
@@ -77,7 +78,7 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
                             {
                                 id = a.Item1.User_ID,
                                 name = a.Item1.User_Name, // 这里需要从用户信息中获取
-                                avatar = "" // 这里需要从用户信息中获取
+                                avatar = question.Item1.Avatar, // 这里需要从用户信息中获取
                             },
                             content = a.Item2.Answer_Content, // 回答内容
                             time = a.Item2.Answer_Date.ToLocalTime() // 回答时间
@@ -100,7 +101,7 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
             catch (Exception ex)
             {
                 Console.WriteLine($"获取问题时出错：{ex.Message}");
-                return StatusCode(500, $"内部服务器错误：{ex.Message}");
+                return BadRequest(new { status = "error", message = $"{ex.Message}" });
 
             }
 
@@ -118,8 +119,8 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
                 int questionId = Convert.ToInt32(question_id);
 
                 var answers = questionAnswers.GetAnswersByQuestionId(questionId);
-                
-                
+
+
                 // 构建回答列表的响应对象
                 var response = new
                 {
@@ -144,7 +145,7 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
             catch (Exception ex)
             {
                 Console.WriteLine($"获取答案时出错：{ex.Message}");
-                return StatusCode(500, $"内部服务器错误：{ex.Message}");
+                return BadRequest(new { status = "error", message = $"{ex.Message}" });
 
             }
         }
@@ -194,12 +195,12 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
                 {
                     transaction.Rollback();
                     Console.WriteLine($"发布问题时出错: {ex.Message}");
-                    return StatusCode(500, $"服务器内部错误: {ex.Message}");
+                    return BadRequest(new { status = "error", message = $"{ex.Message}" });
 
                 }
 
             }
-            
+
         }
 
 
@@ -209,12 +210,12 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
         // 添加一个无效撤回时报错
 
         [HttpPost("questions_retract/{question_id}")]
-        public IActionResult WithdrawQuestion(int question_id,[FromBody] Dictionary<string, JsonElement> requestData)
+        public IActionResult WithdrawQuestion(int question_id, [FromBody] Dictionary<string, JsonElement> requestData)
         {
             try
             {
                 // 检查请求中是否包含必要的参数 current_user_id
-                if (requestData == null || !requestData.ContainsKey("current_user_id") ) 
+                if (requestData == null || !requestData.ContainsKey("current_user_id"))
                 {
                     return BadRequest("缺少必需的参数：current_user_id");
 
@@ -224,7 +225,7 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
                 int questionId = question_id;
                 int userId = requestData["current_user_id"].GetInt32();
 
-                
+
 
                 // 调用 QuestionAnswers 类中的方法撤回问题
                 bool success = questionAnswers.WithdrawQuestion(questionId, userId);
@@ -247,7 +248,7 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
             catch (Exception ex)
             {
                 Console.WriteLine($"撤回问题时出错: {ex.Message}");
-                return StatusCode(500, $"内部服务器错误: {ex.Message}");
+                return BadRequest(new { status = "error", message = $"{ex.Message}" });
 
             }
         }
@@ -304,23 +305,23 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
                 {
                     transaction.Rollback();
                     Console.WriteLine($"发布答案时出错: {ex.Message}");
-                    return StatusCode(500, $"内部服务器错误: {ex.Message}");
+                    return BadRequest(new { status = "error", message = $"{ex.Message}" });
 
                 }
             }
-                
+
         }
 
         // 撤回回答
         // POST: /api/answers_retract/{answer_id}
         // 撤回无效时报错
         [HttpPost("answers_retract/{answer_id}")]
-        public IActionResult RetractAnswer(int answer_id,[FromBody] Dictionary<string, JsonElement> requestData)
+        public IActionResult RetractAnswer(int answer_id, [FromBody] Dictionary<string, JsonElement> requestData)
         {
             try
             {
                 // 检查请求中是否包含必要的参数 answer_id 和 current_user_id
-                if (requestData == null ||  !requestData.ContainsKey("current_user_id"))
+                if (requestData == null || !requestData.ContainsKey("current_user_id"))
                 {
                     return BadRequest("缺少必需的参数: current_user_id");
 
@@ -345,7 +346,7 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
                 var response = new
                 {
                     status = "success",
-                    
+
                 };
 
                 return Ok(response);
@@ -353,7 +354,7 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI {
             catch (Exception ex)
             {
                 Console.WriteLine($"撤回答案时发生错误: {ex.Message}");
-                return StatusCode(500, $"内部服务器错误: {ex.Message}");
+                return BadRequest(new { status = "error", message = $"{ex.Message}" });
 
             }
         }

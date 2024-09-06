@@ -181,11 +181,12 @@ namespace SQLOperation.PublicAccess.Utilities
 
     public class Item_Claim_Processes
     {
-        public int Process_ID;
+        public string Process_ID;
         public string Item_ID;
         public int Claimant_User_ID;
         public string Status;
         public DateTime Application_Date;// 原来是int
+        public int Publish_User_ID;
     }
 
     public class Match_Records
@@ -237,21 +238,21 @@ namespace SQLOperation.PublicAccess.Utilities
 
     public class VIP_Members
     {
-        public int VIP_Member_ID;
-        public int User_ID;
-        public string Status;
-        public DateTime VIP_Start_Date;
-        public DateTime VIP_End_Date;
+        public int VIP_Member_ID { get; set; }
+        public int User_ID { get; set; }
+        public string Status { get; set; }
+        public DateTime VIP_Start_Date { get; set; }
+        public DateTime VIP_End_Date { get; set; }
     }
 
     public class VIP_Orders
     {
-        public int Order_ID;
-        public int User_ID;
-        public double Total_Amount;
-        public int Point_Return;
-        public DateTime Order_Time;
-        public int Recharge_Time;
+        public int Order_ID { get; set; }
+        public int User_ID { get; set; }
+        public double Total_Amount { get; set; }
+        public int Point_Return { get; set; }
+        public DateTime Order_Time { get; set; }
+        public int Recharge_Time { get; set; }
     }
 
     public class Admin_Edit_VIP
@@ -288,9 +289,10 @@ namespace SQLOperation.PublicAccess.Utilities
 
     public class Ad_Show_Statistics
     {
-        public int Ad_ID;
-        public int User_ID;
-        public DateTime Time_Stamp;
+        public int Show_ID { get; set; }
+        public int Ad_ID { get; set; }
+        public int User_ID { get; set; }
+        public DateTime Time { get; set; }
     }
 
     public class Admin_Edit_Ad
@@ -327,6 +329,9 @@ namespace SQLOperation.PublicAccess.Utilities
 
         [JsonPropertyName("IS_DELETED")]
         public int Is_Deleted { get; set; }
+
+        [JsonPropertyName("AVATAR")]
+        public string Avatar { get; set; }
     }
 
     public class User_Subscriptions
@@ -341,10 +346,8 @@ namespace SQLOperation.PublicAccess.Utilities
 
     public class Auth_Info
     {
-        public int User_ID;
-        public string Auth_Status;
-        public DateTime Auth_Date;
-        public string Status;
+        public int User_ID { get; set; }
+        public DateTime Auth_Date { get; set; }
     }
 
     public class System_Logs

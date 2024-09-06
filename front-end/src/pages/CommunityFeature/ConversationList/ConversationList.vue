@@ -10,7 +10,6 @@
         <a-button type="primary" @click="navigateToConversation(userId, currentUserId)">确定</a-button>
       </template>
     </a-input>
-    <CreateConversationBtn :target-id="303" />
     <div
       v-for="conversation in conversations"
       :key="conversation.id"
@@ -23,7 +22,7 @@
           <span class="name">{{ conversation.name }}</span>
           <span class="time">{{ formatTime(conversation.last_message_time) }}</span>
         </div>
-        <div class="message">{{ conversation.last_message }}</div>
+        <div class="message">{{ format_last_message(conversation.last_message,conversation.id) }}</div>
       </div>
       <a-badge
         v-if="conversation.unread_count > 0"
@@ -35,12 +34,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import {ref, onMounted, computed} from 'vue';
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
 import axios from 'axios';
 import { useAccountStore } from '@/store/account';
-import CreateConversationBtn from '@/components/CommunityFeature/chat/CreateConversationBtn.vue';
 
 const { account } = useAccountStore();
 const router = useRouter();
@@ -86,6 +84,18 @@ const navigateToConversation = (conversationId, currentUserId) => {
     query: { current_user_id: currentUserId },
   });
 };
+
+const isSystemMsg=(sender) => {
+  return sender === +import.meta.env.VITE_SYSTEM_USER_ID
+};
+function format_last_message(last_message,sender){
+  if(isSystemMsg(sender)) {
+    return JSON.parse(last_message).content;
+  }
+  else
+    return last_message;
+}
+
 </script>
 
 <style scoped>

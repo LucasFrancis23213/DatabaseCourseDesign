@@ -154,11 +154,11 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
                 // 调用已有的 AddUserActivity 方法
                 int result = userActivityService.AddUserActivity(userId, activityType, datetime);
 
-                return Ok(new {status="success"});
+                return Ok(new { status = "success" });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"{ex.Message}");
+                return BadRequest(new { status = "error", message = $"{ex.Message}" });
             }
         }
 

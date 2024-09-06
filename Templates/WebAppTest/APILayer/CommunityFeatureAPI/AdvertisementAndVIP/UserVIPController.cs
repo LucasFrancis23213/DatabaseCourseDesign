@@ -27,9 +27,9 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
             {
                 if (!requestBody.ContainsKey("user_id"))
                 {
-                    return BadRequest(new { status="error", message="缺少参数" });
+                    return BadRequest(new { status = "error", message = "缺少参数" });
                 }
-                int userId = requestBody["user_id"].GetInt32();   
+                int userId = requestBody["user_id"].GetInt32();
                 int vipMemberId = userVIPService.IsVIP(userId);
                 bool isVip = vipMemberId > 0;
 
@@ -38,7 +38,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
                     status = "success",
                     is_vip = isVip
                 });
-               
+
             }
             catch (Exception ex)
             {
@@ -79,9 +79,9 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
                     vip_start_date = vipOrder.Item2,
                     vip_end_date = vipOrder.Item2.AddMonths(rechargeTime),
                     vip_status = "Active",
-                    total_amount=totalAmount,
-                    point_return=vipOrder.Item1.Point_Return,
-                    
+                    total_amount = totalAmount,
+                    point_return = vipOrder.Item1.Point_Return,
+
                 });
             }
             catch (Exception ex)
@@ -147,8 +147,8 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
         {
             try
             {
-                
-                if (!request.ContainsKey("user_id") || !request.ContainsKey("vip_start_time")||
+
+                if (!request.ContainsKey("user_id") || !request.ContainsKey("vip_start_time") ||
                     !request.ContainsKey("vip_end_time") || !request.ContainsKey("vip_status"))
                 {
                     return BadRequest(new { status = "error", message = "Missing required fields." });
@@ -158,6 +158,11 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
                 DateTime vipStartDate = request["vip_start_time"].GetDateTime();
                 DateTime vipEndDate = request["vip_end_time"].GetDateTime();
                 string vipStatus = ControllerHelper.GetSafeString(request, "vip_status");
+
+                if (vipStartDate >= vipEndDate)
+                {
+                    throw new Exception("非法时间错误");
+                }
 
                 if (userId <= 0 || string.IsNullOrEmpty(vipStatus))
                 {
@@ -282,6 +287,5 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
 
 
 }
-
 
 
