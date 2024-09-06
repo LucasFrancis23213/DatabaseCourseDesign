@@ -126,6 +126,7 @@ const routes: RouteRecordRaw[] = [
     name: '个人中心',
     meta: {
       renderMenu: true,
+      cacheable: false,
     },
     component: () => import('@/pages/personal')
   },
