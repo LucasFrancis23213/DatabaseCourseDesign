@@ -6,19 +6,26 @@ namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
     public class DeleteUserBLL
     {
         private UserOperatorDAL UserOperatorDAL;
+        private UserAuthDAL UserAuthDAL;
         public DeleteUserBLL()
         {
             UserOperatorDAL = new UserOperatorDAL();
+            UserAuthDAL = new UserAuthDAL();
         }
 
-        public Tuple<bool, string> DeleteUser(string UserName)
+        public Tuple<bool, string> DeleteUser(int UserID)
         {
-            if (string.IsNullOrEmpty(UserName))
+            if (UserID < 0)
             {
-                return new Tuple<bool, string>(false, "UserName is empty");
+                return new Tuple<bool, string>(false, "UserID不合法");
             }
 
-            return UserOperatorDAL.DeleteUser(UserName);
+            // delete auth info first
+            var (succeeded, message) = UserAuthDAL.DeleteAuthInfo(UserID);
+            if (!succeeded)
+                return Tuple.Create(false, $"清除用户认证信息时: {message}");
+
+            return UserOperatorDAL.DeleteUser(UserID);
         }
     }
 }

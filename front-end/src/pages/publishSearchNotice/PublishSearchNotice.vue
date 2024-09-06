@@ -5,7 +5,9 @@
   import axios from 'axios';
   import dayjs from 'dayjs'
   import { useAccountStore } from '@/store/account';
-  const {account, permissions} = useAccountStore();
+  import { generateItemID } from '@/utils/BasicFeature/IDGen';
+  import sendSystemMsg from "@/pages/CommunityFeature/chat/systemMsgSend";
+  const {account} = useAccountStore();
 
   const baseURL = 'https://localhost:44343/api/';
   
@@ -36,38 +38,6 @@
   };
 
   const formModel = ref<FormInstance>();
-  
-  // 打乱字符集的函数
-  function shuffle(array: string[]) {
-    let currentIndex = array.length, randomIndex;
-
-    // While there remain elements to shuffle.
-    while (currentIndex !== 0) {
-      // Pick a remaining element.
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-
-      // And swap it with the current element.
-      [array[currentIndex], array[randomIndex]] = [
-        array[randomIndex], array[currentIndex]];
-    }
-
-    return array;
-  }
-
-  function generateItemID() {
-    const charset = '123456789abcdefghijklmnopqrstuvwxyz'.split('');
-    const shuffledCharset = shuffle(charset);
-    let uniqueID = '';
-    
-    // 生成16位ID
-    for (let i = 0; i < 16; i++) {
-      const randomIndex = Math.floor(Math.random() * shuffledCharset.length);
-      uniqueID += shuffledCharset[randomIndex];
-    }
-
-    return uniqueID;
-  }
 
   const submit = () => {
     loading.value = true;
@@ -198,22 +168,42 @@ const clickReturn = (row) => {
   openReturn.value = true
 }
 //确认归还的点击函数
-const returnItem = () => {
-  returnLoading.value = true
-  returnModel.value?.validateFields()
-    .then(async () => {
-      setTimeout(() => {
-        message.success('归还已提交审核！');
-        returnLoading.value = false;
-        openReturn.value = false
-        location.reload()
-      }, 2000);
-    })
-    .catch(() => {
-      returnLoading.value = false;
-      message.error('提交失败！')
-    })
-}
+const returnItem = async (returnMsg: string, pubUserID: number, claimUserID: number, returnItemID : string) => {
+  returnLoading.value = true;
+  try {
+    await returnModel.value?.validateFields();
+    
+    // 这里应该添加实际的API调用来处理物品归还
+    // 例如:
+    // await axios.post(baseURL + 'ReturnItem', {
+    //   returnMsg,
+    //   pubUserID,
+    //   claimUserID,
+    //   // 其他必要的数据...
+    // });
+    sendSystemMsg(pubUserID, returnMsg, claimUserID);
+    sendSystemMsg(claimUserID, "点击这条消息进入与失主的聊天", pubUserID);
+    var jsonFormData = JSON.stringify({
+      "Process_ID" : generateItemID(),
+      "ITEM_ID": returnItemID,
+      "Publish_User_ID" : pubUserID,
+      "Claimant_User_ID" : claimUserID,
+    });
+    await axios.post(baseURL + 'claim/ReturnItem', jsonFormData, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+    message.success('归还已提交');
+    returnLoading.value = false;
+    openReturn.value = false;
+    await getPublishs(); // 重新获取最新数据
+  } catch (error) {
+    console.error('归还提交失败:', error);
+    message.error('提交失败！');
+    returnLoading.value = false;
+  }
+};
 //填写的留言和上传的图片
 const returnForm = ref({
   MESSAGE: '',
@@ -336,20 +326,8 @@ const returnForm = ref({
       <a-form-item label="填写留言" name="MESSAGE" has-feedback :rules="[{ required: true, message: '请输入留言' }]">
         <a-textarea :rows="4" v-model:value="returnForm.MESSAGE" :maxlength="150" />
       </a-form-item>
-      <a-form-item label="物品图片" name="IMAGE_URL" has-feedback :rules="[{ required: true, message: '请上传图片' }]">
-        <a-upload :show-upload-list="false" :beforeUpload="(file: File) => extractImg(file)">
-          <img class="h-8 p-0.5 rounded border border-dashed border-border" v-if="form.IMAGE_URL"
-            :src="form.IMAGE_URL" />
-          <a-button v-else type="dashed">
-            <template #icon>
-              <UploadOutlined />
-            </template>
-            上传
-          </a-button>
-        </a-upload>
-      </a-form-item>
       <a-form-item :wrapper-col="{ offset: 10, span: 16 }">
-        <a-button type="primary" html-type="submit" @click="returnItem" :loading="returnLoading">确认归还</a-button>
+        <a-button type="primary" html-type="submit" @click="returnItem(returnForm.MESSAGE, +publishs[returnRow].USER_ID, +account.userId, publishs[returnRow].ITEM_ID)" :loading="returnLoading">确认归还</a-button>
       </a-form-item>
     </a-form>
   </a-modal>

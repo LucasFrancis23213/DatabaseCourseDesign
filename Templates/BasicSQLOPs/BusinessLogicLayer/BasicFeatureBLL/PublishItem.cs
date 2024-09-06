@@ -1,4 +1,4 @@
-﻿using SQLOperation.PublicAccess.Templates.SQLManager;
+using SQLOperation.PublicAccess.Templates.SQLManager;
 using SQLOperation.PublicAccess.Utilities;
 using SQLOperation.PublicAccess.Templates.TemplateInterfaceManager;
 using System;
@@ -305,11 +305,11 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                     string QuerySQL = "";
                     if (type == 0)
                     {
-                        QuerySQL = $"SELECT * FROM {TableName.ToUpper()} NATURAL JOIN REWARD_OFFERS WHERE {ConditionString}";
+                        QuerySQL = $"SELECT * FROM {TableName.ToUpper()} NATURAL JOIN REWARD_OFFERS WHERE {ConditionString} AND LOST_STATUS = 'LOST'";
                     }
                     else
                     {
-                        QuerySQL = $"SELECT * FROM {TableName.ToUpper()} WHERE {ConditionString}";
+                        QuerySQL = $"SELECT * FROM {TableName.ToUpper()} WHERE {ConditionString} AND MATCH_STATUS = 'FINDING'";
                     }
 
 
@@ -410,8 +410,6 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
             }
         }
 
-
+        
     }
-
-
 }

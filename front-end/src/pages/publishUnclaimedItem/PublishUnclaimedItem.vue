@@ -7,6 +7,8 @@ import axios from 'axios';
 import { onMounted } from 'vue';
 import dayjs from 'dayjs';
 import { useAccountStore } from '@/store/account';
+import { generateItemID } from '@/utils/BasicFeature/IDGen';
+import sendSystemMsg from "@/pages/CommunityFeature/chat/systemMsgSend";
 const {account, permissions} = useAccountStore();
 
 const baseURL = 'https://localhost:44343/api/';
@@ -32,39 +34,6 @@ const categoryMapping = {
     '1': '日用品',
     '2': '手表',
   };
-
-// 打乱字符集的函数
-function shuffle(array: string[]) {
-  let currentIndex = array.length, randomIndex;
-
-  // While there remain elements to shuffle.
-  while (currentIndex !== 0) {
-    // Pick a remaining element.
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
-
-    // And swap it with the current element.
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex], array[currentIndex]];
-  }
-
-  return array;
-}
-
-function generateItemID() {
-  const charset = '123456789abcdefghijklmnopqrstuvwxyz'.split('');
-  const shuffledCharset = shuffle(charset);
-  let uniqueID = '';
-
-  // 生成16位ID
-  for (let i = 0; i < 16; i++) {
-    const randomIndex = Math.floor(Math.random() * shuffledCharset.length);
-    uniqueID += shuffledCharset[randomIndex];
-  }
-
-  return uniqueID;
-}
-
 const formModel = ref<FormInstance>();
 const submit = () => {
   loading.value = true;
@@ -126,6 +95,7 @@ const form = ref<oneFind>({
   FOUND_DATE: '',
   TAG_ID: [],
   IMAGE_URL: '',
+  USER_ID: '',
 });
 const selectedFile = ref<File | null>(null);
 const handleFileChange = (file: File) => {
@@ -179,21 +149,42 @@ const claim = (row) => {
   openClaim.value = true
 }
 //确认认领的点击函数
-const claimItem = () => {
+const claimItem = async (returnMsg : string, pubUserID : number, claimUserID : number, claimItemID : string) => {
   claimLoading.value = true
-  claimModel.value?.validateFields()
-    .then(async () => {
-      setTimeout(() => {
-        message.success('认领已提交审核！');
-        claimLoading.value = false;
-        openClaim.value = false
-        location.reload()
-      }, 2000);
-    })
-    .catch(() => {
-      claimLoading.value = false;
-      message.error('提交失败！')
-    })
+  try {
+    await claimModel.value?.validateFields();
+    
+    // 这里应该添加实际的API调用来处理物品归还
+    // 例如:
+    // await axios.post(baseURL + 'ReturnItem', {
+    //   returnMsg,
+    //   pubUserID,
+    //   claimUserID,
+    //   // 其他必要的数据...
+    // });
+    sendSystemMsg(pubUserID, returnMsg, claimUserID);
+    sendSystemMsg(claimUserID, "点击这条消息进入与发现者的聊天", pubUserID);
+    var jsonFormData = JSON.stringify({
+      "Process_ID" : generateItemID(),
+      "ITEM_ID": claimItemID,
+      "Publish_User_ID" : pubUserID,
+      "Claimant_User_ID" : claimUserID,
+    });
+    await axios.post(baseURL + 'claim/ClaimItem', jsonFormData, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+    message.success('归还已提交');
+    claimLoading.value = false;
+    openClaim.value = false;
+    await getFinds(); // 重新获取最新数据
+  } catch (error) {
+    console.error('归还提交失败:', error);
+    message.error('提交失败！');
+    claimLoading.value = false;
+  }
+
 }
 //填写的留言和上传的图片
 const claimForm = ref({
@@ -298,20 +289,8 @@ const claimForm = ref({
       <a-form-item label="填写留言" name="MESSAGE" has-feedback :rules="[{ required: true, message: '请输入留言' }]">
         <a-textarea :rows="4" v-model:value="claimForm.MESSAGE" :maxlength="150" />
       </a-form-item>
-      <a-form-item label="物品图片" name="IMAGE_URL" has-feedback :rules="[{ required: true, message: '请上传图片' }]">
-        <a-upload :show-upload-list="false" :beforeUpload="(file: File) => extractImg(file)">
-          <img class="h-8 p-0.5 rounded border border-dashed border-border" v-if="form.IMAGE_URL"
-            :src="form.IMAGE_URL" />
-          <a-button v-else type="dashed">
-            <template #icon>
-              <UploadOutlined />
-            </template>
-            上传
-          </a-button>
-        </a-upload>
-      </a-form-item>
       <a-form-item :wrapper-col="{ offset: 10, span: 16 }">
-        <a-button type="primary" html-type="submit" @click="claimItem" :loading="claimLoading">确认认领</a-button>
+        <a-button type="primary" html-type="submit" @click="claimItem(claimForm.MESSAGE, +finds[claimRow].USER_ID, +account.userId, finds[claimRow].ITEM_ID)" :loading="claimLoading">确认认领</a-button>
       </a-form-item>
     </a-form>
   </a-modal>

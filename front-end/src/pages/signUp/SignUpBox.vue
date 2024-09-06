@@ -61,12 +61,15 @@
     </ThemeProvider>
   </template>
   <script lang="ts" setup>
-  import { reactive, ref, computed, watch } from 'vue';
+  import { reactive, ref, computed } from 'vue';
   import { useRouter } from 'vue-router';
   import axios from 'axios'; 
   import { ThemeProvider } from 'stepin';
   import { CloseCircleOutlined } from '@ant-design/icons-vue';
   import { message } from 'ant-design-vue';
+  import { useAccountStore } from '@/store';
+
+  const accountStore = useAccountStore();
 
   interface SignUpFormProps {
     username: string;
@@ -94,29 +97,17 @@
     return form.password !== form.confirmPassword;
   });
 
-  function signUp() {
+  async function signUp() {
     loading.value = true;
-    axios.post('http://121.36.200.128:5000/api/Register', {
-      User_Name: form.username,
-      Password: form.password,
-      Contact: form.contact
-    })
-    .then(response => {
-      message.success("注册成功！即将跳转回登录界面...");
-      emit('success', form);
-    })
-    .catch(error => {
-      if (error.response.status === 500) {
-        message.error("注册失败，用户名已存在。");
-      }else{
-        message.error(error.message);
-        console.error("Registration error:", error);
+    const result = await accountStore.signup(form.username, form.password, form.contact);
+    if (result.success) {
+        message.success(result.message);
+        emit('success', form);
+      } else {
+        message.error(result.message);
+        emit('failure', result.message, form);
       }
-      emit('failure', error.response.data, form);
-    })
-    .finally(() => {
-      loading.value = false;
-    });
+    loading.value = false;
   }
 
   function closeLogin() {

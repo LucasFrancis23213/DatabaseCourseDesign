@@ -1,134 +1,225 @@
-﻿using Oracle.ManagedDataAccess.Client;
-using SQLOperation.PublicAccess.Templates.SQLManager;
-using System.Data;
+﻿using Newtonsoft.Json;
+using Oracle.ManagedDataAccess.Client;
+using SQLOperation.PublicAccess.Utilities;
 
 namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
 {
-    public class UserOperatorDAL
+    public class UserOperatorDAL : BaseDAL
     {
-        private BasicSQLOps BasicSQLOps;
-        private Connection conn;
-        private OracleConnection OracleConnection;
-        private static readonly string Uid = "ADMIN";
-        private static readonly string Password = "123456";
-        private static readonly string DataSource = "121.36.200.128:1521/ORCL";
-
-        public UserOperatorDAL()
+        /// <summary>
+        /// Get user ID by user name.
+        /// </summary>
+        /// <param name="UserID">The userID of the user.</param>
+        /// <returns>A boolean indicating existence.</returns>
+        public bool CheckUserID(int UserID)
         {
-            conn = new Connection(Uid, Password, DataSource);
-            BasicSQLOps = new BasicSQLOps(conn);
-            OracleConnection = conn.GetOracleConnection();
+            int MaxCheckTime = 5;
+            bool IsSucceed;
+            string Message;
+
+            do
+            {
+                (IsSucceed, Message) = DoQuery(CheckUserIDGenerator(UserID));
+            } while (!IsSucceed && Message != "Users表没有符合要求的元素" && --MaxCheckTime > 0);
+
+            return IsSucceed;
         }
 
-        /***********************************************************************
-         * 获取用户信息
-         * 输入参数: UserName - 用户名
-         * 返回值: 包含操作是否成功和查询结果的元组
-         ***********************************************************************/
-        public Tuple<bool, string> GetUserInfo(string UserName)
+        /// <summary>
+        /// Retrieves user information.
+        /// </summary>
+        /// <param name="UserID">The userID of the user.</param>
+        /// <param name="UserName">The username of the user.</param>
+        /// <returns>A tuple containing a boolean indicating success and the query result as a string.</returns>
+        public Tuple<bool, string> GetUserInfo(int? UserID, string? UserName)
         {
-            return DoQuery(GetUserInfoGenerator(UserName));
+            return DoQuery(GetUserInfoGenerator(UserID, UserName));
         }
 
-        /***********************************************************************
-         * 删除用户
-         * 输入参数: UserName - 用户名
-         * 返回值: 包含操作是否成功和删除结果的元组
-         ***********************************************************************/
-        public Tuple<bool, string> DeleteUser(string UserName)
+        /// <summary>
+        /// Deletes a user.
+        /// </summary>
+        /// <param name="UserID">The username of the user to be deleted.</param>
+        /// <returns>A tuple containing a boolean indicating success and the result of the deletion as a string.</returns>
+        public Tuple<bool, string> DeleteUser(int UserID)
         {
-            return DoQuery(DeleteUserGenerator(UserName));
+            return DoQuery(DeleteUserGenerator(UserID));
         }
 
-        /***********************************************************************
-         * 插入用户
-         * 输入参数: 
-         *     UserName - 用户名
-         *     Password - 用户密码
-         *     Contact - 用户联系方式
-         * 返回值: 包含操作是否成功和插入结果的元组
-         ***********************************************************************/
+        /// <summary>
+        /// Inserts a new user.
+        /// </summary>
+        /// <param name="UserName">The username of the new user.</param>
+        /// <param name="Password">The password of the new user.</param>
+        /// <param name="Contact">The contact information of the new user.</param>
+        /// <returns>A tuple containing a boolean indicating success and the result of the insertion as a string.</returns>
         public Tuple<bool, string> InsertUser(string UserName, string Password, string Contact)
         {
             return DoQuery(InsertUserGenerator(UserName, Password, Contact));
         }
 
-
-
-
-        // 以下为私有工具函数，Generator 中进行真正运行工具的定义，DoQuery 为所有操作的接口
-
-        private Tuple<bool, string> DoQuery(Func<Tuple<bool, string>> action)
+        /// <summary>
+        /// Updates user information.
+        /// </summary>
+        /// <param name="UserID">The ID of the user.</param>
+        /// <param name="UserName">The new username of the user.</param>
+        /// <param name="Password">The new password of the user.</param>
+        /// <param name="Contact">The new contact information of the user.</param>
+        /// <returns>A tuple containing a boolean indicating success and the result of the update as a string.</returns>
+        public Tuple<bool, string> UpdateUserInfo(int UserID, string? UserName, string? Password, string? Contact)
         {
-            try
-            {
-                if (OracleConnection.State != ConnectionState.Open)
-                {
-                    OracleConnection.Open();
-                }
-
-                return action();
-            }
-            catch (Exception ex)
-            {
-                return new Tuple<bool, string>(false, ex.Message);
-            }
-            finally
-            {
-                if (OracleConnection.State == ConnectionState.Open)
-                {
-                    OracleConnection.Close();
-                }
-            }
+            return DoQuery(UpdateUserInfoGenerator(UserID, UserName, Password, Contact));
         }
 
-        private Func<Tuple<bool, string>> GetUserInfoGenerator(string UserName)
+        private Func<Tuple<bool, string>> CheckUserIDGenerator(int UserID)
         {
-            Func<Tuple<bool, string>> GetUserInfoHandler = delegate {
-                Tuple<bool, string> QueryResult = BasicSQLOps.QueryOperation("Users", "User_Name", UserName);
+            return () =>
+            {
+                Tuple<bool, string> QueryResult = BasicSQLOps.QueryOperation("Users", "User_ID", UserID);
                 return QueryResult;
             };
-
-            return GetUserInfoHandler;
         }
 
-        private Func<Tuple<bool, string>> DeleteUserGenerator(string UserName)
+        private Func<Tuple<bool, string>> UpdateUserInfoGenerator(int UserID, string? UserName, string? Password, string? Contact)
         {
-            Func<Tuple<bool, string>> DeleteUserHandler = delegate {
-                Tuple<bool, string> DeleteResult = BasicSQLOps.DeleteOperation("Users", "User_Name", UserName);
+            return () =>
+            {
+                List<string> UpdateColumn = ["User_Name", "Password_", "Contact"];
+                List<string> UpdateValue = [UserName, Password, Contact];
 
-                if (!DeleteResult.Item1)
-                { 
-                    return DeleteResult; 
+                for (int i = 0; i < UpdateColumn.Count; i++)
+                {
+                    if (string.IsNullOrEmpty(UpdateValue[i]))
+                    {
+                        continue;
+                    }
+
+                    var (IsSucceeded, Message) = BasicSQLOps.UpdateOperation("Users", UpdateColumn[i], UpdateValue[i], "USER_ID", UserID);
+
+                    // 连接错误导致的失败
+                    if (!IsSucceeded)
+                    {
+                        return new Tuple<bool, string>(IsSucceeded, Message);
+                    }
+
+                    // 传入数据错误导致的失败
+                    if (Message != "更新了1行")
+                    {
+                        return new Tuple<bool, string>(false, "未找到用户");
+                    }
+                }
+                return new Tuple<bool, string>(true, string.Empty);
+            };
+        }
+
+        private Func<Tuple<bool, string>> GetUserInfoGenerator(int? UserID, string? UserName)
+        {
+            return () =>
+            {
+                if (UserID is null && UserName is null)
+                {
+                    string query = "SELECT * FROM USERS";
+                    using OracleCommand cmd = new(query, OracleConnection);
+                    using OracleDataReader reader = cmd.ExecuteReader();
+                    var result = new List<Users>();
+                    while (reader.Read())
+                    {
+                        result.Add(new Users
+                        {
+                            User_ID = reader.GetInt32(0),
+                            User_Name = reader.GetString(1),
+                            Password = reader.GetString(2),
+                            Contact = reader.GetString(3),
+                            Is_Deleted = reader.GetInt32(4),
+                            Avatar = reader.GetString(5),
+                        });
+                    }
+                    string jsonResult = JsonConvert.SerializeObject(result);
+                    return new Tuple<bool, string>(true, jsonResult);
+                }
+
+                Tuple<bool, string>? QueryResultID = null;
+                Tuple<bool, string>? QueryResultName = null;
+
+                if (UserID is not null || UserID >= 0)
+                {
+                    QueryResultID = BasicSQLOps.QueryOperation("Users", "User_ID", UserID);
+                }
+                if (!string.IsNullOrEmpty(UserName))
+                {
+                    QueryResultName = BasicSQLOps.QueryOperation("Users", "User_Name", UserName);
+                }
+
+                bool SucceedID = QueryResultID is not null && QueryResultID.Item1;
+                bool SucceedName = QueryResultName is not null && QueryResultName.Item1;
+
+                if (!SucceedID && SucceedName)
+                {
+                    return QueryResultName;
+                }
+                else if (SucceedID && !SucceedName)
+                {
+                    return QueryResultID;
+                }
+                else if (SucceedID && SucceedName)
+                {
+                    try
+                    {
+                        var usersFromName = JsonConvert.DeserializeObject<List<Users>>(QueryResultName.Item2);
+
+                        // 检查列表中是否有用户与 ID 匹配
+                        if (usersFromName.Any(u => u.User_ID == UserID))
+                        {
+                            return QueryResultID;
+                        }
+                        else
+                        {
+                            return Tuple.Create(false, "用户名与用户ID不匹配");
+                        }
+                    }
+                    catch (JsonException ex)
+                    {
+                        // 处理 JSON 反序列化错误
+                        return Tuple.Create(false, "JSON反序列化错误: " + ex.Message);
+                    }
                 }
                 else
                 {
-                    int AffectedRow = int.Parse(DeleteResult.Item2);
-                    if (AffectedRow == 0)
-                    {
-                        return new Tuple<bool, string>(false, "数据库中不存在此行");
-                    }
-
-                    return new Tuple<bool, string>(true, "");
+                    return Tuple.Create(false, "未找到用户");
                 }
             };
+        }
 
-            return DeleteUserHandler;
+        private Func<Tuple<bool, string>> DeleteUserGenerator(int UserID)
+        {
+            return () =>
+            {
+                var (IsSucceeded, Message) = BasicSQLOps.UpdateOperation("Users", "IS_DELETED", 1, "USER_ID", UserID);
+
+                if (!IsSucceeded)
+                {
+                    return new Tuple<bool, string>(IsSucceeded, Message);
+                }
+
+                if (Message != "更新了1行")
+                {
+                    return new Tuple<bool, string>(false, "未找到用户");
+                }
+
+                return Tuple.Create(true, "删除成功");
+            };
         }
 
         private Func<Tuple<bool, string>> InsertUserGenerator(string UserName, string Password, string Contact)
         {
-
-            Func<Tuple<bool, string>> DeleteUserHandler = delegate {
-
+            return () =>
+            {
                 List<string> ColumnNames = ["User_Name", "Password_", "Contact"];
                 List<object> Values = [UserName, Password, Contact];
 
                 Tuple<bool, string> QueryResult = BasicSQLOps.InsertOperation("Users", ColumnNames, Values);
                 return QueryResult;
             };
-
-            return DeleteUserHandler;
         }
     }
 }
