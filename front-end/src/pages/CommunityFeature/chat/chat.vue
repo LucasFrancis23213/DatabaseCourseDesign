@@ -134,13 +134,13 @@ const connect = () => {
   socket.value.onopen = () => {
     connectionStatus.value = 'Connected';
     //message.success('WebSocket 连接成功');
-    console.error(`WebSocket 连接成功`)
+    //console.error(`WebSocket 连接成功`)
   };
 
   socket.value.onclose = () => {
     connectionStatus.value = 'Disconnected';
     //message.warning('WebSocket 连接已断开');
-    console.error('WebSocket 连接已断开')
+    //console.error('WebSocket 连接已断开')
   };
 
   socket.value.onerror = (error) => {

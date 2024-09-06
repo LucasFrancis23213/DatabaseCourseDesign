@@ -97,7 +97,7 @@ const build_chat_user_id = computed(()=>{
     return undefined;
 });
 
-console.log(account);
+//console.log(account);
 
 </script>
 

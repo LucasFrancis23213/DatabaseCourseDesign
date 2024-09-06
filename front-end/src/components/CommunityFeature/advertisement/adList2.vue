@@ -1,7 +1,6 @@
 <template>
   <div class="ad-list-container">
     <h1 class="title">广告列表</h1>
-
     <div class="action-bar">
       <a-button class="editable-add-btn" type="primary" @click="toggleAddNewAd">
         {{ addNewAd ? '取消新增' : '新增广告' }}
@@ -15,7 +14,6 @@
         />
       </div>
     </div>
-
     <a-table :columns="columns" :data-source="displayedFilteredAds" :pagination="{ pageSize: 10 }" @expand="onExpand" :expandedRowKeys="expandedRowKeys"
   row-key="ad_id">
       <template #expandedRowRender="{record}">
@@ -26,11 +24,8 @@
             :loading="record.loading"
             :pagination="false"
         >
-
           <template #bodyCell="{ text, record, index, column}">
-
           </template>
-
         </a-table>
         <a-table
             v-if="record.showDetails"
@@ -39,9 +34,7 @@
             :loading="record.loading"
             :pagination="false"
         >
-
           <template #bodyCell="{ text, record, index, column}">
-
           </template>
         </a-table>
 
@@ -145,14 +138,6 @@
         </template>
       </template>
     </a-table>
-
-    <a-collapse-transition>
-      <AdDetailsItem
-          v-if="selectedAd"
-          :ad="selectedAd"
-          @close="toggleDetails(selectedAd)"
-      />
-    </a-collapse-transition>
   </div>
 </template>
 
