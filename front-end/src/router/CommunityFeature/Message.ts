@@ -51,16 +51,16 @@ const messageRoute:RouteRecordRaw[] = [
     },
     component:() =>import('@/pages/admin_CommunityFeature/ad/adminAd.vue')
   },
-    {
-    path:'/adminvip',
-    name:'管理vip(test)',
-    props:true,
-    meta: {
-      renderMenu: true,
-      cacheable: true,
-    },
-    component:() =>import('@/pages/admin_CommunityFeature/vip/adminVip.vue')
-  },
+  //   {
+  //   path:'/adminvip',
+  //   name:'管理vip(test)',
+  //   props:true,
+  //   meta: {
+  //     renderMenu: true,
+  //     cacheable: true,
+  //   },
+  //   component:() =>import('@/pages/admin_CommunityFeature/vip/adminVip.vue')
+  // },
   //   {
   //   path:'/follow',
   //   name:'你的关注',

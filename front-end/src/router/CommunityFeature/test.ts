@@ -10,22 +10,22 @@ const testRoute:RouteRecordRaw[] = [
     children: [
       {
         path: '/QandAList',
-        name: '问答列表',
+        name: '论坛',
         props: true,
         meta: {
         renderMenu: true,
         },
         component: () => import('@/pages/CommunityFeature/QandAList.vue'),
       },
-      {
-        path: '/CommentsList',
-        name: '聊天区',
-        props: true,
-        meta: {
-        renderMenu: true,
-        },
-        component: () => import('@/pages/CommunityFeature/CommentsList.vue'),
-      },
+      // {
+      //   path: '/CommentsList',
+      //   name: '聊天区',
+      //   props: true,
+      //   meta: {
+      //   renderMenu: true,
+      //   },
+      //   component: () => import('@/pages/CommunityFeature/CommentsList.vue'),
+      // },
       {
         path: '/ActivityPoint',
         name: '活跃度',

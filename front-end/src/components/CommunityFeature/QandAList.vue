@@ -170,7 +170,6 @@ const fetchAnswers = async (question:Question) => {
         ...answer,
         showButton: false,
       }));
-      console.log(question.answers)
     }
   } catch (error) {
     console.error('Error fetching answers:', error);
