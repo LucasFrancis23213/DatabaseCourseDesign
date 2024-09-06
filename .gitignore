@@ -11,3 +11,4 @@ Templates/WebAppTest/.vs/
 *.dll
 *.exe
 *.pdb
+*.idea/
