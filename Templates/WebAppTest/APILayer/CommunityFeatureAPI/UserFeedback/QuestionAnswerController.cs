@@ -179,7 +179,7 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI
 
                     // 调用 QuestionAnswers 类中的方法提问
                     int questionId = questionAnswers.PostQuestion(content, itemId, userId, time);
-                    userActivity.AddUserActivity(userId, "问答", time);
+                    userActivity.AddUserActivity(userId, "发帖", time);
                     // 构建响应对象
                     var response = new
                     {
@@ -290,7 +290,7 @@ namespace DatabaseProject.APILayer.CommunityFeatureAPI
                         throw new Exception("回答问题出错");
 
                     }
-                    userActivity.AddUserActivity(userId, "问答", time);
+                    userActivity.AddUserActivity(userId, "评论", time);
                     // 构建成功响应对象
                     var response = new
                     {

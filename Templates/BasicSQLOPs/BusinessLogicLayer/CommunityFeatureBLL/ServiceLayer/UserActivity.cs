@@ -198,11 +198,9 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
                         score = 3;
                         break;
                     case "发帖":
-                        score = 10;
-                        break;
-                    case "问答":
                         score = 5;
                         break;
+
                     default:
                         throw new Exception("未知的活动类型");
                 }
