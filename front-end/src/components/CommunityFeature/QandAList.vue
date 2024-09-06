@@ -1,54 +1,67 @@
 <template>
-  <a-card title="Questions List" class="conversations rounded-xl shadow-lg" :bordered="false">
-    <div v-for="(question,qindex) in questionsList" :key="question.id">
-      <div class="chat flex items-center">
-      <img class="w-12 rounded-xl" :src="question.user.avatar" />
-      <div class="content ml-3 flex-1">
-        <div class="name">{{ question.user.name }}</div>
-        <div class="message text-sm text-subtext">{{ question.content }}</div>
-        <div class="time text-xs text-gray-500">{{ formatTime(question.time) }}</div>
-      </div>
-      <div class="action">
-        <a-button v-if="question.user.id === current_user.id" class="text-sm font-semibold" type="link" @click="deleteQuestion(question.id)">
-          撤回
-        </a-button>
-        <a-button class="text-sm font-semibold" type="link" @click="toggleAnswers(question)">
-          {{ question.showAnswers ? '隐藏回答' : '查看回答' }}
-        </a-button>
-        <a-button class="text-sm font-semibold" type="link" @click="toggleAnswerInput(question)">
-          {{ question.showAnswerInput ? '收起解答' : '解答问题' }}
-        </a-button>
-      </div>
-    </div>
-    <div v-if="question.showAnswerInput" class="answer-input mt-2 ml-8 p-2 bg-gray-100 rounded-md">
-        <a-textarea v-model:value="newAnswerContent" placeholder="输入您的回答" />
-        <a-button class="mt-2" type="primary" @click="submitAnswer(question)">提交回答</a-button>
-    </div>
-      <div v-if="question.showAnswers" class="answers mt-2 ml-8 p-2 bg-gray-100 rounded-md">
-        <div v-for="(answer,aindex) in question.answers" :key="answer.id" class="chat flex items-center mb-2">
-          <img class="w-8 h-8 rounded-full" :src="answer.user.avatar" />
-          <div class="ml-3">
-            <div class="name text-sm font-semibold">{{ answer.user.name }}</div>
-            <div class="message text-xs text-subtext">{{ answer.content }}</div>
-            <div class="time text-xs text-gray-500">{{ formatTime(answer.time) }}</div>
+  <a-card title="Posts List" class="conversations rounded-xl shadow-lg" :bordered="false">
+    
+    <!-- 发布帖子输入框和按钮 -->
+    <a-form @submit.prevent="addQuestion" class="mb-4">
+      <a-form-item>
+        <a-textarea v-model:value="newQuestionContent" placeholder="输入您的帖子内容" />
+      </a-form-item>
+      <a-form-item>
+        <a-button type="primary" html-type="submit">发布帖子</a-button>
+      </a-form-item>
+    </a-form>
+    
+    <!-- 问题列表 -->
+    <div v-for="(question,qindex) in questionsList" :key="question.id" >
+      <div class="posts-List">
+      <div class="chat flex items-center cursor-pointer" @click="toggleAnswers(question)">
+        <img class="w-16 h-16 rounded-xl" :src="question.user.avatar" @click="toggleShowButton(question)"/>
+        <div class="content ml-4 flex-1">
+          <div class="name text-lg font-semibold">{{ question.user.name }}
+            <followButton v-if="question.user.id !== current_user.id && question.showButton"
+                          :user_id="question.user.id"
+                          :initial-follow-state="false"
+                          @mouseleave="toggleShowButton(question)"
+                          ></followButton>
           </div>
-          <div class="action">
-          <a-button v-if="answer.user.id === current_user.id" class="text-sm font-semibold " type="link" @click="deleteAnswer(question,answer.id,aindex)">
+
+          <div class="message text-base">{{ question.content }}</div>
+          <div class="time text-sm text-gray-500">{{ formatTime(question.time) }}</div>
+          <a-button v-if="question.user.id === current_user.id" class="text-sm font-semibold" type="link" @click="deleteQuestion(question.id)">
             撤回
-          </a-button>    
-          </div>
+          </a-button>
         </div>
       </div>
-    </div>   
+      <div v-if="question.showAnswers" class="answers mt-4 ml-16 p-4 bg-gray-100 rounded-md">
+        <a-form @submit.prevent="submitAnswer(question)" class="mb-4">
+          <a-form-item>
+            <a-textarea v-model:value="newAnswerContent" placeholder="输入您的帖子内容" />
+          </a-form-item>
+          <a-form-item>
+            <a-button type="primary" html-type="submit">发布评论</a-button>
+          </a-form-item>
+        </a-form>
+        <div v-for="(answer,aindex) in question.answers" :key="answer.id" class="chat flex items-center mb-4">
+          <img class="w-12 h-12 rounded-full" :src="answer.user.avatar" @click="toggleShowButton(answer)"/>
+          <div class="ml-4">
+            <div class="name text-sm font-semibold">{{ answer.user.name }}
+            <followButton v-if="answer.user.id !== current_user.id && answer.showButton"
+                          :user_id="answer.user.id"
+                          :initial-follow-state="false"
+                          @mouseleave="toggleShowButton(answer)"
+                          ></followButton></div>
+            <div class="message text-base">{{ answer.content }}</div>
+            <div class="time text-xs text-gray-500">{{ formatTime(answer.time) }}</div>
+          </div>
+          <a-button v-if="answer.user.id === current_user.id" class="text-sm font-semibold " type="link" @click="deleteAnswer(question,answer.id,aindex)">
+            撤回
+          </a-button>
+        </div>
+      </div>
+        </div>
+      <advertisement v-if="Math.random() < 0.5"></advertisement>
+    </div>
   </a-card>
-  <a-form @submit.prevent="addQuestion" class="mt-4">
-    <a-form-item>
-      <a-textarea v-model:value="newQuestionContent" placeholder="输入您的问题" />
-    </a-form-item>
-    <a-form-item>
-      <a-button type="primary" html-type="submit">提交问题</a-button>
-    </a-form-item>
-  </a-form>
 </template>
 
 <script lang="ts" setup>
@@ -57,6 +70,8 @@ import axios from 'axios';
 
 import { Question,Answer,} from './type';
 import { getBeijingTime,formatTime } from './mytime';
+import followButton from '@/components/CommunityFeature/follow/followButton.vue'
+import advertisement from "@/pages/CommunityFeature/advertisement/advertisement.vue";
 
 
 // 定义从父组件传递的属性
@@ -92,7 +107,8 @@ const fetchQuestions = async () => {
       questionsList.value = response.data.questions.map((question: Question) => ({
         ...question,
         showAnswers: false, // 设置默认值
-        showAnswerInput: false
+        showAnswerInput: false,
+        showButton: false,
       }));
     }
   } catch (error) {
@@ -134,6 +150,7 @@ const submitAnswer = async (question: Question) => {
       newAnswerContent.value = ''; // 重置输入框内容
       question.showAnswerInput = false; // 隐藏输入框
       question.showAnswers = true;
+      question.showButton = false;
     }
     
   } catch (error) {
@@ -146,6 +163,11 @@ const fetchAnswers = async (question:Question) => {
     const response = await axios.post(`/api/questions/${question.id}/answers`, { question_id:question.id });
     if (response.data.status === 'success') {
       question.answers = response.data.answers;
+      question.answers = question.answers.map((answer: Answer) => ({
+        ...answer,
+        showButton: false,
+      }));
+      console.log(question.answers)
     }
   } catch (error) {
     console.error('Error fetching answers:', error);
@@ -174,6 +196,9 @@ const deleteQuestion = async (question_id: number) => {
   }
 };
 
+const toggleShowButton = (post)=>{
+  post.showButton=!post.showButton;
+}
 
 onMounted(() => {
   fetchQuestions();
@@ -182,5 +207,18 @@ onMounted(() => {
 </script>
 
 <style scoped>
-
+.posts-List{
+  cursor: pointer;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  margin-bottom: 16px;
+  padding: 10px;
+  &:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+}
 </style>
