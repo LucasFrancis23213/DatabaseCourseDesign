@@ -1,5 +1,5 @@
 <template>
-  <a-card title="Posts List" class="conversations rounded-xl shadow-lg" :bordered="false">
+  <a-card title="论坛" class="conversations rounded-xl shadow-lg" :bordered="false">
     
     <!-- 发布帖子输入框和按钮 -->
     <a-form @submit.prevent="addQuestion" class="mb-4">
@@ -12,7 +12,7 @@
     </a-form>
     
     <!-- 问题列表 -->
-    <div v-for="(question,qindex) in questionsList" :key="question.id" >
+    <div v-for="(question,qindex) in displayedQuestionList" :key="question.id" >
       <div class="posts-List">
       <div class="chat flex items-center cursor-pointer" @click="toggleAnswers(question)">
         <img class="w-16 h-16 rounded-xl" :src="question.user.avatar" @click="toggleShowButton($event, question)"/>
@@ -38,7 +38,7 @@
       <div v-if="question.showAnswers" class="answers mt-4 ml-16 p-4 bg-gray-100 rounded-md">
         <a-form @submit.prevent="submitAnswer(question)" class="mb-4">
           <a-form-item>
-            <a-textarea v-model:value="newAnswerContent" placeholder="输入您的帖子内容" />
+            <a-textarea v-model:value="question.newAnswerContent" placeholder="输入您的帖子内容" />
           </a-form-item>
           <a-form-item>
             <a-button type="primary" html-type="submit">发布评论</a-button>
@@ -66,13 +66,22 @@
         </div>
       </div>
         </div>
-      <advertisement v-if="Math.random() < 0.3"></advertisement>
+      <advertisement v-if="qindex % 3 === 1"></advertisement>
     </div>
+    <div class="flex justify-center items-center mt-xl">
+
+        <a-pagination
+    :total="questionsList.length"
+    :current="currentPage"
+    :pageSize="pageSize"
+    @change="onPageChange"
+  />
+      </div>
   </a-card>
 </template>
 
 <script lang="ts" setup>
-import { reactive,ref, onMounted } from 'vue';
+import { reactive,ref, onMounted ,computed} from 'vue';
 import axios from 'axios';
 
 import { Question,Answer,} from './type';
@@ -91,8 +100,19 @@ let item_id = props.item_id;
 let current_user = props.current_user;
 let questionsList = ref<Question[]>([]);    //获取某一item的问题列表
 let newQuestionContent = ref('');           //文本框中输入的问题内容
-let newAnswerContent = ref('');             //文本框中输入的回答内容
+//let newAnswerContent = ref('');             //文本框中输入的回答内容
 
+const currentPage = ref(1)
+const pageSize = ref(15)
+const onPageChange = (page, size) => {
+  currentPage.value = page;
+  pageSize.value = size;
+};
+const displayedQuestionList = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return questionsList.value.slice(start, end);
+});
 
 // 定义基本访问 URL
 axios.defaults.baseURL = import.meta.env.VITE_API_URL; // 替换为你的后端 API 地址
@@ -116,6 +136,7 @@ const fetchQuestions = async () => {
     if (response.data.status === 'success') {
       questionsList.value = response.data.questions.map((question: Question) => ({
         ...question,
+        newAnswerContent: '',
         showAnswers: false, // 设置默认值
         showAnswerInput: false,
         showButton: false,
@@ -150,14 +171,14 @@ const submitAnswer = async (question: Question) => {
   try {
     const newAnswer = {
       question_id: question.id,
-      content: newAnswerContent.value,
+      content: question.newAnswerContent,
       current_user_id: current_user.id,
       time: getBeijingTime()
     };
     const response = await axios.post(`/api/questions/${question.id}/post_answers`, newAnswer);
     if (response.data.status === 'success') {
       fetchAnswers(question);
-      newAnswerContent.value = ''; // 重置输入框内容
+      question.newAnswerContent = ''; // 重置输入框内容
       question.showAnswerInput = false; // 隐藏输入框
       question.showAnswers = true;
       question.showButton = false;

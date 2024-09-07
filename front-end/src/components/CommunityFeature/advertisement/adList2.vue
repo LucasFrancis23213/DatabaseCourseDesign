@@ -104,7 +104,7 @@
                   :before-upload="beforeUpload"
                   @change="handleImageChange"
               >
-                <a-button icon="upload">上传图片</a-button>
+                <a-button>上传图片</a-button>
               </a-upload>
             </template>
             <a-image v-else :src="record[column.dataIndex]" :width="100"/>
@@ -339,7 +339,7 @@ const save = async (key) => {
     if (row.imageInputType === 'upload' && imageFile.value) {
       const formData = new FormData();
       formData.append('file', imageFile.value);
-      const uploadResponse = await axios.post('/api/AdPicUpload/upload', formData, {
+      const uploadResponse = await axios.post('/api/AdPicUpload/uploadLocal?type=Ad', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -389,11 +389,11 @@ const cancel = (key) => {
 const beforeUpload = (file) => {
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
   if (!isJpgOrPng) {
-    message.error('You can only upload JPG/PNG file!');
+    message.error('只能上传 JPG/PNG 文件!');
   }
   const isLt2M = file.size / 1024 / 1024 < 2;
   if (!isLt2M) {
-    message.error('Image must smaller than 2MB!');
+    message.error('上传的图片需要小于 2MB!');
   }
   return isJpgOrPng && isLt2M;
 };

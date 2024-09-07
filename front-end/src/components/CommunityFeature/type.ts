@@ -13,6 +13,7 @@ export interface Question {
     content: string;
     time: Date;
     answers: Answer[];
+    newAnswerContent: string;
     showAnswers: boolean;
     showAnswerInput: boolean;
     showButton: boolean;

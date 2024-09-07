@@ -8,7 +8,7 @@
         <li v-for="follower in displayedFilteredFollowers" :key="follower.user_id"
             class="flex items-center p-sm bg-container-light rounded-sm hover:bg-bg-hover transition-colors duration-200">
           <img :src="follower.user_avatar" :alt="follower.user_name"
-               class="w-12 h-12 rounded-full mr-sm object-cover">
+               class="w-10 h-10 rounded-full mr-sm object-cover">
           <span class="text-text font-medium">{{ follower.user_name }}</span>
         </li>
       </ul>
