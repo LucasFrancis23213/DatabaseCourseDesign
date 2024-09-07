@@ -76,54 +76,56 @@
       请输入正确的确认文字
     </p>
   </a-modal>
-
-
-
-  <a-modal
-    v-model:visible="isEditModalVisible"
-    title="编辑个人信息"
-    ok-text="确认"
-    cancel-text="取消"
-    @ok="confirmEdit"
-    @cancel="cancelEdit"
-    style="max-width: 400px;"
-  >
-  <a-form :model="editRecord" :labelCol="{ span: 8 }" :wrapperCol="{ span: 12 }">
-    <a-form-item label="用户ID" name="userID">
-      <span>{{ editRecord.userID }}</span>
-    </a-form-item>
-    <a-form-item label="用户名" name="userName">
-      <a-input v-model:value="editRecord.userName" :placeholder="userInfo.username"/>
-    </a-form-item>
-    <a-form-item label="绑定号码" name="contact">
-      <a-input v-model:value="editRecord.contact" :placeholder="userInfo.contact" />
-    </a-form-item>
-  </a-form>
-  </a-modal>
-
   <MyFind />
   <MySearch />
   <a-modal
-    v-model:visible="isEditModalVisible"
-    title="编辑个人信息"
-    ok-text="确认"
-    cancel-text="取消"
-    @ok="confirmEdit"
-    @cancel="cancelEdit"
-    style="max-width: 400px;"
-  >
+  v-model:visible="isEditModalVisible"
+  title="编辑个人信息"
+  ok-text="确认"
+  cancel-text="取消"
+  @ok="confirmEdit"
+  @cancel="cancelEdit"
+  style="max-width: 400px;"
+>
   <a-form :model="editRecord" :labelCol="{ span: 8 }" :wrapperCol="{ span: 12 }">
-    <a-form-item label="用户ID" name="userID">
-      <span>{{ editRecord.userID }}</span>
+    <!-- 头像选择 -->
+    <a-form-item label="头像">
+      <div style="display: flex; align-items: center;">
+    <img :src="editRecord.Avatar" style="cursor: pointer; width: 80px; height: 80px; border-radius: 50%;">
+    <EditFilled @click="isAvatarModalVisible = true" class="text-subtext hover:text-primary cursor-pointer" style="margin-left:10px" />
+  </div>
     </a-form-item>
+    <a-form-item label="用户ID" name="userID">
+      <span>{{ accountStore.account.userId }}</span>
+    </a-form-item>
+    <!-- 用户名输入 -->
     <a-form-item label="用户名" name="userName">
       <a-input v-model:value="editRecord.userName" :placeholder="userInfo.username"/>
     </a-form-item>
+
+    <!-- 绑定号码输入 -->
     <a-form-item label="绑定号码" name="contact">
       <a-input v-model:value="editRecord.contact" :placeholder="userInfo.contact" />
     </a-form-item>
   </a-form>
-  </a-modal>
+</a-modal>
+
+<!-- 头像选择模态框 -->
+<a-modal
+  v-model:visible="isAvatarModalVisible"
+  title="选择头像"
+  footer=""
+  style="max-width: 200px; position: absolute; top: 10%; right: 20%;" 
+>
+  <div style="display: flex; flex-wrap: wrap; justify-content: space-around;">
+    <div v-for="(avatar, index) in avatars" :key="index" style="margin: 10px;">
+      <img 
+        :src="avatar" 
+        @click="editRecord.Avatar=`${baseURL}${index+1}.jpg`,isAvatarModalVisible=false" 
+        style="width: 50px; height: 50px; cursor: pointer; border-radius: 50%;">
+    </div>
+  </div>
+</a-modal>
 </template>
 
 <script lang="ts" setup>
@@ -151,7 +153,10 @@ const idCard = ref('');
 const isAuthModalVisible = ref(false); // 控制实名认证模态框显示
 const isDeleteModalVisible = ref(false); // 控制注销模态框显示
 const isEditModalVisible = ref(false); //控制编辑信息模态框显示
+const isAvatarModalVisible = ref(false); //控制头像信息模态框显示
 const confirmationText = ref('');
+const baseURL = 'http://121.36.200.128:5600/Avatars/default_avatar';
+const avatars = Array.from({ length: 10 }, (v, i) => `${baseURL}${i + 1}.jpg`);
 
 const isConfirmationValid = computed(() => {
   return confirmationText.value === '我确认完全理解并同意永久删除我的账号及所有数据，此操作不可撤销';
@@ -250,16 +255,11 @@ const editRecord = ref({
   userID: '',
   userName: '',
   password:null,
-  contact:''
+  contact:'',
+  Avatar:accountStore.account.avatar
 });
 
 function edit() {
-  editRecord.value = {
-    userID: userInfo.value.userId,
-    userName: '',
-    password:null,
-    contact:''
-  };
   isEditModalVisible.value = true;
 }
 
@@ -285,7 +285,8 @@ function cancelEdit() {
     userID: '',
     userName: '',
     password:null,
-    contact:''
+    contact:'',
+    Avatar:accountStore.account.avatar
   };
   isEditModalVisible.value = false;
 }

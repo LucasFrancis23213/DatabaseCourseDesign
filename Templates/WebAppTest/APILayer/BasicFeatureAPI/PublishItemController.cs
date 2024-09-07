@@ -47,11 +47,12 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                     LostItemObj.Review_Status = 0; // 默认是Pending
                     LostItemObj.Image_URL = TmpJson["IMAGE_URL"].ToString();
                     LostItemObj.Tag_ID = (int)TmpJson["TAG_ID"];
-                    LostItemObj.Is_Rewarded = (int)TmpJson["IS_REWARDED"];
+                     
 
                     //再处理悬赏部分
                     if ((bool)TmpJson["IS_REWARDED"])
                     {
+                        LostItemObj.Is_Rewarded = 1;
                         RewardObj.Deadline = (DateTime)TmpJson["DEADLINE"];
                         //Release_Date自动为调用函数时候的时间
                         RewardObj.Release_Date = DateTime.Now;
@@ -62,6 +63,7 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                     }
                     else
                     {
+                        LostItemObj.Is_Rewarded = 0;
                         RewardObj.Item_ID = LostItemObj.Item_ID;
                         RewardObj.User_ID = LostItemObj.User_ID;
                     }

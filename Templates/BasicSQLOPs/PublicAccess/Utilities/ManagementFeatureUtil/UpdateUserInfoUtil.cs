@@ -13,6 +13,6 @@ namespace SQLOperation.PublicAccess.Utilities.ManagementFeatureUtil
         public string? Password { get; set; }
         public string? Contact { get; set; }
         
-        public int Avatar { get; set; }
+        public string? Avatar { get; set; }
     }
 }

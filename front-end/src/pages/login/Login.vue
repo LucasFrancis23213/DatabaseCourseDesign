@@ -11,7 +11,7 @@
   const router = useRouter();
   const {permissions} = useAccountStore();
   function onLoginSuccess() {
-  router.push('/Personal');}
+  router.push('/PublishSearchNotice');}
 </script>
 
 <style scoped lang="less">

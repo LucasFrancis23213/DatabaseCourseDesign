@@ -71,7 +71,6 @@
         });
         getPublishs();
         setTimeout(() => {
-          location.reload();
           message.success('提交成功！');
           loading.value = false;
           open.value = false;
@@ -306,8 +305,8 @@ const returnForm = ref({
                   </template>
                 </a-badge>
               </p>
-              <p v-if="item.IS_REWARDED">悬赏金额: ￥{{ item.REWARD_AMOUNT }}</p>
-              <p v-if="item.IS_REWARDED">截止时间: {{ item.DEADLINE }}</p>
+              <p>悬赏金额: ￥{{ item.REWARD_AMOUNT }}</p>
+              <p>截止时间: {{ item.DEADLINE }}</p>
             </template>
           </a-card-meta>
           <template #actions>

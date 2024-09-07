@@ -89,6 +89,7 @@ import { getBeijingTime,formatTime } from './mytime';
 import followButton from '@/components/CommunityFeature/follow/followButton.vue'
 import advertisement from "@/pages/CommunityFeature/advertisement/advertisement.vue";
 import CreateConversationBtn from "@/components/CommunityFeature/chat/CreateConversationBtn.vue";
+import { message } from 'ant-design-vue';
 
 // 定义从父组件传递的属性
 const props = defineProps({
@@ -157,6 +158,10 @@ const addQuestion = async () => {
       current_user_id: current_user.id, // 替换为实际的用户ID
       time: getBeijingTime()
     };
+    if (newQuestion.content === '') {
+      message.error('贴子内容不能为空');
+      return;
+    }
     const response = await axios.post('/api/post_questions', newQuestion);
     if (response.data.status === 'success') {
       fetchQuestions(); // 重新获取问题列表
@@ -175,6 +180,10 @@ const submitAnswer = async (question: Question) => {
       current_user_id: current_user.id,
       time: getBeijingTime()
     };
+    if (newAnswer.content === '') {
+      message.error('评论内容不能为空');
+      return;
+    }
     const response = await axios.post(`/api/questions/${question.id}/post_answers`, newAnswer);
     if (response.data.status === 'success') {
       fetchAnswers(question);

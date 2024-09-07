@@ -18,7 +18,7 @@ namespace SQLOperation.BusinessLogicLayer.ManagementFeatureBLL
             if (!string.IsNullOrEmpty(NewInfo.Password))
                 NewInfo.Password = PasswordEncryptor.EncryptPassword(NewInfo.Password);
 
-            return UserOperatorDAL.UpdateUserInfo(NewInfo.UserID, NewInfo.UserName, NewInfo.Password, NewInfo.Contact);
+            return UserOperatorDAL.UpdateUserInfo(NewInfo.UserID, NewInfo.UserName, NewInfo.Password, NewInfo.Contact, NewInfo.Avatar);
         }
     }
 }

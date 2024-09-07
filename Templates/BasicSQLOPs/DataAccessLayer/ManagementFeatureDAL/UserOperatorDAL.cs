@@ -66,9 +66,9 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
         /// <param name="Password">The new password of the user.</param>
         /// <param name="Contact">The new contact information of the user.</param>
         /// <returns>A tuple containing a boolean indicating success and the result of the update as a string.</returns>
-        public Tuple<bool, string> UpdateUserInfo(int UserID, string? UserName, string? Password, string? Contact)
+        public Tuple<bool, string> UpdateUserInfo(int UserID, string? UserName, string? Password, string? Contact, string? Avatar)
         {
-            return DoQuery(UpdateUserInfoGenerator(UserID, UserName, Password, Contact));
+            return DoQuery(UpdateUserInfoGenerator(UserID, UserName, Password, Contact, Avatar));
         }
 
         private Func<Tuple<bool, string>> CheckUserIDGenerator(int UserID)
@@ -80,12 +80,12 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
             };
         }
 
-        private Func<Tuple<bool, string>> UpdateUserInfoGenerator(int UserID, string? UserName, string? Password, string? Contact)
+        private Func<Tuple<bool, string>> UpdateUserInfoGenerator(int UserID, string? UserName, string? Password, string? Contact, string? Avatar)
         {
             return () =>
             {
-                List<string> UpdateColumn = ["User_Name", "Password_", "Contact"];
-                List<string> UpdateValue = [UserName, Password, Contact];
+                List<string> UpdateColumn = ["User_Name", "Password_", "Contact", "Avatar"];
+                List<string> UpdateValue = [UserName, Password, Contact, Avatar];
 
                 for (int i = 0; i < UpdateColumn.Count; i++)
                 {
