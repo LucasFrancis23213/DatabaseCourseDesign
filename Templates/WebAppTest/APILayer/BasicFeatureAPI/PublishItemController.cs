@@ -6,6 +6,7 @@ using SQLOperation.PublicAccess.Templates.SQLManager;
 using Newtonsoft.Json.Linq;
 using SQLOperation.PublicAccess.Utilities;
 using SQLOperation.BusinessLogicLayer.BasicFeatureBLL;
+using System.Runtime.CompilerServices;
 
 namespace WebAppTest.APILayer.BasicFeatureAPI
 {
@@ -14,7 +15,7 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
     {
         //private Connection conn;
         //private OracleConnection OracleConnection;
-        private PublishItem PublishItemObject = new PublishItem();
+        //private PublishItem PublishItemObject = new PublishItem();
 
 
         [Route("api/PublishItem/Lost")]
@@ -75,7 +76,14 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
 
                 LostItems.Add(LostItemObj);
                 Rewards.Add(RewardObj);
-                Tuple<bool, string> OperationStatus = PublishItemObject.PublishLostItem(LostItems, Rewards);
+
+                Tuple<bool, string> OperationStatus = null;
+                {
+                    PublishItem PublishItemObject = new PublishItem();
+                    OperationStatus = PublishItemObject.PublishLostItem(LostItems, Rewards);
+                    PublishItemObject.ReleaseSqlConn();
+                }
+
                 return OperationStatus.Item1;
 
             }
@@ -123,7 +131,14 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                 }
 
                 FoundItems.Add(FoundItemObj);
-                Tuple<bool, string> OperationStatus = PublishItemObject.PublishFoundItem(FoundItems);
+                // Tuple<bool, string> OperationStatus = PublishItemObject.PublishFoundItem(FoundItems);
+                Tuple<bool, string> OperationStatus = null;
+                {
+                    PublishItem PublishItemObject = new PublishItem();
+                    OperationStatus = PublishItemObject.PublishFoundItem(FoundItems);
+                    PublishItemObject.ReleaseSqlConn();
+                }
+
                 return OperationStatus.Item1;
 
             }
@@ -150,7 +165,13 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                 else if (review == 1)
                     Conditions.Add("Review_Status", "1");
 
-                Tuple<bool, string> OperationStatus = PublishItemObject.QueryItem(type, Conditions);
+
+                Tuple<bool, string> OperationStatus = null;
+                {
+                    PublishItem PublishItemObject = new PublishItem();
+                    OperationStatus = PublishItemObject.QueryItem(type, Conditions);
+                    PublishItemObject.ReleaseSqlConn();
+                }
 
                 if (OperationStatus.Item1)
                 {
@@ -195,7 +216,13 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                     return BadRequest("Json解析错误");
                 }
 
-                Tuple<bool, string> OperationStatus = PublishItemObject.DeleteItem(type, Conditions);
+                //Tuple<bool, string> OperationStatus = PublishItemObject.DeleteItem(type, Conditions);
+                Tuple<bool, string> OperationStatus = null;
+                {
+                    PublishItem PublishItemObject = new PublishItem();
+                    OperationStatus = PublishItemObject.DeleteItem(type, Conditions);
+                    PublishItemObject.ReleaseSqlConn();
+                }
 
                 if (OperationStatus.Item1)
                 {
@@ -239,7 +266,13 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                     return BadRequest("Json解析错误");
                 }
 
-                Tuple<bool, string> OperationStatus = PublishItemObject.ReviewItem(type, Item_IDs);
+                // Tuple<bool, string> OperationStatus = PublishItemObject.ReviewItem(type, Item_IDs);
+                Tuple<bool, string> OperationStatus = null;
+                {
+                    PublishItem PublishItemObject = new PublishItem();
+                    OperationStatus = PublishItemObject.ReviewItem(type, Item_IDs);
+                    PublishItemObject.ReleaseSqlConn();
+                }
 
                 if (OperationStatus.Item1)
                 {

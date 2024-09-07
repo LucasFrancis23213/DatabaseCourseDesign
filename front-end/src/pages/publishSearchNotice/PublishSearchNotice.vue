@@ -8,8 +8,7 @@
   import { generateItemID } from '@/utils/BasicFeature/IDGen';
   import sendSystemMsg from "@/pages/CommunityFeature/chat/systemMsgSend";
   const {account} = useAccountStore();
-
-  const baseURL = 'https://localhost:44343/api/';
+  axios.defaults.baseURL = import.meta.env.VITE_API_URL;
   
   type onePublish = {
     ITEM_ID?: string;
@@ -46,7 +45,7 @@
         if (selectedFile.value) {
           const formData = new FormData();
           formData.append('file', selectedFile.value);
-          const res = await axios.post(baseURL + 'ItemPicUpload/uploadLocal?type=Lost', formData, {
+          const res = await axios.post('api/ItemPicUpload/uploadLocal?type=Lost', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
@@ -65,7 +64,7 @@
         }
         const jsonFormData = JSON.stringify(form.value);
         console.log(jsonFormData);
-        await axios.post(baseURL + 'PublishItem/Lost', jsonFormData, {
+        await axios.post('api/PublishItem/Lost', jsonFormData, {
           headers: {
             'Content-Type': 'application/json',
           },
@@ -131,7 +130,7 @@
   const getPublishs = async () => {
     console.log(account);
     try {
-      const res = await axios.get(baseURL + 'QueryItem', {
+      const res = await axios.get('api/QueryItem', {
         params: { 
             type: 0,
             review: 1
@@ -189,7 +188,7 @@ const returnItem = async (returnMsg: string, pubUserID: number, claimUserID: num
       "Publish_User_ID" : pubUserID,
       "Claimant_User_ID" : claimUserID,
     });
-    await axios.post(baseURL + 'claim/ReturnItem', jsonFormData, {
+    await axios.post('api/claim/ReturnItem', jsonFormData, {
           headers: {
             'Content-Type': 'application/json',
           },

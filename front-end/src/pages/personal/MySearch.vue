@@ -5,7 +5,7 @@
   import { useAccountStore } from '@/store/account';
   const {account, permissions} = useAccountStore();
 
-  const baseURL = 'https://localhost:44343/api/';
+  axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
   const columns = [
     { title: '丢失物品', dataIndex: 'itemNameAndCategory'},
@@ -43,7 +43,7 @@
 
   const getPublishs = async () => {
     try {
-      const res = await axios.get(baseURL + 'QueryItem', {
+      const res = await axios.get('api/QueryItem', {
         params: { 
             type: 0,
             review: 1
@@ -80,7 +80,7 @@
     iconLoading.value = true;
     try {
         // 调用接口删除founditem中的信息，使用DELETE方法
-        await axios.delete(baseURL + 'DeleteItem', {
+        await axios.delete('api/DeleteItem', {
             data: JSON.stringify({ 
                 ITEM_ID: row,
                 type: 0
@@ -102,7 +102,7 @@
 
 <template>
   <!-- 寻物启事 -->
-  <a-table :columns="columns" :dataSource="publishs" >
+  <a-table :columns="columns" :dataSource="myItems" >
     <template #title>
       <div class="flex justify-between pr-4">
         <a-button type="primary"><h4>我发布的寻物启事</h4> </a-button>

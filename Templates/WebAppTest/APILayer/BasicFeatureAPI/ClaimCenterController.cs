@@ -14,7 +14,7 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
     [ApiController]
     public class ClaimCenterController : ControllerBase
     {
-        private ClaimCenter ItemOpObj = new ClaimCenter();
+        //private ClaimCenter ItemOpObj = new ClaimCenter();
 
         [Route("ReturnItem")]
         [HttpPost]
@@ -26,6 +26,7 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                 string Item_ID = string.Empty;
                 Item_Claim_Processes item_Claim_ProcessesObj = new Item_Claim_Processes();
                 ItemMatch itemMatchObj = new ItemMatch();
+                ClaimCenter ItemOpObj = new ClaimCenter();
 
                 try
                 {
@@ -46,8 +47,16 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                     return BadRequest(ex.Message);
                 }
 
-                Tuple<bool, string> AddOperationStatus = ItemOpObj.AddReturnItem(Item_ID);
-                Tuple<bool, string> ClaimProcessOperationStatus = itemMatchObj.ItemClaimProcessBasic(item_Claim_ProcessesObj);
+                Tuple<bool, string> AddOperationStatus;
+                Tuple<bool, string> ClaimProcessOperationStatus;
+                {
+
+                    AddOperationStatus = ItemOpObj.AddReturnItem(Item_ID);
+                    ClaimProcessOperationStatus = itemMatchObj.ItemClaimProcessBasic(item_Claim_ProcessesObj);
+                    ItemOpObj.ReleaseSQLConn();
+                    itemMatchObj.ReleaseSQLConn();
+                }
+
 
                 if (AddOperationStatus.Item1 && ClaimProcessOperationStatus.Item1)
                 {
@@ -76,6 +85,7 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                 string Item_ID = string.Empty;
                 Item_Claim_Processes item_Claim_ProcessesObj = new Item_Claim_Processes();
                 ItemMatch itemMatchObj = new ItemMatch();
+                ClaimCenter ItemOpObj = new ClaimCenter();
                 try
                 {
                     string ClmString = InputClmJson.ToString();
@@ -95,8 +105,14 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                     return BadRequest(ex.Message);
                 }
 
-                Tuple<bool, string> AddOperationStatus = ItemOpObj.AddClaimItem(Item_ID);
-                Tuple<bool, string> ClaimProcessOperationStatus = itemMatchObj.ItemClaimProcessBasic(item_Claim_ProcessesObj);
+                Tuple<bool, string> AddOperationStatus;
+                Tuple<bool, string> ClaimProcessOperationStatus;
+                {
+                    AddOperationStatus = ItemOpObj.AddClaimItem(Item_ID);
+                    ClaimProcessOperationStatus = itemMatchObj.ItemClaimProcessBasic(item_Claim_ProcessesObj);
+                    ItemOpObj.ReleaseSQLConn();
+                    itemMatchObj.ReleaseSQLConn();
+                }
 
                 if (AddOperationStatus.Item1 && ClaimProcessOperationStatus.Item1)
                 {
@@ -122,15 +138,21 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
         {
             // type==0表格Lost_Item
             // type==1表格Found_Item
+           
             try
             {
                 Dictionary<string, object> Conditions = new Dictionary<string, object>();
+                ClaimCenter ItemOpObj = new ClaimCenter();
 
                 // 添加一条where条件
                 Conditions.Add("CLAIMANT_USER_ID", userID);
                 Conditions.Add("PUBLISH_USER_ID", userID);
 
-                Tuple<bool, string> OperationStatus = ItemOpObj.QueryItem(type, Conditions);
+                Tuple<bool, string> OperationStatus;
+                {
+                    OperationStatus = ItemOpObj.QueryItem(type, Conditions);
+                    ItemOpObj.ReleaseSQLConn();
+                }
 
                 if (OperationStatus.Item1)
                 {
@@ -161,11 +183,15 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                 JObject TmpJson = JObject.Parse(JsonString);
                 string itemID = TmpJson["itemID"].ToString();
                 int userID = (int)TmpJson["userID"];
-                
-                if(userID > 0)
-                {
-                    Tuple<bool, string> OperationStatus = ItemOpObj.SignReturnAgreement(itemID, userID);
+                ClaimCenter ItemOpObj = new ClaimCenter();
 
+                if (userID > 0)
+                {
+                    Tuple<bool, string> OperationStatus;
+                    {
+                        OperationStatus = ItemOpObj.SignReturnAgreement(itemID, userID);
+                        ItemOpObj.ReleaseSQLConn();
+                    }
                     if (OperationStatus.Item1)
                     {
                         // OperationStatus.Item2 包含 JSON 格式的数据
@@ -194,7 +220,12 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
         {
             try
             {
-                Tuple<bool, Tuple<bool, string>> operationStatus = ItemOpObj.CheckSignStatus(itemID, userID);
+                ClaimCenter ItemOpObj = new ClaimCenter();
+                Tuple<bool, Tuple<bool, string>> operationStatus;
+                {
+                    operationStatus = ItemOpObj.CheckSignStatus(itemID, userID);
+                    ItemOpObj.ReleaseSQLConn();
+                }
 
                 if (operationStatus.Item1)
                 {
@@ -249,7 +280,12 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
         {
             try
             {
-                Tuple<bool, string> operationStatus = ItemOpObj.DeleteItem(itemID);
+                ClaimCenter ItemOpObj = new ClaimCenter();
+                Tuple<bool, string> operationStatus;
+                {
+                    operationStatus = ItemOpObj.DeleteItem(itemID);
+                    ItemOpObj.ReleaseSQLConn();
+                }
                 if (operationStatus.Item1)
                 {
                     return Ok();

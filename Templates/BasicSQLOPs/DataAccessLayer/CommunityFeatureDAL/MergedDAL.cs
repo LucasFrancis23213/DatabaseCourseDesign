@@ -21,8 +21,6 @@ namespace DatabaseProject.DataAccessLayer.CommunityFeatureDAL
 
         }
 
-
-
         // 插入并返回指定列的值
         public Tuple<bool, string> InsertAndGetValue(string tableName, string returnValueColumn, List<string> columnNames, List<object> values)
         {

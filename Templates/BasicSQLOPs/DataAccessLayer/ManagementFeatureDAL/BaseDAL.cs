@@ -20,6 +20,7 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
             OracleConnection = conn.GetOracleConnection();
         }
 
+
         protected Tuple<bool, string> DoQuery(Func<Tuple<bool, string>> action)
         {
             try

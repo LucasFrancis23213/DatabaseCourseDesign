@@ -2,7 +2,7 @@
   import { ref } from 'vue';
   import axios from 'axios';
   import { onMounted } from 'vue';
-  const baseURL = 'https://localhost:44343/api/';
+  axios.defaults.baseURL = import.meta.env.VITE_API_URL;
   import { useAccountStore } from '@/store/account';
   const {account, permissions} = useAccountStore();
 
@@ -31,7 +31,7 @@ const categoryMapping = {
   const myItems = ref([])
   const getFinds = async () => {
   try {
-    const res = await axios.get(baseURL + 'QueryItem', {
+    const res = await axios.get('api/QueryItem', {
       params: { 
             type: 1,
             review: 1
@@ -65,7 +65,7 @@ const categoryMapping = {
     iconLoading.value = true;
     try {
         // 调用接口删除founditem中的信息，使用DELETE方法
-        await axios.delete(baseURL + 'DeleteItem', {
+        await axios.delete('api/DeleteItem', {
             data: JSON.stringify({ 
                 ITEM_ID: row,
                 type: 1

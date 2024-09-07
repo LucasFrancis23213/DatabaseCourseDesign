@@ -95,7 +95,7 @@
     return;
   }
     loading.value = true;
-    let url = `https://localhost:44343/api/UserManagement/UpdateUserInfo`;
+    let url = `http://121.36.200.128:5001/api/UserManagement/UpdateUserInfo`;
     accountStore.account.userName=form.username;
     const result = await accountStore.profile();
     if (result.success) {

@@ -33,6 +33,10 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
         //type同上，itemID是物品ID用于确定是那一条通过了
         public Tuple<bool, string> ReviewItem(int type,List<string> itemID);
 
-       
+        public void ReleaseSqlConn();
+
+
+
+
     }
 }

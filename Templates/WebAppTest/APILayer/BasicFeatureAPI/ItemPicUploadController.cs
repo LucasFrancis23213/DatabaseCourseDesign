@@ -93,12 +93,30 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                 return BadRequest("No file uploaded");
             } 
 
-            if (string.IsNullOrEmpty(type) || (type != "Found" && type != "Lost"))
+            if (string.IsNullOrEmpty(type) || (type != "Found" && type != "Lost" && type != "Ad"))
             {
-                return BadRequest("Invalid type. Allowed values are 'Found' or 'Lost'.");
+                return BadRequest("Invalid type. Allowed values are 'Found' or 'Lost' or 'Ad'.");
             }
 
-            var FolderName = type == "Found" ? "FoundItemPics" : "LostItemPics";
+            string FolderName = string.Empty;
+
+            if (type == "Found")
+            {
+                FolderName = "FoundItemPics";
+            }
+            else if (type == "Lost")
+            {
+                FolderName = "LostItemPics";
+            }
+            else if (type == "Ad")
+            {
+                FolderName = "Advertisements";
+            }
+            else
+            {
+                return BadRequest("Invalid type. Allowed values are 'Found' or 'Lost' or 'Ad'.");
+            }
+
             var LocalFolderPath = $"{_RemoteBasePath}/{FolderName}";
 
             var FileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);

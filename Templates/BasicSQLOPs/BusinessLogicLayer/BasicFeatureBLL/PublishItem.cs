@@ -29,6 +29,25 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
             OracleConnection = conn.GetOracleConnection();
             //SQLOps = new BasicSQLOps(conn);
         }
+
+        ~PublishItem() 
+        { 
+            conn.DisconnectSQL();
+        }
+
+        public void ReleaseSqlConn()
+        {
+            try
+            {
+                conn.DisconnectSQL();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("释放数据库连接失败：",ex.Message);
+            }
+
+        }
+
         //发布寻物启事基础表单
         private Tuple<bool, string> PublishLostItemBasic(Lost_Item item)
         {

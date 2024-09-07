@@ -26,6 +26,18 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
             conn = new Connection(Uid, Password, DataSource);
             OracleConnection = conn.GetOracleConnection();
         }
+        
+        public void ReleaseSQLConn()
+        {
+            try
+            {
+                conn.DisconnectSQL();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("in ClaimCenter", ex.Message);
+            }               
+        }
 
         public Tuple<bool, string> AddReturnItem(string itemID)
         {

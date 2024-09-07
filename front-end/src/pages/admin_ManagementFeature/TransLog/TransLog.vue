@@ -209,7 +209,7 @@ function updateChanges() {
     return; 
   }
 
-  let url = `https://localhost:44343/api/TransactionLogs/UpdateTransactionStatus?TransactionID=${TransactionID}&newStatus=${newStatus}`;
+  let url = `http://121.36.200.128:5001/api/TransactionLogs/UpdateTransactionStatus?TransactionID=${TransactionID}&newStatus=${newStatus}`;
 
   if (FinishTime) {
     url += `&FinishTime=${formatDateTime(FinishTime)}`;

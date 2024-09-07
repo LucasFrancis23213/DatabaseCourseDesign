@@ -4,7 +4,7 @@ import { onMounted, ref } from 'vue'
 import { useAccountStore } from '@/store/account';
 const {account} = useAccountStore();
 
-const baseURL = 'https://localhost:44343/api/';
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
 const returnLosts = ref([])
 
@@ -40,7 +40,7 @@ const categoryMapping = {
 const getPublishs = async () => {
     console.log(account);
     try {
-        const res = await axios.get(baseURL + 'claim/QueryItem', {
+        const res = await axios.get('api/claim/QueryItem', {
             params: {
                 type: 0,
                 userID: account.userId,
@@ -51,7 +51,7 @@ const getPublishs = async () => {
         // Fetch signing status for each item
         const fetchSignStatusPromises = items.map(async item => {
             try {
-                const signRes = await axios.get(baseURL + 'claim/CheckSign', {
+                const signRes = await axios.get('api/claim/CheckSign', {
                     params: {
                         userID: +account.userId,
                         itemID: item.ITEM_ID,
@@ -102,7 +102,7 @@ const handleOk = async () => {
       userID: +account.userId,
       itemID: selectedItemId.value,
     });
-    await axios.post(baseURL + 'claim/SignAgreement', jsonFormData, {
+    await axios.post('api/claim/SignAgreement', jsonFormData, {
           headers: {
             'Content-Type': 'application/json',
           },
@@ -143,7 +143,7 @@ const showCancelModal = (itemID: string) => {
 const handleCancelConfirm = async () => {
   if (cancelItemId.value) {
     try {
-      await axios.delete(baseURL + 'claim/DeleteClaim', {
+      await axios.delete('api/claim/DeleteClaim', {
         params: {
           itemID: cancelItemId.value,
         },

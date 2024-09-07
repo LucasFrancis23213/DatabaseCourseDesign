@@ -4,7 +4,7 @@ import { ref } from 'vue';
 import { FormInstance } from 'ant-design-vue';
 import { message } from 'ant-design-vue';
 import axios from 'axios';
-import { onMounted } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 import dayjs from 'dayjs';
 import { useAccountStore } from '@/store/account';
 import { generateItemID } from '@/utils/BasicFeature/IDGen';
@@ -191,6 +191,21 @@ const claimForm = ref({
   MESSAGE: '',
   IMAGE_URL: '',
 })
+
+let intervalId: ReturnType<typeof setInterval> | null = null;
+  
+onMounted(() => {
+  getFinds(); // Initial call
+  intervalId = setInterval(getFinds, 10000); // Call every 10 seconds
+});
+
+onUnmounted(() => {
+  if (intervalId !== null) {
+    clearInterval(intervalId); // Clear the interval when the component is unmounted
+  }
+});
+
+
 </script>
 
 <template>

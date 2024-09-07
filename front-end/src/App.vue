@@ -52,7 +52,9 @@ const user = reactive({
   get name() {
     return account.userName;
   },
-  avatar: avatar,
+  get avatar(){
+    return account.avatar;
+  },
   menuList: [
     { title: '个人中心', key: 'personal', icon: 'UserOutlined', onClick: () => router.push('./Personal') },
     { title: '设置', key: 'setting', icon: 'SettingOutlined', onClick: () => (showSetting.value = true) },

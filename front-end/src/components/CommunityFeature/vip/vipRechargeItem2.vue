@@ -71,7 +71,7 @@ const generateQRCode=()=>{
 }
 const ws=ref();
 const setupWebSocket = () => {
-  ws.value = new WebSocket(`wss://localhost:44343/rechargews?user_id=${account.userId}`);
+  ws.value = new WebSocket(`ws://121.36.200.128:5001/rechargews?user_id=${account.userId}`);
 
   ws.value.onopen = () => {
     console.log('WebSocket连接已建立');

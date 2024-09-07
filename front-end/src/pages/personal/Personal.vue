@@ -264,7 +264,7 @@ function edit() {
 }
 
 function confirmEdit() {
-  let url = `https://localhost:44343/api/UserManagement/UpdateUserInfo`;
+  let url = `http://121.36.200.128:5001/api/UserManagement/UpdateUserInfo`;
 
   // 确保 editRecord 解构并传递到 API
   axios.put(url, editRecord.value)
