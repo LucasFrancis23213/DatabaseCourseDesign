@@ -2,8 +2,8 @@
   <a-config-provider :getPopupContainer="getPopupContainer">
     <ThemeProvider is-root v-bind="themeConfig" :apply-style="false">
       <stepin-view
-        system-name="Stepin"
-        logo-src="@/assets/vite.svg"
+        system-name="寻觅有道"
+        logo-src="@/assets/logos.png"
         :class="`${contentClass}`"
         :user="user"
         :navMode="navigation"
@@ -27,57 +27,56 @@
       </stepin-view>
     </ThemeProvider>
   </a-config-provider>
-  <login-modal :unless="['/login']" />
 </template>
 
 <script lang="ts" setup>
-  import { reactive, ref } from 'vue';
-  import { useRouter } from 'vue-router';
-  import { useAccountStore, useMenuStore, useSettingStore, storeToRefs } from '@/store';
-  import avatar from '@/assets/avatar.png';
-  import { PageFooter, HeaderActions } from '@/components/layout';
-  import Setting from './components/setting';
-  import { LoginModal } from '@/pages/login';
-  import { configTheme, themeList } from '@/theme';
-  import { ThemeProvider } from 'stepin';
-  import { computed } from 'vue';
+import { reactive, ref, onMounted, onBeforeUnmount } from 'vue';
+import { useRouter } from 'vue-router';
+import { useAccountStore, useMenuStore, useSettingStore, storeToRefs } from '@/store';
+import avatar from '@/assets/avatar.png';
+import { PageFooter, HeaderActions } from '@/components/layout';
+import Setting from './components/setting';
+import { configTheme, themeList } from '@/theme';
+import { ThemeProvider } from 'stepin';
+import { useAuthStore } from '@/plugins';
+import { computed } from 'vue';
 
-  const { logout, profile } = useAccountStore();
+const { logout, account, permissions, closeApp } = useAccountStore();
+const showSetting = ref(false);
+const router = useRouter();
 
-  // 获取个人信息
-  profile().then((response) => {
-    const { account } = response;
-    user.name = account.username;
-    // user.avatar = account.avatar;
-  });
+const { navigation, useTabs, theme, contentClass } = storeToRefs(useSettingStore());
+const themeConfig = computed(() => themeList.find((item) => item.key === theme.value)?.config ?? {});
 
-  const showSetting = ref(false);
-  const router = useRouter();
+const user = reactive({
+  get name() {
+    return account.userName;
+  },
+  get avatar(){
+    return account.avatar;
+  },
+  menuList: [
+    { title: '个人中心', key: 'personal', icon: 'UserOutlined', onClick: () => router.push('./Personal') },
+    { title: '设置', key: 'setting', icon: 'SettingOutlined', onClick: () => (showSetting.value = true) },
+    { type: 'divider' },
+    {
+      title: '退出登录',
+      key: 'logout',
+      icon: 'LogoutOutlined',
+      onClick: () => logout().then(() => router.push('/home')),
+    },
+  ],
+});
 
+if (user.name !== '') {
   useMenuStore().getMenuList();
+  useAuthStore().setAuthorities(permissions);
+}
 
-  const { navigation, useTabs, theme, contentClass } = storeToRefs(useSettingStore());
-  const themeConfig = computed(() => themeList.find((item) => item.key === theme.value)?.config ?? {});
+function getPopupContainer() {
+  return document.querySelector('.stepin-layout');
+}
 
-  const user = reactive({
-    name: 'admin',
-    avatar: avatar,
-    menuList: [
-      { title: '个人中心', key: 'personal', icon: 'UserOutlined', onClick: () => router.push('/profile') },
-      { title: '设置', key: 'setting', icon: 'SettingOutlined', onClick: () => (showSetting.value = true) },
-      { type: 'divider' },
-      {
-        title: '退出登录',
-        key: 'logout',
-        icon: 'LogoutOutlined',
-        onClick: () => logout().then(() => router.push('/login')),
-      },
-    ],
-  });
-
-  function getPopupContainer() {
-    return document.querySelector('.stepin-layout');
-  }
 </script>
 
 <style lang="less">

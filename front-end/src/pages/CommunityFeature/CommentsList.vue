@@ -12,7 +12,7 @@ const {account,permissions} = useAccountStore();
 let currentUser = {
     id: account.userId,
     name: account.userName,
-    avatar: 'src/assets/avatar/face-2.jpg'
+    avatar: account.avatar,
 };
   
   const itemId = '123'; // 示例项目ID

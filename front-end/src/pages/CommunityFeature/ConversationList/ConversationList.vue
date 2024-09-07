@@ -1,98 +1,121 @@
 <template>
   <div class="conversation-list">
-    <h1>用户列表</h1>
-    <div v-for="conversation in conversations"
-         :key="conversation.id"
-         class="conversation-item"
-         @click="navigateToConversation(conversation.id,current_user_id)"
+    <h1>消息列表</h1>
+<!--    <a-input-->
+<!--      v-model:value="userId"-->
+<!--      placeholder="想要建立会话的用户id"-->
+<!--      @pressEnter="navigateToConversation(userId, currentUserId)"-->
+<!--    >-->
+<!--      <template #suffix>-->
+<!--        <a-button type="primary" @click="navigateToConversation(userId, currentUserId)">确定</a-button>-->
+<!--      </template>-->
+<!--    </a-input>-->
+    <div
+      v-for="conversation in conversations"
+      :key="conversation.id"
+      class="conversation-item"
+      @click="navigateToConversation(conversation, currentUserId)"
     >
-      <img :src="conversation.avatar" :alt="conversation.name" class="avatar">
+      <a-avatar :src="conversation.avatar" :alt="conversation.name" class="avatar" />
       <div class="conversation-details">
         <div class="name-and-time">
           <span class="name">{{ conversation.name }}</span>
           <span class="time">{{ formatTime(conversation.last_message_time) }}</span>
         </div>
-        <div class="message">{{ conversation.last_message }}</div>
+        <div class="message">{{ format_last_message(conversation.last_message,conversation.id) }}</div>
       </div>
-      <div v-if="conversation.unread_count > 0" class="unread-badge">
-        {{ conversation.unread_count }}
-      </div>
+      <a-badge
+        v-if="conversation.unread_count > 0"
+        :count="conversation.unread_count"
+        class="unread-badge"
+      />
     </div>
   </div>
 </template>
 
 <script setup>
-
-import {onMounted, ref} from "vue";
-import {useRouter} from "vue-router";
+import {ref, onMounted, computed} from 'vue';
+import { useRouter } from 'vue-router';
+import { message } from 'ant-design-vue';
 import axios from 'axios';
-const BaseURL = import.meta.env.VITE_API_URL;
+import { useAccountStore } from '@/store/account';
 
-let conversations = ref([]);
+const { account } = useAccountStore();
 const router = useRouter();
-let current_user_id = ref(12345);
-async function getConversations() {
-  console.log("getConversations");
-  try {
-    //const res = await axios.get(`${BaseURL}/api/conversations`);
-    const res = await axios.post(`${BaseURL}/api/conversations`,{current_user_id:current_user_id.value})
-    console.log(res);
-    conversations.value = res.data.conversations;
-    //console.log("conversations are " + conversations);
-  } catch (err) {
-    console.log(err);
-  }
-}
 
-onMounted(()=>{
-  getConversations();
-})
+const conversations = ref([]);
+const userId = ref('');
+const currentUserId = ref(account.userId);
+
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
+
+const getConversations = async () => {
+  try {
+    const res = await axios.post('/api/conversations', { current_user_id: currentUserId.value });
+    conversations.value = res.data.conversations;
+  } catch (e) {
+    console.error(e);
+    message.error(`获取消息列表失败，错误信息为：${e.message}`);
+  }
+};
+
+onMounted(getConversations);
 
 const formatTime = (timeString) => {
-  const date = new Date(timeString)
-  const now = new Date()
-  const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24))
+  const date = new Date(timeString);
+  const now = new Date();
+  const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
 
   if (diffDays === 0) {
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   } else if (diffDays === 1) {
-    return '昨天'
+    return '昨天';
   } else if (diffDays < 7) {
-    return ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][date.getDay()]
+    return ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][date.getDay()];
   } else {
-    return date.toLocaleDateString()
+    return date.toLocaleDateString();
   }
-}
+};
 
-console.log("cuid是的数据类型是"+typeof current_user_id.value);
-
-const navigateToConversation = (conversation_id,current_user_id) => {
-  console.log( conversation_id,current_user_id);
-  console.log( typeof conversation_id,typeof current_user_id);
+const navigateToConversation = (conversation, currentUserId) => {
   router.push({
-    name: "聊天",
-    params: {
-      "conversation_id": conversation_id ,
+    name: '聊天',
+    params: { conversation_id: conversation.id },
+    query: { current_user_id: currentUserId },
+  });
+};
 
-    },
-    // 如果你想传递额外的数据，可以使用 query 参数
-    query: { "current_user_id":current_user_id, }
-  })
+const isSystemMsg=(sender) => {
+  return sender === +import.meta.env.VITE_SYSTEM_USER_ID
+};
+function format_last_message(last_message,sender){
+  if(isSystemMsg(sender)) {
+    return JSON.parse(last_message).content;
+  }
+  else
+    return last_message;
 }
-
 
 </script>
 
 <style scoped>
 .conversation-list {
-  max-width: 600px;
+
   margin: 0 auto;
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
 h1 {
   text-align: center;
   color: #333;
+  padding: 20px 0;
+  background-color: #fff;
+  margin: 0;
+  border-bottom: 1px solid #eee;
 }
 
 .conversation-item {
@@ -102,13 +125,25 @@ h1 {
   border-bottom: 1px solid #eee;
   position: relative;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+  background-color: #fff;
+}
+
+.conversation-item:hover {
+  background-color: #f0f0f0;
+}
+
+.conversation-item:last-child {
+  border-bottom: none;
 }
 
 .avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
   margin-right: 15px;
+  transition: transform 0.2s ease;
+}
+
+.conversation-item:hover .avatar {
+  transform: scale(1.05);
 }
 
 .conversation-details {
@@ -126,6 +161,7 @@ h1 {
 .name {
   font-weight: bold;
   color: #333;
+  font-size: 1.1em;
 }
 
 .time {
@@ -139,20 +175,34 @@ h1 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-size: 0.9em;
+  max-width: 80%;
 }
 
 .unread-badge {
-  background-color: #ff4136;
-  color: white;
-  border-radius: 50%;
-  min-width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.8em;
   position: absolute;
-  top: 15px;
+  top: 50%;
   right: 15px;
+  transform: translateY(-50%);
+  transition: transform 0.2s ease;
+}
+
+.conversation-item:hover .unread-badge {
+  transform: translateY(-50%) scale(1.1);
+}
+
+@media (max-width: 480px) {
+  .conversation-list {
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .name {
+    font-size: 1em;
+  }
+
+  .message {
+    font-size: 0.85em;
+  }
 }
 </style>

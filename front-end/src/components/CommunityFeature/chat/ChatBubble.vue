@@ -1,6 +1,11 @@
 <script lang="ts" setup>
 import {  computed ,ref, onMounted,onUnmounted} from 'vue'
 import { useTimeFormat } from './useTimeFormat';
+import followButton from '@/components/CommunityFeature/follow/followButton.vue'
+import CreateConversationBtn from "@/components/CommunityFeature/chat/CreateConversationBtn.vue";
+import { useAccountStore } from '@/store/account';
+
+const { account } = useAccountStore();
 const props = defineProps({
   content: {//聊天内容字符串
     type: String,
@@ -22,36 +27,102 @@ const props = defineProps({
     type: String,
     default: "text"
   },
-  id:{
-    type: String,
+  message_id:{
+    type: Number,
     required:true
   },
+  user_name:{
+    type: String,
+    default:''
+  },
+  message_sender_id:{
+    type: Number,
+    required:true
+  },
+  is_following:{
+    type:Boolean,
+    required:true
+  }
 
 });
-const emit = defineEmits(['retract']);
+const emit = defineEmits(['retract','follow']);
 const { formattedTime } = useTimeFormat(props.time);
 const showRetract = ref(false); // 是否显示撤回按钮
 const retractMessage = (()=>{
-  emit('retract',props.id);
+  emit('retract',props.message_id);
 });
-
 const toggleRetract = ()=>{
   showRetract.value=!showRetract.value;
 };
+const currentTime = ref(Date.now());//当前时间
+
+onMounted(() => {
+  const timer = setInterval(() => {
+    currentTime.value = Date.now();
+  }, 1000); // 每秒更新一次
+
+  onUnmounted(() => {
+    clearInterval(timer);
+  });
+});
+
+const displayAvatar = computed(() => props.avatar || account.avatar);
+
+const isWithinFiveMinutes = computed(() => {
+  const messageTime = new Date(props.time).getTime();
+  const fiveMinutesInMs = 5 * 60 * 1000;
+  return currentTime.value - messageTime <= fiveMinutesInMs;
+});
+
+const showUserInfo = ref(false);
+const toggleUserInfo = () => {
+  showUserInfo.value = !showUserInfo.value;
+};
+
+const isSystemMsg=computed(() => {
+  return props.message_sender_id === +import.meta.env.VITE_SYSTEM_USER_ID
+});
+
+const Content = computed(()=>{
+  if(isSystemMsg.value) {
+    return JSON.parse(props.content).content;
+  }
+  else
+    return props.content;
+})
+
+const build_chat_user_id = computed(()=>{
+  if(isSystemMsg.value){
+    return JSON.parse(props.content).build_chat_user_id;
+  }
+  else
+    return undefined;
+});
+
+//console.log(account);
 
 </script>
 
 <template>
   <div class="chat-bubble" :class="{ 'self': isSelf }">
-    <div class="avatar" v-if="!isSelf">
-      <img :src="avatar" alt="User Avatar">
+    <div class="avatar" @click="toggleUserInfo" ref="avatarRef">
+      <img :src="displayAvatar" alt="User Avatar">
     </div>
     <div class="message-container" @mouseenter="toggleRetract" @mouseleave="toggleRetract">
-      <div class="message"  >{{ content }}</div>
-      <div v-if="showRetract && props.isSelf" class="retract-action">
+      <div class="message"  >{{ Content }}</div>
+
+
+      <div v-if="showRetract && props.isSelf && isWithinFiveMinutes" class="retract-action">
         <button @click="retractMessage">撤回</button>
       </div>
       <div class="time">{{ formattedTime }}</div>
+      <CreateConversationBtn v-if="isSystemMsg&&!isSelf" :target-id="build_chat_user_id" ></CreateConversationBtn>
+    </div>
+    <div v-if="showUserInfo && !isSelf" class="user-info" @mouseleave="toggleUserInfo">
+      <p><strong>ID:</strong> {{ message_sender_id }}</p>
+      <p><strong>用户名:</strong> {{ user_name }}</p>
+      <followButton class="follow-button" :user_id="message_sender_id" :initial-follow-state="is_following" ></followButton>
+
     </div>
   </div>
 </template>
@@ -139,5 +210,17 @@ button:hover {
 
 button:active {
   background-color: #004085;
+}
+
+.user-info {
+  position: absolute;
+  left: 50px;
+  top: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  z-index: 10;
 }
 </style>

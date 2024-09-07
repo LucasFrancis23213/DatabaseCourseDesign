@@ -13,6 +13,7 @@ export function useTimeFormat(timestamp: string) {
     const days = Math.floor(diff / 86400000);
 
     if (minutes < 60) {
+      if(minutes<0){return `0分钟前`;}
       return `${minutes}分钟前`;
     } else if (hours < 24) {
       return time.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });

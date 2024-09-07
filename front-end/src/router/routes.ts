@@ -37,6 +37,22 @@ const routes: RouteRecordRaw[] = [
           view: 'blank',
         },
         component: () => import('@/pages/home'),
+      }, 
+      {
+        path: '/signup',
+        name: '注册',
+        meta: {
+          view: 'blank',
+        },
+        component: () => import('@/pages/signUp'),
+      },
+      {
+        path: '/reset',
+        name: '重置密码',
+        meta: {
+          view: 'blank',
+        },
+        component: () => import('@/pages/resetPassword.vue'),
       },
     ],
   },
@@ -61,7 +77,70 @@ const routes: RouteRecordRaw[] = [
     },
     component: () => import('@/pages/Exp404.vue'),
   },
-
+  {
+    path: '/:pathMatch(.*)*',
+    name: '404',
+    props: true,
+    meta: {
+      icon: 'CreditCardOutlined',
+      renderMenu: false,
+      cacheable: false,
+      _is404Page: true,
+    },
+    component: () => import('@/pages/Exp404.vue'),
+  },
+  {
+    path: '/PublishSearchNotice',
+    name: '寻物启事',
+    meta: {
+      renderMenu: true,
+    },
+    component: () => import('@/pages/publishSearchNotice')
+  },
+  {
+    path: '/PublishUnclaimedItem',
+    name: '无主物品',
+    meta: {
+      renderMenu: true,
+    },
+    component: () => import('@/pages/publishUnclaimedItem')
+  },
+  {
+    path: '/ReturnCenter',
+    name: '归还&认领中心',
+    meta: {
+      renderMenu: true,
+    },
+    component: () => import('@/pages/returnCenter')
+  },
+  {
+    path: '/Review',
+    name: '审核中心',
+    meta: {
+      renderMenu: true,
+    },
+    component: () => import('@/pages/review')
+  },
+  {
+    path: '/Personal',
+    name: '个人中心',
+    meta: {
+      renderMenu: true,
+      cacheable: false,
+    },
+    component: () => import('@/pages/personal')
+  },
+    {
+    path:'/recharge/:recharge_id',
+    name:'充值确认',
+    props:true,
+    meta: {
+      renderMenu: false,
+      cacheable: false,
+      requiresAuth: false,
+    },
+    component:() =>import('@/pages/CommunityFeature/vipRechargeConfirm.vue')
+  },
 ];
 //Community Feature -- QandAList -- 路由添加
 import testRoute from './CommunityFeature/test';

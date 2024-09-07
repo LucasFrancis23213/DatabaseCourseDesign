@@ -6,12 +6,14 @@
 <script lang="ts" setup>
   import LoginBox from './LoginBox.vue';
   import { useRouter } from 'vue-router';
+  import { useAccountStore } from '@/store/account';
 
   const router = useRouter();
+  const {permissions} = useAccountStore();
   function onLoginSuccess() {
-    router.push('/workplace');
-  }
+  router.push('/PublishSearchNotice');}
 </script>
+
 <style scoped lang="less">
   .login {
     min-height: max(100vh, 720px);
