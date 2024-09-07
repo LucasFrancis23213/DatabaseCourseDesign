@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { getBase64 } from '@/utils/file';
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted,computed, onUnmounted} from 'vue';
   import { FormInstance, message } from 'ant-design-vue';
   import axios from 'axios';
   import dayjs from 'dayjs'
@@ -8,6 +8,16 @@
   import { generateItemID } from '@/utils/BasicFeature/IDGen';
   import sendSystemMsg from "@/pages/CommunityFeature/chat/systemMsgSend";
   const {account} = useAccountStore();
+  import ItemMap from "@/pages/admin_BasicFeature/ItemMap";
+  const { categoryMapping } = ItemMap;
+
+  const categoryOptions = computed(() =>
+      Object.entries(categoryMapping).map(([value, label]) => ({
+        label,
+        value,
+      }))
+    );
+
   axios.defaults.baseURL = import.meta.env.VITE_API_URL;
   
   type onePublish = {
@@ -31,10 +41,6 @@
   3: '医疗用品'
 };
 
-  const categoryMapping = {
-    '1': '日用品',
-    '2': '手表',
-  };
 
   const formModel = ref<FormInstance>();
 
@@ -207,6 +213,19 @@ const returnForm = ref({
   MESSAGE: '',
   IMAGE_URL: '',
 })
+let intervalId: ReturnType<typeof setInterval> | null = null;
+
+onMounted(() => {
+  getPublishs(); // Initial call
+  intervalId = setInterval(getPublishs, 10000); // Call every 10 seconds
+});
+
+onUnmounted(() => {
+  if (intervalId !== null) {
+    clearInterval(intervalId); // Clear the interval when the component is unmounted
+  }
+});
+
 </script>
 
 <template>
@@ -217,7 +236,7 @@ const returnForm = ref({
         <a-input v-model:value="form.ITEM_NAME" :maxlength="20" />
       </a-form-item>
       <a-form-item label="物品类别" name="CATEGORY_ID" has-feedback :rules="[{ required: true, message: '请选择物品类别' }]">
-        <a-cascader v-model:value="form.CATEGORY_ID" :options="[{label: '日用品', value: '1',}, {label: '手表', value: '2',},]"/>
+        <a-cascader v-model:value="form.CATEGORY_ID" :options="categoryOptions"/>
       </a-form-item>
       <a-form-item label="物品描述" name="DESCRIPTION" has-feedback :rules="[{ required: true, message: '请输入物品描述' }]">
         <a-textarea :rows="4" v-model:value="form.DESCRIPTION" :maxlength="100" />
@@ -235,7 +254,7 @@ const returnForm = ref({
           <a-radio value="3">医疗用品</a-radio>
         </a-radio-group>
       </a-form-item>
-      <a-form-item label="物品图片" name="IMAGE_URL">
+      <a-form-item label="物品图片" name="IMAGE_URL" has-feedback :rules="[{ required: true, message: '请上传物品图片' }]">
         <a-upload :show-upload-list="false" :beforeUpload="(file: File) => extractImg(file)">
           <img class="h-8 p-0.5 rounded border border-dashed border-border" v-if="form.IMAGE_URL" :src="form.IMAGE_URL" />
           <a-button v-else type="dashed">
@@ -279,7 +298,7 @@ const returnForm = ref({
       <a-col :span="8" v-for="(item, index) in publishs" :key="item.ITEM_ID">
         <a-card hoverable>
           <template #cover>
-            <img :alt="item.ITEM_NAME" :src="item.IMAGE_URL" style="height: 200px; object-fit: cover;" />
+            <a-image :alt="item.ITEM_NAME" :src="item.IMAGE_URL" style="height: 200px; object-fit: cover;" />
           </template>
           <a-card-meta :title="item.ITEM_NAME">
             <template #description>

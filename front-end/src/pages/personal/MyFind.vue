@@ -5,6 +5,8 @@
   axios.defaults.baseURL = import.meta.env.VITE_API_URL;
   import { useAccountStore } from '@/store/account';
   const {account, permissions} = useAccountStore();
+  import ItemMap from "@/pages/admin_BasicFeature/ItemMap";
+  const { categoryMapping } = ItemMap;
 
   const columns = [
   { title: '丢失物品', dataIndex: 'itemNameAndCategory' },
@@ -21,10 +23,6 @@
   2: '私人用品',
   3: '医疗用品'
 };
-const categoryMapping = {
-    '1': '日用品',
-    '2': '手表',
-  };
 
 
   const finds = ref([])
@@ -103,7 +101,7 @@ const categoryMapping = {
         </div>
       </template>
       <template v-else-if="column.dataIndex === 'IMAGE_URL'">
-        <img class="w-12 rounded" :src="record.IMAGE_URL" />
+        <a-image class="w-12 rounded" :src="record.IMAGE_URL" />
       </template>
       <template v-else-if="column.dataIndex === 'TAG_ID'">
         <span>
@@ -117,7 +115,7 @@ const categoryMapping = {
         </span>
       </template>
       <template v-else-if="column.dataIndex === 'delete'">
-        <a-button type="primary" danger :loading="iconLoading" @click="deleteOneLine(record.itemId)">
+        <a-button type="primary" danger :loading="iconLoading" @click="deleteOneLine(record.ITEM_ID)">
             <DeleteOutlined />
             删除此条
         </a-button>

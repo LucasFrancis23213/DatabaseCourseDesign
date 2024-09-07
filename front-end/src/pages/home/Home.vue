@@ -18,7 +18,7 @@
       </p>
       <button
       @click="signIn"
-      class="bg-black/50 text-white border border-black hover:bg-black cursor-pointer mt-lg shadow outline-none text-xl px-[64px] py-lg rounded-xl"
+      class="bg-black/80 text-white border border-black hover:bg-black cursor-pointer mt-lg shadow outline-none text-xl px-[64px] py-lg rounded-xl"
     >
       开始使用
       <br />

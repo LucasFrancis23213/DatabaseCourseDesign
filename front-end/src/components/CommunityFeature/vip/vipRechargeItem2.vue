@@ -65,7 +65,7 @@ const generateQRCode=()=>{
   const selected = rechargeOptions.find(option => option.id === selectedOption.value);
   rechargeId.value= 'recharge_'+account.userId + Date.now();
 
-  qrCodeUrl.value=`localhost:5173/#/recharge/${rechargeId.value}`
+  qrCodeUrl.value=`http://121.36.200.128:5173/#/recharge/${rechargeId.value}`
   console.log(qrCodeUrl.value)
   //setupWebSocket();
   ws.value.send(JSON.stringify({ type: 'start_monitoring', rechargeId: rechargeId.value, userId:+account.userId}));

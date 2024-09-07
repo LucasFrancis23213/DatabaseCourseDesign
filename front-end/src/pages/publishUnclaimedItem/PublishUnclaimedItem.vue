@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { getBase64 } from '@/utils/file';
-import { ref } from 'vue';
+import {computed, ref} from 'vue';
 import { FormInstance } from 'ant-design-vue';
 import { message } from 'ant-design-vue';
 import axios from 'axios';
@@ -9,10 +9,17 @@ import dayjs from 'dayjs';
 import { useAccountStore } from '@/store/account';
 import { generateItemID } from '@/utils/BasicFeature/IDGen';
 import sendSystemMsg from "@/pages/CommunityFeature/chat/systemMsgSend";
+import ItemMap from "@/pages/admin_BasicFeature/ItemMap";
+const { categoryMapping } = ItemMap;
 const {account, permissions} = useAccountStore();
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
-
+const categoryOptions = computed(() =>
+      Object.entries(categoryMapping).map(([value, label]) => ({
+        label,
+        value,
+      }))
+    );
 type oneFind = {
   ITEM_ID?: string;
   ITEM_NAME?: string;
@@ -30,10 +37,7 @@ const tagMapping = {
   2: '私人用品',
   3: '医疗用品'
 };
-const categoryMapping = {
-    '1': '日用品',
-    '2': '手表',
-  };
+
 const formModel = ref<FormInstance>();
 const submit = () => {
   loading.value = true;
@@ -119,7 +123,7 @@ const getFinds = async () => {
             review: 1
         }
     });
-
+    console.log(res)
     finds.value = res.data.map(item => ({
       ...item,
       TAG_ID: [tagMapping[item.TAG_ID as keyof typeof tagMapping] || '未知'],
@@ -217,7 +221,7 @@ onUnmounted(() => {
       </a-form-item>
       <a-form-item label="物品类别" name="CATEGORY_ID" has-feedback :rules="[{ required: true, message: '请选择物品类别' }]">
         <a-cascader v-model:value="form.CATEGORY_ID"
-          :options="[{ label: '日用品', value: '1', }, { label: '手表', value: '2', },]" />
+          :options="categoryOptions" />
       </a-form-item>
       <a-form-item label="物品描述" name="DESCRIPTION" has-feedback :rules="[{ required: true, message: '请输入物品描述' }]">
         <a-textarea :rows="4" v-model:value="form.DESCRIPTION" :maxlength="100" />
@@ -269,7 +273,7 @@ onUnmounted(() => {
       <a-col :span="8" v-for="(item, index) in finds" :key="item.ITEM_ID">
         <a-card hoverable>
           <template #cover>
-            <img :alt="item.ITEM_NAME" :src="item.IMAGE_URL" style="height: 200px; object-fit: cover;" />
+            <a-image :alt="item.ITEM_NAME" :src="item.IMAGE_URL" style="height: 200px; object-fit: cover;" />
           </template>
           <a-card-meta :title="item.ITEM_NAME">
             <template #description>

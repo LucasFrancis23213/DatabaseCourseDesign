@@ -8,26 +8,10 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
     [ApiController]
     public class LogsQueryController : ControllerBase
     {
-        private readonly GetUserOpsLogsInfoBLL _getUserOpsLogsInfoBLL;
-        private readonly GetSecurityEventsBLL _getSecurityEventsBLL;
-        private readonly GetSystemLogsBLL _getSystemLogsBLL;
-        private readonly GetAPILogsBLL _getAPILogsBLL;
-        private readonly GetNotificationLogsBLL _getNotificationLogsBLL;
-        private readonly GetRecommendationLogsBLL _getRecommendationLogsBLL;
-
-        public LogsQueryController()
-        {
-            _getAPILogsBLL = new GetAPILogsBLL();
-            _getUserOpsLogsInfoBLL = new GetUserOpsLogsInfoBLL();
-            _getSecurityEventsBLL = new GetSecurityEventsBLL();
-            _getSystemLogsBLL = new GetSystemLogsBLL();
-            _getNotificationLogsBLL = new GetNotificationLogsBLL();
-            _getRecommendationLogsBLL = new GetRecommendationLogsBLL();
-        }
-
         [HttpGet("APILogs")]
         public IActionResult GetAPILogs([FromQuery] QueryAPIAccessLogsArgs inputArgs)
         {
+            GetAPILogsBLL _getAPILogsBLL = new();
             var result = _getAPILogsBLL.GetAPILogs(inputArgs);
             if (result.Item1)
             {
@@ -42,6 +26,7 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
         [HttpGet("UserOpsLogs")]
         public IActionResult GetUserOpsLogs([FromQuery] QueryUserOpsLogsArgs inputArgs)
         {
+            GetUserOpsLogsInfoBLL _getUserOpsLogsInfoBLL = new();
             var result = _getUserOpsLogsInfoBLL.GetUserOpsLogs(inputArgs);
             if (result.Item1)
             {
@@ -56,6 +41,7 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
         [HttpGet("SecurityEvents")]
         public IActionResult GetSecurityEvents([FromQuery] QuerySecurityEventsArgs inputArgs)
         {
+            GetSecurityEventsBLL _getSecurityEventsBLL = new();
             var result = _getSecurityEventsBLL.GetSecurityEvents(inputArgs);
             if (result.Item1)
             {
@@ -70,6 +56,7 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
         [HttpGet("SystemLogs")]
         public IActionResult GetSystemLogs([FromQuery] QuerySystemLogsArgs inputArgs)
         {
+            GetSystemLogsBLL _getSystemLogsBLL = new();
             var result = _getSystemLogsBLL.GetSystemLogs(inputArgs);
             if (result.Item1)
             {
@@ -84,6 +71,7 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
         [HttpGet("NotificationLogs")]
         public IActionResult GetNotificationLogs([FromQuery] QueryNotificationLogsArgs inputArgs)
         {
+            GetNotificationLogsBLL _getNotificationLogsBLL = new();
             var result = _getNotificationLogsBLL.GetLogs(inputArgs);
             if (result.Item1)
             {
@@ -98,6 +86,7 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
         [HttpGet("RecommendationLogs")]
         public IActionResult GetRecommendationLogs([FromQuery] QueryRecommendationLogsArgs inputArgs)
         {
+            GetRecommendationLogsBLL _getRecommendationLogsBLL = new();
             var result = _getRecommendationLogsBLL.GetLogs(inputArgs);
             if (result.Item1)
             {

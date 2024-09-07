@@ -2,7 +2,8 @@
 //从founditem表中返回所有没有审核的物品，在此处审核，可以查看物品详情，审核或驳回，审核成功修改物品状态，失败向用户发送邮件通知
 import axios from 'axios';
 import { onMounted, ref } from 'vue'
-
+import ItemMap from "@/pages/admin_BasicFeature/ItemMap";
+const { categoryMapping } = ItemMap;
 const unreviewFoundItems = ref([])
 const columns = [
     { title: '物品ID', dataIndex: 'ITEM_ID' },
@@ -22,10 +23,6 @@ const tagMapping = {
   3: '医疗用品'
 };
 
-const categoryMapping = {
-  '1': '物品类别1',
-  '2': '手表',
-};
 
 const getUnreviewFoundItems = async () => {
     const res = await axios.get('api/QueryItem', {
@@ -101,7 +98,7 @@ onMounted(() => {
                 </div>
             </template>
             <template v-else-if="column.dataIndex === 'IMAGE_URL'">
-                <img class="w-12 rounded" :src="record.IMAGE_URL" />
+                <a-image class="w-12 rounded" :src="record.IMAGE_URL" />
             </template>
             <template v-else-if="column.dataIndex === 'TAG_ID'">
                 <span>

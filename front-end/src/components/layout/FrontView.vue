@@ -65,7 +65,7 @@ function navigateToLogin() {
               注册
             </router-link>
             <a-button
-              class="ml-md px-lg border-text hover:border-text hover:bg-text border-2 h-[46px] hover:text-bg-container"
+              class="ml-md px-lg border-2 border-black text-black bg-transparent h-[46px] hover:bg-black hover:text-white transition-colors duration-300"
               size="large"
               @click="navigateToLogin"
               >登录</a-button

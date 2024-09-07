@@ -4,6 +4,8 @@
   import { message } from 'ant-design-vue';
   import { useAccountStore } from '@/store/account';
   const {account, permissions} = useAccountStore();
+  import ItemMap from "@/pages/admin_BasicFeature/ItemMap";
+  const { categoryMapping } = ItemMap;
 
   axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
@@ -31,11 +33,6 @@
   2: '私人用品',
   3: '医疗用品'
 };
-
-  const categoryMapping = {
-    '1': '日用品',
-    '2': '手表',
-  };
 
 
   const publishs = ref([]);
@@ -118,7 +115,7 @@
         </div>
       </template>
       <template v-else-if="column.dataIndex === 'IMAGE_URL'">
-        <img class="w-12 rounded" :src="record.IMAGE_URL" />
+        <a-image class="w-12 rounded" :src="record.IMAGE_URL" />
       </template>
       <template v-else-if="column.dataIndex === 'IS_REWARDED'">
         <a-badge class="text-subtext" :color="'green'">
@@ -144,7 +141,7 @@
         </span>
       </template>
       <template v-else-if="column.dataIndex === 'delete'">
-        <a-button type="primary" danger :loading="iconLoading" @click="deleteOneLine(record.itemId)">
+        <a-button type="primary" danger :loading="iconLoading" @click="deleteOneLine(record.ITEM_ID)">
             <DeleteOutlined />
             删除此条
         </a-button>

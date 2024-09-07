@@ -102,7 +102,12 @@ const handleSendMessage = async (messageContent: string) => {
 };
 
 const displayMessage = (message) => {
-  messages.value.push(message);
+  console.log(message.sender,conversation_id.value,current_user_id.value)
+  if((message.sender===conversation_id.value)||(message.sender===current_user_id.value))
+    messages.value.push(message);
+  else
+    return;
+  
 };
 
 const updateDisplayedMessage = (oldId, newId) => {

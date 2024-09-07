@@ -3,17 +3,6 @@ import { useAccountStore } from '@/store';
 
 const presetList = [
   {
-    id: 3,
-    name: 'personal',
-    title: '个人中心',
-    path: '/personal',
-    icon: 'ProfileOutlined',
-    permission: null,
-    component: '@/pages/personal',
-    renderMenu: true,
-    parent: null,
-  },
-  {
     id: 10,
     name: 'github',
     title: '我们的Github仓库',
@@ -26,6 +15,20 @@ const presetList = [
     parent: null,
     cacheable: true,
     link: 'https://github.com/LucasFrancis23213/DatabaseCourseDesign',
+  },
+  {
+    id: 9,
+    name: 'personal',
+    title: '个人中心',
+    icon: '',
+    badge: '',
+    target: '_self',
+    path: '/Personal',
+    component: '@/pages/personal',
+    renderMenu: true,
+    parent: null,
+    permission: null,
+    cacheable: true,
   },
   {
     id: 11,
@@ -67,7 +70,7 @@ const presetList = [
     renderMenu: true,
     parent: null,
     permission: null,
-    cacheable: true,
+    cacheable: false,
   },
     {
     id: 14,
@@ -156,6 +159,20 @@ const adminList = [
     component: '@/pages/personal',
     renderMenu: false,
     parent: null,
+  },
+  {
+    id: 10,
+    name: 'github',
+    title: '我们的Github仓库',
+    icon: 'GithubOutlined',
+    badge: 'link',
+    target: '_blank',
+    path: '/github',
+    component: 'link',
+    renderMenu: true,
+    parent: null,
+    cacheable: true,
+    link: 'https://github.com/LucasFrancis23213/DatabaseCourseDesign',
   },
   {
     id: 13,
@@ -326,7 +343,7 @@ const adminList = [
     renderMenu: true,
     parent: null,
     permission: 'admin',
-    cacheable: true,
+    cacheable: false,
   },
     {
     id: 27,

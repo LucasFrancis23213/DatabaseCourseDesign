@@ -145,7 +145,6 @@
 import {ref, computed, onMounted, reactive} from 'vue';
 import axios from 'axios';
 import {message} from 'ant-design-vue';
-import AdDetailsItem from './AdDetailsItem.vue';
 import dayjs from "dayjs";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;

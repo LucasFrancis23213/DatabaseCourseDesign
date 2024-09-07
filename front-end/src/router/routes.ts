@@ -114,18 +114,10 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/pages/returnCenter')
   },
   {
-    path: '/Review',
-    name: '审核中心',
-    meta: {
-      renderMenu: true,
-    },
-    component: () => import('@/pages/review')
-  },
-  {
     path: '/Personal',
     name: '个人中心',
     meta: {
-      renderMenu: true,
+      renderMenu: false,
       cacheable: false,
     },
     component: () => import('@/pages/personal')

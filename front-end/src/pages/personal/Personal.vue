@@ -15,7 +15,7 @@
           <!-- 实名认证按钮 -->
           <div class="flex space-x-4">
             <vipRecharge class="vip-recharge"></vipRecharge>
-            <a-button @click="isAuthModalVisible = true" type="primary" class="mt-2">实名认证</a-button>
+            <a-button v-if=!isAuthed @click="isAuthModalVisible = true" type="primary" class="mt-2">实名认证</a-button>
             <a-button @click="isDeleteModalVisible = true" type="primary" class="mt-2 bg-red-500 hover:bg-red-600 border-red-500 hover:border-red-600">注销</a-button>
 
           </div>
@@ -221,17 +221,49 @@ const submitAuthentication = async () => {
   }
 
   try {
-    await axios.post('/api/UserManagement/NewUserAuthed', {
-      RealName: realName.value,
-      IDCard: idCardValue,
+    const authData = {
+      user_ID: account.userId,
+      auth_Date: new Date().toISOString(),
+    };
+
+    await axios.post('/api/UserManagement/NewUserAuthed', JSON.stringify(authData), {
+      headers: {
+        'Content-Type': 'application/json'
+      }
     });
     message.success('实名认证成功！');
+    checkAuthStatus(account.userId);
+    
   } catch (error) {
-    message.success('实名认证成功！');
+    message.error('实名认证失败！');
   } finally {
     isAuthModalVisible.value = false;
   }
 };
+
+const isAuthed = ref(false);
+
+const checkAuthStatus = async (userId) => {
+  try {
+    const response = await axios.get(`/api/UserManagement/GetAuthInfo`, {
+      params: { UserID: userId }
+    });
+
+    if (response.status === 200) {
+      isAuthed.value = true;
+      console.log('用户已认证');
+    } else {
+      console.log('用户未认证或查询失败');
+    }
+
+  } catch (error) {
+    console.error('查询认证状态时发生错误:', error);
+  }
+};
+onMounted(() => {
+  checkAuthStatus(account.userId);
+});
+
 
 
 // 删除用户方法
@@ -272,13 +304,12 @@ function edit() {
 
 function confirmEdit() {
   let url = axios.defaults.baseURL + 'api/UserManagement/UpdateUserInfo';
-  console.log(editRecord.value);
 
   // 确保 editRecord 解构并传递到 API
   axios.put(url, editRecord.value)
     .then(() => {
       message.success('编辑成功！');
-      if(editRecord.value.userName!=null){
+      if(editRecord.value.userName!=null&&editRecord.value.userName!=""){
         accountStore.account.userName=editRecord.value.userName;
       }
       accountStore.profile();

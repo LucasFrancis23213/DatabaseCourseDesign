@@ -21,6 +21,11 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
             OracleConnection = conn.GetOracleConnection();
         }
 
+        ~BaseDAL()
+        {
+            Debug.WriteLine("已断开连接");
+            conn.DisconnectSQL();
+        }
 
         protected Tuple<bool, string> DoQuery(Func<Tuple<bool, string>> action)
         {
@@ -44,6 +49,8 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
                     OracleConnection.Close();
                     Console.WriteLine("数据库已成功关闭");
                 }
+                Debug.WriteLine("已断开连接");
+                GC.Collect();
             }
         }
     }

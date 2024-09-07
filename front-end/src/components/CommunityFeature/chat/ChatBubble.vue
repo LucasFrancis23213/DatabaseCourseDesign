@@ -98,7 +98,20 @@ const build_chat_user_id = computed(()=>{
   else
     return undefined;
 });
+const handleOk = () => {
+  showUserInfo.value = false;
+};
 
+const handleCancel = () => {
+  showUserInfo.value = false;
+};
+
+const modalVisible = computed({
+  get: () => showUserInfo.value && ! props.isSelf.value,
+  set: (value) => {
+    showUserInfo.value = value;
+  }
+});
 //console.log(account);
 
 </script>
@@ -118,12 +131,13 @@ const build_chat_user_id = computed(()=>{
       <div class="time">{{ formattedTime }}</div>
       <CreateConversationBtn v-if="isSystemMsg&&!isSelf" :target-id="build_chat_user_id" ></CreateConversationBtn>
     </div>
-    <div v-if="showUserInfo && !isSelf" class="user-info" @mouseleave="toggleUserInfo">
-      <p><strong>ID:</strong> {{ message_sender_id }}</p>
-      <p><strong>用户名:</strong> {{ user_name }}</p>
-      <followButton class="follow-button" :user_id="message_sender_id" :initial-follow-state="is_following" ></followButton>
-
-    </div>
+    <a-modal v-model:visible="modalVisible" title="用户详情" @ok="handleOk" @cancel="handleCancel">
+      <div v-if="showUserInfo ">
+        <p><strong>ID:</strong> {{ message_sender_id }}</p>
+        <p><strong>用户名:</strong> {{ user_name }}</p>
+        <followButton class="follow-button" :user_id="message_sender_id" :initial-follow-state="is_following" ></followButton>
+      </div>
+    </a-modal>
   </div>
 </template>
 

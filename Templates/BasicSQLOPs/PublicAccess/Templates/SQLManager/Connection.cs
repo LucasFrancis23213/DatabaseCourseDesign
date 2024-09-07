@@ -22,6 +22,11 @@ namespace SQLOperation.PublicAccess.Templates.SQLManager
             this.DataSource = DataSource;
             ConnectSQL();
         }
+
+        ~Connection()
+        {
+            DisconnectSQL();
+        }
         //连接到指定数据库
         private bool ConnectSQL()
         {
@@ -57,6 +62,7 @@ namespace SQLOperation.PublicAccess.Templates.SQLManager
             {
                 OracleConnection.Close();
                 Console.WriteLine("数据库已成功关闭");
+                Debug.WriteLine("数据库已成功关闭");
             }
         }
 

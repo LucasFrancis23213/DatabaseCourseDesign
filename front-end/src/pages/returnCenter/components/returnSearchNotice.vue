@@ -3,6 +3,8 @@ import axios from 'axios';
 import { onMounted, ref } from 'vue'
 import { useAccountStore } from '@/store/account';
 const {account} = useAccountStore();
+import ItemMap from "@/pages/admin_BasicFeature/ItemMap";
+const { categoryMapping } = ItemMap;
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
@@ -30,11 +32,6 @@ const tagMapping = {
   1: '贵重物品',
   2: '私人用品',
   3: '医疗用品'
-};
-
-const categoryMapping = {
-  '1': '物品类别1',
-  '2': '手表',
 };
 
 const getPublishs = async () => {
@@ -186,7 +183,7 @@ const handleCancelModalClose = () => {
         </div>
       </template>
       <template v-else-if="column.dataIndex === 'IMAGE_URL'">
-        <img class="w-12 rounded" :src="record.IMAGE_URL" />
+        <a-image class="w-12 rounded" :src="record.IMAGE_URL" />
       </template>
       <template v-else-if="column.dataIndex === 'IS_REWARDED'">
         <a-badge class="text-subtext" :color="'green'">
