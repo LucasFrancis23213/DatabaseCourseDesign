@@ -1,0 +1,132 @@
+553c00f148e594aaebc3063bbea70213b640cd3d,Eurekahah,11 hours ago,1. 调整路由位置
+d48cb8ff44f9170240d06d99e0c4d10f43ebd6b3,Eurekahah,12 hours ago,1. 增加私信的接口
+8ce62ba07d0ef2897b63f35bb51eaedee17f8fb1,Eurekahah,13 hours ago,1. 修改消息列表的样式
+c5aa6141e32c5f33a69c1eb45d38321d72f8a8ce,Eurekahah,13 hours ago,1. 修改聊天自己的头像 2. 删除陈旧代码 3. 修改路由缓存
+a6f39a2e96172a6afefbd346394e7ebaffb2e4e4,Eurekahah,13 hours ago,1. 修改活跃度类型
+9e2a8808d3e97001d5e923ee14feb28360b516e4,Eurekahah,14 hours ago,1. 修改冒泡 2. 修稿广告样式 3. 修改社区路由
+2a1c8780e065648a4bdf23fe2fb763fa1606cbdf,Eurekahah,14 hours ago,1. 删除无用文件
+88129a17a1d51419e56597230a12f277aa24ad6e,Eurekahah,14 hours ago,1. 删除无用文件
+daca7991a28646e3ebbeb734f7a00cf228df9a65,Eurekahah,15 hours ago,1. 修改事件冒泡 2. 帖子回复获取优化
+625c9fdb2d1079865bd99762e75529eba02bb1d4,Eurekahah,15 hours ago,1. 修改bug
+13f90a92731d94e6d79e4a091c43db1c4a7b19db,Eurekahah,16 hours ago,修改了时间排序显示
+5ec93ed9ebeef09e95bce42720380ad4038b6c77,Eurekahah,16 hours ago,1. 更新问答区关注按钮的显示
+e585a0310fb09a039da0a4055134a5613c34207d,Eurekahah,17 hours ago,1. 更新实名认证 2. 更新Personal.vue 3. 更新account.ts
+27b5c078e2e7314fd474d857f0f1e5253e4bdc64,Eurekahah,17 hours ago,1. 更新gitignore
+c2565a79d34ae187f1fd245fe1cf2bd0f0bbf3e4,Eurekahah,17 hours ago,Merge remote-tracking branch 'origin/hjx-dev' into hjx-dev
+60fe2eb9d39ab20c4e0ae19eed14d1415406fd80,Eurekahah,17 hours ago,1. 删除不必要的日志打印
+aad77f4539aee5d651af16e3faf82d04305e6230,Eurekahah,18 hours ago,1. 删除不必要的日志打印
+d54021912699bf7c91cf7c86057afdf48824d62b,Eurekahah,35 hours ago,Merge branch 'hjx-dev' of https://github.com/LucasFrancis23213/DatabaseCourseDesign into hjx-dev
+2d8bb863508adbde9a428b2ca703264765d044f0,Eurekahah,35 hours ago,1. 修正若干bug
+301bf1e116dae4e78e7ad7b5dccbe8005f660fd5,Eurekahah,35 hours ago,1. 转移vip充值UI位置
+1f5d84f076c4c4909f8357013101efb5c8709390,Eurekahah,2 days ago,1. 修正头像显示
+478fdb1c632ad15aef6b0a74184d16304179400d,Eurekahah,2 days ago,1. 删除调试信息 2. 修改头像显示 3. 删除测试路由
+b1c84fbc19aab814c095b3c040f174c714a8d1c7,Eurekahah,2 days ago,1. 补足关注按钮
+c04725093a814c19dfd3a6c6419cb0a8be05bc44,Eurekahah,2 days ago,Merge branch 'lcb-dev' into hjx-dev
+52f1092c58b59b9d56cf7305ffa260eb700344fc,Eurekahah,2 days ago,Merge branch 'LiTong' into hjx-dev
+d3a0adbb9eb4530c2a8d5488f2055874c8f68476,Eurekahah,2 days ago,1. 新增vip充值扫码机制 2. 新增vip充值确认机制 3. 修正路由的登录保护机制
+e006677397e1d4fffe7f6f55decc47f9db3498b7,Eurekahah,2 days ago,1. 新增vip充值扫码机制 2. 新增vip充值确认机制 3. 修正路由的登录保护机制
+875280ce0b4b47f1a9a116b17a420c5b35514b93,Eurekahah,3 days ago,修正vip充值界面
+13b62ca92c6f67202cc5b2749b05e507414a4b05,Eurekahah,3 days ago,修改id 的bug
+f0296f0e29f9264bc327beb3f0f3ea8a5ac1bf36,Eurekahah,5 days ago,删除文档信息
+431524859200d6f1a5a369c2d3a16db8415f693a,Eurekahah,5 days ago,删除文档信息
+3ef22a81b696274fbcbb6602ede21fe5844f61e2,Eurekahah,6 days ago,1. 美化广告列表展现界面 2. 美化关注和粉丝界面
+71bd83b9bbbb63464a01e5bcb06a929e64607a16,Eurekahah,7 days ago,1. 修正消息发送的已读更新机制
+0be64cb774634f2ccbe4bc7bd43ff94de84bfd04,Eurekahah,7 days ago,Merge branch 'LiZiHao' into hjx-dev
+d804926685c98d94ebfc2eeb5eb75caa98d9c18e,Eurekahah,7 days ago,Merge branch 'HanJingXiao' into hjx-dev
+959d0068bce2515b4eefcb5da6f07a53aea351b6,Eurekahah,7 days ago,1. 修正广告和vip时间的数据限制 2. 修正系统消息发送的时间数据bug
+85821159d03931e6ef364be25269128e65183123,Eurekahah,7 days ago,1. 修正实时聊天
+151b26a6c3bff18739a67b7ae85b21266ddb0892,Eurekahah,7 days ago,1. 提交开发日志 2. 合并小组代码
+e4c861858e3ac12656256dc99b6b5d5c8686ae2c,Eurekahah,7 days ago,Merge branch 'LiZiHao' into hjx-dev
+2cacac71fe1a8161709a4d7f837fd6ac1796ad94,Eurekahah,7 days ago,Merge branch 'HanJingXiao' into hjx-dev
+445477932bc1694ba41efc58a7ac94c91f949c02,Eurekahah,7 days ago,Merge branch 'LiTong' into hjx-dev
+806f2f001458c327908b899453471bc0f32f0ed2,Eurekahah,7 days ago,1. 修正用户ID的UI
+80fbd06732b56862b589ce6859fedf1898574320,Eurekahah,7 days ago,1. 新增系统消息发送功能
+58bebdc239cd3aa3db7b1860c2bf8395913b5875,Eurekahah,8 days ago,1. 修改广告图片的上传功能
+7d707ab83ed9031e7e40c8418d30da8ed5c4c535,Eurekahah,12 days ago,Merge branch 'LiTong' into hjx-dev
+d08e95489ff3e7049099a7b47266e2def2d0b13c,Eurekahah,2 weeks ago,1. 修改关注功能的bug 2. 修改用户id的使用bug
+c17288af547d7eac64b1798304e729f0a1c9b4f0,Eurekahah,2 weeks ago,1. 修改时间显示的bug
+bf8f0713c7611e3cb1868374b50a13b336e56097,Eurekahah,2 weeks ago,1. 修改时间显示的bug
+0b081324a4427e91d50b31b76ed3f66659b4eabe,Eurekahah,2 weeks ago,1. 修改时间显示的bug
+baaafd6827efa506e48d2b9cfcf9bee3b20d2153,Eurekahah,2 weeks ago,1. 提供进入聊天的接口
+91259766fa0c4ca0895026a57e20924e42d600e7,Eurekahah,2 weeks ago,Merge branch 'LiTong' into hjx-dev
+dce1d2581def74e0a96d8c8f89e0288c87527fda,Eurekahah,2 weeks ago,1. 更新页码显示
+3959af67d354d95e594aec96d843d69e52418813,Eurekahah,3 weeks ago,1. 更新列表显示，增加页码显示
+fdf7bf2ad551f7f812883d5666eb79b218290868,Eurekahah,4 weeks ago,1. 完善实时通信机制，使用WebSocket实现
+6e97b31066c7b00f324f36bdd9aedb97bc464488,Eurekahah,4 weeks ago,Merge branch 'LiTong' into hjx-dev
+6613edd6f42311c0f2ceec7b4175ca01e572d14b,Eurekahah,4 weeks ago,1. 新增关注和粉丝列表 2. 完善SignalR实时聊天功能。
+df443a1d7b4e49f228d63b3cefe31ee4248538e2,Eurekahah,4 weeks ago,Merge branch 'HanJingXiao' into hjx-dev
+ed81e3f963506c80701c02771035b1a050708a14,Eurekahah,4 weeks ago,1. 新增关注和粉丝列表 2. 完善SignalR实时聊天功能。
+c62fba64ebadec7a65356b2a5584a91674fe5162,Eurekahah,4 weeks ago,Merge branch 'dev' into hjx-dev
+5fb2451eb09612b30b02f2c3561e2e328547050f,Eurekahah,5 weeks ago,Merge branch 'HanJingXiao' into hjx-dev
+7f70c4a89852bbd0fe589eaeb805a30915beddc0,Eurekahah,5 weeks ago,1. 修正delete接口的使用错误 2. 修正必填字段的代码逻辑错误
+18e6bafa9fd75534156dd14c90d9bb7af197af14,Eurekahah,5 weeks ago,Merge branch 'HanJingXiao' into hjx-dev
+69626a6de6188e6c52bf4633743c4c6f0d3919cd,Eurekahah,5 weeks ago,1. 修正delete接口的使用错误 2. 修正必填字段的代码逻辑错误
+96755703fadc70d11900057ca1cf33374b8a7679,Eurekahah,5 weeks ago,Merge branch 'LiTong' into hjx-dev
+d5fb1f134132333fc43d77a4803ebe2c9124db22,Eurekahah,5 weeks ago,Merge branch 'HanJingXiao' into hjx-dev
+0d453baaaaffd11c4549aa2616f5eac13110652d,Eurekahah,5 weeks ago,1. 修正vip开始时间的提交 2. 修正广告获取的bug
+926b79252fa92b3ba162e42cc21bd67a687dfc99,Eurekahah,5 weeks ago,1. 修正接口使用错误
+082ec688a596a768ee04c0a5e08f9b9465abd3ad,Eurekahah,5 weeks ago,1. 修正vip管理数据使用 2. 修正接口使用错误
+bad5597d1925d4b0f3b640e1a51f88266c17d910,Eurekahah,5 weeks ago,1. 修正环境变量
+15b0d73523ec7490954189db9d92f887ac32c93e,Eurekahah,5 weeks ago,1. 修正vip充值
+57e6ecbf7be1ee08e183a8ec87ec87ee1ccfb97a,Eurekahah,5 weeks ago,1. 开发vip管理功能（尚不完善）
+bb774003b0e64c6d5bcb66cef786ecd88f782ac4,Eurekahah,5 weeks ago,1. 开发管理员管理广告列表 2. vip充值功能，未调用外部接口
+73b126957b5912e65264021b6dc4bf26fdf45fd5,Eurekahah,5 weeks ago,1. 开发管理员管理广告列表 2. vip充值功能，未调用外部接口
+feb52450b6715cd60d9b3a8330df1df45f95bfcc,Eurekahah,5 weeks ago,1. 开发广告的用户基本功能
+6443997ac876acb52ae0330419d9129ec2b5a36e,Eurekahah,6 weeks ago,Merge branch 'main' into HanJingXiao
+5f5545fbc97667af12150f54c8d0cb598c9dc867,Eurekahah,6 weeks ago,Merge branch 'LiTong' into hjx_front_end
+bdfed5a99c9661f25061e54b8e5cc831bb89108d,Eurekahah,6 weeks ago,Merge branch 'LiZiHao' into hjx_front_end
+071bd2df897a76c9a51d8ef02ed9a6d6dc6c91a7,Eurekahah,6 weeks ago,更新第三周功能： 1. 初步搭建广告框架
+5586d51ef20756398ab8496308594fed4923eb1b,Eurekahah,6 weeks ago,更新第二周功能： 1. 优化环境变量使用
+495e33a72e2ce895a0278c88c8e8af5974be9b87,Eurekahah,6 weeks ago,更新第二周功能： 1. 增加错误处理 2. 增加限时撤回
+56736753bf1206f6501c15d0c98b8cb0a4ebcda4,Eurekahah,6 weeks ago,更新第二周功能： 1. 删除冗余内容 2. 更新id的数据类型
+d2df8c4d65f0c75dee84a3e9e87283de66d86b6b,Eurekahah,6 weeks ago,更新第二周功能： 1. 删除冗余内容 2. 更新id的数据类型
+31927ddacbedbbde7b15823dcb7e73ae769c66db,Eurekahah,6 weeks ago,更新第二周功能： 1. 删除冗余内容 2. 更新id的数据类型
+3ca822bb0016ea417e219fbe397f268c1bd2a606,Eurekahah,6 weeks ago,更新第二周功能： 1. 修正代码错误
+a66069911db11c6b241947a35541a610d4ada164,Eurekahah,6 weeks ago,更新第二周功能： 1. 合并hjx与lzh的前端 2. 删除多余的文件内容
+b9c815b9402f4622e959b04a862d200d3282b2b0,Eurekahah,6 weeks ago,更新第二周功能： 1. 合并hjx与lzh的前端 2. 删除多余的文件内容
+139211b0de4296af5d9176e92f291d57f4696650,Eurekahah,6 weeks ago,更新第二周功能： 1. 合并hjx与lzh的前端
+597a324345108af4f6c25817487f04a91633774f,Eurekahah,6 weeks ago,Merge branch 'LiZiHao' into hjx_front_end
+403592b3cf9da5703f4fe29990d333a86a720c59,Eurekahah,6 weeks ago,更新第一周功能： 1.开始第三周内容
+d003899fdb45eda394425b6256325a2f186b6d00,Eurekahah,6 weeks ago,更新第一周功能： 1. 优化界面 2. 优化代码结构
+26adbf1e0112643ab3f270b2a9ef3703727eb3db,Eurekahah,6 weeks ago,更新第一周功能： 1. 获取会话列表 2. 获取会话内容 3. 发送消息 4. 撤回消息 5. 更新消息读取状态 6. 新增signalR协议（未测试） 7. 新增消息接收确认（未测试）
+3bff4ab09dea192af899d5b40cea73922de8a288,Eurekahah,6 weeks ago,更新第一周功能： 1. 获取会话列表 2. 获取会话内容 3. 发送消息 4. 撤回消息 5. 更新消息读取状态
+76c0ae36809d1489560368dadcbb3fd7fa598e88,Eurekahah,8 weeks ago,新建前端模板，使用了stepin的模板。
+573e3ae9d3c759a47e68fad9cc2a7b5bd0dc3c53,Eurekahah,4 months ago,E-R图汇总与数据库关系图汇总。 以上内容均收录在第一小组.doc中。
+6758c89ad3580c86cc199113591b04e5bd7a40ca,Eurekahah,4 months ago,E-R图汇总
+136c6b52abea220c6ab4038156873562a0a25861,Eurekahah,4 months ago,E-R图汇总
+f53d5f69a71a0bbdb07f7908148aff437573c7d4,Eurekahah,4 months ago,E-R图汇总
+26173e3f9f2886edd21c7f42c158fc43138b0cfd,Eurekahah,4 months ago,E-R图汇总
+647662af62df93dd546881b682833252eb0aa3ad,Eurekahah,4 months ago,E-R图汇总
+34559df7716c42266351dadcccbb830e9ac707f7,Eurekahah,4 months ago,E-R图调整
+1f90671a388bba42a70ee76629b00bfe751e2abf,Eurekahah,4 months ago,广告+VIP接口制作。 李彤接口合并。
+e6dfa5f8454c84c7bf0a48f16f3f8cac149979db,Eurekahah,4 months ago,第一小组数据库关系图制作，目前包含VIP和广告
+fece4a28be7531bb6c792d340451a3a302346b76,Eurekahah,4 months ago,修改VIP、广告模块E-R图、补充广告信息表缺失属性
+2c9fc0906e8795296b812493599fa68ec6b40acb,Eurekahah,4 months ago,1. 修改VIP、广告模块E-R图 2. 撰写VIP、广告模块的数据库设计文档，包括功能数据需求部分、数据库表部分。
+3f029477e0de7164bb4c0e84b3c66e0e4642ce84,Eurekahah,4 months ago,广告模块E-R图
+c1b0c23a5d75172ff5dadbc1df1d13ba2955dccb,Eurekahah,4 months ago,VIP模块E-R图
+a28b0f4b2f3da93f17fb638dbee5e18c816b24fd,Eurekahah,4 months ago,数据库表修改冲突修复
+e9a8d8738118ed261ea92ca45dd556ec7d61465d,Eurekahah,4 months ago,前端汇总
+dacff62888e14cc85aa1b4f0107911a125ad2913,Eurekahah,4 months ago,前端汇总
+a6080b0992900ba40f6de3e3801593fdaff0f25f,Eurekahah,4 months ago,数据库表汇总
+b5507a668a8ff5bebe60e5c0f4101e94adddaa09,Eurekahah,4 months ago,数据库表汇总
+ea75280ee3719ad9edc8e67e9f004b9648749f2c,Eurekahah,4 months ago,VIP、广告模块ER图5.12
+f2f6c430cb6b7d318b38c89b5fb32aedf0f2676b,Eurekahah,4 months ago,VIP、广告模块ER图5.12
+669793a8574e58d185aa06c872055f8eb412ae04,Eurekahah,4 months ago,数据库表汇总
+5247d9bac0f88b46b3d921c400e1ebbaaec8e9b9,Eurekahah,4 months ago,数据库表汇总
+3aa658f9da23f2b60175e32de93f96cff93b3575,Eurekahah,4 months ago,数据库表汇总
+494a81238e4ef462f721d0123b624c244da03fae,Eurekahah,4 months ago,数据库表汇总
+55ceb432b46430d852b570610518af641e5d4497,Eurekahah,4 months ago,文件夹结构完善
+171379e30236ec9df1091d0c9be047dc5379199b,Eurekahah,4 months ago,安全问题汇总
+f9d4a2cbd776a83a438a86def73c8026108a3b56,Eurekahah,4 months ago,安全问题更新
+2d73f7615c0675fc607bda457857d888b376a6da,Eurekahah,4 months ago,安全问题更新
+407bba443f8b9f8f43bd66b8d940265aa903f2ac,Eurekahah,4 months ago,安全问题更新
+593772ea8e19dc1872ea5ea953c1e70dce69123d,Eurekahah,4 months ago,第一小组项目文件结构更新
+c833df78e453b1c4fc6c0d3108b0baf544dd0835,Eurekahah,4 months ago,1. 第一小组项目文件结构优化 2. 图片名称修改
+5c540c9aac7574515f3ffb3ec74a0d1c88725af1,Eurekahah,4 months ago,4.26任务完成。
+5ac57b1de9b7323131abfa1ef7e6fa210dfb4c5a,Eurekahah,4 months ago,前端需求更新
+5b54dad09071352cdf9f0fc782f50e3d0da4d4b0,Eurekahah,4 months ago,数据库表修改与添加汇总
+33fa1f40e429ec47e7e0cdf50d0c17168448c4f8,Eurekahah,4 months ago,md图片上传
+db299322dffaf66b0c3a6f48827c0c26aadc6635,Eurekahah,4 months ago,前端需要更新
+ffa8535b3d7a677ff28967e7657e4a0de7317194,Eurekahah,5 months ago,清空垃圾
+944dda7227ffdd0cbaa33ae84b6d68e05bec1412,Eurekahah,5 months ago,VIP及广告流程v1.1
+2cf31e7d7ba54ad1fb563bee0ac87715c040f42b,Eurekahah,5 months ago,最基础的设计
