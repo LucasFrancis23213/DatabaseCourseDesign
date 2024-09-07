@@ -14,12 +14,13 @@
     <!-- 问题列表 -->
     <div v-for="(question,qindex) in displayedQuestionList" :key="question.id" >
       <div class="posts-List">
+        
       <div class="chat flex items-center cursor-pointer" @click="toggleAnswers(question)">
         <img class="w-16 h-16 rounded-xl" :src="question.user.avatar" @click="toggleShowButton($event, question)"/>
         <div class="content ml-4 flex-1">
           <div class="name text-lg font-semibold">{{ question.user.name }}
-            <div v-if="question.showButton" @mouseleave="toggleShowButton($event,question)">
-            <followButton v-if="question.user.id !== current_user.id"
+            <div v-if="question.showButton && question.user.id !== current_user.id" @mouseleave="toggleShowButton($event,question)">
+            <followButton 
                           :user_id="question.user.id"
                           :initial-follow-state="false"
                           class="btn"
@@ -48,8 +49,8 @@
           <img class="w-12 h-12 rounded-full" :src="answer.user.avatar" @click="toggleShowButton($event,answer)"/>
           <div class="ml-4">
             <div class="name text-sm font-semibold">{{ answer.user.name }}
-              <div v-if="answer.showButton" @mouseleave="toggleShowButton($event,answer)">
-            <followButton v-if="answer.user.id !== current_user.id "
+              <div v-if="answer.showButton && answer.user.id !== current_user.id" @mouseleave="toggleShowButton($event,answer)">
+            <followButton 
                           :user_id="answer.user.id"
                           :initial-follow-state="false"
                           class="btn"

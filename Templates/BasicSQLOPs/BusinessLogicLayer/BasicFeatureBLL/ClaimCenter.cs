@@ -296,7 +296,7 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
             string ErrorReason = string.Empty;
             if (OracleConnection.State == ConnectionState.Open)
             {
-                string DeleteSQL = $"DELETE FROM ITEM_CLAIM_PROCESSES WHERE ITEM_ID = {itemID}";
+                string DeleteSQL = $"DELETE FROM ITEM_CLAIM_PROCESSES WHERE ITEM_ID = '{itemID}'";
 
                 using (OracleCommand cmd = new OracleCommand(DeleteSQL, OracleConnection))
                 {

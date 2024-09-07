@@ -85,8 +85,8 @@ const presetList = [
   },
     {
     id: 15,
-    name: '消息',
-    title: '消息',
+    name: '消息列表',
+    title: '消息列表',
     icon: '',
     badge: '',
     target: '_self',
@@ -344,8 +344,8 @@ const adminList = [
   },
     {
     id: 28,
-    name: '消息',
-    title: '消息',
+    name: '消息列表',
+    title: '消息列表',
     icon: '',
     badge: '',
     target: '_self',

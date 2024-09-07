@@ -1,6 +1,7 @@
 ﻿using Oracle.ManagedDataAccess.Client;
 using SQLOperation.PublicAccess.Templates.SQLManager;
 using System.Data;
+using System.Diagnostics;
 
 namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
 {
@@ -41,6 +42,7 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
                 if (OracleConnection.State == ConnectionState.Open)
                 {
                     OracleConnection.Close();
+                    Console.WriteLine("数据库已成功关闭");
                 }
             }
         }

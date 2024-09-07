@@ -14,7 +14,7 @@
       v-for="conversation in conversations"
       :key="conversation.id"
       class="conversation-item"
-      @click="navigateToConversation(conversation.id, currentUserId)"
+      @click="navigateToConversation(conversation, currentUserId)"
     >
       <a-avatar :src="conversation.avatar" :alt="conversation.name" class="avatar" />
       <div class="conversation-details">
@@ -77,10 +77,10 @@ const formatTime = (timeString) => {
   }
 };
 
-const navigateToConversation = (conversationId, currentUserId) => {
+const navigateToConversation = (conversation, currentUserId) => {
   router.push({
     name: '聊天',
-    params: { conversation_id: conversationId },
+    params: { conversation_id: conversation.id },
     query: { current_user_id: currentUserId },
   });
 };

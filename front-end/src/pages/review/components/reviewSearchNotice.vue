@@ -2,8 +2,7 @@
 //从lostitem表中返回所有没有审核的物品，在此处审核，可以审核或驳回，审核成功修改物品状态，审核不通过向用户发送邮件通知
 import axios from 'axios';
 import { onMounted, ref } from 'vue'
-
-const baseURL = 'http://121.36.200.128:5001/api/';
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
 const unreviewLostItems = ref([])
 const columns = [
@@ -37,7 +36,7 @@ const categoryMapping = {
 };
 
 const getUnreviewLostItems = async () => {
-    const res = await axios.get(baseURL + 'QueryItem', {
+    const res = await axios.get('api/QueryItem', {
         params: { type: 0 }
       });
     unreviewLostItems.value = res.data.map(item => ({
@@ -50,7 +49,7 @@ const getUnreviewLostItems = async () => {
 const pass = async (ITEM_ID: string) => {
     console.log('通过的物品ID:', ITEM_ID);
     //调用接口修改审核状态，修改后重新获取
-    await axios.post(baseURL + 'PassItem', 
+    await axios.post('api/PassItem', 
             JSON.stringify({ 
                 ITEM_ID: ITEM_ID,
                 type: 0
@@ -69,7 +68,7 @@ const reject = async (ITEM_ID: string) => {
     console.log('驳回的物品ID:', ITEM_ID);
     try {
         // 调用接口删除founditem中的信息，使用DELETE方法
-        await axios.delete(baseURL + 'DeleteItem', {
+        await axios.delete('api/DeleteItem', {
             data: JSON.stringify({ 
                 ITEM_ID: ITEM_ID,
                 type: 0

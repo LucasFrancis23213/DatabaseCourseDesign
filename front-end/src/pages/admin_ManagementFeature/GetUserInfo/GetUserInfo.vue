@@ -50,10 +50,11 @@
 
 </template>
 <script lang="ts" setup>
-import {ref} from 'vue';
+import {onMounted, ref} from 'vue';
 import {message} from 'ant-design-vue';
 import axios from 'axios';
 import adminVip from "@/pages/admin_CommunityFeature/vip/adminVip.vue"
+import { on } from 'events';
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
 const columns = [
@@ -83,7 +84,7 @@ const applyFilters = async () => {
   }
   try {
     const response = await axios.get(`/api/UserManagement/AdminGetUserInfo?${query}`);
-    data.value = [response.data[0]];
+    data.value = response.data;
   } catch (error) {
     let errorMessage = '查询失败: ';
     if (error.response && error.response.data) {
@@ -95,6 +96,7 @@ const applyFilters = async () => {
     console.error('Error fetching data:', error);
   }
 }
+
 
 const downloadLogs = () => {
   const now = new Date();

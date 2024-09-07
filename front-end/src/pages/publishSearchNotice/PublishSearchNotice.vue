@@ -235,7 +235,7 @@ const returnForm = ref({
           <a-radio value="3">医疗用品</a-radio>
         </a-radio-group>
       </a-form-item>
-      <a-form-item label="物品图片" name="IMAGE_URL" has-feedback :rules="[{ required: true, message: '请上传物品图片' }]">
+      <a-form-item label="物品图片" name="IMAGE_URL">
         <a-upload :show-upload-list="false" :beforeUpload="(file: File) => extractImg(file)">
           <img class="h-8 p-0.5 rounded border border-dashed border-border" v-if="form.IMAGE_URL" :src="form.IMAGE_URL" />
           <a-button v-else type="dashed">

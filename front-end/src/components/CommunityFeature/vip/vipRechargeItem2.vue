@@ -36,6 +36,7 @@ import {message} from 'ant-design-vue';
 import axios from 'axios'
 import QrcodeVue from "qrcode.vue";
 
+
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 const qrCodeUrl = ref(`${axios.defaults.baseURL}/api/`)
 
@@ -126,9 +127,8 @@ const recharge = async () => {
       total_amount: selected.price
     });
     rechargeResult.value = response.data;
-    message.success('充值成功');
   } catch (error) {
-    message.error('充值失败');
+    message.error(error.response.data.message);
   } finally {
     isLoading.value = false;
   }

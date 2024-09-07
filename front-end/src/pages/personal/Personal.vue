@@ -252,25 +252,35 @@ const cancelDelete = () => {
 
 
 const editRecord = ref({
-  userID: '',
-  userName: '',
+  userID: account.userId,
+  userName: null,
   password:null,
-  contact:'',
-  Avatar:accountStore.account.avatar
+  contact:null,
+  Avatar:account.avatar
 });
 
 function edit() {
+  editRecord.value=({
+  userID: account.userId,
+  userName: null,
+  password:null,
+  contact:null,
+  Avatar:account.avatar
+});
   isEditModalVisible.value = true;
 }
 
 function confirmEdit() {
-  let url = `http://121.36.200.128:5001/api/UserManagement/UpdateUserInfo`;
+  let url = axios.defaults.baseURL + 'api/UserManagement/UpdateUserInfo';
+  console.log(editRecord.value);
 
   // 确保 editRecord 解构并传递到 API
   axios.put(url, editRecord.value)
     .then(() => {
       message.success('编辑成功！');
-      accountStore.account.userName=editRecord.value.userName;
+      if(editRecord.value.userName!=null){
+        accountStore.account.userName=editRecord.value.userName;
+      }
       accountStore.profile();
       isEditModalVisible.value = false;
     })
@@ -282,11 +292,11 @@ function confirmEdit() {
 
 function cancelEdit() {
   editRecord.value = {
-    userID: '',
-    userName: '',
+    userID: accountStore.account.userId,
+    userName: null,
     password:null,
-    contact:'',
-    Avatar:accountStore.account.avatar
+    contact:null,
+    Avatar:null
   };
   isEditModalVisible.value = false;
 }

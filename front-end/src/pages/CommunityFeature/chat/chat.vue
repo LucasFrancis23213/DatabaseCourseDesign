@@ -95,6 +95,8 @@ const handleSendMessage = async (messageContent: string) => {
       updateDisplayedMessage(newMessage.id, response.message_id);
     }
   } catch (error) {
+    
+    removeMessage(newMessage.id);
     message.error('消息发送失败，请稍后重试');
   }
 };

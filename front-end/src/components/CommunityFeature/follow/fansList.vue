@@ -6,7 +6,9 @@
     <template v-else>
       <ul v-if="followers.length" class="space-y-sm">
         <li v-for="follower in displayedFilteredFollowers" :key="follower.user_id"
-            class="flex items-center p-sm bg-container-light rounded-sm hover:bg-bg-hover transition-colors duration-200">
+            class="flex items-center p-sm bg-container-light rounded-sm hover:bg-bg-hover transition-colors duration-200"
+            @click="openConversationInput(follower.user_id)"
+            >
           <img :src="follower.user_avatar" :alt="follower.user_name"
                class="w-10 h-10 rounded-full mr-sm object-cover">
           <span class="text-text font-medium">{{ follower.user_name }}</span>
@@ -33,8 +35,9 @@ import axios from 'axios'
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 import { useAccountStore } from '@/store/account';
 const {account, permissions} = useAccountStore();
-
-
+//import { openConversationInput } from '@/components/CommunityFeature/chat/createChat.ts';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 const followers = ref([])
 const currentPage = ref(1)
 const pageSize = ref(2)
@@ -74,7 +77,15 @@ const fetchFollowers = async (page = 1) => {
   }
 }
 
-
+const openConversationInput = (target_id) => {
+  router.push({
+    name: "聊天",
+    params: {
+      "conversation_id": target_id,
+    },
+    query: { "current_user_id":account.userId, }
+  })
+};
 
 onMounted(() => fetchFollowers())
 </script>

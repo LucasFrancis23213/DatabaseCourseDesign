@@ -339,7 +339,7 @@ const save = async (key) => {
     if (row.imageInputType === 'upload' && imageFile.value) {
       const formData = new FormData();
       formData.append('file', imageFile.value);
-      const uploadResponse = await axios.post('/api/AdPicUpload/uploadLocal?type=Ad', formData, {
+      const uploadResponse = await axios.post('/api/ItemPicUpload/uploadLocal?type=Ad', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

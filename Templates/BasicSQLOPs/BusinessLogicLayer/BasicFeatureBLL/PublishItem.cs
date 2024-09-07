@@ -63,7 +63,8 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
             "Lost_Status",
             "Review_Status",
             "Image_URL",
-            "Tag_ID"
+            "Tag_ID",
+            "Is_Rewarded"
             };
             var values = new List<object>
             {
@@ -77,7 +78,8 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                 item.Lost_Status,
                 item.Review_Status,
                 item.Image_URL,
-                item.Tag_ID
+                item.Tag_ID,
+                item.Is_Rewarded
             };
             BasicSQLOps basic = new BasicSQLOps(conn);
             var result = basic.InsertOperation("Lost_Items", lostNames, values);

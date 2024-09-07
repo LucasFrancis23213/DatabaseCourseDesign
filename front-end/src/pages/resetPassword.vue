@@ -68,6 +68,7 @@
   import { CloseCircleOutlined } from '@ant-design/icons-vue';
   import { message } from 'ant-design-vue';
   import { useAccountStore } from '@/store';
+  axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
   const accountStore = useAccountStore();
 
@@ -95,7 +96,7 @@
     return;
   }
     loading.value = true;
-    let url = `http://121.36.200.128:5001/api/UserManagement/UpdateUserInfo`;
+    let url = axios.defaults.baseURL + 'api/UserManagement/UpdateUserInfo';
     accountStore.account.userName=form.username;
     const result = await accountStore.profile();
     if (result.success) {

@@ -10,8 +10,8 @@ import { useAccountStore } from '@/store/account';
 import { generateItemID } from '@/utils/BasicFeature/IDGen';
 import sendSystemMsg from "@/pages/CommunityFeature/chat/systemMsgSend";
 const {account, permissions} = useAccountStore();
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
-const baseURL = 'http://121.36.200.128:5001/api/';
 
 type oneFind = {
   ITEM_ID?: string;
@@ -42,7 +42,7 @@ const submit = () => {
       if (selectedFile.value) {
         const formData = new FormData();
         formData.append('file', selectedFile.value);
-        const res = await axios.post(baseURL + 'ItemPicUpload/uploadLocal?type=Found', formData, {
+        const res = await axios.post('api/ItemPicUpload/uploadLocal?type=Found', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -55,7 +55,7 @@ const submit = () => {
       form.value.FOUND_DATE = dayjs(form.value.FOUND_DATE).format("YYYY-MM-DD HH:mm:ss")
       const jsonFormData = JSON.stringify(form.value)
       console.log(jsonFormData)
-      await axios.post(baseURL + 'PublishItem/Found', jsonFormData, {
+      await axios.post('api/PublishItem/Found', jsonFormData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -113,7 +113,7 @@ async function extractImg(file: File) {
 const finds = ref([])
 const getFinds = async () => {
   try {
-    const res = await axios.get(baseURL + 'QueryItem', {
+    const res = await axios.get('api/QueryItem', {
       params: { 
             type: 1,
             review: 1
@@ -170,7 +170,7 @@ const claimItem = async (returnMsg : string, pubUserID : number, claimUserID : n
       "Publish_User_ID" : pubUserID,
       "Claimant_User_ID" : claimUserID,
     });
-    await axios.post(baseURL + 'claim/ClaimItem', jsonFormData, {
+    await axios.post('api/claim/ClaimItem', jsonFormData, {
           headers: {
             'Content-Type': 'application/json',
           },

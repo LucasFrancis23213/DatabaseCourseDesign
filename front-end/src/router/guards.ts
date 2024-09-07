@@ -29,7 +29,7 @@ interface NaviGuard {
 const loginGuard: NavigationGuard = function (to, from, next) {
   const account = useAccountStore();
 
-  if (!http.checkAuthorization() && !/^\/(login|home|signup)?$/.test(to.fullPath)) {
+  if (!http.checkAuthorization() && !/^\/(login|home|signup|reset)?$/.test(to.fullPath)) {
     if (to.matched.some(record => record.meta.requiresAuth === false)) {
       // 如果路由被标记为不需要认证，直接允许访问
       next();

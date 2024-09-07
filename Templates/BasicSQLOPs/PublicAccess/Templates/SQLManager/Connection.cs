@@ -56,7 +56,7 @@ namespace SQLOperation.PublicAccess.Templates.SQLManager
             if (OracleConnection.State == ConnectionState.Open)
             {
                 OracleConnection.Close();
-                Debug.WriteLine("数据库已成功关闭");
+                Console.WriteLine("数据库已成功关闭");
             }
         }
 

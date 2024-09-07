@@ -3,8 +3,6 @@
 import axios from 'axios';
 import { onMounted, ref } from 'vue'
 
-const baseURL = 'http://121.36.200.128:5001/api/';
-
 const unreviewFoundItems = ref([])
 const columns = [
     { title: '物品ID', dataIndex: 'ITEM_ID' },
@@ -30,7 +28,7 @@ const categoryMapping = {
 };
 
 const getUnreviewFoundItems = async () => {
-    const res = await axios.get(baseURL + 'QueryItem', {
+    const res = await axios.get('api/QueryItem', {
         params: { type: 1 }
       });
       unreviewFoundItems.value = res.data.map(item => ({
@@ -43,7 +41,7 @@ const getUnreviewFoundItems = async () => {
 const pass = async (ITEM_ID: string) => {
     console.log('通过的物品ID:', ITEM_ID);
     //调用接口修改审核状态，修改后重新获取
-    await axios.post(baseURL + 'PassItem', 
+    await axios.post('api/PassItem', 
             JSON.stringify({ 
                 ITEM_ID: ITEM_ID,
                 type: 1
@@ -60,7 +58,7 @@ const pass = async (ITEM_ID: string) => {
 const reject = async (ITEM_ID: string) => {
     try {
         // 调用接口删除founditem中的信息，使用DELETE方法
-        await axios.delete(baseURL + 'DeleteItem', {
+        await axios.delete('api/DeleteItem', {
             data: JSON.stringify({ 
                 ITEM_ID: ITEM_ID,
                 type: 1
