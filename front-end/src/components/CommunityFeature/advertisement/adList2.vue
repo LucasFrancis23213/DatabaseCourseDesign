@@ -1,7 +1,6 @@
 <template>
   <div class="ad-list-container">
     <h1 class="title">广告列表</h1>
-
     <div class="action-bar">
       <a-button class="editable-add-btn" type="primary" @click="toggleAddNewAd">
         {{ addNewAd ? '取消新增' : '新增广告' }}
@@ -15,7 +14,6 @@
         />
       </div>
     </div>
-
     <a-table :columns="columns" :data-source="displayedFilteredAds" :pagination="{ pageSize: 10 }" @expand="onExpand" :expandedRowKeys="expandedRowKeys"
   row-key="ad_id">
       <template #expandedRowRender="{record}">
@@ -26,11 +24,8 @@
             :loading="record.loading"
             :pagination="false"
         >
-
           <template #bodyCell="{ text, record, index, column}">
-
           </template>
-
         </a-table>
         <a-table
             v-if="record.showDetails"
@@ -39,9 +34,7 @@
             :loading="record.loading"
             :pagination="false"
         >
-
           <template #bodyCell="{ text, record, index, column}">
-
           </template>
         </a-table>
 
@@ -111,7 +104,7 @@
                   :before-upload="beforeUpload"
                   @change="handleImageChange"
               >
-                <a-button icon="upload">上传图片</a-button>
+                <a-button>上传图片</a-button>
               </a-upload>
             </template>
             <a-image v-else :src="record[column.dataIndex]" :width="100"/>
@@ -145,14 +138,6 @@
         </template>
       </template>
     </a-table>
-
-    <a-collapse-transition>
-      <AdDetailsItem
-          v-if="selectedAd"
-          :ad="selectedAd"
-          @close="toggleDetails(selectedAd)"
-      />
-    </a-collapse-transition>
   </div>
 </template>
 
@@ -160,7 +145,6 @@
 import {ref, computed, onMounted, reactive} from 'vue';
 import axios from 'axios';
 import {message} from 'ant-design-vue';
-import AdDetailsItem from './AdDetailsItem.vue';
 import dayjs from "dayjs";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
@@ -354,7 +338,7 @@ const save = async (key) => {
     if (row.imageInputType === 'upload' && imageFile.value) {
       const formData = new FormData();
       formData.append('file', imageFile.value);
-      const uploadResponse = await axios.post('/api/AdPicUpload/upload', formData, {
+      const uploadResponse = await axios.post('/api/ItemPicUpload/uploadLocal?type=Ad', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -370,7 +354,7 @@ const save = async (key) => {
       ad_url: row.ad_url
     };
     let response;
-    if (key.startsWith('new-')) {
+    if (key.toString().startsWith('new-')) {
       // 新广告，使用POST请求
       response = await axios.post('/api/advertisement/AddAdvertisement', adData);
     } else {
@@ -404,11 +388,11 @@ const cancel = (key) => {
 const beforeUpload = (file) => {
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
   if (!isJpgOrPng) {
-    message.error('You can only upload JPG/PNG file!');
+    message.error('只能上传 JPG/PNG 文件!');
   }
   const isLt2M = file.size / 1024 / 1024 < 2;
   if (!isLt2M) {
-    message.error('Image must smaller than 2MB!');
+    message.error('上传的图片需要小于 2MB!');
   }
   return isJpgOrPng && isLt2M;
 };

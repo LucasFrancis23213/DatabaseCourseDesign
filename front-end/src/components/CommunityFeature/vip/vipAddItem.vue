@@ -13,7 +13,7 @@
       </div>
       <div class="form-group">
         <label for="vip_status">vip状态</label>
-        <Select id="vip_status" v-model="vipData.vip_status" required>
+        <Select id="vip_status" v-model="vipData.vip_status" class="option" required>
           <Select.Option value="Active">有效</Select.Option>
           <Select.Option value="Inactive">无效</Select.Option>
           <Select.Option value="Cancelled">取消</Select.Option>
@@ -159,5 +159,9 @@ input:focus {
   .add-vip-form {
     padding: 15px;
   }
+}
+
+.option{
+  width: 100%;
 }
 </style>

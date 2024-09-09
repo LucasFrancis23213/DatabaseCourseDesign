@@ -68,6 +68,7 @@
   import { CloseCircleOutlined } from '@ant-design/icons-vue';
   import { message } from 'ant-design-vue';
   import { useAccountStore } from '@/store';
+  axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
   const accountStore = useAccountStore();
 
@@ -92,12 +93,19 @@
   async function resetPassword() {
     if (codeError.value) {
     message.error('验证码格式不正确，请检查后重试');
-    return; 
+    return;
   }
     loading.value = true;
-    let url = `https://localhost:44343/api/UserManagement/UpdateUserInfo`;
+    let url = axios.defaults.baseURL + 'api/UserManagement/UpdateUserInfo';
     accountStore.account.userName=form.username;
-    accountStore.profile();
+    const result = await accountStore.profile();
+    if (result.success) {
+      message.success(result.message);
+    } else {
+      message.error(result.message);
+      loading.value = false;
+      return;
+    }
     const resetData = {
       userID: accountStore.account.userId,
       userName: form.username,

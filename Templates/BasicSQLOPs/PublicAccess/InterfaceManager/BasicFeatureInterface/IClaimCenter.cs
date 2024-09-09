@@ -21,5 +21,7 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
         public Tuple<bool, Tuple<bool, string>> CheckSignStatus(string itemID, int userID);
 
         public Tuple<bool, string> DeleteItem(string itemID);
+
+        public void ReleaseSQLConn();
     }
 }

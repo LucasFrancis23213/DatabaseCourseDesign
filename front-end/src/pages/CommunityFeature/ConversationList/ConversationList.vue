@@ -1,20 +1,20 @@
 <template>
   <div class="conversation-list">
-    <h1>用户列表</h1>
-    <a-input
-      v-model:value="userId"
-      placeholder="想要建立会话的用户id"
-      @pressEnter="navigateToConversation(userId, currentUserId)"
-    >
-      <template #suffix>
-        <a-button type="primary" @click="navigateToConversation(userId, currentUserId)">确定</a-button>
-      </template>
-    </a-input>
+    <h1>消息列表</h1>
+<!--    <a-input-->
+<!--      v-model:value="userId"-->
+<!--      placeholder="想要建立会话的用户id"-->
+<!--      @pressEnter="navigateToConversation(userId, currentUserId)"-->
+<!--    >-->
+<!--      <template #suffix>-->
+<!--        <a-button type="primary" @click="navigateToConversation(userId, currentUserId)">确定</a-button>-->
+<!--      </template>-->
+<!--    </a-input>-->
     <div
       v-for="conversation in conversations"
       :key="conversation.id"
       class="conversation-item"
-      @click="navigateToConversation(conversation.id, currentUserId)"
+      @click="navigateToConversation(conversation, currentUserId)"
     >
       <a-avatar :src="conversation.avatar" :alt="conversation.name" class="avatar" />
       <div class="conversation-details">
@@ -77,10 +77,10 @@ const formatTime = (timeString) => {
   }
 };
 
-const navigateToConversation = (conversationId, currentUserId) => {
+const navigateToConversation = (conversation, currentUserId) => {
   router.push({
     name: '聊天',
-    params: { conversation_id: conversationId },
+    params: { conversation_id: conversation.id },
     query: { current_user_id: currentUserId },
   });
 };
@@ -100,14 +100,22 @@ function format_last_message(last_message,sender){
 
 <style scoped>
 .conversation-list {
-  max-width: 600px;
+
   margin: 0 auto;
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
 h1 {
   text-align: center;
   color: #333;
+  padding: 20px 0;
+  background-color: #fff;
+  margin: 0;
+  border-bottom: 1px solid #eee;
 }
 
 .conversation-item {
@@ -117,10 +125,25 @@ h1 {
   border-bottom: 1px solid #eee;
   position: relative;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+  background-color: #fff;
+}
+
+.conversation-item:hover {
+  background-color: #f0f0f0;
+}
+
+.conversation-item:last-child {
+  border-bottom: none;
 }
 
 .avatar {
   margin-right: 15px;
+  transition: transform 0.2s ease;
+}
+
+.conversation-item:hover .avatar {
+  transform: scale(1.05);
 }
 
 .conversation-details {
@@ -138,6 +161,7 @@ h1 {
 .name {
   font-weight: bold;
   color: #333;
+  font-size: 1.1em;
 }
 
 .time {
@@ -151,11 +175,34 @@ h1 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-size: 0.9em;
+  max-width: 80%;
 }
 
 .unread-badge {
   position: absolute;
-  top: 15px;
+  top: 50%;
   right: 15px;
+  transform: translateY(-50%);
+  transition: transform 0.2s ease;
+}
+
+.conversation-item:hover .unread-badge {
+  transform: translateY(-50%) scale(1.1);
+}
+
+@media (max-width: 480px) {
+  .conversation-list {
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .name {
+    font-size: 1em;
+  }
+
+  .message {
+    font-size: 0.85em;
+  }
 }
 </style>

@@ -1,6 +1,7 @@
 ﻿using Oracle.ManagedDataAccess.Client;
 using SQLOperation.PublicAccess.Templates.SQLManager;
 using System.Data;
+using System.Diagnostics;
 
 namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
 {
@@ -18,6 +19,12 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
             conn = new Connection(Uid, Password, DataSource);
             BasicSQLOps = new BasicSQLOps(conn);
             OracleConnection = conn.GetOracleConnection();
+        }
+
+        ~BaseDAL()
+        {
+            Debug.WriteLine("已断开连接");
+            conn.DisconnectSQL();
         }
 
         protected Tuple<bool, string> DoQuery(Func<Tuple<bool, string>> action)
@@ -40,7 +47,10 @@ namespace SQLOperation.DataAccessLayer.ManagementFeatureDAL
                 if (OracleConnection.State == ConnectionState.Open)
                 {
                     OracleConnection.Close();
+                    Console.WriteLine("数据库已成功关闭");
                 }
+                Debug.WriteLine("已断开连接");
+                GC.Collect();
             }
         }
     }

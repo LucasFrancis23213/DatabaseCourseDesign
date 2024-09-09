@@ -37,6 +37,7 @@ namespace DatabaseProject.ServiceLayer.ConmmunityFeature
                 string selectClause = @"
                 conversations.OTHER_USER_ID AS USER_ID,
                 users.USER_NAME AS USER_NAME,
+                users.AVATAR AS AVATAR,    
                 conversations.UNREAD_COUNT,
                 conversations.LAST_MESSAGE_TIME,
                 conversations.MESSAGE_CONTENT

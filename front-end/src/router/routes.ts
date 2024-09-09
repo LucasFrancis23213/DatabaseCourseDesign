@@ -114,20 +114,24 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/pages/returnCenter')
   },
   {
-    path: '/Review',
-    name: '审核中心',
-    meta: {
-      renderMenu: true,
-    },
-    component: () => import('@/pages/review')
-  },
-  {
     path: '/Personal',
     name: '个人中心',
     meta: {
-      renderMenu: true,
+      renderMenu: false,
+      cacheable: false,
     },
     component: () => import('@/pages/personal')
+  },
+    {
+    path:'/recharge/:recharge_id',
+    name:'充值确认',
+    props:true,
+    meta: {
+      renderMenu: false,
+      cacheable: false,
+      requiresAuth: false,
+    },
+    component:() =>import('@/pages/CommunityFeature/vipRechargeConfirm.vue')
   },
 ];
 //Community Feature -- QandAList -- 路由添加

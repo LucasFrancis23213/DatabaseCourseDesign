@@ -4,7 +4,7 @@
       <img :src="props.adImage" :alt="props.adTitle" class="ad-image">
       <div class="ad-info">
         <h3 class="ad-title">{{ props.adTitle }}</h3>
-        <p class="ad-description">{{ props.adDescription }}</p>
+        <p class="ad-description">{{ props.adTitle }}</p>
         <span class="ad-tag">广告</span>
       </div>
     </div>
@@ -77,8 +77,8 @@ const navigateToAd = async () => {
 }
 
 .ad-image {
-  width: 120px;
-  height: 120px;
+  width: 60px;
+  height: 60px;
   object-fit: cover;
   border-radius: 4px;
 }

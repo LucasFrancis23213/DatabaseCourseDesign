@@ -2,44 +2,67 @@
   <span class="text-title font-bold">输入用户ID或用户名以查询，直接查询获取全部用户：<br></span>
   <div style="display: flex; align-items: center; margin-top:10px; gap:20px; margin-right:500px;">
     <a-input v-model:value="filters.userID" placeholder="用户ID" style="flex-grow: 1;">
-        <template #prefix>
-          <HourglassOutlined />
-        </template>
+      <template #prefix>
+        <HourglassOutlined/>
+      </template>
     </a-input>
     <a-input v-model:value="filters.userName" placeholder="用户名" style="flex-grow: 1;">
-        <template #prefix>
-          <HourglassOutlined />
-        </template>
+      <template #prefix>
+        <HourglassOutlined/>
+      </template>
     </a-input>
     <div style="display: flex;">
-  <a-button style="margin-right: 20px;" @click="applyFilters">
-      查询
-  </a-button>
-</div>
-</div>
-<br>
-<div class="table w-full">
-  <a-table :columns="columns" :dataSource="data" rowKey="userID" />
-</div>
-<br>
-<div style="display: flex; justify-content: flex-end;">
-  <a-button type="primary" style="margin-right: 20px;" @click="downloadLogs">
+      <a-button style="margin-right: 20px;" @click="applyFilters">
+        查询
+      </a-button>
+    </div>
+  </div>
+  <br>
+  <div class="table w-full">
+    <a-table :columns="columns" :dataSource="data" rowKey="userID">
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.dataIndex === 'action'">
+          <adminVip :user_id="record.UserID"></adminVip>
+<!--          <span v-if="editingKey === record.ad_id">-->
+<!--            <a-typography-link @click="(record.userID)">新增</a-typography-link>-->
+<!--            <a-typography-link @click="cancel(record.ad_id)" style="margin-left: 8px">取消</a-typography-link>-->
+<!--&lt;!&ndash;          </span>&ndash;&gt;-->
+<!--          <span v-else>-->
+<!--            <a-typography-link @click="edit(record.ad_id)">编辑</a-typography-link>-->
+<!--          </span>-->
+
+<!--          <a-popconfirm-->
+<!--              title="确定要删除这条广告吗？"-->
+<!--              @confirm="() => deleteAd(record.ad_id)"-->
+<!--          >-->
+<!--            <a-typography-link style="margin-left: 8px">删除</a-typography-link>-->
+<!--          </a-popconfirm>-->
+        </template>
+      </template>
+    </a-table>
+  </div>
+  <br>
+  <div style="display: flex; justify-content: flex-end;">
+    <a-button type="primary" style="margin-right: 20px;" @click="downloadLogs">
       下载信息
-  </a-button>
-</div>
+    </a-button>
+  </div>
 
 </template>
 <script lang="ts" setup>
-  import { ref } from 'vue';
-  import { message } from 'ant-design-vue';
-  import axios from 'axios';
-  axios.defaults.baseURL = import.meta.env.VITE_API_URL;
+import {onMounted, ref} from 'vue';
+import {message} from 'ant-design-vue';
+import axios from 'axios';
+import adminVip from "@/pages/admin_CommunityFeature/vip/adminVip.vue"
+import { on } from 'events';
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
 const columns = [
-    { title: '用户ID', dataIndex: 'UserID' },
-    { title: '用户名', dataIndex: 'UserName' },
-    { title: '联系方式', dataIndex: 'Contact' },
-  ];
+  {title: '用户ID', dataIndex: 'UserID'},
+  {title: '用户名', dataIndex: 'UserName'},
+  {title: '联系方式', dataIndex: 'Contact'},
+  {title: '操作', dataIndex: 'action'},
+];
 
 const filters = ref({
   userID: '',
@@ -61,7 +84,7 @@ const applyFilters = async () => {
   }
   try {
     const response = await axios.get(`/api/UserManagement/AdminGetUserInfo?${query}`);
-    data.value = [response.data[0]];
+    data.value = response.data;
   } catch (error) {
     let errorMessage = '查询失败: ';
     if (error.response && error.response.data) {
@@ -73,6 +96,7 @@ const applyFilters = async () => {
     console.error('Error fetching data:', error);
   }
 }
+
 
 const downloadLogs = () => {
   const now = new Date();
@@ -88,7 +112,7 @@ const downloadLogs = () => {
   });
 
   const csvContent = `\uFEFF${[headers, ...rows].join('\n')}`;
-  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const blob = new Blob([csvContent], {type: 'text/csv;charset=utf-8;'});
   const url = URL.createObjectURL(blob);
 
   const link = document.createElement('a');
@@ -96,6 +120,8 @@ const downloadLogs = () => {
   link.download = `UserInfo_userID_${userID}.csv`;
   link.click();
 
-  URL.revokeObjectURL(url); 
+  URL.revokeObjectURL(url);
 }
+
+
 </script>

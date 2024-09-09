@@ -8,19 +8,10 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
     [ApiController]
     public class TransactionLogsController : ControllerBase
     {
-        private readonly InsertTransactionLogBLL _insertTransactionLogBLL;
-        private readonly GetTransactionLogsBLL _getTransactionLogsBLL;
-        private readonly UpdateTransactionStatusBLL _updateTransactionStatusBLL;
-        public TransactionLogsController()
-        {
-            _getTransactionLogsBLL = new GetTransactionLogsBLL();
-            _insertTransactionLogBLL = new InsertTransactionLogBLL();
-            _updateTransactionStatusBLL = new UpdateTransactionStatusBLL();
-        }
-
         [HttpGet("GetTransactionLogs")]
         public IActionResult GetTransactionLogs([FromQuery] QueryTransactionLogsArgs args)
         {
+            GetTransactionLogsBLL _getTransactionLogsBLL = new();
             var result = _getTransactionLogsBLL.GetLogs(args);
             if (result.Item1)
             {
@@ -35,6 +26,7 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
         [HttpPost("InsertTransactionLog")]
         public IActionResult InsertTransactionLog([FromBody] TransactionLogsInsertUtil newLog)
         {
+            InsertTransactionLogBLL _insertTransactionLogBLL = new();
             var result = _insertTransactionLogBLL.InsertTransactionLog(newLog);
             if (result.Item1)
             {
@@ -49,6 +41,7 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
         [HttpPut("UpdateTransactionStatus")]
         public IActionResult ChangeTransactionStatus(int TransactionID, string newStatus, DateTime? FinishTime)
         {
+            UpdateTransactionStatusBLL _updateTransactionStatusBLL = new();
             var result = _updateTransactionStatusBLL.UpdateTransactionStatus(TransactionID, newStatus, FinishTime);
             if (result.Item1)
             {

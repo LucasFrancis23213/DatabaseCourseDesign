@@ -66,6 +66,8 @@ onMounted(() => {
   });
 });
 
+const displayAvatar = computed(() => props.avatar || account.avatar);
+
 const isWithinFiveMinutes = computed(() => {
   const messageTime = new Date(props.time).getTime();
   const fiveMinutesInMs = 5 * 60 * 1000;
@@ -96,15 +98,28 @@ const build_chat_user_id = computed(()=>{
   else
     return undefined;
 });
+const handleOk = () => {
+  showUserInfo.value = false;
+};
 
-console.log(account);
+const handleCancel = () => {
+  showUserInfo.value = false;
+};
+
+const modalVisible = computed({
+  get: () => showUserInfo.value && ! props.isSelf.value,
+  set: (value) => {
+    showUserInfo.value = value;
+  }
+});
+//console.log(account);
 
 </script>
 
 <template>
   <div class="chat-bubble" :class="{ 'self': isSelf }">
-    <div class="avatar" v-if="!isSelf" @click="toggleUserInfo" ref="avatarRef">
-      <img :src="account.avatar" alt="User Avatar">
+    <div class="avatar" @click="toggleUserInfo" ref="avatarRef">
+      <img :src="displayAvatar" alt="User Avatar">
     </div>
     <div class="message-container" @mouseenter="toggleRetract" @mouseleave="toggleRetract">
       <div class="message"  >{{ Content }}</div>
@@ -116,12 +131,13 @@ console.log(account);
       <div class="time">{{ formattedTime }}</div>
       <CreateConversationBtn v-if="isSystemMsg&&!isSelf" :target-id="build_chat_user_id" ></CreateConversationBtn>
     </div>
-    <div v-if="showUserInfo && !isSelf" class="user-info" @mouseleave="toggleUserInfo">
-      <p><strong>ID:</strong> {{ message_sender_id }}</p>
-      <p><strong>用户名:</strong> {{ user_name }}</p>
-      <followButton class="follow-button" :user_id="message_sender_id" :initial-follow-state="is_following" ></followButton>
-
-    </div>
+    <a-modal v-model:visible="modalVisible" title="用户详情" @ok="handleOk" @cancel="handleCancel">
+      <div v-if="showUserInfo ">
+        <p><strong>ID:</strong> {{ message_sender_id }}</p>
+        <p><strong>用户名:</strong> {{ user_name }}</p>
+        <followButton class="follow-button" :user_id="message_sender_id" :initial-follow-state="is_following" ></followButton>
+      </div>
+    </a-modal>
   </div>
 </template>
 
@@ -211,7 +227,7 @@ button:active {
 }
 
 .user-info {
-  position: relative;
+  position: absolute;
   left: 50px;
   top: 0;
   background-color: white;

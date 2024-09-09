@@ -16,7 +16,7 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
         private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly string _RemoteHost = "121.36.200.128";
         private readonly string _UserName = "root";
-        private readonly string _RemoteBasePath = "/DB_data";
+        private readonly string _RemoteBasePath = "/www/wwwroot/picUpload";
 
         public ItemPicUploadController(IWebHostEnvironment hostingEnvironment)
         {
@@ -93,12 +93,30 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                 return BadRequest("No file uploaded");
             } 
 
-            if (string.IsNullOrEmpty(type) || (type != "Found" && type != "Lost"))
+            if (string.IsNullOrEmpty(type) || (type != "Found" && type != "Lost" && type != "Ad"))
             {
-                return BadRequest("Invalid type. Allowed values are 'Found' or 'Lost'.");
+                return BadRequest("Invalid type. Allowed values are 'Found' or 'Lost' or 'Ad'.");
             }
 
-            var FolderName = type == "Found" ? "FoundItemPics" : "LostItemPics";
+            string FolderName = string.Empty;
+
+            if (type == "Found")
+            {
+                FolderName = "FoundItemPics";
+            }
+            else if (type == "Lost")
+            {
+                FolderName = "LostItemPics";
+            }
+            else if (type == "Ad")
+            {
+                FolderName = "Advertisements";
+            }
+            else
+            {
+                return BadRequest("Invalid type. Allowed values are 'Found' or 'Lost' or 'Ad'.");
+            }
+
             var LocalFolderPath = $"{_RemoteBasePath}/{FolderName}";
 
             var FileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
@@ -114,7 +132,7 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                 await file.CopyToAsync(fileStream);
             }
 
-            var FileUrl = $"/DB_data/{FolderName}/{FileName}";
+            var FileUrl = $"http://121.36.200.128:5600/{FolderName}/{FileName}";
 
             return Ok(new { url = FileUrl });
         }

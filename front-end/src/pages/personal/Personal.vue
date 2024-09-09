@@ -5,7 +5,7 @@
         class="profile flex items-center justify-between p-base bg-container rounded-2xl absolute -bottom-16 left-6 shadow-lg"
       >
         <div class="info flex items-center">
-          <img class="w-20 rounded-lg" src="@/assets/avatar/face-1.jpg" />
+          <img class="w-20 rounded-lg" :src="account.avatar" />
           <div class="flex flex-col justify-around ml-4">
             <div style="display: flex; align-items: center;">
               <span class="text-title text-xl font-bold">{{ userInfo.username }}</span>
@@ -14,8 +14,10 @@
           <span class="text-subtext font-semibold">ID: {{ userInfo.userId }}</span>
           <!-- 实名认证按钮 -->
           <div class="flex space-x-4">
-            <a-button @click="isAuthModalVisible = true" type="primary" class="mt-2">实名认证</a-button>
+            <vipRecharge class="vip-recharge"></vipRecharge>
+            <a-button v-if=!isAuthed @click="isAuthModalVisible = true" type="primary" class="mt-2">实名认证</a-button>
             <a-button @click="isDeleteModalVisible = true" type="primary" class="mt-2 bg-red-500 hover:bg-red-600 border-red-500 hover:border-red-600">注销</a-button>
+
           </div>
           </div>
         </div>
@@ -74,54 +76,56 @@
       请输入正确的确认文字
     </p>
   </a-modal>
-
-
-
-  <a-modal
-    v-model:visible="isEditModalVisible"
-    title="编辑个人信息"
-    ok-text="确认"
-    cancel-text="取消"
-    @ok="confirmEdit"
-    @cancel="cancelEdit"
-    style="max-width: 400px;"
-  >
-  <a-form :model="editRecord" :labelCol="{ span: 8 }" :wrapperCol="{ span: 12 }">
-    <a-form-item label="用户ID" name="userID">
-      <span>{{ editRecord.userID }}</span>
-    </a-form-item>
-    <a-form-item label="用户名" name="userName">
-      <a-input v-model:value="editRecord.userName" :placeholder="userInfo.username"/>
-    </a-form-item>
-    <a-form-item label="绑定号码" name="contact">
-      <a-input v-model:value="editRecord.contact" :placeholder="userInfo.contact" />
-    </a-form-item>
-  </a-form>
-  </a-modal>
-
   <MyFind />
   <MySearch />
   <a-modal
-    v-model:visible="isEditModalVisible"
-    title="编辑个人信息"
-    ok-text="确认"
-    cancel-text="取消"
-    @ok="confirmEdit"
-    @cancel="cancelEdit"
-    style="max-width: 400px;"
-  >
+  v-model:visible="isEditModalVisible"
+  title="编辑个人信息"
+  ok-text="确认"
+  cancel-text="取消"
+  @ok="confirmEdit"
+  @cancel="cancelEdit"
+  style="max-width: 400px;"
+>
   <a-form :model="editRecord" :labelCol="{ span: 8 }" :wrapperCol="{ span: 12 }">
-    <a-form-item label="用户ID" name="userID">
-      <span>{{ editRecord.userID }}</span>
+    <!-- 头像选择 -->
+    <a-form-item label="头像">
+      <div style="display: flex; align-items: center;">
+    <img :src="editRecord.Avatar" style="cursor: pointer; width: 80px; height: 80px; border-radius: 50%;">
+    <EditFilled @click="isAvatarModalVisible = true" class="text-subtext hover:text-primary cursor-pointer" style="margin-left:10px" />
+  </div>
     </a-form-item>
+    <a-form-item label="用户ID" name="userID">
+      <span>{{ accountStore.account.userId }}</span>
+    </a-form-item>
+    <!-- 用户名输入 -->
     <a-form-item label="用户名" name="userName">
       <a-input v-model:value="editRecord.userName" :placeholder="userInfo.username"/>
     </a-form-item>
+
+    <!-- 绑定号码输入 -->
     <a-form-item label="绑定号码" name="contact">
       <a-input v-model:value="editRecord.contact" :placeholder="userInfo.contact" />
     </a-form-item>
   </a-form>
-  </a-modal>
+</a-modal>
+
+<!-- 头像选择模态框 -->
+<a-modal
+  v-model:visible="isAvatarModalVisible"
+  title="选择头像"
+  footer=""
+  style="max-width: 200px; position: absolute; top: 10%; right: 20%;" 
+>
+  <div style="display: flex; flex-wrap: wrap; justify-content: space-around;">
+    <div v-for="(avatar, index) in avatars" :key="index" style="margin: 10px;">
+      <img 
+        :src="avatar" 
+        @click="editRecord.Avatar=`${baseURL}${index+1}.jpg`,isAvatarModalVisible=false" 
+        style="width: 50px; height: 50px; cursor: pointer; border-radius: 50%;">
+    </div>
+  </div>
+</a-modal>
 </template>
 
 <script lang="ts" setup>
@@ -138,6 +142,7 @@ import MyFind from './MyFind.vue';
 import MySearch from './MySearch.vue';
 import followList from "@/components/CommunityFeature/follow/followList.vue";
 import fansList from "@/components/CommunityFeature/follow/fansList.vue";
+import vipRecharge from "@/pages/CommunityFeature/vip/vipRecharge.vue"
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
 const select = ref('overview');
@@ -148,7 +153,10 @@ const idCard = ref('');
 const isAuthModalVisible = ref(false); // 控制实名认证模态框显示
 const isDeleteModalVisible = ref(false); // 控制注销模态框显示
 const isEditModalVisible = ref(false); //控制编辑信息模态框显示
+const isAvatarModalVisible = ref(false); //控制头像信息模态框显示
 const confirmationText = ref('');
+const baseURL = 'http://121.36.200.128:5600/Avatars/default_avatar';
+const avatars = Array.from({ length: 10 }, (v, i) => `${baseURL}${i + 1}.jpg`);
 
 const isConfirmationValid = computed(() => {
   return confirmationText.value === '我确认完全理解并同意永久删除我的账号及所有数据，此操作不可撤销';
@@ -170,29 +178,92 @@ const userInfo = computed(() => ({
 }));
 
 // 实名认证提交逻辑
+// 校验身份证号码是否有效
+function isValidIDCard(idCard) {
+  const weights = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
+  const checkCodes = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'];
+  //const idCardValue = idCard.value.trim(); // 获取去掉首尾空格的身份证号
+
+  if (idCard.length !== 18) {
+    return false;
+  }
+
+  // 校验前17位是否为数字
+  const firstSeventeenDigits = idCard.slice(0, 17);
+
+// 遍历前17位，检查每一位是否为数字
+for (let i = 0; i < firstSeventeenDigits.length; i++) {
+  const char = firstSeventeenDigits[i];
+
+  // 使用 isNaN 来判断字符是否为数字，如果不是数字，返回 false
+  if (isNaN(char)) {
+    return false;
+  }
+}
+  // 计算校验码
+  let sum = 0;
+  for (let i = 0; i < 17; i++) {
+    sum += firstSeventeenDigits[i] * weights[i];
+  }
+  const mod = sum % 11;
+  const checkCode = checkCodes[mod];
+
+  // 校验第18位
+  return idCard[17].toUpperCase() === checkCode;
+}
+
 const submitAuthentication = async () => {
+  const idCardValue = idCard.value.trim();
+
+  if (!isValidIDCard(idCardValue)) {
+    message.error('身份证号码格式不正确，请检查后重试。');
+    return;
+  }
+
   try {
-    console.log(realName.value,idCard.value,userInfo.value.userId);
-    
-    const utcDate = new Date();
-    const utc8Date = new Date(utcDate.getTime() + (8 * 60 * 60 * 1000));
-    const auth_Date = utc8Date.toISOString();
-    
-    await axios.post('/api/UserManagement/NewUserAuthed', {
-      User_ID: userInfo.value.userId,
-      Auth_Date: auth_Date,
+    const authData = {
+      user_ID: account.userId,
+      auth_Date: new Date().toISOString(),
+    };
+
+    await axios.post('/api/UserManagement/NewUserAuthed', JSON.stringify(authData), {
+      headers: {
+        'Content-Type': 'application/json'
+      }
     });
+    message.success('实名认证成功！');
+    checkAuthStatus(account.userId);
     
-    // 无论成功还是失败都显示认证成功
-    message.success('实名认证成功！');
   } catch (error) {
-    console.error('Error during authentication:', error);
-    // 这里也可以显示认证成功
-    message.success('实名认证成功！');
+    message.error('实名认证失败！');
   } finally {
-    isAuthModalVisible.value = false; // 关闭模态框
+    isAuthModalVisible.value = false;
   }
 };
+
+const isAuthed = ref(false);
+
+const checkAuthStatus = async (userId) => {
+  try {
+    const response = await axios.get(`/api/UserManagement/GetAuthInfo`, {
+      params: { UserID: userId }
+    });
+
+    if (response.status === 200) {
+      isAuthed.value = true;
+      console.log('用户已认证');
+    } else {
+      console.log('用户未认证或查询失败');
+    }
+
+  } catch (error) {
+    console.error('查询认证状态时发生错误:', error);
+  }
+};
+onMounted(() => {
+  checkAuthStatus(account.userId);
+});
+
 
 
 // 删除用户方法
@@ -213,30 +284,34 @@ const cancelDelete = () => {
 
 
 const editRecord = ref({
-  userID: '',
-  userName: '',
+  userID: account.userId,
+  userName: null,
   password:null,
-  contact:''
+  contact:null,
+  Avatar:account.avatar
 });
 
 function edit() {
-  editRecord.value = {
-    userID: userInfo.value.userId,
-    userName: '',
-    password:null,
-    contact:''
-  };
+  editRecord.value=({
+  userID: account.userId,
+  userName: null,
+  password:null,
+  contact:null,
+  Avatar:account.avatar
+});
   isEditModalVisible.value = true;
 }
 
 function confirmEdit() {
-  let url = `https://localhost:44343/api/UserManagement/UpdateUserInfo`;
+  let url = axios.defaults.baseURL + 'api/UserManagement/UpdateUserInfo';
 
   // 确保 editRecord 解构并传递到 API
   axios.put(url, editRecord.value)
     .then(() => {
       message.success('编辑成功！');
-      accountStore.account.userName=editRecord.value.userName;
+      if(editRecord.value.userName!=null&&editRecord.value.userName!=""){
+        accountStore.account.userName=editRecord.value.userName;
+      }
       accountStore.profile();
       isEditModalVisible.value = false;
     })
@@ -248,10 +323,11 @@ function confirmEdit() {
 
 function cancelEdit() {
   editRecord.value = {
-    userID: '',
-    userName: '',
+    userID: accountStore.account.userId,
+    userName: null,
     password:null,
-    contact:''
+    contact:null,
+    Avatar:null
   };
   isEditModalVisible.value = false;
 }
@@ -291,4 +367,8 @@ function cancelEdit() {
   color: #e60707;
 }
 
+.vip-recharge{
+  margin-top: 8px;
+
+}
 </style>

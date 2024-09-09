@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { getBase64 } from '@/utils/file';
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted,computed, onUnmounted} from 'vue';
   import { FormInstance, message } from 'ant-design-vue';
   import axios from 'axios';
   import dayjs from 'dayjs'
@@ -8,8 +8,17 @@
   import { generateItemID } from '@/utils/BasicFeature/IDGen';
   import sendSystemMsg from "@/pages/CommunityFeature/chat/systemMsgSend";
   const {account} = useAccountStore();
+  import ItemMap from "@/pages/admin_BasicFeature/ItemMap";
+  const { categoryMapping } = ItemMap;
 
-  const baseURL = 'https://localhost:44343/api/';
+  const categoryOptions = computed(() =>
+      Object.entries(categoryMapping).map(([value, label]) => ({
+        label,
+        value,
+      }))
+    );
+
+  axios.defaults.baseURL = import.meta.env.VITE_API_URL;
   
   type onePublish = {
     ITEM_ID?: string;
@@ -32,10 +41,6 @@
   3: '医疗用品'
 };
 
-  const categoryMapping = {
-    '1': '日用品',
-    '2': '手表',
-  };
 
   const formModel = ref<FormInstance>();
 
@@ -46,7 +51,7 @@
         if (selectedFile.value) {
           const formData = new FormData();
           formData.append('file', selectedFile.value);
-          const res = await axios.post(baseURL + 'ItemPicUpload/upload?type=Lost', formData, {
+          const res = await axios.post('api/ItemPicUpload/uploadLocal?type=Lost', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
@@ -65,14 +70,13 @@
         }
         const jsonFormData = JSON.stringify(form.value);
         console.log(jsonFormData);
-        await axios.post(baseURL + 'PublishItem/Lost', jsonFormData, {
+        await axios.post('api/PublishItem/Lost', jsonFormData, {
           headers: {
             'Content-Type': 'application/json',
           },
         });
         getPublishs();
         setTimeout(() => {
-          location.reload();
           message.success('提交成功！');
           loading.value = false;
           open.value = false;
@@ -131,7 +135,7 @@
   const getPublishs = async () => {
     console.log(account);
     try {
-      const res = await axios.get(baseURL + 'QueryItem', {
+      const res = await axios.get('api/QueryItem', {
         params: { 
             type: 0,
             review: 1
@@ -189,7 +193,7 @@ const returnItem = async (returnMsg: string, pubUserID: number, claimUserID: num
       "Publish_User_ID" : pubUserID,
       "Claimant_User_ID" : claimUserID,
     });
-    await axios.post(baseURL + 'claim/ReturnItem', jsonFormData, {
+    await axios.post('api/claim/ReturnItem', jsonFormData, {
           headers: {
             'Content-Type': 'application/json',
           },
@@ -209,6 +213,19 @@ const returnForm = ref({
   MESSAGE: '',
   IMAGE_URL: '',
 })
+let intervalId: ReturnType<typeof setInterval> | null = null;
+
+onMounted(() => {
+  getPublishs(); // Initial call
+  intervalId = setInterval(getPublishs, 10000); // Call every 10 seconds
+});
+
+onUnmounted(() => {
+  if (intervalId !== null) {
+    clearInterval(intervalId); // Clear the interval when the component is unmounted
+  }
+});
+
 </script>
 
 <template>
@@ -219,7 +236,7 @@ const returnForm = ref({
         <a-input v-model:value="form.ITEM_NAME" :maxlength="20" />
       </a-form-item>
       <a-form-item label="物品类别" name="CATEGORY_ID" has-feedback :rules="[{ required: true, message: '请选择物品类别' }]">
-        <a-cascader v-model:value="form.CATEGORY_ID" :options="[{label: '日用品', value: '1',}, {label: '手表', value: '2',},]"/>
+        <a-cascader v-model:value="form.CATEGORY_ID" :options="categoryOptions"/>
       </a-form-item>
       <a-form-item label="物品描述" name="DESCRIPTION" has-feedback :rules="[{ required: true, message: '请输入物品描述' }]">
         <a-textarea :rows="4" v-model:value="form.DESCRIPTION" :maxlength="100" />
@@ -265,54 +282,59 @@ const returnForm = ref({
     </a-form>
   </a-modal>
  
-  <!-- 寻物启事 -->
-  <a-table :columns="columns" :dataSource="publishs" >
-    <template #title>
-      <div class="flex justify-between pr-4">
-        <h4>寻物启事</h4>
-        <a-button type="primary" @click="addNew" >
-          <template #icon>
-            <PlusOutlined />
+  <!-- 寻物启事卡片列表 -->
+  <div class="lost-items-container">
+    <div class="header-actions">
+      <h4>寻物启事</h4>
+      <a-button type="primary" @click="addNew">
+        <template #icon>
+          <PlusOutlined />
+        </template>
+        发布
+      </a-button>
+    </div>
+
+    <a-row :gutter="[16, 16]">
+      <a-col :span="8" v-for="(item, index) in publishs" :key="item.ITEM_ID">
+        <a-card hoverable>
+          <template #cover>
+            <a-image :alt="item.ITEM_NAME" :src="item.IMAGE_URL" style="height: 200px; object-fit: cover;" />
           </template>
-          发布
-        </a-button>
-      </div>
-    </template>
-    <template #bodyCell="{ column, record, index }">
-      <template v-if="column.dataIndex === 'itemNameAndCategory'">
-        <div class="text-title font-bold">
-          {{ record.ITEM_NAME }}
-        </div>
-        <div class="text-subtext">
-          {{record.CATEGORY_ID}}
-        </div>
-      </template>
-      <template v-else-if="column.dataIndex === 'IMAGE_URL'">
-        <img class="w-12 rounded" :src="record.IMAGE_URL" />
-      </template>
-      <template v-else-if="column.dataIndex === 'IS_REWARDED'">
-        <a-badge class="text-subtext" :color="'green'">
-          <template #text>
-            <span class="text-subtext">{{ IS_REWARDEDDict[Number(record.IS_REWARDED) as IS_REWARDED] }}</span>
+          <a-card-meta :title="item.ITEM_NAME">
+            <template #description>
+              <p>类别: {{ item.CATEGORY_ID }}</p>
+              <p>描述: {{ item.DESCRIPTION }}</p>
+              <p>丢失地点: {{ item.LOST_LOCATION }}</p>
+              <p>丢失时间: {{ item.LOST_DATE }}</p>
+              <p>
+                标签: 
+                <a-tag
+                  v-for="tag in item.TAG_ID"
+                  :key="tag"
+                  :color="tag === '贵重物品' ? 'volcano' : tag.length > 4 ? 'geekblue' : 'green'"
+                >
+                  {{ tag }}
+                </a-tag>
+              </p>
+              <p>
+                悬赏状态: 
+                <a-badge :color="'green'">
+                  <template #text>
+                    <span>{{ IS_REWARDEDDict[Number(item.IS_REWARDED) as IS_REWARDED] }}</span>
+                  </template>
+                </a-badge>
+              </p>
+              <p>悬赏金额: ￥{{ item.REWARD_AMOUNT }}</p>
+              <p>截止时间: {{ item.DEADLINE }}</p>
+            </template>
+          </a-card-meta>
+          <template #actions>
+            <a-button type="primary" @click="clickReturn(index)">归还</a-button>
           </template>
-        </a-badge>
-      </template>
-      <template v-else-if="column.dataIndex === 'TAG_ID'">
-        <span>
-          <a-tag
-            v-for="tag in record.TAG_ID"
-            :key="tag"
-            :color="tag === '贵重物品' ? 'volcano' : tag.length > 4 ? 'geekblue' : 'green'"
-            >
-              {{ tag }}
-          </a-tag>
-        </span>
-      </template>
-      <template v-else-if="column.dataIndex === 'RETURN_ITEM'">
-        <a-button type="primary" @click="clickReturn(index)">归还</a-button>
-      </template>
-    </template>
-  </a-table>
+        </a-card>
+      </a-col>
+    </a-row>
+  </div>
 
   <!-- 归还 -->
   <a-modal v-model:visible="openReturn" title="归还物品">
@@ -332,3 +354,19 @@ const returnForm = ref({
     </a-form>
   </a-modal>
 </template>
+<style scoped>
+.lost-items-container {
+  padding: 20px;
+}
+
+.header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.ant-card-cover img {
+  border-radius: 8px 8px 0 0;
+}
+</style>

@@ -153,7 +153,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
                 {
                     return BadRequest(new { status = "error", message = "Missing required fields." });
                 }
-
+                
                 int userId = request["user_id"].GetInt32();
                 DateTime vipStartDate = request["vip_start_time"].GetDateTime();
                 DateTime vipEndDate = request["vip_end_time"].GetDateTime();

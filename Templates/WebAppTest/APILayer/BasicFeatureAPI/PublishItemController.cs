@@ -6,6 +6,7 @@ using SQLOperation.PublicAccess.Templates.SQLManager;
 using Newtonsoft.Json.Linq;
 using SQLOperation.PublicAccess.Utilities;
 using SQLOperation.BusinessLogicLayer.BasicFeatureBLL;
+using System.Runtime.CompilerServices;
 
 namespace WebAppTest.APILayer.BasicFeatureAPI
 {
@@ -14,7 +15,7 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
     {
         //private Connection conn;
         //private OracleConnection OracleConnection;
-        private PublishItem PublishItemObject = new PublishItem();
+        //private PublishItem PublishItemObject = new PublishItem();
 
 
         [Route("api/PublishItem/Lost")]
@@ -39,18 +40,19 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                     LostItemObj.Description = TmpJson["DESCRIPTION"].ToString();
                     LostItemObj.Lost_Location = TmpJson["LOST_LOCATION"].ToString();
                     LostItemObj.Lost_Date = (DateTime)TmpJson["LOST_DATE"];
-                    LostItemObj.User_ID = (int)TmpJson["User_ID"];
+                    LostItemObj.User_ID = (int)TmpJson["USER_ID"];
                     
 
                     LostItemObj.Lost_Status = "LOST";
                     LostItemObj.Review_Status = 0; // 默认是Pending
                     LostItemObj.Image_URL = TmpJson["IMAGE_URL"].ToString();
                     LostItemObj.Tag_ID = (int)TmpJson["TAG_ID"];
-                    LostItemObj.Is_Rewarded = (int)TmpJson["IS_REWARDED"];
+                     
 
                     //再处理悬赏部分
                     if ((bool)TmpJson["IS_REWARDED"])
                     {
+                        LostItemObj.Is_Rewarded = 1;
                         RewardObj.Deadline = (DateTime)TmpJson["DEADLINE"];
                         //Release_Date自动为调用函数时候的时间
                         RewardObj.Release_Date = DateTime.Now;
@@ -61,6 +63,7 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                     }
                     else
                     {
+                        LostItemObj.Is_Rewarded = 0;
                         RewardObj.Item_ID = LostItemObj.Item_ID;
                         RewardObj.User_ID = LostItemObj.User_ID;
                     }
@@ -75,7 +78,14 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
 
                 LostItems.Add(LostItemObj);
                 Rewards.Add(RewardObj);
-                Tuple<bool, string> OperationStatus = PublishItemObject.PublishLostItem(LostItems, Rewards);
+
+                Tuple<bool, string> OperationStatus = null;
+                {
+                    PublishItem PublishItemObject = new PublishItem();
+                    OperationStatus = PublishItemObject.PublishLostItem(LostItems, Rewards);
+                    PublishItemObject.ReleaseSqlConn();
+                }
+
                 return OperationStatus.Item1;
 
             }
@@ -109,9 +119,9 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                     FoundItemObj.Found_Date = (DateTime)TmpJson["FOUND_DATE"];
 
                     //FoundItemObj.User_ID = (int)TmpJson["User_ID"];
-                    FoundItemObj.User_ID = (int)TmpJson["User_ID"];
-
-                    FoundItemObj.Match_Status = "Matching";
+                    FoundItemObj.User_ID = (int)TmpJson["USER_ID"];
+                    FoundItemObj.Tag_ID = (int)TmpJson["TAG_ID"];
+                    FoundItemObj.Match_Status = "FINDING";
                     FoundItemObj.Review_Status = 0; // 默认是Pending
                     FoundItemObj.Image_URL = TmpJson["IMAGE_URL"].ToString();
 
@@ -123,7 +133,14 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                 }
 
                 FoundItems.Add(FoundItemObj);
-                Tuple<bool, string> OperationStatus = PublishItemObject.PublishFoundItem(FoundItems);
+                // Tuple<bool, string> OperationStatus = PublishItemObject.PublishFoundItem(FoundItems);
+                Tuple<bool, string> OperationStatus = null;
+                {
+                    PublishItem PublishItemObject = new PublishItem();
+                    OperationStatus = PublishItemObject.PublishFoundItem(FoundItems);
+                    PublishItemObject.ReleaseSqlConn();
+                }
+
                 return OperationStatus.Item1;
 
             }
@@ -150,7 +167,13 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                 else if (review == 1)
                     Conditions.Add("Review_Status", "1");
 
-                Tuple<bool, string> OperationStatus = PublishItemObject.QueryItem(type, Conditions);
+
+                Tuple<bool, string> OperationStatus = null;
+                {
+                    PublishItem PublishItemObject = new PublishItem();
+                    OperationStatus = PublishItemObject.QueryItem(type, Conditions);
+                    PublishItemObject.ReleaseSqlConn();
+                }
 
                 if (OperationStatus.Item1)
                 {
@@ -195,7 +218,13 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                     return BadRequest("Json解析错误");
                 }
 
-                Tuple<bool, string> OperationStatus = PublishItemObject.DeleteItem(type, Conditions);
+                //Tuple<bool, string> OperationStatus = PublishItemObject.DeleteItem(type, Conditions);
+                Tuple<bool, string> OperationStatus = null;
+                {
+                    PublishItem PublishItemObject = new PublishItem();
+                    OperationStatus = PublishItemObject.DeleteItem(type, Conditions);
+                    PublishItemObject.ReleaseSqlConn();
+                }
 
                 if (OperationStatus.Item1)
                 {
@@ -239,7 +268,13 @@ namespace WebAppTest.APILayer.BasicFeatureAPI
                     return BadRequest("Json解析错误");
                 }
 
-                Tuple<bool, string> OperationStatus = PublishItemObject.ReviewItem(type, Item_IDs);
+                // Tuple<bool, string> OperationStatus = PublishItemObject.ReviewItem(type, Item_IDs);
+                Tuple<bool, string> OperationStatus = null;
+                {
+                    PublishItem PublishItemObject = new PublishItem();
+                    OperationStatus = PublishItemObject.ReviewItem(type, Item_IDs);
+                    PublishItemObject.ReleaseSqlConn();
+                }
 
                 if (OperationStatus.Item1)
                 {

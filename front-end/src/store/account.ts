@@ -50,10 +50,12 @@ export const useAccountStore = defineStore('account', {
   actions: {
     async login(username, password) {
       this.username = username;
+      //useMenuStore().clearMenu();
       const queryParams = new URLSearchParams({ UserName: username, Password: password }).toString();
       try {
         console.log("ready to post request to server");
         const response = await axios.get(`/api/UserManagement/CheckPassword?${queryParams}`);
+        console.log("get response! and response ",response);
         console.log("get response! and response status is ",response.status);
         if (response.status === 200) {
           this.logged = true;
@@ -66,7 +68,9 @@ export const useAccountStore = defineStore('account', {
           }
           useAuthStore().setAuthorities(this.permissions);
           http.setAuthorization(`Bearer ${response.data.token}`, new Date(response.data.expires));
-          this.profile();
+          await this.profile();
+          
+          console.log(this.account)
           const logData = {
             user_ID: this.account.userId,
             action_Type: "Login",
@@ -84,13 +88,6 @@ export const useAccountStore = defineStore('account', {
           return { success: true, message: "登录成功！"};
         } 
       } catch (error) {
-        const APIData = {
-          apI_Name: "CheckPassword",
-          accessor_ID: this.account.userId,
-          access_Time: getLocalISOTime(),
-          access_Result: "failure"
-        };
-        await axios.post(`/api/LogsInsert/APILogs`, APIData);
         if (error.response) {
           if (error.response.status === 401) {
             return { success: false, message: "登录失败：密码错误" };
@@ -144,7 +141,7 @@ export const useAccountStore = defineStore('account', {
           } 
         } catch (error) {
           console.error('Failed to fetch user info:', error);
-          return { account: this};
+          return { success: false, message: "用户信息错误", account: this};
         } finally {
           setAuthLoading(false); 
         }
@@ -159,7 +156,7 @@ export const useAccountStore = defineStore('account', {
       action_Type: "DeleteUser",
       occurrence_Time: getLocalISOTime()
     };
-    await axios.post(`/api/LogsInsert/UserOpsLogs`, logData);
+    //await axios.post(`/api/LogsInsert/UserOpsLogs`, logData);
     if(!!this.account.userName){
       try {
         await axios.delete(`/api/UserManagement/DeleteUser?UserID=${this.account.userId}`);

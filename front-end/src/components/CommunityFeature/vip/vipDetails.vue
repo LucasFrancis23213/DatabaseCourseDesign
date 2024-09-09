@@ -147,6 +147,7 @@ async function getVipInfo() {
       user_id: props.user_id
     });
     vipInfo.value = res.data.vip_info;
+    console.log(vipInfo.value)
   } catch (e) {
     console.error(e);
     alert(`获取VIP详情失败，错误原因：${e}`);

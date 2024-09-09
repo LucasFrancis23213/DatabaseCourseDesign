@@ -31,12 +31,15 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
         {
             try
             {
-                string whereClause = "USER_ID = :USER_ID ORDER BY DATETIME DESC";
+                // 计算七天前的日期
+                DateTime sevenDaysAgo = DateTime.Now.AddDays(-7);
+
+                string whereClause = "USER_ID = :USER_ID AND DATETIME >= :SEVEN_DAYS_AGO ORDER BY DATETIME DESC";
                 OracleParameter[] parameters = new OracleParameter[]
-                {
-                    new OracleParameter(":USER_ID", userId),
-                   
-                };
+                    {
+                        new OracleParameter(":USER_ID", userId),
+                        new OracleParameter(":SEVEN_DAYS_AGO", sevenDaysAgo)
+                    };
 
                 return UserActivitiesBusiness.QueryTableWithWhereBusiness(whereClause, parameters);
             }
@@ -195,11 +198,9 @@ namespace DatabaseProject.BusinessLogicLayer.ServiceLayer.ConmmunityFeature
                         score = 3;
                         break;
                     case "发帖":
-                        score = 10;
-                        break;
-                    case "问答":
                         score = 5;
                         break;
+
                     default:
                         throw new Exception("未知的活动类型");
                 }

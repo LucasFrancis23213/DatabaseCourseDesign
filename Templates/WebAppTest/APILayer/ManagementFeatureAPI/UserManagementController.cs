@@ -9,31 +9,13 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
     [ApiController]
     public class UserManagementController : ControllerBase
     {
-        private readonly GetUserInfoBLL _getUserInfoBLL;
-        private readonly UpdateUserInfoBLL _updateUserInfoBLL;
-        private readonly RegisterBLL _registerBLL;
-        private readonly DeleteUserBLL _deleteUserBLL;
-        private readonly UserLoginBLL _userLoginBLL;
-        private readonly UserAuthBLL _userAuthBLL;
-        private readonly DeleteAuthInfoBLL _deleteAuthInfoBLL;
-        private readonly GetAuthInfoBLL _getAuthInfoBLL;
-
-        public UserManagementController()
-        {
-            _getUserInfoBLL = new GetUserInfoBLL();
-            _updateUserInfoBLL = new UpdateUserInfoBLL();
-            _registerBLL = new RegisterBLL();
-            _deleteUserBLL = new DeleteUserBLL();
-            _userLoginBLL = new UserLoginBLL();
-            _userAuthBLL = new UserAuthBLL();
-            _deleteAuthInfoBLL = new DeleteAuthInfoBLL();
-            _getAuthInfoBLL = new GetAuthInfoBLL();
-        }
 
         [HttpGet("UserGetUserInfo")]
         public IActionResult UserGetUserInfo(int? UserID, string? UserName)
         {
+            GetUserInfoBLL _getUserInfoBLL = new();
             var result = _getUserInfoBLL.GetInfo(UserID, UserName);
+            
             if (result.Item1)
             {
                 return Ok(result.Item2);
@@ -47,6 +29,7 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
         [HttpGet("AdminGetUserInfo")]
         public IActionResult AdminGetUserInfo(int? UserID, string? UserName)
         {
+            GetUserInfoBLL _getUserInfoBLL = new();
             var result = _getUserInfoBLL.GetInfo(UserID, UserName, true);
             if (result.Item1)
             {
@@ -61,6 +44,7 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
         [HttpPut("UpdateUserInfo")]
         public IActionResult UpdateUserInfo([FromBody] UpdateUserInfoUtil NewInfo)
         {
+            UpdateUserInfoBLL _updateUserInfoBLL = new();
             var (QueryResult, Message) = _updateUserInfoBLL.UpdateUserInfo(NewInfo);
             if (QueryResult)
             {
@@ -77,6 +61,7 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
         [HttpPost("RegisterUser")]
         public IActionResult RegisterUser([FromBody] RegisterUtil user)
         {
+            RegisterBLL _registerBLL = new();
             if (user == null || string.IsNullOrEmpty(user.User_Name) || string.IsNullOrEmpty(user.Password) || string.IsNullOrEmpty(user.Contact))
             {
                 return BadRequest("User data is incomplete");
@@ -107,6 +92,7 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
         [HttpDelete("DeleteUser")]
         public IActionResult DeleteUser(int UserID)
         {
+            DeleteUserBLL _deleteUserBLL = new();
             var result = _deleteUserBLL.DeleteUser(UserID);
             if (result.Item1)
             {
@@ -121,6 +107,7 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
         [HttpGet("CheckPassword")]
         public IActionResult CheckPassword(string UserName, string Password)
         {
+            UserLoginBLL _userLoginBLL = new();
             var result = _userLoginBLL.CheckPassword(UserName, Password);
             if (result.Item1)
             {
@@ -132,7 +119,9 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
                 {
                     "用户名与密码不匹配" => Unauthorized(result.Item2),
                     "Users表没有符合要求的元素" => NotFound(result.Item2),
+                    "未找到用户" => NotFound(result.Item2),
                     _ => BadRequest(result.Item2),
+                    
                 };
             }
         }
@@ -140,6 +129,9 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
         [HttpPost("NewUserAuthed")]
         public IActionResult NewUserAuthed([FromBody] Auth_Info NewAuth)
         {
+            Auth_Info auth_Info = new();
+            
+            UserAuthBLL _userAuthBLL = new();
             var result = _userAuthBLL.NewUserAuthed(NewAuth);
             if (result.Item1)
             {
@@ -155,6 +147,7 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
         [HttpDelete("DeleteAuthInfo")]
         public IActionResult DeleteAuthInfo(int UserID)
         {
+            DeleteAuthInfoBLL _deleteAuthInfoBLL = new();
             var result = _deleteAuthInfoBLL.DeleteAuthInfo(UserID);
             if (result.Item1)
             {
@@ -169,6 +162,7 @@ namespace WebAppTest.APILayer.ManagementFeatureAPI
         [HttpGet("GetAuthInfo")]
         public IActionResult GetAuthInfo(int? UserID)
         {
+            GetAuthInfoBLL _getAuthInfoBLL = new();
             var result = _getAuthInfoBLL.GetAuthInfo(UserID);
             if (result.Item1)
             {

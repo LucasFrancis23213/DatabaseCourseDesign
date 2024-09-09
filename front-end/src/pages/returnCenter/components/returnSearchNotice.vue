@@ -3,8 +3,10 @@ import axios from 'axios';
 import { onMounted, ref } from 'vue'
 import { useAccountStore } from '@/store/account';
 const {account} = useAccountStore();
+import ItemMap from "@/pages/admin_BasicFeature/ItemMap";
+const { categoryMapping } = ItemMap;
 
-const baseURL = 'https://localhost:44343/api/';
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
 const returnLosts = ref([])
 
@@ -32,15 +34,10 @@ const tagMapping = {
   3: '医疗用品'
 };
 
-const categoryMapping = {
-  '1': '物品类别1',
-  '2': '手表',
-};
-
 const getPublishs = async () => {
     console.log(account);
     try {
-        const res = await axios.get(baseURL + 'claim/QueryItem', {
+        const res = await axios.get('api/claim/QueryItem', {
             params: {
                 type: 0,
                 userID: account.userId,
@@ -51,7 +48,7 @@ const getPublishs = async () => {
         // Fetch signing status for each item
         const fetchSignStatusPromises = items.map(async item => {
             try {
-                const signRes = await axios.get(baseURL + 'claim/CheckSign', {
+                const signRes = await axios.get('api/claim/CheckSign', {
                     params: {
                         userID: +account.userId,
                         itemID: item.ITEM_ID,
@@ -102,7 +99,7 @@ const handleOk = async () => {
       userID: +account.userId,
       itemID: selectedItemId.value,
     });
-    await axios.post(baseURL + 'claim/SignAgreement', jsonFormData, {
+    await axios.post('api/claim/SignAgreement', jsonFormData, {
           headers: {
             'Content-Type': 'application/json',
           },
@@ -143,7 +140,7 @@ const showCancelModal = (itemID: string) => {
 const handleCancelConfirm = async () => {
   if (cancelItemId.value) {
     try {
-      await axios.delete(baseURL + 'claim/DeleteClaim', {
+      await axios.delete('api/claim/DeleteClaim', {
         params: {
           itemID: cancelItemId.value,
         },
@@ -186,7 +183,7 @@ const handleCancelModalClose = () => {
         </div>
       </template>
       <template v-else-if="column.dataIndex === 'IMAGE_URL'">
-        <img class="w-12 rounded" :src="record.IMAGE_URL" />
+        <a-image class="w-12 rounded" :src="record.IMAGE_URL" />
       </template>
       <template v-else-if="column.dataIndex === 'IS_REWARDED'">
         <a-badge class="text-subtext" :color="'green'">

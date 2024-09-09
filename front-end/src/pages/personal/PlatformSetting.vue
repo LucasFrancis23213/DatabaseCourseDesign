@@ -3,7 +3,7 @@
 
   const groups = reactive([
     {
-      title: 'ACCOUNT',
+      title: '账户相关',
       children: [
         { checked: false, label: '特定位置附近新失物登记推送' },
         { checked: true, label: '关注失物状态改变弹窗' },
@@ -14,7 +14,7 @@
       ],
     },
     {
-      title: 'APPLICATION',
+      title: '应用相关',
       children: [
         { checked: true, label: '白天模式' },
         { checked: false, label: '短信接受消息' },
@@ -26,7 +26,7 @@
 <template>
   <a-card
     :bordered="false"
-    title="Platform Settings"
+    title="平台设置"
     class="shadow-lg platform-setting rounded-xl"
   >
     <div class="group" v-for="(group, i) in groups">

@@ -1,18 +1,25 @@
 <script lang="ts" setup>
 import { getBase64 } from '@/utils/file';
-import { ref } from 'vue';
+import {computed, ref} from 'vue';
 import { FormInstance } from 'ant-design-vue';
 import { message } from 'ant-design-vue';
 import axios from 'axios';
-import { onMounted } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 import dayjs from 'dayjs';
 import { useAccountStore } from '@/store/account';
 import { generateItemID } from '@/utils/BasicFeature/IDGen';
 import sendSystemMsg from "@/pages/CommunityFeature/chat/systemMsgSend";
+import ItemMap from "@/pages/admin_BasicFeature/ItemMap";
+const { categoryMapping } = ItemMap;
 const {account, permissions} = useAccountStore();
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
-const baseURL = 'https://localhost:44343/api/';
-
+const categoryOptions = computed(() =>
+      Object.entries(categoryMapping).map(([value, label]) => ({
+        label,
+        value,
+      }))
+    );
 type oneFind = {
   ITEM_ID?: string;
   ITEM_NAME?: string;
@@ -30,10 +37,7 @@ const tagMapping = {
   2: '私人用品',
   3: '医疗用品'
 };
-const categoryMapping = {
-    '1': '日用品',
-    '2': '手表',
-  };
+
 const formModel = ref<FormInstance>();
 const submit = () => {
   loading.value = true;
@@ -42,7 +46,7 @@ const submit = () => {
       if (selectedFile.value) {
         const formData = new FormData();
         formData.append('file', selectedFile.value);
-        const res = await axios.post(baseURL + 'ItemPicUpload/upload?type=Found', formData, {
+        const res = await axios.post('api/ItemPicUpload/uploadLocal?type=Found', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -55,7 +59,7 @@ const submit = () => {
       form.value.FOUND_DATE = dayjs(form.value.FOUND_DATE).format("YYYY-MM-DD HH:mm:ss")
       const jsonFormData = JSON.stringify(form.value)
       console.log(jsonFormData)
-      await axios.post(baseURL + 'PublishItem/Found', jsonFormData, {
+      await axios.post('api/PublishItem/Found', jsonFormData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -113,13 +117,13 @@ async function extractImg(file: File) {
 const finds = ref([])
 const getFinds = async () => {
   try {
-    const res = await axios.get(baseURL + 'QueryItem', {
+    const res = await axios.get('api/QueryItem', {
       params: { 
             type: 1,
             review: 1
         }
     });
-
+    console.log(res)
     finds.value = res.data.map(item => ({
       ...item,
       TAG_ID: [tagMapping[item.TAG_ID as keyof typeof tagMapping] || '未知'],
@@ -170,7 +174,7 @@ const claimItem = async (returnMsg : string, pubUserID : number, claimUserID : n
       "Publish_User_ID" : pubUserID,
       "Claimant_User_ID" : claimUserID,
     });
-    await axios.post(baseURL + 'claim/ClaimItem', jsonFormData, {
+    await axios.post('api/claim/ClaimItem', jsonFormData, {
           headers: {
             'Content-Type': 'application/json',
           },
@@ -191,6 +195,21 @@ const claimForm = ref({
   MESSAGE: '',
   IMAGE_URL: '',
 })
+
+let intervalId: ReturnType<typeof setInterval> | null = null;
+  
+onMounted(() => {
+  getFinds(); // Initial call
+  intervalId = setInterval(getFinds, 10000); // Call every 10 seconds
+});
+
+onUnmounted(() => {
+  if (intervalId !== null) {
+    clearInterval(intervalId); // Clear the interval when the component is unmounted
+  }
+});
+
+
 </script>
 
 <template>
@@ -202,7 +221,7 @@ const claimForm = ref({
       </a-form-item>
       <a-form-item label="物品类别" name="CATEGORY_ID" has-feedback :rules="[{ required: true, message: '请选择物品类别' }]">
         <a-cascader v-model:value="form.CATEGORY_ID"
-          :options="[{ label: '日用品', value: '1', }, { label: '手表', value: '2', },]" />
+          :options="categoryOptions" />
       </a-form-item>
       <a-form-item label="物品描述" name="DESCRIPTION" has-feedback :rules="[{ required: true, message: '请输入物品描述' }]">
         <a-textarea :rows="4" v-model:value="form.DESCRIPTION" :maxlength="100" />
@@ -214,11 +233,11 @@ const claimForm = ref({
         <a-date-picker v-model:value="form.FOUND_DATE" show-time />
       </a-form-item>
       <a-form-item label="物品标签" name="TAG_ID" has-feedback :rules="[{ required: true, message: '请选择物品标签' }]">
-        <a-checkbox-group v-model:value="form.TAG_ID">
-          <a-checkbox value="1">贵重物品</a-checkbox>
-          <a-checkbox value="2">私人用品</a-checkbox>
-          <a-checkbox value="3">医疗用品</a-checkbox>
-        </a-checkbox-group>
+        <a-radio-group v-model:value="form.TAG_ID">
+          <a-radio value="1">贵重物品</a-radio>
+          <a-radio value="2">私人用品</a-radio>
+          <a-radio value="3">医疗用品</a-radio>
+        </a-radio-group>
       </a-form-item>
       <a-form-item label="物品图片" name="IMAGE_URL" has-feedback :rules="[{ required: true, message: '请上传物品图片' }]">
         <a-upload :show-upload-list="false" :beforeUpload="(file: File) => extractImg(file)">
@@ -238,44 +257,49 @@ const claimForm = ref({
     </a-form>
   </a-modal>
 
-  <!-- 无主物品 -->
-  <a-table :columns="columns" :dataSource="finds">
-    <template #title>
-      <div class="flex justify-between pr-4">
-        <h4>无主物品</h4>
-        <a-button type="primary" @click="addNew">
-          <template #icon>
-            <PlusOutlined />
+  <!-- 无主物品卡片列表 -->
+  <div class="found-items-container">
+    <div class="header-actions">
+      <h4>无主物品</h4>
+      <a-button type="primary" @click="addNew">
+        <template #icon>
+          <PlusOutlined />
+        </template>
+        发布
+      </a-button>
+    </div>
+
+    <a-row :gutter="[16, 16]">
+      <a-col :span="8" v-for="(item, index) in finds" :key="item.ITEM_ID">
+        <a-card hoverable>
+          <template #cover>
+            <a-image :alt="item.ITEM_NAME" :src="item.IMAGE_URL" style="height: 200px; object-fit: cover;" />
           </template>
-          发布
-        </a-button>
-      </div>
-    </template>
-    <template #bodyCell="{ column, record, index }">
-      <template v-if="column.dataIndex === 'itemNameAndCategory'">
-        <div class="text-title font-bold">
-          {{ record.ITEM_NAME }}
-        </div>
-        <div class="text-subtext">
-          {{ record.CATEGORY_ID }}
-        </div>
-      </template>
-      <template v-else-if="column.dataIndex === 'IMAGE_URL'">
-        <img class="w-12 rounded" :src="record.IMAGE_URL" />
-      </template>
-      <template v-else-if="column.dataIndex === 'TAG_ID'">
-        <span>
-          <a-tag v-for="tag in record.TAG_ID" :key="tag"
-            :color="tag === '贵重物品' ? 'volcano' : tag.length > 4 ? 'geekblue' : 'green'">
-            {{ tag.toUpperCase() }}
-          </a-tag>
-        </span>
-      </template>
-      <template v-else-if="column.dataIndex === 'CLAIM'">
-        <a-button type="primary" @click="claim(index)">认领</a-button>
-      </template>
-    </template>
-  </a-table>
+          <a-card-meta :title="item.ITEM_NAME">
+            <template #description>
+              <p>类别: {{ item.CATEGORY_ID }}</p>
+              <p>描述: {{ item.DESCRIPTION }}</p>
+              <p>发现地点: {{ item.FOUND_LOCATION }}</p>
+              <p>发现时间: {{ item.FOUND_DATE }}</p>
+              <p>
+                标签: 
+                <a-tag
+                  v-for="tag in item.TAG_ID"
+                  :key="tag"
+                  :color="tag === '贵重物品' ? 'volcano' : tag.length > 4 ? 'geekblue' : 'green'"
+                >
+                  {{ tag }}
+                </a-tag>
+              </p>
+            </template>
+          </a-card-meta>
+          <template #actions>
+            <a-button type="primary" @click="claim(index)">认领</a-button>
+          </template>
+        </a-card>
+      </a-col>
+    </a-row>
+  </div>
 
   <!-- 认领 -->
   <a-modal v-model:visible="openClaim" title="认领物品">
@@ -295,3 +319,19 @@ const claimForm = ref({
     </a-form>
   </a-modal>
 </template>
+<style scoped>
+.found-items-container {
+  padding: 20px;
+}
+
+.header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.ant-card-cover img {
+  border-radius: 8px 8px 0 0;
+}
+</style>

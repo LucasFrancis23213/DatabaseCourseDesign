@@ -7,20 +7,25 @@ namespace SQLOperation.PublicAccess.Templates.SQLManager
 {
     public class Connection
     {
-        private string Uid;//user id,即用户名
-        private string Password;//密码
-        private string DataSource;//连接哪个数据库
+        private string Uid = "admin";//user id,即用户名
+        private string Password = "123456";//密码
+        private string DataSource = "121.36.200.128:1521/ORCL";//连接哪个数据库
 
         //检测数据库是否连接成功的实例化对象
         private OracleConnection OracleConnection;
 
         //构造函数
-        public Connection(string Uid, string Password, string DataSource)
+        public Connection(string Uid = "admin", string Password = "123456", string DataSource = "121.36.200.128:1521/ORCL")
         {
             this.Uid = Uid;
             this.Password = Password;
             this.DataSource = DataSource;
             ConnectSQL();
+        }
+
+        ~Connection()
+        {
+            DisconnectSQL();
         }
         //连接到指定数据库
         private bool ConnectSQL()
@@ -56,6 +61,7 @@ namespace SQLOperation.PublicAccess.Templates.SQLManager
             if (OracleConnection.State == ConnectionState.Open)
             {
                 OracleConnection.Close();
+                Console.WriteLine("数据库已成功关闭");
                 Debug.WriteLine("数据库已成功关闭");
             }
         }

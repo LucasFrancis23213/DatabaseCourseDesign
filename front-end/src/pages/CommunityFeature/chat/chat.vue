@@ -18,9 +18,9 @@
       />
     </a-layout-content>
     <a-layout-footer class="message-input-container">
-      <a-button @click="checkConnection" class="connection-check-btn">
-        检查连接
-      </a-button>
+<!--      <a-button @click="checkConnection" class="connection-check-btn">-->
+<!--        检查连接-->
+<!--      </a-button>-->
       <MessageInput
         :is-sending="isSending"
         @send-message="handleSendMessage"
@@ -39,6 +39,7 @@ import ChatBubble from '@/components/CommunityFeature/chat/ChatBubble.vue';
 import MessageInput from '@/components/CommunityFeature/chat/MessageInput.vue';
 import apiService from './apiService';
 import { useAccountStore } from '@/store/account';
+import { log } from 'console';
 
 const { account } = useAccountStore();
 const route = useRoute();
@@ -60,9 +61,11 @@ const connectionStatus = ref('Disconnected');
 const getMessages = async () => {
   try {
     const response = await apiService.getMessages(conversation_id.value, current_user_id.value);
+    console.log(response);
     messages.value = response.messages;
     other_name.value = response.name;
     other_avatar.value = response.avatar;
+    
   } catch (error) {
     message.error('获取消息列表出现错误');
   }
@@ -92,12 +95,19 @@ const handleSendMessage = async (messageContent: string) => {
       updateDisplayedMessage(newMessage.id, response.message_id);
     }
   } catch (error) {
+    
+    removeMessage(newMessage.id);
     message.error('消息发送失败，请稍后重试');
   }
 };
 
 const displayMessage = (message) => {
-  messages.value.push(message);
+  console.log(message.sender,conversation_id.value,current_user_id.value)
+  if((message.sender===conversation_id.value)||(message.sender===current_user_id.value))
+    messages.value.push(message);
+  else
+    return;
+  
 };
 
 const updateDisplayedMessage = (oldId, newId) => {
@@ -129,20 +139,23 @@ const removeMessage = (message_id: number) => {
 };
 
 const connect = () => {
-  socket.value = new WebSocket(`wss://localhost:44343/ws?user_id=${current_user_id.value}`);
+  socket.value = new WebSocket(`ws://121.36.200.128:5001/ws?user_id=${current_user_id.value}`);
 
   socket.value.onopen = () => {
     connectionStatus.value = 'Connected';
-    message.success('WebSocket 连接成功');
+    //message.success('WebSocket 连接成功');
+    //console.error(`WebSocket 连接成功`)
   };
 
   socket.value.onclose = () => {
     connectionStatus.value = 'Disconnected';
-    message.warning('WebSocket 连接已断开');
+    //message.warning('WebSocket 连接已断开');
+    //console.error('WebSocket 连接已断开')
   };
 
   socket.value.onerror = (error) => {
-    message.error(`WebSocket 错误: ${error.message}`);
+    //message.error(`WebSocket 错误: ${error.message}`);
+    console.error(`WebSocket 错误: ${error.message}`)
   };
 
   socket.value.onmessage = (event) => {
@@ -200,7 +213,7 @@ const checkConnection = () => {
   } else {
     connectionStatus.value = 'No connection';
   }
-  message.info(`当前连接状态: ${connectionStatus.value}`);
+  //message.info(`当前连接状态: ${connectionStatus.value}`);
 };
 
 const scrollToBottom = () => {

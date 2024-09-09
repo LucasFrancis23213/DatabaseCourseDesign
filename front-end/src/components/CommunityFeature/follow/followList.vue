@@ -2,11 +2,15 @@
   <div class="bg-container shadow-middle rounded-md p-md">
     <h2 class="text-lg text-title font-bold mb-md text-center">我的关注</h2>
     <transition-group name="list" tag="ul" v-if="following.length > 0" class="space-y-sm">
-      <li v-for="user in displayedFilteredFollowing" :key="user.user_id" class="flex items-center p-sm bg-container-light rounded-sm hover:bg-bg-hover">
-        <img :src="user.user_avatar" :alt="user.user_name" class="w-10 h-10 rounded-full mr-sm">
+      <li v-for="user in displayedFilteredFollowing" 
+      :key="user.user_id" 
+      class="flex items-center p-sm bg-container-light rounded-sm hover:bg-bg-hover"
+      @click="openConversationInput(user.user_id)"
+      >
+        <img :src="user.user_avatar" :alt="user.user_name" class="w-10 h-10 rounded-full mr-sm object-cover">
         <div class="flex-grow flex justify-between items-center">
           <span class="text-text font-medium">{{ user.user_name }}</span>
-          <button @click="unfollow(user.user_id)" class="text-sm bg-error-bg text-error-text hover:bg-error-bg-hover px-sm py-xxs rounded-md transition-colors duration-200">
+          <button @click="unfollow($event,user.user_id)" class="text-sm bg-error-bg text-error-text hover:bg-error-bg-hover px-sm py-xxs rounded-md transition-colors duration-200">
             <span class="mr-xxs">取消关注</span>
             <span class="font-bold">×</span>
           </button>
@@ -33,13 +37,16 @@ axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 import { useAccountStore } from '@/store/account';
 import {StepinHeaderAction, StepinLink, StepinView} from "stepin";
 const {account, permissions} = useAccountStore();
-import { ThemeProvider } from 'stepin/es/theme-provider'
 import {useThemeStore}  from "stepin/es/theme-provider";
 const { setPrimaryColor } = useThemeStore();
 setPrimaryColor({DEFAULT: '#3B82F6'});
 
+//import { openConversationInput } from '@/components/CommunityFeature/chat/createChat.ts';
+import { useRouter } from 'vue-router';
+const router = useRouter();
+
 const following = ref([])
-const pageSize = ref(10)
+const pageSize = ref(2)
 const currentPage = ref(1)
 
 const onPageChange = (page, size) => {
@@ -62,7 +69,8 @@ const fetchFollowing = async () => {
   }
 }
 
-const unfollow = async (userId) => {
+const unfollow = async (event,userId) => {
+  event.stopPropagation();
   try {
     await unfollowUser(userId);
     following.value = following.value.filter(user => user.user_id !== userId)
@@ -99,7 +107,15 @@ const unfollowUser = async (unfollowUserId) => {
   }
 }
 
-
+const openConversationInput = (target_id) => {
+  router.push({
+    name: "聊天",
+    params: {
+      "conversation_id": target_id,
+    },
+    query: { "current_user_id":account.userId, }
+  })
+};
 
 
 onMounted(fetchFollowing)

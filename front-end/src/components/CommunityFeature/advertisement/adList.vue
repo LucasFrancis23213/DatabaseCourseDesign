@@ -47,8 +47,6 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import axios from "axios";
-import AdDetailsItem from './AdDetailsItem.vue';  // 确保导入 AdDetailsItem 组件
-import AddAdForm from './adAddItem.vue';
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 

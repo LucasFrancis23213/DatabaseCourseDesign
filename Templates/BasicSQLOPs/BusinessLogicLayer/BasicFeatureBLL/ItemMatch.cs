@@ -29,6 +29,24 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
             OracleConnection = conn.GetOracleConnection();
             //SQLOps = new BasicSQLOps(conn);
         }
+
+        ~ItemMatch()
+        {
+            conn.DisconnectSQL();
+        }
+
+        public void ReleaseSQLConn()
+        {
+            try
+            {
+                conn.DisconnectSQL();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("in ItemMatch", ex.Message);
+            }
+        }
+
         //增加一条物品声明记录
         public Tuple<bool, string> ItemClaimProcessBasic(Item_Claim_Processes item){
             var Names = new List<string>

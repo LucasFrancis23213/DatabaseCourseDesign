@@ -2,9 +2,8 @@
 //从founditem表中返回所有没有审核的物品，在此处审核，可以查看物品详情，审核或驳回，审核成功修改物品状态，失败向用户发送邮件通知
 import axios from 'axios';
 import { onMounted, ref } from 'vue'
-
-const baseURL = 'http://121.36.200.128:5000/api/';
-
+import ItemMap from "@/pages/admin_BasicFeature/ItemMap";
+const { categoryMapping } = ItemMap;
 const unreviewFoundItems = ref([])
 const columns = [
     { title: '物品ID', dataIndex: 'ITEM_ID' },
@@ -24,13 +23,9 @@ const tagMapping = {
   3: '医疗用品'
 };
 
-const categoryMapping = {
-  '1': '物品类别1',
-  '2': '手表',
-};
 
 const getUnreviewFoundItems = async () => {
-    const res = await axios.get(baseURL + 'QueryItem', {
+    const res = await axios.get('api/QueryItem', {
         params: { type: 1 }
       });
       unreviewFoundItems.value = res.data.map(item => ({
@@ -43,7 +38,7 @@ const getUnreviewFoundItems = async () => {
 const pass = async (ITEM_ID: string) => {
     console.log('通过的物品ID:', ITEM_ID);
     //调用接口修改审核状态，修改后重新获取
-    await axios.post(baseURL + '', 
+    await axios.post('api/PassItem', 
             JSON.stringify({ 
                 ITEM_ID: ITEM_ID,
                 type: 1
@@ -60,7 +55,7 @@ const pass = async (ITEM_ID: string) => {
 const reject = async (ITEM_ID: string) => {
     try {
         // 调用接口删除founditem中的信息，使用DELETE方法
-        await axios.delete(baseURL + 'DeleteItem', {
+        await axios.delete('api/DeleteItem', {
             data: JSON.stringify({ 
                 ITEM_ID: ITEM_ID,
                 type: 1
@@ -103,7 +98,7 @@ onMounted(() => {
                 </div>
             </template>
             <template v-else-if="column.dataIndex === 'IMAGE_URL'">
-                <img class="w-12 rounded" :src="record.IMAGE_URL" />
+                <a-image class="w-12 rounded" :src="record.IMAGE_URL" />
             </template>
             <template v-else-if="column.dataIndex === 'TAG_ID'">
                 <span>

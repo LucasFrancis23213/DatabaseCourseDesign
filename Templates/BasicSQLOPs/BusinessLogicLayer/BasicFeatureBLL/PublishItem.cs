@@ -29,6 +29,25 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
             OracleConnection = conn.GetOracleConnection();
             //SQLOps = new BasicSQLOps(conn);
         }
+
+        ~PublishItem() 
+        { 
+            conn.DisconnectSQL();
+        }
+
+        public void ReleaseSqlConn()
+        {
+            try
+            {
+                conn.DisconnectSQL();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("释放数据库连接失败：",ex.Message);
+            }
+
+        }
+
         //发布寻物启事基础表单
         private Tuple<bool, string> PublishLostItemBasic(Lost_Item item)
         {
@@ -44,7 +63,8 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
             "Lost_Status",
             "Review_Status",
             "Image_URL",
-            "Tag_ID"
+            "Tag_ID",
+            "Is_Rewarded"
             };
             var values = new List<object>
             {
@@ -58,7 +78,8 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                 item.Lost_Status,
                 item.Review_Status,
                 item.Image_URL,
-                item.Tag_ID
+                item.Tag_ID,
+                item.Is_Rewarded
             };
             BasicSQLOps basic = new BasicSQLOps(conn);
             var result = basic.InsertOperation("Lost_Items", lostNames, values);
@@ -119,7 +140,9 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                 "Found_Date",
                 "User_ID",
                 "Match_Status",
-               " Review_Status",
+                "Review_Status",
+                "Image_URL",
+                "Tag_ID",
             };
             var values = new List<object>
             {
@@ -131,10 +154,12 @@ namespace SQLOperation.BusinessLogicLayer.BasicFeatureBLL
                 item.Found_Date,
                 item.User_ID,
                 item.Match_Status,
-                item.Review_Status
+                item.Review_Status,
+                item.Image_URL,
+                item.Tag_ID,
             };
             BasicSQLOps basic = new BasicSQLOps(conn);
-            var result = basic.InsertOperation("Found_Item", Names, values);
+            var result = basic.InsertOperation("Found_Items", Names, values);
             bool isSuccess = result.Item1; // 获取是否成功插入
             string errorReason = result.Item2; // 获取出错误原因
             if (isSuccess)

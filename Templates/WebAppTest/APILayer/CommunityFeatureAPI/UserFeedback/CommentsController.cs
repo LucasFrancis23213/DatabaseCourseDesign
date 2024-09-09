@@ -46,7 +46,7 @@ namespace WebAppTest.APILayer.CommunityFeatureAPI
                     var userId = request["user_id"].GetInt32();
                     string content = ControllerHelper.GetSafeString(request, "content");
                     DateTime time = request["time"].GetDateTime();
-
+                    
                     // 执行评论发布和用户活动记录
                     int commentId = commentService.PostComment(itemId, userId, content, time);
                     userActivity.AddUserActivity(userId, "评论", time);

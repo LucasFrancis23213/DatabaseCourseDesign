@@ -5,105 +5,216 @@
     <link rel="icon" type="image/svg+xml" href="/logos.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>寻觅有道</title>
+    <style>
+      body, html {
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        align-items: center;
+        justify-content: center;
+      }
+      body {
+        background: linear-gradient(135deg, #a8d0ff 0%, #ffffff 100%);
+        justify-content: center;
+        align-items: center;
+      }
+      .dynamic-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+      }
+      canvas {
+        display: block;
+      }
+      .main-content {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        height: 100vh;
+      }
+      .logo {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 1rem;
+        animation: scaleIn 0.5s ease-out 0.5s both;
+      }
+      .title {
+        font-size: 5rem;
+        color: #333;
+        margin-bottom: 0.5rem;
+        animation: slideInFromLeft 0.5s ease-out 0.7s both;
+      }
+      .smallTitle {
+        color: #666;
+        margin-bottom: 2rem;
+        animation: slideInFromRight 0.5s ease-out 0.9s both;
+      }
+      .loader {
+        margin-top: 2.5rem;
+        animation: fadeIn 0.5s ease-out 1.1s both;
+      }
+      .loading-text {
+        font-size: 1.6rem;
+        margin-bottom: 1rem;
+        color: #555;
+      }
+      .loading-bar {
+        width: 200px;
+        height: 4px;
+        background-color: #e0e0e0;
+        border-radius: 2px;
+        overflow: hidden;
+        margin: 0 auto;
+      }
+      .loading-progress {
+        width: 0%;
+        height: 100%;
+        background-color: #0056b3;
+        animation: loading 2s infinite ease-in-out;
+      }
+      .course-info {
+        margin-top: 2rem;
+        font-size: 1.1rem;
+        color: #777;
+        animation: fadeIn 0.5s ease-out 1.3s both;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      @keyframes scaleIn {
+        from { transform: scale(0); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+      }
+      @keyframes slideInFromLeft {
+        from { transform: translateX(-50px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+      }
+      @keyframes slideInFromRight {
+        from { transform: translateX(50px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+      }
+      @keyframes loading {
+        0% { width: 0; }
+        50% { width: 100%; }
+        100% { width: 0; }
+      }
+    </style>
   </head>
   <body>
+    <div class="dynamic-background">
+      <canvas id="particleCanvas"></canvas>
+    </div>
     <div id="stepin-app">
-      <style>
-        body {
-          height: 100vh;
-          text-align: center;
-          align-items: center;
-          background-color: #003f8c;
-          display: flex;
-          justify-content: center;
-        }
-        .loader {
-          color: rgb(124, 124, 124);
-          font-family: "Poppins",sans-serif;
-          font-weight: 500;
-          font-size: 25px;
-          -webkit-box-sizing: content-box;
-          box-sizing: content-box;
-          height: 40px;
-          padding: 10px 10px;
-          display: -webkit-box;
-          display: -ms-flexbox;
-          display: flex;
-          border-radius: 8px;
-        }
-
-        .words {
-          overflow: hidden;
-        }
-
-        .word {
-          display: block;
-          height: 100%;
-          padding-left: 6px;
-          color: #ffca29;
-          animation: spin_4991 4s infinite;
-        }
-
-        @keyframes spin_4991 {
-          10% {
-            -webkit-transform: translateY(-105%);
-            transform: translateY(-105%);
-          }
-
-          25% {
-            -webkit-transform: translateY(-100%);
-            transform: translateY(-100%);
-          }
-
-          35% {
-            -webkit-transform: translateY(-205%);
-            transform: translateY(-205%);
-          }
-
-          50% {
-            -webkit-transform: translateY(-200%);
-            transform: translateY(-200%);
-          }
-
-          60% {
-            -webkit-transform: translateY(-305%);
-            transform: translateY(-305%);
-          }
-
-          75% {
-            -webkit-transform: translateY(-300%);
-            transform: translateY(-300%);
-          }
-
-          85% {
-            -webkit-transform: translateY(-405%);
-            transform: translateY(-405%);
-          }
-
-          100% {
-            -webkit-transform: translateY(-400%);
-            transform: translateY(-400%);
-          }
-        }
-      </style>
-      <img style="margin-bottom: 8px;" width="64px" src="/logos.png" />
-      <div class="loader">
-        <div>loading</div>
-        <div class="words">
-            <span class="word">buttons</span>
-            <span class="word">forms</span>
-            <span class="word">switches</span>
-            <span class="word">cards</span>
-            <span class="word">buttons</span>
+      <div class="main-content">
+        <img src="/logos.png" alt="寻觅有道 logo" class="logo" />
+        <h1 class="title">寻觅有道</h1>
+        <p class="smallTitle">基于vue的遗失物品寻找平台</p>
+        <div class="loader">
+          <div class="loading-text">加载中...</div>
+          <div class="loading-bar">
+            <div class="loading-progress"></div>
+          </div>
         </div>
+        <p class="course-info">同济大学软件学院 2022级 数据库课程设计</p>
       </div>
-      <div class="" style="color: rgba(255, 255, 255, 0.35)">首次加载可能较慢，请耐心等待...</div>
     </div>
     <script type="module" src="/src/main.ts"></script>
     <script>
       if (!global) {
         var global = globalThis;
       }
+
+      // 粒子背景脚本
+      const canvas = document.getElementById('particleCanvas');
+      const ctx = canvas.getContext('2d');
+
+      let animationFrameId = null;
+
+      const particles = [];
+      const particleCount = 100;
+
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+
+      function initParticles() {
+        particles.length = 0; // 清空数组
+        for (let i = 0; i < particleCount; i++) {
+          particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 3 + 1,
+            dx: (Math.random() - 0.5) * 2,
+            dy: (Math.random() - 0.5) * 2,
+            color: Math.random() > 0.5 ? 'rgba(255, 255, 255, 0.7)' : 'rgba(74, 144, 226, 0.7)'
+          });
+        }
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // 绘制半透明遮罩
+        ctx.fillStyle = 'rgba(168, 208, 255, 0.1)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // 绘制和移动粒子
+        particles.forEach(particle => {
+          ctx.beginPath();
+          ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+          ctx.fillStyle = particle.color;
+          ctx.fill();
+
+          particle.x += particle.dx;
+          particle.y += particle.dy;
+
+          if (particle.x < 0 || particle.x > canvas.width) particle.dx *= -1;
+          if (particle.y < 0 || particle.y > canvas.height) particle.dy *= -1;
+        });
+
+        // 绘制连接线
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < 100) {
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.stroke();
+            }
+          }
+        }
+
+        animationFrameId = requestAnimationFrame(animate);
+      }
+
+      function init() {
+        resizeCanvas();
+        initParticles();
+        animate();
+      }
+
+      // 页面加载完成后立即初始化和开始动画
+      init();
+
+      // 监听窗口大小变化
+      window.addEventListener('resize', () => {
+        resizeCanvas();
+        initParticles();
+      });
     </script>
   </body>
 </html>
