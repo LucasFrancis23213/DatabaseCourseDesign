@@ -19,3 +19,4 @@ Templates/BasicSQLOPs/obj/
 Templates/BasicSQLOPs/bin/
 Templates/WebAppTest/obj/
 Templates/WebAppTest/bin/
+*.idea/
